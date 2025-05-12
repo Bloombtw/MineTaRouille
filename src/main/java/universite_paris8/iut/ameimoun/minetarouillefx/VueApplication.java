@@ -11,8 +11,7 @@ public class VueApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(VueApplication.class.getResource("vue1.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-
+        Scene scene = new Scene(fxmlLoader.load(), 1680, 1050);
         stage.setTitle("Mine Ta Rouille");
         stage.setScene(scene);
         stage.show();

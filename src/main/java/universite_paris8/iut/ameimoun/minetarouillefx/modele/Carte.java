@@ -8,15 +8,22 @@ public class Carte {
     public Carte() {
     }
 
-    public int[][] creerTerrain(int hauteur, int largeur)  {
+    public int[][] creerTerrain(int hauteur, int largeur) {
         terrain = new int[hauteur][largeur];
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                terrain[y][x] = (y == hauteur - 1) ? 1 : 0;
+                if (y < 25) {
+                    terrain[y][x] = 0; // ciel
+                } else if (y == 25) {
+                    terrain[y][x] = 1; // pierre
+                } else {
+                    terrain[y][x] = 2; // sable
+                }
             }
         }
         return this.terrain;
     }
+
 
     public int getTile(int x, int y) {
         return terrain[x][y];
@@ -35,22 +42,6 @@ public class Carte {
     }
 
 
-
-
-
-
-
-//    public static final String[][] PROTOTYPE_CARTE = {
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
-//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
-//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
-//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
-//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"}
-//    };
 }
+
 
