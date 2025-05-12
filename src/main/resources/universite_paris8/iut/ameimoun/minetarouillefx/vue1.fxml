@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="800.0" prefWidth="600.0">
-    <top> <Label text = "Mine Ta Rouille"> </Label></top>
-</BorderPane>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.Controller" prefHeight="800.0" prefWidth="600.0">
+    <GridPane fx:id="tileMap"/>
+</AnchorPane>
+

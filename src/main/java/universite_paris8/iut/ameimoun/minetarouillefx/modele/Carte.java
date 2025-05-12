@@ -1,41 +1,56 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import java.util.ArrayList;
+
 public class Carte {
-    public static final String[][] PROTOTYPE_CARTE = {
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel", "ciel"},
-            {"terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre"},
-            {"terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre"},
-            {"terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre"},
-            {"terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre", "terre"}
-    };
-    public static void afficherCarte() {
-        for (String[] ligne : PROTOTYPE_CARTE) {
-            for (String cellule : ligne) {
-                System.out.print(cellule + " ");
-            }
-            System.out.println();
-        }
+    private int[][] terrain;
+
+    public Carte() {
     }
 
-    public static String[][] genererCarte() {
-        String[][] carte = new String[5][5]; // Choisir la taille de la carte
-
-        //remplit avec deux motifs choisis
-        for (int i = 0; i < carte.length; i++) {
-            for (int j = 0; j < carte[i].length; j++) {
-                if (i < 3) {
-                    carte[i][j] = "."; // Ici le '.' veut dire ciel
-                } else {  // Terre dans les 2 dernières lignes
-                    carte[i][j] = "#"; // Changer les symboles ci besoin
-                }
+    public int[][] creerTerrain(int hauteur, int largeur)  {
+        terrain = new int[hauteur][largeur];
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                terrain[y][x] = (y == hauteur - 1) ? 1 : 0;
             }
         }
-        return carte;
+        return this.terrain;
     }
+
+    public int getTile(int x, int y) {
+        return terrain[x][y];
+    }
+
+    public int getLargeur() {
+        return terrain[0].length;
+    }
+
+    public int getHauteur() {
+        return terrain.length;
+    }
+
+    public int[][] getTerrain() {
+        return terrain;
+    }
+
+
+
+
+
+
+
+//    public static final String[][] PROTOTYPE_CARTE = {
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"},
+//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
+//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
+//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"},
+//            {"t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t"}
+//    };
 }
 

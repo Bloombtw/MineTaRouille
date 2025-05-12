@@ -11,19 +11,22 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <junit.version>5.10.0</junit.version>
+        <javafx.version>17.0.6</javafx.version> <!-- Utilisation de la version JavaFX ici -->
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.controlsfx</groupId>
@@ -55,6 +58,7 @@
                     <target>23</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -64,15 +68,9 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>
-                                universite_paris8.iut.ameimoun.minetarouillefx/universite_paris8.iut.ameimoun.minetarouillefx.HelloApplication
-                            </mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
+                            <mainClass>universite_paris8.iut.ameimoun.minetarouillefx.HelloApplication</mainClass>
+                            <modulePath>${java.home}/lib</modulePath> <!-- Chemin vers JavaFX -->
+                            <addModules>javafx.controls,javafx.fxml</addModules> <!-- Modules nécessaires -->
                         </configuration>
                     </execution>
                 </executions>
