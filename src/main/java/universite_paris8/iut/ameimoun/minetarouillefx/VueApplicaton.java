@@ -33,12 +33,39 @@ public class VueApplicaton extends Application {
         nouvellePartie.setPrefWidth(200);
         quitter.setPrefWidth(200);
 
+        //Design des boutons
+        nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
+        nouvellePartie.setOnMouseEntered(e -> {
+            nouvellePartie.setScaleX(1.1);
+            nouvellePartie.setScaleY(1.1);
+            nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;");
+        });
+        nouvellePartie.setOnMouseExited(e -> {
+            nouvellePartie.setScaleX(1.0);
+            nouvellePartie.setScaleY(1.0);
+            nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
+        });
+
+        quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
+        quitter.setOnMouseEntered(e -> {
+            quitter.setScaleX(1.1);
+            quitter.setScaleY(1.1);
+            quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;");
+        });
+        quitter.setOnMouseExited(e -> {
+            quitter.setScaleX(1.0);
+            quitter.setScaleY(1.0);
+            quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
+        });
+
+
+
         // Action bouton "Nouvelle Partie"
         nouvellePartie.setOnAction(e -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("vue1.fxml"));
                 if (fxmlLoader.getLocation() == null) {
-                    System.out.println("Fichier FXML non trouvé !");
+                    System.out.println("Fichier FXML non trouvé");
                     return;
                 }
                 Scene gameScene = new Scene(fxmlLoader.load(), 1680, 1050);
