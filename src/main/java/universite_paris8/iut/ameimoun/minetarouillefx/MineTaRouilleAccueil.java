@@ -14,10 +14,10 @@ public class MineTaRouilleAccueil extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Charger l'image de fond
-        Image backgroundImage = new Image("file:fond.png"); // Assure-toi que le chemin est correct
+        Image backgroundImage = new Image(getClass().getResource("/img/fond.png").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(800);  // Taille de la fenêtre
-        backgroundView.setFitHeight(600);
+        backgroundView.setFitWidth(1680);  // Taille de la fenêtre
+        backgroundView.setFitHeight(1050);
         backgroundView.setPreserveRatio(false);
 
         // Créer les boutons
@@ -40,7 +40,7 @@ public class MineTaRouilleAccueil extends Application {
         root.getChildren().addAll(backgroundView, buttonBox);
 
         // Scène
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1680, 1050);
 
         primaryStage.setTitle("MineTaRouille");
         primaryStage.setScene(scene);
