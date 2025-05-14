@@ -1,11 +1,14 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
@@ -16,6 +19,10 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     @FXML
     private GridPane tileMap;
+    @FXML
+    private StackPane racine;
+    @FXML
+    private AnchorPane overlayDeMort;
 
     private Joueur joueur;
     private Carte carte;
@@ -100,6 +107,7 @@ public class Controller implements Initializable {
             public void handle(long now) {
                 joueur.appliquerPhysique();
                 gererCollisions();
+                gererVie();
                 // Ici vous pourriez ajouter d'autres updates (ennemis, etc.)
             }
         };
@@ -118,9 +126,14 @@ public class Controller implements Initializable {
 
     private void gererVie() {
         if (joueur.estMort()) {
-            gameLoop.stop();
-            System.out.println("DEAD");
+            gameLoop.stop(); // Stopper le jeu
+            overlayDeMort.setVisible(true); // Afficher l’overlay
         }
+    }
+
+    @FXML
+    private void handleQuitter() {
+        Platform.exit();
     }
 
     private Image getImageAssociee(int id) {

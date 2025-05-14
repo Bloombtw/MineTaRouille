@@ -28,7 +28,6 @@ public class VueVie extends StackPane {
                         .multiply(fond.getWidth())
                         .divide(joueur.getVieMax())
         );
-        // Modification du listener pour gérer correctement les types
         joueur.vieActuelleProperty().addListener((obs, oldVal, newVal) -> {
             double pourcentage = newVal.doubleValue() / joueur.getVieMax();
             if (pourcentage < 0.3) {
