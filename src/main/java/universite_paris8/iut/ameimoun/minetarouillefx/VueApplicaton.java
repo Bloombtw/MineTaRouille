@@ -92,10 +92,13 @@ public class VueApplicaton extends Application {
         primaryStage.setTitle("Mine Ta Rouille - Accueil");
         primaryStage.setScene(accueilScene);
         primaryStage.show();
+
+
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }
 
