@@ -1,22 +1,46 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import java.util.ArrayList;
+
 public class Carte {
-    public static String[][] generationCarte() {
-        String[][] carte = new String[10][10];
-        for (int i = 0; i < carte.length; i++) {
-            for (int j = 0; j < carte[i].length; j++) {
-                carte[i][j] = "-";
-            }
-        }
-        return carte;
+    private int[][] terrain;
+
+    public Carte() {
     }
 
-    public static void afficherCarte(String[][] carte) {
-        for (int i = 0; i < carte.length; i++) {
-            System.out.println();
-            for (int j = 0; j < carte[i].length; j++) {
-                System.out.print(carte[i][j] + " ");
+    public int[][] creerTerrain(int hauteur, int largeur) {
+        terrain = new int[hauteur][largeur];
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                if (y < 25) {
+                    terrain[y][x] = 0; // ciel
+                } else if (y == 25) {
+                    terrain[y][x] = 1; // pierre
+                } else {
+                    terrain[y][x] = 2; // sable
+                }
             }
         }
+        return this.terrain;
     }
+
+
+    public int getTile(int x, int y) {
+        return terrain[x][y];
+    }
+
+    public int getLargeur() {
+        return terrain[0].length;
+    }
+
+    public int getHauteur() {
+        return terrain.length;
+    }
+
+    public int[][] getTerrain() {
+        return terrain;
+    }
+
+
 }
+
