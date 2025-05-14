@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +21,7 @@ public class Controller implements Initializable {
     private Carte carte;
     private Clavier clavier;
     private AnimationTimer gameLoop;
+    private VueVie vueVie;
 
     private static final int LARGEUR_FENETRE = 1680;
     private static final int HAUTEUR_FENETRE = 1050;
@@ -29,6 +31,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initialiserCarte();
         initialiserJoueur();
+        initialiserBarreDeVie();
         initialiserControles();
         demarrerBoucleDeJeu();
     }
@@ -59,6 +62,31 @@ public class Controller implements Initializable {
         joueur.ajouterAGrille(tileMap);
     }
 
+    private void initialiserBarreDeVie() {
+        // Création de la barre de vie (200x20 pixels)
+        vueVie = new VueVie(200, 20);
+
+        // Ajout à la GridPane (position en haut à gauche)
+        tileMap.add(vueVie, 0, 0);
+        GridPane.setColumnSpan(vueVie, 10); // Prend 10 colonnes de large
+
+        // Lier la vue au modèle
+        vueVie.lierAuJoueur(joueur);
+
+        new AnimationTimer() {
+            private long lastUpdate = 0;
+
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate >= 2_000_000_000) {
+                    joueur.recevoirDegat(10);
+                    lastUpdate = now;
+                }
+            }
+        }.start();
+
+    }
+
     private void initialiserControles() {
         clavier = new Clavier(joueur);
         clavier.gestionClavier(tileMap);
@@ -85,6 +113,13 @@ public class Controller implements Initializable {
             joueur.setVitesseX(HAUTEUR_FENETRE - Joueur.TAILLE_PERSO);
             joueur.setVitesseY(0);
             joueur.setPeutSauter(true);
+        }
+    }
+
+    private void gererVie() {
+        if (joueur.estMort()) {
+            gameLoop.stop();
+            System.out.println("DEAD");
         }
     }
 
