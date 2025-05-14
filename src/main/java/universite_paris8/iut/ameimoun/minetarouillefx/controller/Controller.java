@@ -1,5 +1,4 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
-
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,7 +52,7 @@ public class Controller implements Initializable {
     private void initialiserJoueur() {
         // Position initiale au milieu de l'écran
         double startX = (LARGEUR_FENETRE/2) - (Joueur.TAILLE_PERSO/2);
-        double startY = HAUTEUR_FENETRE - 100; // Un peu au-dessus du bas de l'écran
+        double startY = HAUTEUR_FENETRE - 100;
 
         joueur = new Joueur(startX, startY);
         joueur.ajouterAGrille(tileMap);
@@ -72,15 +71,13 @@ public class Controller implements Initializable {
             public void handle(long now) {
                 joueur.appliquerPhysique();
                 gererCollisions();
-                // Ici vous pourriez ajouter d'autres updates (ennemis, etc.)
             }
         };
         gameLoop.start();
     }
 
     private void gererCollisions() {
-        // À implémenter selon votre système de collision
-        // Exemple simple avec le bas de l'écran :
+//
         if (joueur.getY() > HAUTEUR_FENETRE - Joueur.TAILLE_PERSO) {
             joueur.setVitesseX(HAUTEUR_FENETRE - Joueur.TAILLE_PERSO);
             joueur.setVitesseY(0);
@@ -96,4 +93,5 @@ public class Controller implements Initializable {
             default: return null;
         }
     }
+
 }
