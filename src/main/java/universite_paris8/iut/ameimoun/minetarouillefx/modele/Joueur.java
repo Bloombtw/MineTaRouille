@@ -4,10 +4,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.Controller;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.Animation;
 
 public class Joueur {
-    public static final int TAILLE_PERSO = 32;
+    public static final int TAILLE_PERSO = Controller.TAILLE_TUILE;
     private double x;
     private double y;
     private ImageView perso;
@@ -18,7 +19,7 @@ public class Joueur {
 
     private double vitesseX = 0;
     private double vitesseY = 0;
-    private final double GRAVITE = 0.5;
+    private final double GRAVITE = 0.2;
     private final double VITESSE_DEPLACEMENT =2;
     private final double FORCE_SAUT = -5;
     private boolean peutSauter = true;
