@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
@@ -18,6 +18,9 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     @FXML
     private TilePane tileMap;
+
+    @FXML
+    private AnchorPane rootPane;
 
     private Joueur joueur;
     private Carte carte;
@@ -67,10 +70,11 @@ public class Controller implements Initializable {
     }
 
     private void initialiserJoueur() {
-        joueur = new Joueur(carte);  // ✅ nouveau constructeur avec Carte
+        joueur = new Joueur(carte);
         joueur.getPerso().setTranslateX(joueur.getX());
         joueur.getPerso().setTranslateY(joueur.getY());
-        tileMap.getChildren().add(joueur.getPerso());  // Ajout de l'image du joueur
+
+        rootPane.getChildren().add(joueur.getPerso());
     }
 
     private void initialiserControles() {
@@ -102,13 +106,37 @@ public class Controller implements Initializable {
             case PIERRE:
                 return new Image(getClass().getResource("/img/pierre.png").toExternalForm());
             case SABLE:
-                return new Image(getClass().getResource("/img/terreStylee.png").toExternalForm());
+                return new Image(getClass().getResource("/img/sable.png").toExternalForm());
             case TRONC:
                 return new Image(getClass().getResource("/img/tronc.png").toExternalForm());
             case FEUILLAGE:
                 return new Image(getClass().getResource("/img/feuillage.png").toExternalForm());
             case TERRE:
-                return new Image(getClass().getResource("/img/terreAvecHerbe.png").toExternalForm());
+                return new Image(getClass().getResource("/img/terre.png").toExternalForm());
+            case TRANSPARENT:
+                return new Image(getClass().getResource("/img/transparent.png").toExternalForm());
+            case CIEL:
+                return new Image(getClass().getResource("/img/ciel.png").toExternalForm());
+            case GAY_CIEL:
+                return new Image(getClass().getResource("/img/gayciel.png").toExternalForm());
+            case SABLE_ROUGE:
+                return new Image(getClass().getResource("/img/sable_rouge.png").toExternalForm());
+            case TERRE_STYLEE:
+                return new Image(getClass().getResource("/img/terre_stylee.png").toExternalForm());
+            case TERRE_STYLEE_SOMBRE:
+                return new Image(getClass().getResource("/img/terre_stylee_sombre.png").toExternalForm());
+            case CIEL_SOMBRE:
+                return new Image(getClass().getResource("/img/ciel_sombre.png").toExternalForm());
+            case CORBEAU:
+                return new Image(getClass().getResource("/img/corbeau.png").toExternalForm());
+            case LUNE:
+                return new Image(getClass().getResource("/img/lune.png").toExternalForm());
+            case LUNE_ZELDA:
+                return new Image(getClass().getResource("/img/lune_zelda.jpg").toExternalForm());
+            case ETOILE:
+                return new Image(getClass().getResource("/img/etoile.png").toExternalForm());
+            case ARBUSTE_MORT:
+                return new Image(getClass().getResource("/img/arbuste_mort.png").toExternalForm());
             default:
                 return null;
         }

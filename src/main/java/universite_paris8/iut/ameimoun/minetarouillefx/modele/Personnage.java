@@ -129,7 +129,6 @@ public class Personnage {
         return null;
     }
 
-    // === Getters / Setters ===
 
     public int getX() { return (int) x; }
     public void setX(double x) { this.x = x; }
