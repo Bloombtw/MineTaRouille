@@ -30,7 +30,7 @@ public class Personnage {
         this.isMining = false;
         this.isAttacking = false;
         this.isAlive = true;
-        inventaire = new Item[15]; // Taille de l'inventaire du personnage, nombre de "Slots".
+        inventaire = new Item[9]; // Taille de l'inventaire du personnage, nombre de "Slots".
         equipedItem = null;
         selectedSlot = 1;
         direction = Direction.DROITE;

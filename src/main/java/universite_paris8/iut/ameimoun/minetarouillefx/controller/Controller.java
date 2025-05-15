@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 
 import java.net.URL;
@@ -22,20 +24,42 @@ public class Controller implements Initializable{
 
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        carte = new Carte();
-        int[][] terrain = carte.creerTerrain(32, 58);
-//        tileMap.setStyle("-fx-background-image: url('/img/ciel.png'); -fx-background-size: cover;");
-        for (int i = 0; i < terrain.length; i++) {
-            for (int j = 0; j < terrain[i].length; j++) {
-                ImageView tile = new ImageView(getImageAssociee(terrain[i][j]));
-                tileMap.setPrefWidth(LARGEUR_FENETRE);
-                tileMap.setPrefHeight(HAUTEUR_FENETRE);
-                tile.setPreserveRatio(true);
-                tileMap.add(tile, j, i);
+
+        final int TAILLE_TILE = 30;
+        final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TILE;   // = 1050 / 30 = 35
+        final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TILE ) +6; // = 1680 / 30 = 56
+        carte = new Carte(NB_LIGNES, NB_COLONNES);
+
+        Bloc[][][] terrain = carte.getTerrain();
+        int nbCouches = carte.getNbCouches();
+
+        for (int y = 0; y < terrain[0].length; y++) {
+            for (int x = 0; x < terrain[0][0].length; x++) {
+                StackPane cellule = new StackPane();
+
+                for (int layer = 0; layer < nbCouches; layer++) {
+                    Bloc bloc = terrain[layer][y][x];
+                    if (bloc != null && bloc != Bloc.CIEL) {
+                        Image image = getImageAssociee(bloc);
+                        if (image != null) {
+                            ImageView iv = new ImageView(image);
+                            iv.setFitWidth(30);
+                            iv.setFitHeight(30);
+                            iv.setPreserveRatio(false);
+                            cellule.getChildren().add(iv);
+                        }
+                    }
+                }
+
+                tileMap.add(cellule, x, y);
             }
         }
+
+
+
     }
 
 
@@ -43,16 +67,23 @@ public class Controller implements Initializable{
 
 
 
-    private Image getImageAssociee(int id) {
-        if (id == 0 ) {
-            return new Image(getClass().getResourceAsStream("/img/ciel.png"));
-        }
-        if (id == 1) {
-            return new Image(getClass().getResource("/img/pierre.png").toExternalForm());
-        } else if (id == 2) {
-            return new Image(getClass().getResource("/img/sable.png").toExternalForm());
-        } else {
-            return null;
+
+    private Image getImageAssociee(Bloc bloc) {
+        switch (bloc) {
+            case CIEL_CLAIR:
+                return new Image(getClass().getResource("/img/ciel_clair.png").toExternalForm());
+            case PIERRE:
+                return new Image(getClass().getResource("/img/pierre.png").toExternalForm());
+            case SABLE:
+                return new Image(getClass().getResource("/img/sable.png").toExternalForm());
+            case TRONC:
+                return new Image(getClass().getResource("/img/tronc.png").toExternalForm());
+            case FEUILLAGE:
+                return new Image(getClass().getResource("/img/feuillage.png").toExternalForm());
+            case TERRE:
+                return new Image(getClass().getResource("/img/terreAvecHerbe.png").toExternalForm());
+            default:
+                return null;
         }
     }
 

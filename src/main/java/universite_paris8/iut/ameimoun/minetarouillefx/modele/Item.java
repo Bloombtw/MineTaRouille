@@ -41,6 +41,6 @@ public class Item {
 
 
     public static void main(String[] args) {
-        Item item1 = new Item(0, "Zizi", 1, "C'est un zizi", Type.ARME, Rarete.LEGENDAIRE);
+        Item item1 = new Item(0, "Epee Commune", 1, "C'est une épée", Type.ARME, Rarete.COMMUN);
     }
 }
