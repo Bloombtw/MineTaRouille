@@ -9,18 +9,17 @@ public class Joueur extends Personnage {
 
     public static final int TAILLE_PERSO = Controller.TAILLE_TUILE;
 
-    private ImageView perso;
+    private final ImageView perso;
     private Animation animMarche;
     private Animation animSaut;
     private Animation animIdle;
 
-    public Joueur(double xInitial, double yInitial) {
-        super((int) xInitial, (int) yInitial, 100, "Joueur", 2);
-        initialiserPerso();
-    }
+    public Joueur(Carte carte) {
+        super(10, 10, 100, "Joueur", 5, carte); // position x, y, vie, nom, vitesse, carte
 
-    private void initialiserPerso() {
-        Image img = new Image(getClass().getResource("/universite_paris8/iut/ameimoun/minetarouillefx/sprite/saut/base.png").toExternalForm());
+        // Chargement de l'image du joueur
+        Image img = new Image(getClass().getResource(
+                "/universite_paris8/iut/ameimoun/minetarouillefx/sprite/saut/base.png").toExternalForm());
         perso = new ImageView(img);
         perso.setFitWidth(TAILLE_PERSO);
         perso.setFitHeight(TAILLE_PERSO);
@@ -37,8 +36,8 @@ public class Joueur extends Personnage {
     @Override
     public void gravite() {
         super.gravite();
-        perso.setTranslateX(x);
-        perso.setTranslateY(y);
+        perso.setTranslateX(getX());
+        perso.setTranslateY(getY());
     }
 
     public Animation getAnimMarche() {

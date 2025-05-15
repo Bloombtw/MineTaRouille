@@ -51,4 +51,21 @@ public class Carte {
     public int getNbCouches() {
         return NB_COUCHES;
     }
+
+    public boolean estDansLaMap(int x, int y) {
+        return x >= 0 && y >= 0 && y < terrain[0].length && x < terrain[0][0].length;
+    }
+
+    public boolean estBlocSolide(int x, int y) {
+        if (!estDansLaMap(x, y)) return true;
+
+        for (int couche = 0; couche < NB_COUCHES; couche++) {
+            Bloc bloc = terrain[couche][y][x];
+            if (bloc != null && bloc.estSolide()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

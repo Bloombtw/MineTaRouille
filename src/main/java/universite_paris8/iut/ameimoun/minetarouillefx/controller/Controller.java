@@ -1,4 +1,5 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
+
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,21 +25,13 @@ public class Controller implements Initializable {
 
     private static final int LARGEUR_FENETRE = 1680;
     private static final int HAUTEUR_FENETRE = 1050;
-    public static final int TAILLE_TUILE = 30; // Doit correspondre à TAILLE_PERSO
-
-
-
-
-
-
-
+    public static final int TAILLE_TUILE = 30;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        final int TAILLE_TILE = 30;
-        final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TILE;   // = 1050 / 30 = 35
-        final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TILE) + 6; // = 1680 / 30 = 56
+        final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TUILE;
+        final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TUILE) + 6;
         carte = new Carte(NB_LIGNES, NB_COLONNES);
 
         Bloc[][][] terrain = carte.getTerrain();
@@ -47,36 +40,33 @@ public class Controller implements Initializable {
         for (int y = 0; y < terrain[0].length; y++) {
             for (int x = 0; x < terrain[0][0].length; x++) {
                 StackPane cellule = new StackPane();
-
                 for (int layer = 0; layer < nbCouches; layer++) {
                     Bloc bloc = terrain[layer][y][x];
                     if (bloc != null && bloc != Bloc.CIEL) {
                         Image image = getImageAssociee(bloc);
                         if (image != null) {
                             ImageView iv = new ImageView(image);
-                            iv.setFitWidth(30);
-                            iv.setFitHeight(30);
+                            iv.setFitWidth(TAILLE_TUILE);
+                            iv.setFitHeight(TAILLE_TUILE);
                             iv.setPreserveRatio(false);
                             cellule.getChildren().add(iv);
                         }
                     }
                 }
-
                 tileMap.add(cellule, x, y);
             }
         }
+
         initialiserJoueur();
         initialiserControles();
         demarrerBoucleDeJeu();
-
-
     }
 
     private void initialiserJoueur() {
-        joueur = new Joueur(30, 0);
-        joueur.getPerso().setTranslateX(joueur.getX() % TAILLE_TUILE);
-        joueur.getPerso().setTranslateY(joueur.getY() % TAILLE_TUILE);
-        joueur.ajouterAGrille(tileMap);
+        joueur = new Joueur(carte);  // ✅ nouveau constructeur avec Carte
+        joueur.getPerso().setTranslateX(joueur.getX());
+        joueur.getPerso().setTranslateY(joueur.getY());
+        tileMap.getChildren().add(joueur.getPerso());  // Ajout de l'image du joueur
     }
 
     private void initialiserControles() {
@@ -90,21 +80,10 @@ public class Controller implements Initializable {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                joueur.gravite();
-                gererCollisions();
+                joueur.gravite();  // ou joueur.appliquerGravite() selon le nom de ta méthode
             }
         };
         gameLoop.start();
-    }
-
-    private void gererCollisions() {
-//
-        if (joueur.getY() > HAUTEUR_FENETRE - Joueur.TAILLE_PERSO) {
-            joueur.setVitesseY(0);
-            joueur.setPeutSauter(true);
-            joueur.setY
-                    (HAUTEUR_FENETRE - Joueur.TAILLE_PERSO); // Ajustement de la position
-        }
     }
 
     private Image getImageAssociee(Bloc bloc) {
@@ -125,6 +104,4 @@ public class Controller implements Initializable {
                 return null;
         }
     }
-
-
 }
