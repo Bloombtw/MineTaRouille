@@ -17,7 +17,7 @@ public class VueApplicaton extends Application {
         // Charger l'image de fond
         Image backgroundImage = new Image(getClass().getResource("/img/fond.png").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setPreserveRatio(false); // Permet l'étirement complet
+        backgroundView.setPreserveRatio(false);
 
         // Créer la racine
         StackPane root = new StackPane();

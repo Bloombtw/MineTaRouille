@@ -22,7 +22,7 @@ public class Controller implements Initializable {
 
     private static final int LARGEUR_FENETRE = 1680;
     private static final int HAUTEUR_FENETRE = 1050;
-    private static final int TAILLE_TUILE = 20; // Doit correspondre à TAILLE_PERSO
+    private static final int TAILLE_TUILE = 32; // Doit correspondre à TAILLE_PERSO
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,11 +50,9 @@ public class Controller implements Initializable {
     }
 
     private void initialiserJoueur() {
-        // Position initiale au milieu de l'écran
-        double startX = (LARGEUR_FENETRE/2) - (Joueur.TAILLE_PERSO/2);
-        double startY = HAUTEUR_FENETRE - 100;
-
-        joueur = new Joueur(startX, startY);
+        joueur = new Joueur(10, 0);
+        joueur.getPerso().setTranslateX(joueur.getX() % TAILLE_TUILE);
+        joueur.getPerso().setTranslateY(joueur.getY() % TAILLE_TUILE);
         joueur.ajouterAGrille(tileMap);
     }
 
@@ -69,7 +67,7 @@ public class Controller implements Initializable {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                joueur.appliquerPhysique();
+                joueur.gravite();
                 gererCollisions();
             }
         };
@@ -79,9 +77,10 @@ public class Controller implements Initializable {
     private void gererCollisions() {
 //
         if (joueur.getY() > HAUTEUR_FENETRE - Joueur.TAILLE_PERSO) {
-            joueur.setVitesseX(HAUTEUR_FENETRE - Joueur.TAILLE_PERSO);
             joueur.setVitesseY(0);
             joueur.setPeutSauter(true);
+            joueur.setY
+                    (HAUTEUR_FENETRE - Joueur.TAILLE_PERSO); // Ajustement de la position
         }
     }
 
