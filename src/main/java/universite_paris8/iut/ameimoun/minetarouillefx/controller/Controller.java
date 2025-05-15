@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
-    private GridPane tileMap;
+    private TilePane tileMap;
 
     private Joueur joueur;
     private Carte carte;
@@ -32,6 +33,9 @@ public class Controller implements Initializable {
 
         final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TUILE;
         final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TUILE) + 6;
+        tileMap.setPrefColumns(NB_COLONNES);  // pour garder une grille alignée
+        tileMap.setPrefTileWidth(TAILLE_TUILE);
+        tileMap.setPrefTileHeight(TAILLE_TUILE);
         carte = new Carte(NB_LIGNES, NB_COLONNES);
 
         Bloc[][][] terrain = carte.getTerrain();
@@ -53,7 +57,7 @@ public class Controller implements Initializable {
                         }
                     }
                 }
-                tileMap.add(cellule, x, y);
+                tileMap.getChildren().add(cellule);
             }
         }
 
@@ -80,11 +84,16 @@ public class Controller implements Initializable {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                joueur.gravite();  // ou joueur.appliquerGravite() selon le nom de ta méthode
+                joueur.gravite();  // applique la gravité au joueur
+
+                // Met à jour la position visuelle du joueur à l'écran
+                joueur.getPerso().setTranslateX(joueur.getX());
+                joueur.getPerso().setTranslateY(joueur.getY());
             }
         };
         gameLoop.start();
     }
+
 
     private Image getImageAssociee(Bloc bloc) {
         switch (bloc) {
@@ -93,7 +102,7 @@ public class Controller implements Initializable {
             case PIERRE:
                 return new Image(getClass().getResource("/img/pierre.png").toExternalForm());
             case SABLE:
-                return new Image(getClass().getResource("/img/sable.png").toExternalForm());
+                return new Image(getClass().getResource("/img/terreStylee.png").toExternalForm());
             case TRONC:
                 return new Image(getClass().getResource("/img/tronc.png").toExternalForm());
             case FEUILLAGE:

@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.Controller;
 
 public class Personnage {
@@ -113,8 +114,10 @@ public class Personnage {
         return false;
     }
 
-    public void ajouterAGrille(GridPane gridPane) {
-        gridPane.add(getPerso(), (int)(x / TAILLE_PERSO), (int)(y / TAILLE_PERSO));
+    public void ajouterAuTilePane(TilePane tilePane) {
+        tilePane.getChildren().add(getPerso());
+        getPerso().setTranslateX(x);
+        getPerso().setTranslateY(y);
     }
 
     public void setVitesseDeplacement(double vitesseDeplacement) {

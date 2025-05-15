@@ -1,6 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 
 public class Clavier {
@@ -12,7 +12,7 @@ public class Clavier {
         this.joueur = joueur;
     }
 
-    public void gestionClavier(GridPane gridPane) {
+    public void gestionClavier(TilePane gridPane) {
         // Gestion des appuis sur les touches
         gridPane.setOnKeyPressed(event -> {
             switch(event.getCode()) {
