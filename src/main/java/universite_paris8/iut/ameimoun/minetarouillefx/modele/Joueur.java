@@ -7,60 +7,14 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.Animation;
 
 public class Joueur extends Personnage {
 
-    public static final int TAILLE_PERSO = Controller.TAILLE_TUILE;
-
-    private final ImageView perso;
-    private Animation animMarche;
-    private Animation animSaut;
-    private Animation animIdle;
+    public static final int TAILLE_PERSO = 32; // ou Controller.TAILLE_TUILE si nécessaire
 
     public Joueur(Carte carte) {
-        super(10, 10, 100, "Joueur", 5, carte); // position x, y, vie, nom, vitesse, carte
-
-        // Chargement de l'image du joueur
-        Image img = new Image(getClass().getResource(
-                "/universite_paris8/iut/ameimoun/minetarouillefx/sprite/saut/base.png").toExternalForm());
-        perso = new ImageView(img);
-        perso.setFitWidth(TAILLE_PERSO);
-        perso.setFitHeight(TAILLE_PERSO);
-    }
-
-    public ImageView getImageView() {
-        return perso;
-    }
-
-    public ImageView getPerso() {
-        return perso;
+        super(10, 10, 100, "Joueur", 5, carte);
     }
 
     @Override
     public void gravite() {
         super.gravite();
-        perso.setTranslateX(getX());
-        perso.setTranslateY(getY());
-    }
-
-    public Animation getAnimMarche() {
-        return animMarche;
-    }
-
-    public void setAnimMarche(Animation animMarche) {
-        this.animMarche = animMarche;
-    }
-
-    public Animation getAnimSaut() {
-        return animSaut;
-    }
-
-    public void setAnimSaut(Animation animSaut) {
-        this.animSaut = animSaut;
-    }
-
-    public Animation getAnimIdle() {
-        return animIdle;
-    }
-
-    public void setAnimIdle(Animation animIdle) {
-        this.animIdle = animIdle;
     }
 }

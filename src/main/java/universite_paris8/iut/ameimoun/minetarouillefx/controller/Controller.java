@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +19,8 @@ public class Controller implements Initializable {
     @FXML
     private GridPane tileMap;
 
-    private Joueur joueur;
+    private Joueur joueurModele;
+    private VueJoueur joueurVue;
     private Carte carte;
     private Clavier clavier;
     private AnimationTimer gameLoop;
@@ -62,15 +64,16 @@ public class Controller implements Initializable {
         demarrerBoucleDeJeu();
     }
 
+
     private void initialiserJoueur() {
-        joueur = new Joueur(carte);  // ✅ nouveau constructeur avec Carte
-        joueur.getPerso().setTranslateX(joueur.getX());
-        joueur.getPerso().setTranslateY(joueur.getY());
-        tileMap.getChildren().add(joueur.getPerso());  // Ajout de l'image du joueur
+        joueurModele = new Joueur(carte);
+        joueurVue = new VueJoueur(joueurModele);
+        joueurVue.mettreAJourPosition(); // Place l’image du joueur à sa position initiale
+        tileMap.getChildren().add(joueurVue.getPerso()); // Ajout à la scène
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueur);
+        clavier = new Clavier(joueurModele);
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
@@ -80,7 +83,8 @@ public class Controller implements Initializable {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                joueur.gravite();  // ou joueur.appliquerGravite() selon le nom de ta méthode
+                joueurModele.gravite();
+                joueurVue.mettreAJourPosition();
             }
         };
         gameLoop.start();
