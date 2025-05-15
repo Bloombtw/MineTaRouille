@@ -73,7 +73,7 @@ public class Controller implements Initializable {
     }
 
     private void initialiserJoueur() {
-        joueur = new Joueur(10, 0);
+        joueur = new Joueur(30, 0);
         joueur.getPerso().setTranslateX(joueur.getX() % TAILLE_TUILE);
         joueur.getPerso().setTranslateY(joueur.getY() % TAILLE_TUILE);
         joueur.ajouterAGrille(tileMap);
