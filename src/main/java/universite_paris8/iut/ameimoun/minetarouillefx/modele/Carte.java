@@ -28,7 +28,7 @@ public class Carte {
         int nbEtoiles = 6;
         for (int i = 0; i < nbEtoiles; i++) {
             int xEtoile = rand.nextInt(largeur);
-            int yEtoile = rand.nextInt(7); // uniquement dans la partie haute du ciel
+            int yEtoile = rand.nextInt(7); // Choisir le nb de couches (en partant du haut)
             if (terrain[2][yEtoile][xEtoile] == null) {
                 terrain[2][yEtoile][xEtoile] = Bloc.ETOILE;
             }
