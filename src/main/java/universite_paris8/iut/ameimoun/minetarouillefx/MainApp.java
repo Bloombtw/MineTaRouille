@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
+import java.util.Objects;
+
 public class MainApp extends Application {
 
     private static final int LARGEUR_FENETRE = 1680;
@@ -19,7 +21,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Image de fond
-        Image backgroundImage = new Image(getClass().getResource("/img/fond/fond.png").toExternalForm());
+        Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/img/fond/fond.png")).toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setPreserveRatio(false);
 
