@@ -13,10 +13,11 @@ public class Joueur extends Personnage {
     private Animation animSaut;
     private Animation animIdle;
 
-    public Joueur(Carte carte) {
-        super(10, 10, 100, "Joueur", 5, carte); // position x, y, vie, nom, vitesse, carte
-
+    public Joueur() {
+        super(30, 25, 100, "Joueur", 5); // position x, y, vie, nom, vitesse, carte
+                                                                                         // Le X et Y sont les positions de départ.
         // Chargement de l'image du joueur
+
         Image img = Loader.loadImage("/img/joueur/base.png");
         perso = new ImageView(img);
         perso.setFitWidth(Constantes.TAILLE_PERSO);

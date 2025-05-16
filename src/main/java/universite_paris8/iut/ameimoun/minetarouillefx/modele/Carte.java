@@ -8,13 +8,13 @@ import java.util.Random;
 public class Carte {
     private final Bloc[][][] terrain;
 
-
-    public Carte(int hauteur, int largeur) {
-        terrain = new Bloc[Constantes.NB_COUCHES][hauteur][largeur];
+/*
+    public Carte() {
+        terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
 
         // Couche 0 : sol
-        for (int y = 0; y < hauteur; y++) {
-            for (int x = 0; x < largeur; x++) {
+        for (int y = 0; y < Constantes.NB_LIGNES; y++) {
+            for (int x = 0; x < Constantes.NB_COLONNES; x++) {
                 if (y < 25) {
                     terrain[0][y][x] = Bloc.CIEL_SOMBRE;
                 } else if (y == 25) {
@@ -30,7 +30,7 @@ public class Carte {
         Random rand = new Random();
         int nbEtoiles = 6;
         for (int i = 0; i < nbEtoiles; i++) {
-            int xEtoile = rand.nextInt(largeur);
+            int xEtoile = rand.nextInt(Constantes.NB_COLONNES);
             int yEtoile = rand.nextInt(7); // Choisir le nb de couches (en partant du haut)
             if (terrain[2][yEtoile][xEtoile] == null) {
                 terrain[2][yEtoile][xEtoile] = Bloc.ETOILE;
@@ -57,6 +57,68 @@ public class Carte {
         terrain[2][24][12] = Bloc.ARBUSTE_MORT;
         terrain[2][24][23] = Bloc.ARBUSTE_MORT;
     }
+*/
+public Carte() {
+    terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
+    Random rand = new Random();
+
+    // Génère un sol avec hauteur variable
+    int[] hauteurSol = new int[Constantes.NB_COLONNES];
+    int base = 25;
+    for (int x = 0; x < Constantes.NB_COLONNES; x++) {
+        // Variation de la hauteur du sol entre -1 et +1 par rapport à la colonne précédente
+        if (x > 0) {
+            int variation = rand.nextInt(3) - 1; // -1, 0 ou 1
+            hauteurSol[x] = Math.min(Math.max(hauteurSol[x - 1] + variation, 20), Constantes.NB_LIGNES - 5);
+        } else {
+            hauteurSol[x] = base;
+        }
+
+        int h = hauteurSol[x];
+
+        // Remplit les couches
+        for (int y = 0; y < Constantes.NB_LIGNES; y++) {
+            if (y < h) {
+                terrain[0][y][x] = Bloc.CIEL_SOMBRE;
+            } else if (y == h) {
+                Bloc surfaceBloc = rand.nextDouble() < 0.5 ? Bloc.SABLE_ROUGE : Bloc.TERRE_STYLEE;
+                terrain[1][y][x] = surfaceBloc;
+
+                // Décoration : chance d’ajouter un arbuste mort ou une pierre
+                if (rand.nextDouble() < 0.05) terrain[2][y][x] = Bloc.ARBUSTE_MORT;
+                else if (rand.nextDouble() < 0.05) terrain[2][y][x] = Bloc.PIERRE;
+
+            } else {
+                terrain[1][y][x] = Bloc.TERRE_STYLEE_SOMBRE;
+            }
+        }
+    }
+
+    // Décoration céleste
+    for (int i = 0; i < 6; i++) {
+        int x = rand.nextInt(Constantes.NB_COLONNES);
+        int y = rand.nextInt(10);
+        terrain[2][y][x] = Bloc.ETOILE;
+    }
+
+    terrain[2][6][Constantes.NB_COLONNES - 5] = Bloc.LUNE;
+
+    // Exemple d’arbre
+    int arbreX = 10;
+    int arbreY = hauteurSol[arbreX];
+
+    terrain[2][arbreY - 1][arbreX] = Bloc.TRONC;
+    terrain[2][arbreY - 2][arbreX] = Bloc.TRONC;
+    terrain[2][arbreY - 3][arbreX] = Bloc.TRONC;
+
+    terrain[2][arbreY - 4][arbreX] = Bloc.FEUILLAGE;
+    terrain[2][arbreY - 4][arbreX - 1] = Bloc.FEUILLAGE;
+    terrain[2][arbreY - 4][arbreX + 1] = Bloc.FEUILLAGE;
+    terrain[2][arbreY - 3][arbreX - 1] = Bloc.FEUILLAGE;
+    terrain[2][arbreY - 3][arbreX + 1] = Bloc.FEUILLAGE;
+
+    terrain[2][10][15] = Bloc.CORBEAU;
+}
 
     public Bloc[][][] getTerrain() {
         return terrain;

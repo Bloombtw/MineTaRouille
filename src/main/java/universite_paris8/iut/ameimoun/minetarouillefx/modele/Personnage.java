@@ -27,13 +27,11 @@ public class Personnage {
     // Déplacement / physique
     protected double vitesseX = 0;
     protected double vitesseY = 0;
-    protected double VITESSE_DEPLACEMENT = 2;
-    protected final double FORCE_SAUT = -5;
     protected boolean peutSauter = true;
 
     protected Carte carte;
 
-    public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement, Carte carte) {
+    public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement) {
         this.x = x;
         this.y = y;
         this.pointsDeVieMax = pointsDeVieMax;
@@ -47,14 +45,21 @@ public class Personnage {
         this.inventaire = new Item[10];
         this.selectedSlot = 0;
         this.direction = Direction.DROITE;
-        this.carte = carte;
+        this.carte = new Carte();
     }
 
     // Mvts
 
+    public void placer(double x, double y) {
+        this.x = x;
+        this.y = y;
+        getPerso().setTranslateX(x);
+        getPerso().setTranslateY(y);
+    }
+
     public void sauter() {
         if (peutSauter) {
-            vitesseY = FORCE_SAUT;
+            vitesseY = Constantes.FORCE_SAUT;
             peutSauter = false;
         }
     }
@@ -68,7 +73,7 @@ public class Personnage {
     }
 
     public void deplacerDroite() {
-        double futurX = x + VITESSE_DEPLACEMENT;
+        double futurX = x + Constantes.VITESSE_DEPLACEMENT;
         if (!collision(futurX, y)) {
             x = futurX;
         }
@@ -92,8 +97,11 @@ public class Personnage {
     }
 
 
+
+
+
     protected boolean collision(double futurX, double futurY) {
-        int tileSize = Constantes.TAILLE_PERSO;
+        int tileSize = Constantes.TAILLE_TUILE;
 
         int left = (int)(futurX / tileSize);
         int right = (int)((futurX + tileSize - 1) / tileSize);
@@ -115,10 +123,6 @@ public class Personnage {
         getPerso().setTranslateY(y);
     }
 
-    public void setVitesseDeplacement(double vitesseDeplacement) {
-        this.vitesseDeplacement = vitesseDeplacement;
-    }
-
     // === À surcharger dans Joueur ===
     public ImageView getPerso() {
         return null;
@@ -138,7 +142,7 @@ public class Personnage {
 
     public String getNom() { return nom; }
 
-    public double getVitesseDeplacement() { return VITESSE_DEPLACEMENT; }
+    public double getVitesseDeplacement() { return Constantes.VITESSE_DEPLACEMENT; }
 
     public double getVitesseX() { return vitesseX; }
     public void setVitesseX(double vitesseX) { this.vitesseX = vitesseX; }
@@ -150,7 +154,7 @@ public class Personnage {
     public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
 
     public double getGravite() { return Constantes.GRAVITE; }
-    public double getForceSaut() { return FORCE_SAUT; }
+    public double getForceSaut() { return Constantes.FORCE_SAUT; }
 
     public boolean isAlive() { return isAlive; }
     public void setAlive(boolean alive) { isAlive = alive; }

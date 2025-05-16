@@ -12,5 +12,7 @@ module universite_paris.iut.ameimoun.minetarouillefx {
     opens universite_paris8.iut.ameimoun.minetarouillefx.controller to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx.vue;
     opens universite_paris8.iut.ameimoun.minetarouillefx.vue to javafx.fxml;
+    exports universite_paris8.iut.ameimoun.minetarouillefx.utils;
+    opens universite_paris8.iut.ameimoun.minetarouillefx.utils to javafx.fxml;
 
 }
