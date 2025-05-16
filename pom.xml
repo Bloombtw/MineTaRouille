@@ -65,7 +65,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                universite_paris8.iut.ameimoun.minetarouillefx.HelloApplication
+                                universite_paris8.iut.ameimoun.minetarouillefx.MainApp
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
