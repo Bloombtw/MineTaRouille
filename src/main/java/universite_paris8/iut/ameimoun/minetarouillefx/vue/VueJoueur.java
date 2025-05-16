@@ -1,25 +1,61 @@
-// Dans VueJoueur.java
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 
 public class VueJoueur {
+    public static final int TAILLE_PERSO= 30;
+    private ImageView perso=null;
+    private Animation animMarche;
+    private Animation animSaut;
+    private Animation animIdle;
 
-    private Joueur joueur;
-    private GraphicsContext gc;
-    private Image sprite = new Image(getClass().getResourceAsStream("/joueur.png"));
-
-    public VueJoueur(Joueur joueur, GraphicsContext gc) {
-        this.joueur = joueur;
-        this.gc = gc;
+    public VueJoueur(Joueur joueur) {
+        Image img = new Image(getClass().getResource(
+                "/img/joueur/base.png").toExternalForm());
+        perso = new ImageView(img);
+        perso.setFitWidth(TAILLE_PERSO);
+        perso.setFitHeight(TAILLE_PERSO);
     }
 
-    public void mettreAJour() {
-        gc.clearRect(0, 0, 800, 600); // si nécessaire
-        gc.drawImage(sprite, joueur.getX(), joueur.getY(), 20, 20);
+    public VueJoueur() {
     }
 
+    public ImageView getImageView() {
+        return perso;
+    }
+
+    public ImageView getPerso() {
+        return perso;
+    }
+
+    public void updatePosition(Joueur joueur) {
+        perso.setTranslateX(joueur.getX());
+        perso.setTranslateY(joueur.getY());
+    }
+
+    public Animation getAnimMarche() {
+        return animMarche;
+    }
+
+    public void setAnimMarche(Animation animMarche) {
+        this.animMarche = animMarche;
+    }
+
+    public Animation getAnimSaut() {
+        return animSaut;
+    }
+
+    public void setAnimSaut(Animation animSaut) {
+        this.animSaut = animSaut;
+    }
+
+    public Animation getAnimIdle() {
+        return animIdle;
+    }
+
+    public void setAnimIdle(Animation animIdle) {
+        this.animIdle = animIdle;
+    }
 }

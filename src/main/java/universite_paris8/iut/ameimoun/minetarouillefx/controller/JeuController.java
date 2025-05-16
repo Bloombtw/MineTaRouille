@@ -11,6 +11,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +23,8 @@ public class JeuController implements Initializable {
     @FXML
     private AnchorPane rootPane;
 
-    private Joueur joueur;
+    private Joueur joueurModele;
+    private VueJoueur joueurVue;
     private Carte carte;
     private Clavier clavier;
     private AnimationTimer gameLoop;
@@ -63,22 +65,19 @@ public class JeuController implements Initializable {
                 tileMap.getChildren().add(cellule);
             }
         }
-
         initialiserJoueur();
         initialiserControles();
         demarrerBoucleDeJeu();
     }
 
     private void initialiserJoueur() {
-        joueur = new Joueur(carte);
-        joueur.getPerso().setTranslateX(joueur.getX());
-        joueur.getPerso().setTranslateY(joueur.getY());
-
-        rootPane.getChildren().add(joueur.getPerso());
+        joueurModele = new Joueur(carte);
+        joueurVue = new VueJoueur(joueurModele);
+        rootPane.getChildren().add(joueurVue.getImageView());
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueur);
+        clavier = new Clavier(joueurModele);
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
@@ -88,16 +87,17 @@ public class JeuController implements Initializable {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                joueur.gravite();  // applique la gravité au joueur
-
-                // Met à jour la position visuelle du joueur à l'écran
-                joueur.getPerso().setTranslateX(joueur.getX());
-                joueur.getPerso().setTranslateY(joueur.getY());
+                mettreAJourJeu();
             }
         };
         gameLoop.start();
     }
 
+    private void mettreAJourJeu() {
+        System.out.println("Mise à jour du jeu - Joueur Modèle X: " + joueurModele.getX() + ", Y: " + joueurModele.getY());
+        joueurModele.gravite();
+        joueurVue.updatePosition(joueurModele);
+    }
 
     private Image getImageAssociee(Bloc bloc) {
         switch (bloc) {

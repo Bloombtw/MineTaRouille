@@ -3,10 +3,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import java.util.ArrayList;
 
 public class Item {
-    private static ArrayList<Item> listeDeToutLesItems = new ArrayList<>(); // Pour avoir tout les img.items ajoutés
+    private ArrayList<Item> listeDeToutLesItems = new ArrayList<>(); // Pour avoir tout les img.items ajoutés
     private int id; // Chaque item à un id unique
     private String nom;
-    private int durabilité; // Seulement selon le type
+    private int durabilite; // Seulement selon le type
     private int stackSize; // Nombre max dans inventaire
     private String description; // Desc rapide
     private Type type; // Aller voir le type Type
@@ -23,6 +23,14 @@ public class Item {
         this.x = x;
         this.y = y;
         listeDeToutLesItems.add(this);
+    }
+
+    public void ajouterItem(Carte c,Item i){
+        this.listeDeToutLesItems.add(i);
+    }
+
+    public void retirerItem(Item i){
+        this.listeDeToutLesItems.remove(i);
     }
 
     public int getId() { return id; }

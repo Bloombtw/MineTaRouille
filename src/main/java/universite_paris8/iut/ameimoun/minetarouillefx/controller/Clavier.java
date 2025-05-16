@@ -10,49 +10,55 @@ public class Clavier {
 
     public Clavier(Joueur joueur) {
         this.joueur = joueur;
+        System.out.println("Clavier initialisé avec le joueur : " + joueur.getNom());
     }
 
-    public void gestionClavier(TilePane gridPane) {
-        // Gestion des appuis sur les touches
-        gridPane.setOnKeyPressed(event -> {
+    public void gestionClavier(TilePane tilePane) {
+        System.out.println("Gestion du clavier activée pour le TilePane.");
+        tilePane.setOnKeyPressed(event -> {
+            System.out.println("Touche pressée : " + event.getCode());
             switch(event.getCode()) {
                 case Z:
-                    joueur.sauter();
+                    joueur.setPeutSauter(true);
+                    System.out.println("Intention de sauter activée pour le joueur : " + joueur.getNom());
                     break;
                 case Q:
                     enDeplacementGauche = true;
-                    joueur.deplacerGauche();
+                    joueur.setVitesseX(-joueur.getVitesseDeplacement());
+                    System.out.println("Déplacement à gauche activé pour le joueur : " + joueur.getNom() + ", vitesseX = " + joueur.getVitesseX());
                     break;
                 case D:
                     enDeplacementDroite = true;
-                    joueur.deplacerDroite();
+                    joueur.setVitesseX(joueur.getVitesseDeplacement());
+                    System.out.println("Déplacement à droite activé pour le joueur : " + joueur.getNom() + ", vitesseX = " + joueur.getVitesseX());
                     break;
                 case S:
-                    // Optionnel: s'accroupir ou tomber plus vite
+                    System.out.println("Touche S pressée.");
                     break;
             }
         });
 
-        // Gestion du relâchement des touches
-        gridPane.setOnKeyReleased(event -> {
+        tilePane.setOnKeyReleased(event -> {
+            System.out.println("Touche relâchée : " + event.getCode());
             switch(event.getCode()) {
                 case Q:
                     enDeplacementGauche = false;
                     if (!enDeplacementDroite) {
-                        joueur.arreterMouvementX();
+                        joueur.setVitesseX(0);
+                        System.out.println("Arrêt du déplacement à gauche pour le joueur : " + joueur.getNom() + ", vitesseX = " + joueur.getVitesseX());
                     }
                     break;
                 case D:
                     enDeplacementDroite = false;
                     if (!enDeplacementGauche) {
-                        joueur.arreterMouvementX();
+                        joueur.setVitesseX(0);
+                        System.out.println("Arrêt du déplacement à droite pour le joueur : " + joueur.getNom() + ", vitesseX = " + joueur.getVitesseX());
                     }
                     break;
             }
         });
-
-        // Focus sur la GridPane pour capter les événements clavier
-        gridPane.setFocusTraversable(true);
-        gridPane.requestFocus();
+        tilePane.setFocusTraversable(true);
+        tilePane.requestFocus();
+        System.out.println("Focus demandé pour le TilePane.");
     }
 }

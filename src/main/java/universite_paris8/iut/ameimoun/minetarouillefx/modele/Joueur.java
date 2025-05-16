@@ -1,66 +1,82 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.Animation;
-
 public class Joueur extends Personnage {
 
-    public static final int TAILLE_PERSO = JeuController.TAILLE_TUILE;
-
-    private final ImageView perso;
-    private Animation animMarche;
-    private Animation animSaut;
-    private Animation animIdle;
+    public static final int TAILLE_PERSO = 64;
+    private static final double FORCE_SAUT = -10;
+    private double vitesseX = 0;
+    private double vitesseY = 0;
+    private boolean peutSauter = false;
+    private final double vitesseDeplacement = 5; // Vitesse de déplacement constante
 
     public Joueur(Carte carte) {
-        super(10, 10, 100, "Joueur", 5, carte); // position x, y, vie, nom, vitesse, carte
-
-        // Chargement de l'image du joueur
-        Image img = new Image(getClass().getResource(
-                "/img/joueur/base.png").toExternalForm());
-        perso = new ImageView(img);
-        perso.setFitWidth(TAILLE_PERSO);
-        perso.setFitHeight(TAILLE_PERSO);
+        super(10, 10, 100, "Joueur", 5, carte);
     }
 
-    public ImageView getImageView() {
-        return perso;
+    public double getVitesseX() {
+        return vitesseX;
     }
 
-    public ImageView getPerso() {
-        return perso;
+    public void setVitesseX(double vitesseX) {
+        this.vitesseX = vitesseX;
+    }
+
+    public double getVitesseY() {
+        return vitesseY;
+    }
+
+    public void setVitesseY(double vitesseY) {
+        this.vitesseY = vitesseY;
+    }
+
+    public boolean peutSauter() {
+        return peutSauter;
+    }
+
+    public void setPeutSauter(boolean peutSauter) {
+        this.peutSauter = peutSauter;
+    }
+
+    public double getVitesseDeplacement() {
+        return vitesseDeplacement;
+    }
+
+    public void deplacerGauche() {
+        this.vitesseX = -vitesseDeplacement;
+    }
+
+    public void deplacerDroite() {
+        this.vitesseX = vitesseDeplacement;
+    }
+
+    public void arreterMouvementX() {
+        this.vitesseX = 0;
+    }
+
+    public void sauter() {
+        if (onGround()) {
+            this.vitesseY = FORCE_SAUT;
+            this.setY(getY() + vitesseY); // Appliquer le saut immédiatement
+            this.peutSauter = false; // Empêcher les sauts multiples en l'air
+        }
     }
 
     @Override
     public void gravite() {
-        super.gravite();
-        perso.setTranslateX(getX());
-        perso.setTranslateY(getY());
+        super.gravite(); // Applique la gravité de la classe Personnage
+        this.setX(getX() + vitesseX);
+        this.setY(getY() + vitesseY);
+        this.vitesseY += GRAVITE; // GRAVITE doit être une constante définie dans Personnage ou Joueur
+
+
+        // Simuler la collision avec le sol (à adapter selon votre logique de carte)
+        if (getY() > carte.getHauteur() - TAILLE_PERSO) {
+            this.setY(carte.getHauteur() - TAILLE_PERSO);
+            this.vitesseY = 0;
+        }
     }
 
-    public Animation getAnimMarche() {
-        return animMarche;
-    }
-
-    public void setAnimMarche(Animation animMarche) {
-        this.animMarche = animMarche;
-    }
-
-    public Animation getAnimSaut() {
-        return animSaut;
-    }
-
-    public void setAnimSaut(Animation animSaut) {
-        this.animSaut = animSaut;
-    }
-
-    public Animation getAnimIdle() {
-        return animIdle;
-    }
-
-    public void setAnimIdle(Animation animIdle) {
-        this.animIdle = animIdle;
+    public boolean onGround() {
+        return getY() >= carte.getHauteur() - TAILLE_PERSO;
     }
 }
