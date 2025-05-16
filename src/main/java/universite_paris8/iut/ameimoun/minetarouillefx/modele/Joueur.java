@@ -1,7 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public class Joueur extends Personnage {
-
+//debogguer la fluidité des déplacements (voir la branche deplacements)
     public static final int TAILLE_PERSO = 64;
     private static final double FORCE_SAUT = -10;
     private double vitesseX = 0;
