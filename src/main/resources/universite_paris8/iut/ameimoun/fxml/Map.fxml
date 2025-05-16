@@ -5,6 +5,6 @@
 <AnchorPane fx:id="rootPane" prefHeight="1050.0" prefWidth="1680.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.Controller">
+            fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController">
     <TilePane fx:id="tileMap" />
 </AnchorPane>

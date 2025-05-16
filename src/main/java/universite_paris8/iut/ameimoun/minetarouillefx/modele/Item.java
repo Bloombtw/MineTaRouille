@@ -3,7 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import java.util.ArrayList;
 
 public class Item {
-    private static ArrayList<Item> listeDeToutLesItems = new ArrayList<>(); // Pour avoir tout les items ajoutés
+    private static ArrayList<Item> listeDeToutLesItems = new ArrayList<>(); // Pour avoir tout les img.items ajoutés
     private int id; // Chaque item à un id unique
     private String nom;
     private int durabilité; // Seulement selon le type

@@ -2,12 +2,12 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.Controller;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.Animation;
 
 public class Joueur extends Personnage {
 
-    public static final int TAILLE_PERSO = Controller.TAILLE_TUILE;
+    public static final int TAILLE_PERSO = JeuController.TAILLE_TUILE;
 
     private final ImageView perso;
     private Animation animMarche;
@@ -19,7 +19,7 @@ public class Joueur extends Personnage {
 
         // Chargement de l'image du joueur
         Image img = new Image(getClass().getResource(
-                "/universite_paris8/iut/ameimoun/minetarouillefx/sprite/saut/base.png").toExternalForm());
+                "/img/joueur/base.png").toExternalForm());
         perso = new ImageView(img);
         perso.setFitWidth(TAILLE_PERSO);
         perso.setFitHeight(TAILLE_PERSO);

@@ -1,9 +1,8 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.Controller;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 
 public class Personnage {
 
@@ -34,7 +33,7 @@ public class Personnage {
 
     protected Carte carte;
 
-    public static final int TAILLE_PERSO = Controller.TAILLE_TUILE;
+    public static final int TAILLE_PERSO = JeuController.TAILLE_TUILE;
 
     // ✅ Nouveau constructeur
     public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement, Carte carte) {

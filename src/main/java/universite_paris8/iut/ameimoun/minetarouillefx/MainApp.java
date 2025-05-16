@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
-public class VueApplication extends Application {
+public class MainApp extends Application {
 
     private static final int LARGEUR_FENETRE = 1680;
     private static final int HAUTEUR_FENETRE = 1050;
@@ -19,7 +19,7 @@ public class VueApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Image de fond
-        Image backgroundImage = new Image(getClass().getResource("/img/fond.png").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/fond/fond.png").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setPreserveRatio(false);
 
@@ -56,12 +56,12 @@ public class VueApplication extends Application {
         // Action Nouvelle Partie
         nouvellePartie.setOnAction(e -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/minetarouillefx/vue1.fxml"));                Scene jeuScene = new Scene(fxmlLoader.load(), LARGEUR_FENETRE, HAUTEUR_FENETRE);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/minetarouillefx/Map.fxml"));                Scene jeuScene = new Scene(fxmlLoader.load(), LARGEUR_FENETRE, HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");
             } catch (Exception ex) {
                 ex.printStackTrace();
-                System.out.println("Erreur lors du chargement de vue1.fxml");
+                System.out.println("Erreur lors du chargement de Map.fxml");
             }
         });
     }

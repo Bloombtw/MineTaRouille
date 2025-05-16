@@ -9,12 +9,12 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
-public class MineTaRouilleAccueil extends Application {
+public class AccueilApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         // Charger l'image de fond
-        Image backgroundImage = new Image(getClass().getResource("/img/fond.png").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/fond/fond.png").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(1680);  // Taille de la fenêtre
         backgroundView.setFitHeight(1050);
