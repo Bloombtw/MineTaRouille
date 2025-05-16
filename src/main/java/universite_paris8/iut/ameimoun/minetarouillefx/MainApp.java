@@ -56,7 +56,8 @@ public class MainApp extends Application {
         // Action Nouvelle Partie
         nouvellePartie.setOnAction(e -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/minetarouillefx/Map.fxml"));                Scene jeuScene = new Scene(fxmlLoader.load(), LARGEUR_FENETRE, HAUTEUR_FENETRE);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/fxml/Map.fxml"));
+                Scene jeuScene = new Scene(fxmlLoader.load(), LARGEUR_FENETRE, HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");
             } catch (Exception ex) {

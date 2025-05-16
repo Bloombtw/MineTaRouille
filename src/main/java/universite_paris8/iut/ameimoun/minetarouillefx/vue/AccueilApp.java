@@ -1,4 +1,4 @@
-package universite_paris8.iut.ameimoun.minetarouillefx;
+package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
