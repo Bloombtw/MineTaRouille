@@ -1,14 +1,16 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Carte {
     private final Bloc[][][] terrain;
-    private final int NB_COUCHES = 3;
+
 
     public Carte(int hauteur, int largeur) {
-        terrain = new Bloc[NB_COUCHES][hauteur][largeur];
+        terrain = new Bloc[Constantes.NB_COUCHES][hauteur][largeur];
 
         // Couche 0 : sol
         for (int y = 0; y < hauteur; y++) {
@@ -69,7 +71,7 @@ public class Carte {
     }
 
     public int getNbCouches() {
-        return NB_COUCHES;
+        return Constantes.NB_COUCHES;
     }
 
     public boolean estDansLaMap(int x, int y) {
@@ -80,7 +82,7 @@ public class Carte {
     public boolean estBlocSolide(int x, int y) {
         if (!estDansLaMap(x, y)) return true;
 
-        for (int couche = 0; couche < NB_COUCHES; couche++) {
+        for (int couche = 0; couche < Constantes.NB_COUCHES; couche++) {
             Bloc bloc = terrain[couche][y][x];
             if (bloc != null && bloc.estSolide()) {
                 return true;

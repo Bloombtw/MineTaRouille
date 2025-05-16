@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class Personnage {
 
@@ -32,8 +33,6 @@ public class Personnage {
     protected boolean peutSauter = true;
 
     protected Carte carte;
-
-    public static final int TAILLE_PERSO = JeuController.TAILLE_TUILE;
 
     // ✅ Nouveau constructeur
     public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement, Carte carte) {
@@ -97,7 +96,7 @@ public class Personnage {
     // === Collision avec la carte ===
 
     protected boolean collision(double futurX, double futurY) {
-        int tileSize = TAILLE_PERSO;
+        int tileSize = Constantes.TAILLE_PERSO;
 
         int left = (int)(futurX / tileSize);
         int right = (int)((futurX + tileSize - 1) / tileSize);

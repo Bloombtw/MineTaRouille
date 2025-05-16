@@ -10,11 +10,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class MainApp extends Application {
 
-    private static final int LARGEUR_FENETRE = 1680;
-    private static final int HAUTEUR_FENETRE = 1050;
 
     @Override
     public void start(Stage primaryStage) {
@@ -45,7 +44,7 @@ public class MainApp extends Application {
         root.getChildren().addAll(backgroundView, buttonBox);
 
         // Scène d’accueil
-        Scene accueilScene = new Scene(root, LARGEUR_FENETRE, HAUTEUR_FENETRE);
+        Scene accueilScene = new Scene(root, Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
         primaryStage.setTitle("Mine Ta Rouille - Accueil");
         primaryStage.setScene(accueilScene);
         primaryStage.show();
@@ -57,7 +56,7 @@ public class MainApp extends Application {
         nouvellePartie.setOnAction(e -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/fxml/Map.fxml"));
-                Scene jeuScene = new Scene(fxmlLoader.load(), LARGEUR_FENETRE, HAUTEUR_FENETRE);
+                Scene jeuScene = new Scene(fxmlLoader.load(), Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");
             } catch (Exception ex) {

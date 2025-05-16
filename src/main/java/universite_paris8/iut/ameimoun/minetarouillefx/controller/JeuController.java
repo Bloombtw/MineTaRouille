@@ -11,6 +11,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,19 +28,16 @@ public class JeuController implements Initializable {
     private Clavier clavier;
     private AnimationTimer gameLoop;
 
-    private static final int LARGEUR_FENETRE = 1680;
-    private static final int HAUTEUR_FENETRE = 1050;
-    public static final int TAILLE_TUILE = 30;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TUILE;
-        final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TUILE) + 6;
-        tileMap.setPrefColumns(NB_COLONNES);  // pour garder une grille alignée
-        tileMap.setPrefTileWidth(TAILLE_TUILE);
-        tileMap.setPrefTileHeight(TAILLE_TUILE);
-        carte = new Carte(NB_LIGNES, NB_COLONNES);
+
+        tileMap.setPrefColumns(Constantes.NB_COLONNES);  // pour garder une grille alignée
+        tileMap.setPrefTileWidth(Constantes.TAILLE_TUILE);
+        tileMap.setPrefTileHeight(Constantes.TAILLE_TUILE);
+        carte = new Carte(Constantes.NB_LIGNES, Constantes.NB_COLONNES);
 
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
@@ -53,8 +51,8 @@ public class JeuController implements Initializable {
                         Image image = getImageAssociee(bloc);
                         if (image != null) {
                             ImageView iv = new ImageView(image);
-                            iv.setFitWidth(TAILLE_TUILE);
-                            iv.setFitHeight(TAILLE_TUILE);
+                            iv.setFitWidth(Constantes.TAILLE_TUILE);
+                            iv.setFitHeight(Constantes.TAILLE_TUILE);
                             iv.setPreserveRatio(false);
                             cellule.getChildren().add(iv);
                         }
