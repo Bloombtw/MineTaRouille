@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 public class JeuController implements Initializable {
     @FXML
     private TilePane tileMap;
-
     @FXML
     private AnchorPane rootPane;
 

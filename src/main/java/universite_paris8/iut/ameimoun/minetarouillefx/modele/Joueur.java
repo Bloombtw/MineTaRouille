@@ -54,11 +54,11 @@ public class Joueur extends Personnage {
     }
 
     public void sauter() {
-        if (onGround()) {
+        //if (onGround()) {
             this.vitesseY = FORCE_SAUT;
             this.setY(getY() + vitesseY); // Appliquer le saut immédiatement
             this.peutSauter = false; // Empêcher les sauts multiples en l'air
-        }
+        //}
     }
 
     @Override
