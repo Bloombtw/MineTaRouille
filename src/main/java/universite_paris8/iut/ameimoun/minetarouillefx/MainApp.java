@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class MainApp extends Application {
 
@@ -18,7 +19,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Image de fond
-        Image backgroundImage = new Image(getClass().getResource("/img/fond/fond.png").toExternalForm());
+        Image backgroundImage = Loader.loadImage("/img/fond/fond.png");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setPreserveRatio(false);
 
@@ -32,8 +33,8 @@ public class MainApp extends Application {
         // Boutons
         Button nouvellePartie = new Button("Nouvelle Partie");
         Button quitter = new Button("Quitter");
-        nouvellePartie.setPrefWidth(200);
-        quitter.setPrefWidth(200);
+        nouvellePartie.setPrefWidth(Constantes.TAILLE_BOUTON);
+        quitter.setPrefWidth(Constantes.TAILLE_BOUTON);
 
         styleBouton(nouvellePartie);
         styleBouton(quitter);
@@ -55,7 +56,7 @@ public class MainApp extends Application {
         // Action Nouvelle Partie
         nouvellePartie.setOnAction(e -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/fxml/Map.fxml"));
+                FXMLLoader fxmlLoader = Loader.loadFXML("/universite_paris8/iut/ameimoun/fxml/Map.fxml");
                 Scene jeuScene = new Scene(fxmlLoader.load(), Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");
@@ -74,8 +75,8 @@ public class MainApp extends Application {
             bouton.setStyle("-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;");
         });
         bouton.setOnMouseExited(e -> {
-            bouton.setScaleX(1.0);
-            bouton.setScaleY(1.0);
+            bouton.setScaleX(1);
+            bouton.setScaleY(1);
             bouton.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
         });
     }

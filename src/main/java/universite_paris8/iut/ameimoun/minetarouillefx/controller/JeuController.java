@@ -12,6 +12,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -100,41 +101,41 @@ public class JeuController implements Initializable {
     private Image getImageAssociee(Bloc bloc) {
         switch (bloc) {
             case CIEL_CLAIR:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_clair.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/traversable/ciel_clair.png");
             case PIERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/pierre.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/pierre.png");
             case SABLE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/sable.png");
             case TRONC:
-                return new Image(getClass().getResource("/img/blocs/solide/tronc.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/tronc.png");
             case FEUILLAGE:
-                return new Image(getClass().getResource("/img/blocs/solide/feuillage.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/feuillage.png");
             case TERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/terre.png");
             case TRANSPARENT:
-                return new Image(getClass().getResource("/img/blocs/traversable/transparent.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/traversable/transparent.png");
             case CIEL:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/traversable/ciel.png");
             case GAY_CIEL:
-                return new Image(getClass().getResource("/img/blocs/traversable/gayciel.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/traversable/gayciel.png");
             case SABLE_ROUGE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable_rouge.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/sable_rouge.png");
             case TERRE_STYLEE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/terre_stylee.png");
             case TERRE_STYLEE_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee_sombre.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/solide/terre_stylee_sombre.png");
             case CIEL_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_sombre.png").toExternalForm());
+                return Loader.loadImage("/img/blocs/traversable/ciel_sombre.png");
             case CORBEAU:
-                return new Image(getClass().getResource("/img/decors/corbeau.png").toExternalForm());
+                return Loader.loadImage("/img/decors/corbeau.png");
             case LUNE:
-                return new Image(getClass().getResource("/img/decors/lune.png").toExternalForm());
+                return Loader.loadImage("/img/decors/lune.png");
             case LUNE_ZELDA:
-                return new Image(getClass().getResource("/img/decors/lune_zelda.jpg").toExternalForm());
+                return Loader.loadImage("/img/decors/lune_zelda.jpg");
             case ETOILE:
-                return new Image(getClass().getResource("/img/decors/etoile.png").toExternalForm());
+                return Loader.loadImage("/img/decors/etoile.png");
             case ARBUSTE_MORT:
-                return new Image(getClass().getResource("/img/decors/arbuste_mort.png").toExternalForm());
+                return Loader.loadImage("/img/decors/arbuste_mort.png");
             default:
                 return null;
         }

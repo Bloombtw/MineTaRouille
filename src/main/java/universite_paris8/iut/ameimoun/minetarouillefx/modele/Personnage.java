@@ -27,14 +27,12 @@ public class Personnage {
     // Déplacement / physique
     protected double vitesseX = 0;
     protected double vitesseY = 0;
-    protected final double GRAVITE = 0.2;
     protected double VITESSE_DEPLACEMENT = 2;
     protected final double FORCE_SAUT = -5;
     protected boolean peutSauter = true;
 
     protected Carte carte;
 
-    // ✅ Nouveau constructeur
     public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement, Carte carte) {
         this.x = x;
         this.y = y;
@@ -52,7 +50,7 @@ public class Personnage {
         this.carte = carte;
     }
 
-    // === Mouvements avec collisions ===
+    // Mvts
 
     public void sauter() {
         if (peutSauter) {
@@ -82,7 +80,7 @@ public class Personnage {
     }
 
     public void gravite() {
-        vitesseY += GRAVITE;
+        vitesseY += Constantes.GRAVITE;
         double futurY = y + vitesseY;
 
         if (!collision(x, futurY)) {
@@ -93,7 +91,6 @@ public class Personnage {
         }
     }
 
-    // === Collision avec la carte ===
 
     protected boolean collision(double futurX, double futurY) {
         int tileSize = Constantes.TAILLE_PERSO;
@@ -152,7 +149,7 @@ public class Personnage {
     public boolean peutSauter() { return peutSauter; }
     public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
 
-    public double getGravite() { return GRAVITE; }
+    public double getGravite() { return Constantes.GRAVITE; }
     public double getForceSaut() { return FORCE_SAUT; }
 
     public boolean isAlive() { return isAlive; }

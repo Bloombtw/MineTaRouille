@@ -3,14 +3,14 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class VueJoueur {
 
     private Joueur joueur;
     private GraphicsContext gc;
-    private Image sprite = new Image(getClass().getResourceAsStream("/joueur.png"));
+    private Image sprite = Loader.loadImage("/joueur.png");
 
     public VueJoueur(Joueur joueur, GraphicsContext gc) {
         this.joueur = joueur;

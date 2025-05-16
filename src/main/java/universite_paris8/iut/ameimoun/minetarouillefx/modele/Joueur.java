@@ -2,8 +2,8 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.Animation;
 
 public class Joueur extends Personnage {
@@ -17,8 +17,7 @@ public class Joueur extends Personnage {
         super(10, 10, 100, "Joueur", 5, carte); // position x, y, vie, nom, vitesse, carte
 
         // Chargement de l'image du joueur
-        Image img = new Image(getClass().getResource(
-                "/img/joueur/base.png").toExternalForm());
+        Image img = Loader.loadImage("/img/joueur/base.png");
         perso = new ImageView(img);
         perso.setFitWidth(Constantes.TAILLE_PERSO);
         perso.setFitHeight(Constantes.TAILLE_PERSO);

@@ -8,4 +8,8 @@ public class Constantes {
     public static final int NB_COLONNES = 62;
     public static final int NB_COUCHES = 3;
     public static final int TAILLE_PERSO = TAILLE_TUILE;
+    public static final int TAILLE_ITEM = 32;
+    public static final int TAILLE_BOUTON = 200;
+    public static final double GRAVITE = 0.2;
+
 }
