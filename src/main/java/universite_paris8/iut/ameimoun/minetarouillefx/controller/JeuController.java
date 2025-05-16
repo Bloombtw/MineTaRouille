@@ -3,7 +3,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -13,8 +12,8 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.DebugOverlay;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,9 +29,8 @@ public class JeuController implements Initializable {
     private Carte carte;
     private Clavier clavier;
     private AnimationTimer gameLoop;
-    private Canvas debugCanvas;
-    private boolean debugVisible = false;
-    
+    private DebugManager debugManager;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -72,6 +70,7 @@ public class JeuController implements Initializable {
 
     private void initialiserJoueur() {
         joueur = new Joueur();
+        debugManager = new DebugManager(rootPane, carte, joueur);
         joueur.getPerso().setTranslateX(joueur.getX());
         joueur.getPerso().setTranslateY(joueur.getY());
 
@@ -79,7 +78,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueur, this);
+        clavier = new Clavier(joueur, debugManager);
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
@@ -94,21 +93,12 @@ public class JeuController implements Initializable {
                 // Met à jour la position visuelle du joueur à l'écran
                 joueur.getPerso().setTranslateX(joueur.getX());
                 joueur.getPerso().setTranslateY(joueur.getY());
+                debugManager.update();
             }
         };
         gameLoop.start();
     }
 
-    void toggleDebug() {
-        if (debugCanvas == null) {
-            debugCanvas = DebugOverlay.genererGrille(carte);
-            rootPane.getChildren().add(debugCanvas);
-            debugVisible = true;
-        } else {
-            debugVisible = !debugVisible;
-            debugCanvas.setVisible(debugVisible);
-        }
-    }
 
 
 

@@ -2,22 +2,23 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 
 public class Clavier {
     private Joueur joueur;
-    private JeuController controller;
+    private DebugManager debugManager;
     private boolean enDeplacementGauche = false;
     private boolean enDeplacementDroite = false;
 
-    public Clavier(Joueur joueur, JeuController controller) {
+    public Clavier(Joueur joueur, DebugManager debugManager) {
         this.joueur = joueur;
-        this.controller = controller;
+        this.debugManager = debugManager;
     }
 
     public void gestionClavier(TilePane gridPane) {
         // Gestion des appuis sur les touches
         gridPane.setOnKeyPressed(event -> {
-            switch(event.getCode()) {
+            switch (event.getCode()) {
                 case Z, SPACE -> joueur.sauter();
                 case Q -> {
                     enDeplacementGauche = true;
@@ -27,15 +28,16 @@ public class Clavier {
                     enDeplacementDroite = true;
                     joueur.deplacerDroite();
                 }
-                case S -> { // ?
+                case S -> {
+                    // Optionnel : descente rapide
                 }
-                case F3 -> controller.toggleDebug();
+                case F3 -> debugManager.toggle();
             }
         });
 
         // Gestion du relâchement des touches
         gridPane.setOnKeyReleased(event -> {
-            switch(event.getCode()) {
+            switch (event.getCode()) {
                 case Q -> {
                     enDeplacementGauche = false;
                     if (!enDeplacementDroite) joueur.arreterMouvementX();
