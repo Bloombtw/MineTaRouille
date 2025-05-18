@@ -11,7 +11,7 @@ public class Personnage {
     private double vitesseY = 0;
     public final double GRAVITE = 0.2;
     private double vitesseDeplacement;
-    private final double FORCE_SAUT = -5;
+    private final double FORCE_SAUT = -10;
     private boolean peutSauter = true;
     public Carte carte;
 
@@ -57,6 +57,9 @@ public class Personnage {
         }
     }
 
+    public boolean onGround() {
+        return getY() >= carte.getHauteur() - TAILLE_PERSO;
+    }
     public void arreterMouvementX() {
         vitesseX = 0;
     }
@@ -74,6 +77,22 @@ public class Personnage {
         }
         return false;
     }
+
+    public boolean getPeutSauter() {
+        return peutSauter;
+    }
+
+    public void setPeutSauter(boolean peutSauter) {
+        this.peutSauter = peutSauter;
+    }
+
+    public double getVitesseDeplacement() {
+        return vitesseDeplacement;
+    }
+
+    public double getVitesseY(){return vitesseY;}
+
+    public void setVitesseY(double vitesseDeplacement){}
 
     public int getX() { return (int) x; }
     public void setX(double x) { this.x = x; }

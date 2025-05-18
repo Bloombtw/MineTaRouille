@@ -65,7 +65,7 @@ public class Clavier {
 
             switch(event.getCode()) {
                 case Z:
-                    if(joueur.peutSauter()){
+                    if(joueur.getPeutSauter()){
                         joueur.sauter();
                         vueJoueur.updatePosition(joueur);
                     }
