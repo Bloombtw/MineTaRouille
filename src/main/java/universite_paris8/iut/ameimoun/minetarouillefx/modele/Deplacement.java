@@ -29,7 +29,7 @@ public class Deplacement {
         if (joueur.onGround()) {
             joueur.setVitesseY(FORCE_SAUT);
             joueur.setY(joueur.getY() + joueur.getVitesseY());
-            joueur.setPeutSauter(false); // Empêcher les sauts multiples en l'air
+            joueur.setPeutSauter(false); // Empêcher les multiples sauts en l'air
         }
     }
 

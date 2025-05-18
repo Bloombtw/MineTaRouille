@@ -4,17 +4,17 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+import java.util.ArrayList;
+import java.util.Random;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class JeuController implements Initializable {
@@ -32,12 +32,15 @@ public class JeuController implements Initializable {
     private static final int LARGEUR_FENETRE = 1680;
     private static final int HAUTEUR_FENETRE = 1050;
     public static final int TAILLE_TUILE = 30;
+    private ArrayList<Item> listeDesItems;
+
 
     private VueCarte vueCarte;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initialiserMap();
+        initialiserCarte();
+        //initialiserItems(); à debogguer
         initialiserJoueur();
         initialiserControles();
         demarrerBoucleDeJeu();
@@ -56,7 +59,7 @@ public class JeuController implements Initializable {
         tileMap.requestFocus();
     }
 
-    private void initialiserMap() {
+    private void initialiserCarte() {
         final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TUILE;
         final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TUILE) + 6;
 
@@ -64,6 +67,20 @@ public class JeuController implements Initializable {
         vueCarte = new VueCarte(carte);
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
+
+   /* private void initialiserItems() {
+        listeDesItems = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < 5; i++) {
+            Item item = new Item(i, "Item_" + i, 1, "Description", Type.CONSOMMABLE, Rarete.COMMUN);
+            item.ajouterItem(carte, item);
+            listeDesItems.add(item);
+
+            VueItem vueItem = new VueItem(item);
+            rootPane.getChildren().add(vueItem.getImageView()); // 🆕 Ajout visuel
+        }
+    }*/
 
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
@@ -78,48 +95,6 @@ public class JeuController implements Initializable {
     private void mettreAJourJeu() {
         joueurModele.gravite();
         joueurVue.updatePosition(joueurModele);
-    }
 
-    private Image getImageAssociee(Bloc bloc) {
-        switch (bloc) {
-            case CIEL_CLAIR:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_clair.png").toExternalForm());
-            case PIERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/pierre.png").toExternalForm());
-            case SABLE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable.png").toExternalForm());
-            case TRONC:
-                return new Image(getClass().getResource("/img/blocs/solide/tronc.png").toExternalForm());
-            case FEUILLAGE:
-                return new Image(getClass().getResource("/img/blocs/solide/feuillage.png").toExternalForm());
-            case TERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre.png").toExternalForm());
-            case TRANSPARENT:
-                return new Image(getClass().getResource("/img/blocs/traversable/transparent.png").toExternalForm());
-            case CIEL:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel.png").toExternalForm());
-            case GAY_CIEL:
-                return new Image(getClass().getResource("/img/blocs/traversable/gayciel.png").toExternalForm());
-            case SABLE_ROUGE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable_rouge.png").toExternalForm());
-            case TERRE_STYLEE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee.png").toExternalForm());
-            case TERRE_STYLEE_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee_sombre.png").toExternalForm());
-            case CIEL_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_sombre.png").toExternalForm());
-            case CORBEAU:
-                return new Image(getClass().getResource("/img/decors/corbeau.png").toExternalForm());
-            case LUNE:
-                return new Image(getClass().getResource("/img/decors/lune.png").toExternalForm());
-            case LUNE_ZELDA:
-                return new Image(getClass().getResource("/img/decors/lune_zelda.jpg").toExternalForm());
-            case ETOILE:
-                return new Image(getClass().getResource("/img/decors/etoile.png").toExternalForm());
-            case ARBUSTE_MORT:
-                return new Image(getClass().getResource("/img/decors/arbuste_mort.png").toExternalForm());
-            default:
-                return null;
-        }
     }
 }

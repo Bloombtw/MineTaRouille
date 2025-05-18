@@ -2,20 +2,26 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
 public class VueItem {
+    public static final int TAILLE_ITEM = 32;
+    private ImageView itemView;
 
-    public static void afficherItem(Pane mapPane, Item item) {
-        Image image = new Image(VueItem.class.getResourceAsStream("/img/items"));
-        ImageView imageView = new ImageView(image);
+    public VueItem(Item item) {
+        Image img = new Image(getClass().getResource(
+                "/img/items/item.png").toExternalForm());
+        itemView = new ImageView(img);
+        itemView.setFitWidth(TAILLE_ITEM);
+        itemView.setFitHeight(TAILLE_ITEM);
+    }
 
-        imageView.setFitWidth(32);
-        imageView.setFitHeight(32);
-        imageView.setLayoutX(item.getX());
-        imageView.setLayoutY(item.getY());
+    public ImageView getImageView() {
+        return itemView;
+    }
 
-        mapPane.getChildren().add(imageView);
+    public void updatePosition(Item item) {
+        itemView.setLayoutX(item.getX());
+        itemView.setLayoutY(item.getY());
     }
 }
