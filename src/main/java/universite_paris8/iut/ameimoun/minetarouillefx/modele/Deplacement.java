@@ -1,46 +1,43 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public class Deplacement {
-    private Joueur joueur;
+    private Personnage joueur;
     private Carte carte;
     private static final double FORCE_SAUT = -10;
-    private static final double GRAVITE = 0.5; // Valeur ajustable pour fluidifier la chute
+    private static final double GRAVITE = 0.5; // Ajustable pour fluidifier la chute
+    private boolean enMouvementGauche = false;
+    private boolean enMouvementDroite = false;
+
 
     public Deplacement(Joueur joueur, Carte carte) {
         this.joueur = joueur;
         this.carte = carte;
     }
 
-    public void deplacerGauche() {
-        double nouvelleX = joueur.getX() - joueur.getVitesseDeplacement();
-        if (!collision(nouvelleX, joueur.getY())) {
-            joueur.setX(nouvelleX);
-        }
-    }
-
-    public void deplacerDroite() {
-        double nouvelleX = joueur.getX() + joueur.getVitesseDeplacement();
-        if (!collision(nouvelleX, joueur.getY())) {
-            joueur.setX(nouvelleX);
-        }
-    }
-
     public void sauter() {
         if (joueur.onGround()) {
             joueur.setVitesseY(FORCE_SAUT);
-            joueur.setY(joueur.getY() + joueur.getVitesseY());
-            joueur.setPeutSauter(false); // Empêcher les multiples sauts en l'air
+            joueur.setPeutSauter(false); // Empêcher plusieurs sauts
         }
     }
 
-    public void gravite() {
+    public void miseAJourDeplacement() {
+        System.out.println("Mise à jour du déplacement... X=" + joueur.getX() + ", Y=" + joueur.getY());
+
+        double nouvelleX = joueur.getX();
         double nouvelleY = joueur.getY() + joueur.getVitesseY();
+
+        if (enMouvementGauche) nouvelleX -= joueur.getVitesseDeplacement();
+        if (enMouvementDroite) nouvelleX += joueur.getVitesseDeplacement();
+
+        if (!collision(nouvelleX, joueur.getY())) {
+            joueur.setX(nouvelleX);
+        }
         if (!collision(joueur.getX(), nouvelleY)) {
             joueur.setY(nouvelleY);
             joueur.setVitesseY(joueur.getVitesseY() + GRAVITE);
         } else {
             joueur.setVitesseY(0);
-            joueur.setY(Math.floor(joueur.getY() / Joueur.TAILLE_PERSO) * Joueur.TAILLE_PERSO);
             joueur.setPeutSauter(true);
         }
     }
@@ -57,5 +54,13 @@ public class Deplacement {
             }
         }
         return false;
+    }
+
+    public boolean estEnMouvementGauche() {
+        return enMouvementGauche;
+    }
+
+    public boolean estEnMouvementDroite() {
+        return enMouvementDroite;
     }
 }

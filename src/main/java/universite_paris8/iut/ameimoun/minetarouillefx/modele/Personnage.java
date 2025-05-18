@@ -1,7 +1,4 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
-
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 
 public class Personnage {
@@ -9,7 +6,7 @@ public class Personnage {
     private double y;
     private double vitesseX = 0;
     private double vitesseY = 0;
-    public final double GRAVITE = 0.2;
+    public final double GRAVITE = 0.1;
     private double vitesseDeplacement;
     private final double FORCE_SAUT = -10;
     private boolean peutSauter = true;
@@ -46,15 +43,7 @@ public class Personnage {
     }
 
     public void gravite() {
-        double nouvelleY = getY() + vitesseY;
-        if (!collision(getX(), nouvelleY)) {
-            this.setY(nouvelleY);
-            this.vitesseY += GRAVITE;
-        } else {
-            this.vitesseY = 0;
-            this.setY(Math.floor(getY() / TAILLE_PERSO) * TAILLE_PERSO);
-            this.peutSauter = true;
-        }
+        this.vitesseY += GRAVITE; // Applique seulement la gravité, sans mise à jour de position
     }
 
     public boolean onGround() {
@@ -99,4 +88,6 @@ public class Personnage {
 
     public int getY() { return (int) y; }
     public void setY(double y) { this.y = y; }
+
+    public Carte getCarte() {return carte;}
 }

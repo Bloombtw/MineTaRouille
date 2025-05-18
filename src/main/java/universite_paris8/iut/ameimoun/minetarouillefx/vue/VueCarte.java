@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
@@ -20,7 +21,7 @@ public class VueCarte {
         initialiserCarte();
     }
 
-    private void ajouterBloc(Bloc bloc, StackPane cellule) {
+    private void ajouterBloc(Bloc bloc, Pane cellule) {
         if (bloc != null && bloc != Bloc.CIEL) {
             Image image = getImageAssociee(bloc);
             if (image != null) {
@@ -37,7 +38,7 @@ public class VueCarte {
 
         for (int y = 0; y < terrain[0].length; y++) {
             for (int x = 0; x < terrain[0][0].length; x++) {
-                StackPane cellule = new StackPane();
+                Pane cellule = new StackPane();
                 for (int layer = 0; layer < nbCouches; layer++) {
                     ajouterBloc(terrain[layer][y][x], cellule);
                 }
