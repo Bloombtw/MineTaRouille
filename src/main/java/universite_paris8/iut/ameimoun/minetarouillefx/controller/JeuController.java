@@ -3,7 +3,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
@@ -94,7 +93,6 @@ public class JeuController implements Initializable {
 
     private void mettreAJourJeu() {
         joueurModele.gravite();
-        joueurVue.updatePosition(joueurModele);
-
+        joueurVue.miseAJourPosition(joueurModele);
     }
 }

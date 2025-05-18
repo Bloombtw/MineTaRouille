@@ -1,50 +1,49 @@
+# Package Controller
 
-# Package controller :
-Dans le controller on gère pour l'instant via deux classes
-la gestion du clavier ainsi que le déroulement du jeu appelé Clavier et JeuController.
+Dans le controller, nous gérons actuellement deux classes :  
+la gestion du clavier ainsi que le déroulement du jeu, appelées **Clavier** et **JeuController**.
 
-## Clavier :
+## Clavier
 
-Ses variables locales : des booleans enDeplacment gauche et droite qui nous permet de []
+### Variables locales :
+- **enDéplacementGauche** (booléen)
+- **enDéplacementDroite** (booléen)
 
->La classe clavier prend en paramètre le Joueur et utilise des setOnKeyPressed et setOnKeyReleased
-pour pouvoir par la suite précisé des types d'animations, on fera l'appel de la méthode gestionDeClavier pour changer
-d'image quand on relâche le clavier par exemple.
+### Fonctionnalités :
+La classe **Clavier** prend en paramètre **Joueur** et utilise `setOnKeyPressed` et `setOnKeyReleased`  
+pour gérer les animations et mettre à jour l'affichage du personnage.
 
-> note : j'ajoute la vue du joueur pour que la maj du perso au niveau de l'affichage s'actualise à chaque déplacement.
-> (j'ai hésiter à apl la méthode dans Joueur directement mais ça serait mélanger vue et modele ...?)
+> **Note :** J'ajoute la vue du joueur pour que la mise à jour du personnage s'actualise à chaque déplacement.  
+> (J'ai hésité à appeler la méthode dans **Joueur** directement, mais cela mélangerait vue et modèle...)
 
-Le clavier appel la methode peutSauter() de joueur, car il y a une gestion de gravité ajt.
+Le clavier appelle la méthode `peutSauter()` de **Joueur**,  
+car une gestion de la gravité a été ajoutée.
 
+---
 
-## JeuController :
+## JeuController
 
-J'appelle dans l'initializable trois sous classe : 
+Dans `initializable`, j'appelle trois sous-classes :
 
-### initialiserControles() : 
-Qui créer un nouveau Clavier qui cible un joueur et cile les déplacements 
-du joueur sur la TileMap ciblée.
+### `initialiserControles()`
+- Crée un nouvel **Clavier** ciblant un **Joueur**.
+- Permet le déplacement du joueur sur la **TileMap** ciblée.
 
-### initialiserJoueur() : 
-Qui va créer un joueur qui cible la carte cotée modele et creer une vueJoueur qui cible
-la rootPane pour l'affichage. 
+### `initialiserJoueur()`
+- Crée un **Joueur** lié à la carte (côté modèle).
+- Instancie une **VueJoueur** pour l'affichage dans la `rootPane`.
 
-### demarrerBoucleDeJeu() :
-La gestion de la gameLoop() en utilisant la méthode miseAJourJeu(), c'est plus pratique de séparer dans le
-cas où il faudra ajouter/adapter du contenu dans la game loop à l'avenir. C'est plus simple de s'y retrouver et de debugger.
+### `demarrerBoucleDeJeu()`
+- Gestion de la `gameLoop()` via `miseAJourJeu()`.
+- Séparation logique qui facilite les ajouts et modifications futures.
 
-### mettreAJourJeu() : 
-La mise à jour du jeu se fait par la gestion de la gravité du perso ainsi que changement de position
-visuel.
+### `mettreAJourJeu()`
+- Mise à jour du jeu par la gestion de la gravité et des changements de position visuelle.
 
+---
 
-Note : la map est actuellement créé directement dans le controller : il doit être créé dans
-Carte et vueCarte(à créer).
--->Pour avoir un initialiserMap() et l'ajouter dans l'initializable.
-
-Note : déplacer la methode getImageAssociee dans vueCarte.
-
-Note : vérifier si le problème du déplacement du joueur n'est pas au vu du fait que la vue du joueur et ciblée
-sur l'AncorPane et non la TilePane.
-
-
+## Dernières modifications :
+✅ **Ajout de `initialiserMap()`** → Organisation plus claire de la logique de la carte.  
+✅ **Ajout de `initialiserItems()`** → Génération et affichage des objets dans **JeuController**.  
+✅ **Modification de `gestionClavier()`** → Utilisation de `getPeutSauter()` au lieu de `peutSauter()`.  
+✅ **Optimisation de `demarrerBoucleDeJeu()`** → Intégration des mises à jour des objets (`updateItem()`).

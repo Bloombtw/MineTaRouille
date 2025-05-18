@@ -34,19 +34,19 @@ public class Clavier {
 
                 case Z:
                     joueur.sauter();
-                    vueJoueur.updatePosition(joueur);
+                    vueJoueur.miseAJourPosition(joueur);
                     break;
 
                 case Q:
                     enDeplacementGauche = true;
                     joueur.deplacerGauche();
-                    vueJoueur.updatePosition(joueur);
+                    vueJoueur.miseAJourPosition(joueur);
                     break;
 
                 case D:
                     enDeplacementDroite = true;
                     joueur.deplacerDroite();
-                    vueJoueur.updatePosition(joueur);
+                    vueJoueur.miseAJourPosition(joueur);
                     break;
 
                 case S:
@@ -67,14 +67,14 @@ public class Clavier {
                 case Z:
                     if(joueur.getPeutSauter()){
                         joueur.sauter();
-                        vueJoueur.updatePosition(joueur);
+                        vueJoueur.miseAJourPosition(joueur);
                     }
                 case Q:
                     enDeplacementGauche = false;
 
                     if (!enDeplacementDroite) {
                         joueur.arreterMouvementX();
-                        vueJoueur.updatePosition(joueur);
+                        vueJoueur.miseAJourPosition(joueur);
                     }
 
                     break;
@@ -83,7 +83,7 @@ public class Clavier {
                     enDeplacementDroite = false;
                     if (!enDeplacementGauche) {
                         joueur.arreterMouvementX();
-                        vueJoueur.updatePosition(joueur);
+                        vueJoueur.miseAJourPosition(joueur);
                     }
                     break;
 

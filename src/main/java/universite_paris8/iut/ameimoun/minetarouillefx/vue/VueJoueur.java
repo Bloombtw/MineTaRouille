@@ -23,7 +23,7 @@ public class VueJoueur {
         return perso;
     }
 
-    public void updatePosition(Joueur joueur) {
+    public void miseAJourPosition(Joueur joueur) {
         perso.setLayoutX(joueur.getX());
         perso.setLayoutY(joueur.getY());
     }
