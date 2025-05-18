@@ -4,19 +4,21 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.scene.layout.TilePane;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 
 public class Clavier {
 
     private Joueur joueur;
+    private VueJoueur vueJoueur;
 
     private boolean enDeplacementGauche = false;
 
     private boolean enDeplacementDroite = false;
 
 
-    public Clavier(Joueur joueur) {
-
+    public Clavier(Joueur joueur, VueJoueur vueJoueur) {
+        this.vueJoueur = vueJoueur;
         this.joueur = joueur;
 
     }
@@ -24,7 +26,7 @@ public class Clavier {
 
     public void gestionClavier(TilePane tilePane) {
 
-// Gestion des appuis sur les touches
+//appuis sur les touches
 
         tilePane.setOnKeyPressed(event -> {
 
@@ -32,16 +34,19 @@ public class Clavier {
 
                 case Z:
                     joueur.sauter();
+                    vueJoueur.updatePosition(joueur);
                     break;
 
                 case Q:
                     enDeplacementGauche = true;
                     joueur.deplacerGauche();
+                    vueJoueur.updatePosition(joueur);
                     break;
 
                 case D:
                     enDeplacementDroite = true;
                     joueur.deplacerDroite();
+                    vueJoueur.updatePosition(joueur);
                     break;
 
                 case S:
@@ -54,8 +59,7 @@ public class Clavier {
 
         });
 
-
-// Gestion du relâchement des touches
+//relâchement des touches (faire deux méthodes distinctes ?)
 
         tilePane.setOnKeyReleased(event -> {
 
@@ -66,9 +70,8 @@ public class Clavier {
                     enDeplacementGauche = false;
 
                     if (!enDeplacementDroite) {
-
                         joueur.arreterMouvementX();
-
+                        vueJoueur.updatePosition(joueur);
                     }
 
                     break;
@@ -77,6 +80,7 @@ public class Clavier {
                     enDeplacementDroite = false;
                     if (!enDeplacementGauche) {
                         joueur.arreterMouvementX();
+                        vueJoueur.updatePosition(joueur);
                     }
                     break;
 

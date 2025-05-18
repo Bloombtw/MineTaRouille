@@ -10,7 +10,7 @@ public class Joueur extends Personnage {
     private final double vitesseDeplacement = 5; // Vitesse de déplacement constante
 
     public Joueur(Carte carte) {
-        super(10, 10, 100, "Joueur", 5, carte);
+        super(10, 50, 100, "Joueur", 5, carte);
     }
 
     public double getVitesseX() {
@@ -43,6 +43,7 @@ public class Joueur extends Personnage {
 
     public void deplacerGauche() {
         this.vitesseX = -vitesseDeplacement;
+
     }
 
     public void deplacerDroite() {

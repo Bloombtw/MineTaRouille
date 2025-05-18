@@ -11,6 +11,9 @@ Ses variables locales : des booleans enDeplacment gauche et droite qui nous perm
 pour pouvoir par la suite précisé des types d'animations, on fera l'appel de la méthode gestionDeClavier pour changer
 d'image quand on relâche le clavier par exemple.
 
+> note : j'ajoute la vue du joueur pour que la maj du perso au niveau de l'affichage s'actualise à chaque déplacement.
+> (j'ai hésiter à apl la méthode dans Joueur directement mais ça serait mélanger vue et modele ...?)
+
 Le clavier appel la methode peutSauter() de joueur, car il y a une gestion de gravité ajt.
 
 

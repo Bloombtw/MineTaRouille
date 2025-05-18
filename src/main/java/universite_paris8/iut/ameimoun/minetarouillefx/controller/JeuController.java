@@ -76,7 +76,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueurModele);
+        clavier = new Clavier(joueurModele,joueurVue);
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
@@ -93,7 +93,6 @@ public class JeuController implements Initializable {
     }
 
     private void mettreAJourJeu() {
-        System.out.println("Mise à jour du jeu - Joueur Modèle X: " + joueurModele.getX() + ", Y: " + joueurModele.getY());
         joueurModele.gravite();
         joueurVue.updatePosition(joueurModele);
     }
