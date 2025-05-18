@@ -21,9 +21,6 @@ public class Carte {
                     terrain[1][y][x] = Bloc.TERRE_STYLEE_SOMBRE;
                 }
             }
-
-
-
         }
         Random rand = new Random();
         int nbEtoiles = 6;
