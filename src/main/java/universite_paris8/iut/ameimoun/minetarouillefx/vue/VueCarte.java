@@ -21,6 +21,18 @@ public class VueCarte {
         initialiserCarte();
     }
 
+    private void ajouterBloc(Bloc bloc, StackPane cellule) {
+        if (bloc != null && bloc != Bloc.CIEL) {
+            Image image = getImageAssociee(bloc);
+            if (image != null) {
+                ImageView img = new ImageView(image);
+                img.setFitWidth(TAILLE_TUILE);
+                img.setFitHeight(TAILLE_TUILE);
+                cellule.getChildren().add(img);
+            }
+        }
+    }
+
     private void initialiserCarte() {
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
@@ -29,17 +41,7 @@ public class VueCarte {
             for (int x = 0; x < terrain[0][0].length; x++) {
                 StackPane cellule = new StackPane();
                 for (int layer = 0; layer < nbCouches; layer++) {
-                    Bloc bloc = terrain[layer][y][x];
-                    if (bloc != null && bloc != Bloc.CIEL) {
-                        Image image = getImageAssociee(bloc);
-                        if (image != null) {
-                            ImageView img = new ImageView(image);
-                            img.setFitWidth(TAILLE_TUILE);
-                            img.setFitHeight(TAILLE_TUILE);
-                            img.setPreserveRatio(false);
-                            cellule.getChildren().add(img);
-                        }
-                    }
+                    ajouterBloc(terrain[layer][y][x], cellule);
                 }
                 tileMap.getChildren().add(cellule);
             }

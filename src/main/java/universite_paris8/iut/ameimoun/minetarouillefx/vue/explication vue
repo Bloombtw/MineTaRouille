@@ -1,3 +1,10 @@
 La vue est utilisé pour tout les affichages du jeu
 
-Potentiel debug à faire :
+pour l'instant il y a 6 classes présentes dans ce packages dont 4 actifs sans bug.
+
+VueCarte : contient 2 méthodes :
+
+getImageAssociee(Bloc bloc) : qui stocke tout les tuiles en faisant une sorte de conversion de type Bloc
+
+
+initialiserCarte() : l'initialisation de la map pour l'affichage en créant un

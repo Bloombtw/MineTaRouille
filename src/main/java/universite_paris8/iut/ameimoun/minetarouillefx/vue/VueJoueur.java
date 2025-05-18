@@ -23,36 +23,9 @@ public class VueJoueur {
         return perso;
     }
 
-    public ImageView getPerso() {
-        return perso;
-    }
-
     public void updatePosition(Joueur joueur) {
         perso.setLayoutX(joueur.getX());
         perso.setLayoutY(joueur.getY());
     }
 
-    public Animation getAnimMarche() {
-        return animMarche;
-    }
-
-    public void setAnimMarche(Animation animMarche) {
-        this.animMarche = animMarche;
-    }
-
-    public Animation getAnimSaut() {
-        return animSaut;
-    }
-
-    public void setAnimSaut(Animation animSaut) {
-        this.animSaut = animSaut;
-    }
-
-    public Animation getAnimIdle() {
-        return animIdle;
-    }
-
-    public void setAnimIdle(Animation animIdle) {
-        this.animIdle = animIdle;
-    }
 }
