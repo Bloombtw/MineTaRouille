@@ -19,9 +19,6 @@ public class VueJoueur {
         perso.setFitHeight(TAILLE_PERSO);
     }
 
-    public VueJoueur() {
-    }
-
     public ImageView getImageView() {
         return perso;
     }
@@ -31,8 +28,8 @@ public class VueJoueur {
     }
 
     public void updatePosition(Joueur joueur) {
-        perso.setTranslateX(joueur.getX());
-        perso.setTranslateY(joueur.getY());
+        perso.setLayoutX(joueur.getX());
+        perso.setLayoutY(joueur.getY());
     }
 
     public Animation getAnimMarche() {

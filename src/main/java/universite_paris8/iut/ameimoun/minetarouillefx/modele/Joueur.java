@@ -10,7 +10,7 @@ public class Joueur extends Personnage {
     private final double vitesseDeplacement = 5; // Vitesse de déplacement constante
 
     public Joueur(Carte carte) {
-        super(10, 50, 100, "Joueur", 5, carte);
+        super(30, 50, 100, "Joueur", 5, carte);
     }
 
     public double getVitesseX() {
@@ -43,11 +43,12 @@ public class Joueur extends Personnage {
 
     public void deplacerGauche() {
         this.vitesseX = -vitesseDeplacement;
-
+        this.setX(getX() + vitesseX);
     }
 
     public void deplacerDroite() {
         this.vitesseX = vitesseDeplacement;
+        this.setX(getX() + vitesseX);
     }
 
     public void arreterMouvementX() {
@@ -69,11 +70,11 @@ public class Joueur extends Personnage {
         this.setY(getY() + vitesseY);
         this.vitesseY += GRAVITE; // GRAVITE doit être une constante définie dans Personnage ou Joueur
 
-
-        // Simuler la collision avec le sol (à adapter selon votre logique de carte)
-        if (getY() > carte.getHauteur() - TAILLE_PERSO) {
-            this.setY(carte.getHauteur() - TAILLE_PERSO);
+        //Utiliser estBlocSoldie()
+        if (carte.estBlocSolide((int) getX(), (int) (getY() + vitesseY + TAILLE_PERSO))) {
+            this.setY(Math.floor(getY() / TAILLE_PERSO) * TAILLE_PERSO); // Ajuster pile sur le sol
             this.vitesseY = 0;
+            this.peutSauter = true; // Permettre de sauter à nouveau
         }
     }
 
