@@ -17,7 +17,6 @@ public class VueCarte {
         tileMap = new TilePane();
         tileMap.setPrefColumns(carte.getLargeur());//pour bien adapter la map à la fenêtre
         tileMap.setPrefRows(carte.getHauteur());
-
         initialiserCarte();
     }
 
@@ -32,7 +31,6 @@ public class VueCarte {
             }
         }
     }
-
     private void initialiserCarte() {
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
