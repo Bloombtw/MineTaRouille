@@ -64,9 +64,12 @@ public class Clavier {
         tilePane.setOnKeyReleased(event -> {
 
             switch(event.getCode()) {
-
+                case Z:
+                    if(joueur.peutSauter()){
+                        joueur.sauter();
+                        vueJoueur.updatePosition(joueur);
+                    }
                 case Q:
-
                     enDeplacementGauche = false;
 
                     if (!enDeplacementDroite) {

@@ -26,7 +26,7 @@ public class Carte {
 
         }
         Random rand = new Random();
-        int nbEtoiles = 6; // à ajuster selon ton envie
+        int nbEtoiles = 6;
         for (int i = 0; i < nbEtoiles; i++) {
             int xEtoile = rand.nextInt(largeur);
             int yEtoile = rand.nextInt(7); // uniquement dans la partie haute du ciel

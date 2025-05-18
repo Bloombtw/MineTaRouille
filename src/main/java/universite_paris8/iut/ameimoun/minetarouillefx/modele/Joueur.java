@@ -2,7 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public class Joueur extends Personnage {
 //debogguer la fluidité des déplacements (voir la branche deplacements)
-    public static final int TAILLE_PERSO = 64;
+    public static final int TAILLE_PERSO = 30;
     private static final double FORCE_SAUT = -10;
     private double vitesseX = 0;
     private double vitesseY = 0;
@@ -41,44 +41,63 @@ public class Joueur extends Personnage {
         return vitesseDeplacement;
     }
 
-    public void deplacerGauche() {
-        this.vitesseX = -vitesseDeplacement;
-        this.setX(getX() + vitesseX);
-    }
-
-    public void deplacerDroite() {
-        this.vitesseX = vitesseDeplacement;
-        this.setX(getX() + vitesseX);
-    }
 
     public void arreterMouvementX() {
         this.vitesseX = 0;
     }
 
     public void sauter() {
-        //if (onGround()) {
+        if (onGround()) {
             this.vitesseY = FORCE_SAUT;
             this.setY(getY() + vitesseY); // Appliquer le saut immédiatement
             this.peutSauter = false; // Empêcher les sauts multiples en l'air
-        //}
-    }
-
-    @Override
-    public void gravite() {
-        super.gravite(); // Applique la gravité de la classe Personnage
-        this.setX(getX() + vitesseX);
-        this.setY(getY() + vitesseY);
-        this.vitesseY += GRAVITE; // GRAVITE doit être une constante définie dans Personnage ou Joueur
-
-        //Utiliser estBlocSoldie()
-        if (carte.estBlocSolide((int) getX(), (int) (getY() + vitesseY + TAILLE_PERSO))) {
-            this.setY(Math.floor(getY() / TAILLE_PERSO) * TAILLE_PERSO); // Ajuster pile sur le sol
-            this.vitesseY = 0;
-            this.peutSauter = true; // Permettre de sauter à nouveau
         }
     }
 
+
+/*la gestion des gestions des collisions était en protected*/
+
+    public void deplacerGauche() {
+        double nouvelleX = getX() - vitesseDeplacement;
+        if (!collision(nouvelleX, getY())) {
+            this.setX(nouvelleX);
+        }
+    }
+
+    public void deplacerDroite() {
+        double nouvelleX = getX() + vitesseDeplacement;
+        if (!collision(nouvelleX, getY())) {
+            this.setX(nouvelleX);
+        }
+    }
+
+    public void gravite() {
+        double nouvelleY = getY() + vitesseY;
+
+        if (!collision(getX(), nouvelleY)) {
+            this.setY(nouvelleY);
+            this.vitesseY += GRAVITE;
+        } else {
+            this.vitesseY = 0;
+            this.setY(Math.floor(getY() / TAILLE_PERSO) * TAILLE_PERSO);
+            this.peutSauter = true;
+        }
+    }
     public boolean onGround() {
         return getY() >= carte.getHauteur() - TAILLE_PERSO;
+    }
+
+    public boolean collision(double x, double y) {
+        int left = (int) (x / TAILLE_PERSO);
+        int right = (int) ((x + TAILLE_PERSO - 1) / TAILLE_PERSO);
+        int top = (int) (y / TAILLE_PERSO);
+        int bottom = (int) ((y + TAILLE_PERSO - 1) / TAILLE_PERSO);
+
+        for (int tx = left; tx <= right; tx++) {
+            for (int ty = top; ty <= bottom; ty++) {
+                if (carte.estBlocSolide(tx, ty)) return true;
+            }
+        }
+        return false;
     }
 }

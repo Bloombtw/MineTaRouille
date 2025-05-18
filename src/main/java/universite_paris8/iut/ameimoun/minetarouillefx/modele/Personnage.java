@@ -27,7 +27,7 @@ public class Personnage {
     protected double vitesseX = 0;
     protected double vitesseY = 0;
     protected final double GRAVITE = 0.2;
-    protected double VITESSE_DEPLACEMENT = 2;
+    protected double VITESSE_DEPLACEMENT = 20;
     protected final double FORCE_SAUT = -5;
     protected boolean peutSauter = true;
 
@@ -61,55 +61,52 @@ public class Personnage {
             peutSauter = false;
         }
     }
-
     public void deplacerGauche() {
-        double futurX = x - vitesseDeplacement;
-        if (!collision(futurX, y)) {
-            x = futurX;
+        double nouvelleX = getX() - vitesseDeplacement;
+
+        if (!collision(nouvelleX, getY())) {
+            this.setX(nouvelleX);
         }
-        direction = Direction.GAUCHE;
     }
 
     public void deplacerDroite() {
-        double futurX = x + VITESSE_DEPLACEMENT;
-        if (!collision(futurX, y)) {
-            x = futurX;
+        double nouvelleX = getX() + vitesseDeplacement;
+        if (!collision(nouvelleX, getY())) {
+            this.setX(nouvelleX);
         }
-        direction = Direction.DROITE;
+    }
+
+    public void gravite() {
+        double nouvelleY = getY() + vitesseY;
+
+        if (!collision(getX(), nouvelleY)) {
+            this.setY(nouvelleY);
+            this.vitesseY += GRAVITE;
+        } else {
+            this.vitesseY = 0;
+            this.setY(Math.floor(getY() / TAILLE_PERSO) * TAILLE_PERSO);
+            this.peutSauter = true;
+        }
     }
 
     public void arreterMouvementX() {
         vitesseX = 0;
     }
 
-    public void gravite() {
-        vitesseY += GRAVITE;
-        double futurY = y + vitesseY;
-
-        if (!collision(x, futurY)) {
-            y = futurY;
-        } else {
-            vitesseY = 0;
-            peutSauter = true;
-        }
-    }
 
     // === Collision avec la carte ===
 
-    protected boolean collision(double futurX, double futurY) {
-        int tileSize = TAILLE_PERSO;
-
-        int left = (int)(futurX / tileSize);
-        int right = (int)((futurX + tileSize - 1) / tileSize);
-        int top = (int)(futurY / tileSize);
-        int bottom = (int)((futurY + tileSize - 1) / tileSize);
+    public boolean collision(double x, double y) {
+        int left = (int) (x / TAILLE_PERSO);
+        int right = (int) ((x + TAILLE_PERSO - 1) / TAILLE_PERSO);
+        int top = (int) (y / TAILLE_PERSO);
+        int bottom = (int) ((y + TAILLE_PERSO - 1) / TAILLE_PERSO);
 
         for (int tx = left; tx <= right; tx++) {
             for (int ty = top; ty <= bottom; ty++) {
                 if (carte.estBlocSolide(tx, ty)) return true;
             }
         }
-
         return false;
     }
 
@@ -123,7 +120,6 @@ public class Personnage {
         this.vitesseDeplacement = vitesseDeplacement;
     }
 
-    // === À surcharger dans Joueur ===
     public ImageView getPerso() {
         return null;
     }
@@ -135,45 +131,5 @@ public class Personnage {
     public int getY() { return (int) y; }
     public void setY(double y) { this.y = y; }
 
-    public double getPointsDeVie() { return pointsDeVie; }
-    public void setPointsDeVie(double pointsDeVie) { this.pointsDeVie = pointsDeVie; }
-
-    public double getPointsDeVieMax() { return pointsDeVieMax; }
-
-    public String getNom() { return nom; }
-
-    public double getVitesseDeplacement() { return VITESSE_DEPLACEMENT; }
-
-    public double getVitesseX() { return vitesseX; }
-    public void setVitesseX(double vitesseX) { this.vitesseX = vitesseX; }
-
-    public double getVitesseY() { return vitesseY; }
-    public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
-
-    public boolean peutSauter() { return peutSauter; }
-    public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
-
-    public double getGravite() { return GRAVITE; }
-    public double getForceSaut() { return FORCE_SAUT; }
-
-    public boolean isAlive() { return isAlive; }
-    public void setAlive(boolean alive) { isAlive = alive; }
-
-    public Direction getDirection() { return direction; }
-    public void setDirection(Direction direction) { this.direction = direction; }
-
-    public Item[] getInventaire() { return inventaire; }
-    public void setInventaire(Item[] inventaire) { this.inventaire = inventaire; }
-
-    public Item getEquipedItem() { return equipedItem; }
-    public void setEquipedItem(Item equipedItem) { this.equipedItem = equipedItem; }
-
-    public int getSelectedSlot() { return selectedSlot; }
-    public void setSelectedSlot(int selectedSlot) { this.selectedSlot = selectedSlot; }
-
-    public boolean isMining() { return isMining; }
-    public void setMining(boolean mining) { this.isMining = mining; }
-
-    public boolean isAttacking() { return isAttacking; }
-    public void setAttacking(boolean attacking) { this.isAttacking = attacking; }
+//J'ai retirer toutes les méthodes non utilisé pour l'instant
 }
