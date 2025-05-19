@@ -1,10 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+
 public class Deplacement {
     private Personnage joueur;
     private Carte carte;
-    private static final double FORCE_SAUT = -10;
-    private static final double GRAVITE = 0.5; // Ajustable pour fluidifier la chute
     private boolean enMouvementGauche = false;
     private boolean enMouvementDroite = false;
 
@@ -16,7 +16,7 @@ public class Deplacement {
 
     public void sauter() {
         if (joueur.onGround()) {
-            joueur.setVitesseY(FORCE_SAUT);
+            joueur.setVitesseY(Constantes.FORCE_SAUT);
             joueur.setPeutSauter(false); // Empêcher plusieurs sauts
         }
     }
@@ -35,7 +35,7 @@ public class Deplacement {
         }
         if (!collision(joueur.getX(), nouvelleY)) {
             joueur.setY(nouvelleY);
-            joueur.setVitesseY(joueur.getVitesseY() + GRAVITE);
+            joueur.setVitesseY(joueur.getVitesseY() + Constantes.GRAVITE);
         } else {
             joueur.setVitesseY(0);
             joueur.setPeutSauter(true);
@@ -43,10 +43,10 @@ public class Deplacement {
     }
 
     private boolean collision(double x, double y) {
-        int left = (int) (x / Joueur.TAILLE_PERSO);
-        int right = (int) ((x + Joueur.TAILLE_PERSO - 1) / Joueur.TAILLE_PERSO);
-        int top = (int) (y / Joueur.TAILLE_PERSO);
-        int bottom = (int) ((y + Joueur.TAILLE_PERSO - 1) / Joueur.TAILLE_PERSO);
+        int left = (int) (x / Constantes.TAILLE_PERSO);
+        int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+        int top = (int) (y / Constantes.TAILLE_PERSO);
+        int bottom = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
 
         for (int tx = left; tx <= right; tx++) {
             for (int ty = top; ty <= bottom; ty++) {

@@ -8,14 +8,9 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
-import java.util.ArrayList;
-import java.util.Random;
 import javafx.application.Platform;
-
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class JeuController implements Initializable {
@@ -30,15 +25,7 @@ public class JeuController implements Initializable {
 
     private Joueur joueurModele;
     private VueJoueur joueurVue;
-    private Carte carte;
     private AnimationTimer gameLoop;
-
-    private static final int LARGEUR_FENETRE = 1680;
-    private static final int HAUTEUR_FENETRE = 1050;
-    public static final int TAILLE_TUILE = 30;
-    private ArrayList<Item> listeDesItems;
-
-
     private VueCarte vueCarte;
 
     @Override
@@ -52,7 +39,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserJoueur() {
-        joueurModele = new Joueur(carte);
+        joueurModele = new Joueur(Carte.getInstance());
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getImageView());
     }
@@ -76,11 +63,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserCarte() {
-        final int NB_LIGNES = HAUTEUR_FENETRE / TAILLE_TUILE;
-        final int NB_COLONNES = (LARGEUR_FENETRE / TAILLE_TUILE) + 6;
-
-        carte = new Carte(NB_LIGNES, NB_COLONNES);
-        vueCarte = new VueCarte(carte);
+        vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
 

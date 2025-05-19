@@ -1,5 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,8 +41,8 @@ public class Item {
             y = random.nextInt(hauteur);
         } while (c.estBlocSolide(x, y));
 
-        i.setX(x * Joueur.TAILLE_PERSO);
-        i.setY(y * Joueur.TAILLE_PERSO);
+        i.setX(x * Constantes.TAILLE_PERSO);
+        i.setY(y * Constantes.TAILLE_PERSO);
 
         this.listeDeToutLesItems.add(i);
 

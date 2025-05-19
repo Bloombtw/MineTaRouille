@@ -7,6 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class VueCarte {
     private final TilePane tileMap;
@@ -32,6 +33,7 @@ public class VueCarte {
             }
         }
     }
+
     private void initialiserCarte() {
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
@@ -52,41 +54,31 @@ public class VueCarte {
     }
 
     private Image getImageAssociee(Bloc bloc) {
-        switch (bloc) {
-            case CIEL_CLAIR:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_clair.png").toExternalForm());
-            case PIERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/pierre.png").toExternalForm());
-            case SABLE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable.png").toExternalForm());
-            case TRONC:
-                return new Image(getClass().getResource("/img/blocs/solide/tronc.png").toExternalForm());
-            case FEUILLAGE:
-                return new Image(getClass().getResource("/img/blocs/solide/feuillage.png").toExternalForm());
-            case TERRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre.png").toExternalForm());
-            case TRANSPARENT:
-                return new Image(getClass().getResource("/img/blocs/traversable/transparent.png").toExternalForm());
-            case CIEL:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel.png").toExternalForm());
-            case SABLE_ROUGE:
-                return new Image(getClass().getResource("/img/blocs/solide/sable_rouge.png").toExternalForm());
-            case TERRE_STYLEE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee.png").toExternalForm());
-            case TERRE_STYLEE_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/solide/terre_stylee_sombre.png").toExternalForm());
-            case CIEL_SOMBRE:
-                return new Image(getClass().getResource("/img/blocs/traversable/ciel_sombre.png").toExternalForm());
-            case CORBEAU:
-                return new Image(getClass().getResource("/img/decors/corbeau.png").toExternalForm());
-            case LUNE:
-                return new Image(getClass().getResource("/img/decors/lune.png").toExternalForm());
-            case ETOILE:
-                return new Image(getClass().getResource("/img/decors/etoile.png").toExternalForm());
-            case ARBUSTE_MORT:
-                return new Image(getClass().getResource("/img/decors/arbuste_mort.png").toExternalForm());
-            default:
-                return null;
-        }
+        String chemin = switch (bloc) {
+            case CIEL_CLAIR -> "/img/blocs/traversable/ciel_clair.png";
+            case PIERRE -> "/img/blocs/solide/pierre.png";
+            case SABLE -> "/img/blocs/solide/sable.png";
+            case TRONC -> "/img/blocs/solide/tronc.png";
+            case FEUILLAGE -> "/img/blocs/solide/feuillage.png";
+            case TERRE -> "/img/blocs/solide/terre.png";
+            case TRANSPARENT -> "/img/blocs/traversable/transparent.png";
+            case CIEL -> "/img/blocs/traversable/ciel.png";
+            case GAY_CIEL -> "/img/blocs/traversable/gayciel.png";
+            case SABLE_ROUGE -> "/img/blocs/solide/sable_rouge.png";
+            case TERRE_STYLEE -> "/img/blocs/solide/terre_stylee.png";
+            case TERRE_STYLEE_SOMBRE -> "/img/blocs/solide/terre_stylee_sombre.png";
+            case CIEL_SOMBRE -> "/img/blocs/traversable/ciel_sombre.png";
+            case CORBEAU -> "/img/decors/corbeau.png";
+            case LUNE -> "/img/decors/lune.png";
+            case LUNE_ZELDA -> "/img/decors/lune_zelda.jpg";
+            case ETOILE -> "/img/decors/etoile.png";
+            case ARBUSTE_MORT -> "/img/decors/arbuste_mort.png";
+            case ECHELLE -> "/img/decors/echelle.png";
+            case FLECHE_VERS_LA_DROITE -> "/img/decors/flecheVersDroite.png";
+            case ESCALIER_DROITE -> "/img/decors/escalier_Droite.png";
+            default -> "/img/default.png"; // Dans le cas ou le bloc n'est pas trouvé
+        };
+        return Loader.loadImage(chemin);
+
     }
 }
