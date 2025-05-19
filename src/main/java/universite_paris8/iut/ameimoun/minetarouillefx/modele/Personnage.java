@@ -45,7 +45,7 @@ public class Personnage {
         this.inventaire = new Item[10];
         this.selectedSlot = 0;
         this.direction = Direction.DROITE;
-        this.carte = new Carte();
+        this.carte = Carte.getInstance();
     }
 
     // Mvts
@@ -176,4 +176,6 @@ public class Personnage {
 
     public boolean isAttacking() { return isAttacking; }
     public void setAttacking(boolean attacking) { this.isAttacking = attacking; }
+
+
 }

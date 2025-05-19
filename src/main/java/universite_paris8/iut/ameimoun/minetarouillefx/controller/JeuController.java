@@ -38,7 +38,7 @@ public class JeuController implements Initializable {
         tileMap.setPrefColumns(Constantes.NB_COLONNES);
         tileMap.setPrefTileWidth(Constantes.TAILLE_TUILE);
         tileMap.setPrefTileHeight(Constantes.TAILLE_TUILE);
-        carte = new Carte();
+        carte = Carte.getInstance();
 
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
@@ -50,13 +50,11 @@ public class JeuController implements Initializable {
                     Bloc bloc = terrain[layer][y][x];
                     if (bloc != null && bloc != Bloc.CIEL) {
                         Image image = getImageAssociee(bloc);
-                        if (image != null) {
                             ImageView iv = new ImageView(image);
                             iv.setFitWidth(Constantes.TAILLE_TUILE);
                             iv.setFitHeight(Constantes.TAILLE_TUILE);
                             iv.setPreserveRatio(false);
                             cellule.getChildren().add(iv);
-                        }
                     }
                 }
                 tileMap.getChildren().add(cellule);
@@ -86,11 +84,10 @@ public class JeuController implements Initializable {
 
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
-            @Override
             public void handle(long now) {
-                joueur.gravite();  // applique la gravité au joueur
+                joueur.gravite();  // applique gravité au joueur
 
-                // Met à jour la position visuelle du joueur à l'écran
+                // MAJ la position visuelle
                 joueur.getPerso().setTranslateX(joueur.getX());
                 joueur.getPerso().setTranslateY(joueur.getY());
                 debugManager.update();
@@ -101,47 +98,31 @@ public class JeuController implements Initializable {
 
 
 
-
     private Image getImageAssociee(Bloc bloc) {
-        switch (bloc) {
-            case CIEL_CLAIR:
-                return Loader.loadImage("/img/blocs/traversable/ciel_clair.png");
-            case PIERRE:
-                return Loader.loadImage("/img/blocs/solide/pierre.png");
-            case SABLE:
-                return Loader.loadImage("/img/blocs/solide/sable.png");
-            case TRONC:
-                return Loader.loadImage("/img/blocs/solide/tronc.png");
-            case FEUILLAGE:
-                return Loader.loadImage("/img/blocs/solide/feuillage.png");
-            case TERRE:
-                return Loader.loadImage("/img/blocs/solide/terre.png");
-            case TRANSPARENT:
-                return Loader.loadImage("/img/blocs/traversable/transparent.png");
-            case CIEL:
-                return Loader.loadImage("/img/blocs/traversable/ciel.png");
-            case GAY_CIEL:
-                return Loader.loadImage("/img/blocs/traversable/gayciel.png");
-            case SABLE_ROUGE:
-                return Loader.loadImage("/img/blocs/solide/sable_rouge.png");
-            case TERRE_STYLEE:
-                return Loader.loadImage("/img/blocs/solide/terre_stylee.png");
-            case TERRE_STYLEE_SOMBRE:
-                return Loader.loadImage("/img/blocs/solide/terre_stylee_sombre.png");
-            case CIEL_SOMBRE:
-                return Loader.loadImage("/img/blocs/traversable/ciel_sombre.png");
-            case CORBEAU:
-                return Loader.loadImage("/img/decors/corbeau.png");
-            case LUNE:
-                return Loader.loadImage("/img/decors/lune.png");
-            case LUNE_ZELDA:
-                return Loader.loadImage("/img/decors/lune_zelda.jpg");
-            case ETOILE:
-                return Loader.loadImage("/img/decors/etoile.png");
-            case ARBUSTE_MORT:
-                return Loader.loadImage("/img/decors/arbuste_mort.png");
-            default:
-                return null;
-        }
+        String chemin = switch (bloc) {
+            case CIEL_CLAIR -> "/img/blocs/traversable/ciel_clair.png";
+            case PIERRE -> "/img/blocs/solide/pierre.png";
+            case SABLE -> "/img/blocs/solide/sable.png";
+            case TRONC -> "/img/blocs/solide/tronc.png";
+            case FEUILLAGE -> "/img/blocs/solide/feuillage.png";
+            case TERRE -> "/img/blocs/solide/terre.png";
+            case TRANSPARENT -> "/img/blocs/traversable/transparent.png";
+            case CIEL -> "/img/blocs/traversable/ciel.png";
+            case GAY_CIEL -> "/img/blocs/traversable/gayciel.png";
+            case SABLE_ROUGE -> "/img/blocs/solide/sable_rouge.png";
+            case TERRE_STYLEE -> "/img/blocs/solide/terre_stylee.png";
+            case TERRE_STYLEE_SOMBRE -> "/img/blocs/solide/terre_stylee_sombre.png";
+            case CIEL_SOMBRE -> "/img/blocs/traversable/ciel_sombre.png";
+            case CORBEAU -> "/img/decors/corbeau.png";
+            case LUNE -> "/img/decors/lune.png";
+            case LUNE_ZELDA -> "/img/decors/lune_zelda.jpg";
+            case ETOILE -> "/img/decors/etoile.png";
+            case ARBUSTE_MORT -> "/img/decors/arbuste_mort.png";
+            case ECHELLE -> "/img/decors/echelle.png";
+            case FLECHE_VERS_LA_DROITE -> "/img/decors/flecheVersDroite.png";
+            case ESCALIER_DROITE -> "/img/decors/escalier_Droite.png";
+            default -> "/img/default.png"; // Dans le cas ou le bloc n'est pas trouvé
+        };
+        return Loader.loadImage(chemin);
     }
 }

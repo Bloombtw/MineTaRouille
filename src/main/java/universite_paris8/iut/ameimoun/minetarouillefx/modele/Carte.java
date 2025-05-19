@@ -8,8 +8,9 @@ import java.util.Random;
 public class Carte {
     private final Bloc[][][] terrain;
 
-/*
-    public Carte() {
+    private static Carte instance;
+
+    private Carte() {
         terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
 
         // Couche 0 : sol
@@ -17,14 +18,13 @@ public class Carte {
             for (int x = 0; x < Constantes.NB_COLONNES; x++) {
                 if (y < 25) {
                     terrain[0][y][x] = Bloc.CIEL_SOMBRE;
+
                 } else if (y == 25) {
                     terrain[1][y][x] = Bloc.SABLE_ROUGE;
                 } else {
                     terrain[1][y][x] = Bloc.TERRE_STYLEE_SOMBRE;
                 }
             }
-
-
 
         }
         Random rand = new Random();
@@ -39,26 +39,37 @@ public class Carte {
 
         int arbreX = 10;
         // Le layer [ ][24][ ] représente le sol
-        terrain[1][25][arbreX] = Bloc.TERRE_STYLEE;
 
+        // L'escalier pour monter sur l'arbre des deux côtés
+        terrain[2][22][arbreX - 2] = Bloc.ESCALIER_DROITE;
+        terrain[2][23][arbreX - 3] = Bloc.ESCALIER_DROITE;
+        terrain[2][24][arbreX - 4] = Bloc.ESCALIER_DROITE;
+
+
+        // L'arbre
         terrain[2][24][arbreX] = Bloc.TRONC;
         terrain[2][23][arbreX] = Bloc.TRONC;
         terrain[2][22][arbreX] = Bloc.TRONC;
-
         terrain[2][21][arbreX] = Bloc.FEUILLAGE;
         terrain[2][21][arbreX - 1] = Bloc.FEUILLAGE;
         terrain[2][21][arbreX + 1] = Bloc.FEUILLAGE;
         terrain[2][22][arbreX - 1] = Bloc.FEUILLAGE;
         terrain[2][22][arbreX + 1] = Bloc.FEUILLAGE;
+
+
+        // Décors en plus
         terrain[2][10][15] = Bloc.CORBEAU;
-        terrain[2][6][59] = Bloc.LUNE;
+        terrain[2][6][59] = Bloc.LUNE_ZELDA;
         terrain[2][24][31] = Bloc.ARBUSTE_MORT;
         terrain[2][24][45] = Bloc.ARBUSTE_MORT;
         terrain[2][24][12] = Bloc.ARBUSTE_MORT;
         terrain[2][24][23] = Bloc.ARBUSTE_MORT;
+
+        System.out.println("Carte générée");
     }
-*/
-public Carte() {
+
+/*
+    public Carte() {
     terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
     Random rand = new Random();
 
@@ -119,7 +130,7 @@ public Carte() {
 
     terrain[2][10][15] = Bloc.CORBEAU;
 }
-
+*/
     public Bloc[][][] getTerrain() {
         return terrain;
     }
@@ -138,6 +149,13 @@ public Carte() {
 
     public boolean estDansLaMap(int x, int y) {
         return x >= 0 && y >= 0 && y < getHauteur() && x < getLargeur();
+    }
+
+    public static Carte getInstance() {
+        if (instance == null) {
+            instance = new Carte();
+        }
+        return instance;
     }
 
 
