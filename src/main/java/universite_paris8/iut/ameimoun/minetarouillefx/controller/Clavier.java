@@ -63,19 +63,15 @@ public class Clavier {
 
             switch (caractere) {
                 case "&":
-                    System.out.println("c");
                     inventaire.setSelectedIndex(0);
                     break;
                 case "é":
-                    System.out.println("ca");
                     inventaire.setSelectedIndex(1);
                     break;
                 case "\"":
-                    System.out.println("cac");
                     inventaire.setSelectedIndex(2);
                     break;
                 case "'":
-                    System.out.println("caca ");
                     inventaire.setSelectedIndex(3);
                     break;
                 case "(":
