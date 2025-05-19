@@ -53,9 +53,7 @@ public class Clavier {
                     break;
 
                 case S:
-
-// s'accroupir
-
+                    // s'accroupir
                     break;
             }
 
@@ -98,7 +96,6 @@ public class Clavier {
 
 
 //relâchement des touches (faire deux méthodes distinctes ?)
-
         tilePane.setOnKeyReleased(event -> {
 
             switch(event.getCode()) {
@@ -107,14 +104,13 @@ public class Clavier {
                         joueur.sauter();
                         vueJoueur.miseAJourPosition(joueur);
                     }
+                    break;
                 case Q:
                     enDeplacementGauche = false;
-
                     if (!enDeplacementDroite) {
                         joueur.arreterMouvementX();
                         vueJoueur.miseAJourPosition(joueur);
                     }
-
                     break;
 
                 case D:
@@ -127,11 +123,8 @@ public class Clavier {
                 default:
 
                     break;
+
             }
-
         });
-
-
     }
-
 }
