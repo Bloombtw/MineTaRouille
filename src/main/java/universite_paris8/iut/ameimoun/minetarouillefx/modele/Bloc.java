@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public enum Bloc {
+    DEFAULT (-1, "Default", true), // Le bloc si la texture n'est pas trouvée
     CIEL(0, "Ciel", false),
     PIERRE(1, "Pierre", true),
     SABLE(2, "Sable", true),
@@ -18,8 +19,10 @@ public enum Bloc {
     LUNE(14, "Lune", true),
     LUNE_ZELDA(15, "Lune Zelda", true),
     ETOILE(16, "Etoile", false),
-    ARBUSTE_MORT(17, "Arbuste Mort", false);
-
+    ARBUSTE_MORT(17, "Arbuste Mort", false),
+    ECHELLE(18, "Echelle", false), // TODO : Ajouter le mouvement de l'échelle
+    FLECHE_VERS_LA_DROITE(19, "Flèche vers la droite", false), // Pour guider le joueur
+    ESCALIER_DROITE(20, "Escalier vers la droite", true);
 
     private final int id;
     private final String nom;

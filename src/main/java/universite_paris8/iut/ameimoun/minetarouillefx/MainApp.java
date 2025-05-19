@@ -52,7 +52,11 @@ public class MainApp extends Application {
         primaryStage.show();
 
         // Action Quitter
-        quitter.setOnAction(e -> System.exit(0));
+        quitter.setOnAction(e -> {
+            System.out.println("Jeu quitté depuis le bouton dans l'accueil");
+            System.exit(0);
+        });
+
 
         // Action Nouvelle Partie
         nouvellePartie.setOnAction(e -> {
@@ -61,6 +65,7 @@ public class MainApp extends Application {
                 Scene jeuScene = new Scene(fxmlLoader.load(), Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");
+                System.out.println("Jeu lancé depuis le bouton dans l'accueil");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Erreur lors du chargement de Map.fxml");

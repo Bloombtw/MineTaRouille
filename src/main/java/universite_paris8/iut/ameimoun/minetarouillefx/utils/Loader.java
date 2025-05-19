@@ -15,7 +15,13 @@ public class Loader {
     }
 
     public static Image loadImage(String path) {
-        return new Image(getResource(path).toExternalForm());
+        URL resource = Loader.class.getResource(path);
+        if (resource != null) {
+            return new Image(resource.toExternalForm());
+        } else {
+            System.err.println("Image non trouvée : " + path + " → Image par défaut utilisée.");
+            return new Image(Loader.class.getResource("/img/default.jpg").toExternalForm());
+        }
     }
 
     public static FXMLLoader loadFXML(String path) {
