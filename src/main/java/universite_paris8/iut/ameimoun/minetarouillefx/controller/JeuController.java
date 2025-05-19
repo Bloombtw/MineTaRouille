@@ -7,10 +7,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import java.util.ArrayList;
 import java.util.Random;
+import javafx.application.Platform;
 
 import java.net.URL;
 import java.util.Random;
@@ -22,10 +24,13 @@ public class JeuController implements Initializable {
     @FXML
     private AnchorPane rootPane;
 
+    private Inventaire inventaire;
+    private VueInventaire vueInventaire;
+    private Clavier clavier;
+
     private Joueur joueurModele;
     private VueJoueur joueurVue;
     private Carte carte;
-    private Clavier clavier;
     private AnimationTimer gameLoop;
 
     private static final int LARGEUR_FENETRE = 1680;
@@ -41,6 +46,7 @@ public class JeuController implements Initializable {
         initialiserCarte();
         //initialiserItems(); à debogguer
         initialiserJoueur();
+        initialiserInventaire();
         initialiserControles();
         demarrerBoucleDeJeu();
     }
@@ -51,11 +57,22 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(joueurVue.getImageView());
     }
 
+
+    private void initialiserInventaire() {
+        inventaire = new Inventaire();
+        inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
+        inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
+        vueInventaire = new VueInventaire(inventaire);
+        vueInventaire.setLayoutX(20);
+        vueInventaire.setLayoutY(950);
+        rootPane.getChildren().add(vueInventaire);
+    }
+
     private void initialiserControles() {
-        clavier = new Clavier(joueurModele,joueurVue);
+        clavier = new Clavier(joueurModele, joueurVue, inventaire, vueInventaire); // Passe les instances ici
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
-        tileMap.requestFocus();
+        Platform.runLater(() -> tileMap.requestFocus());
     }
 
     private void initialiserCarte() {
