@@ -11,8 +11,6 @@ public enum Bloc {
     CIEL_CLAIR(6, "Ciel Clair", false),
     GAY_CIEL(7, "Gayciel", true),
     SABLE_ROUGE(8, "Sable Rouge", true),
-    TERRE_STYLEE(9, "Terre Stylee", true),
-    TERRE_STYLEE_SOMBRE(10, "Terre Stylee Sombre", true),
     TRANSPARENT(11, "Transparent", false),
     CIEL_SOMBRE(12, "Ciel Sombre", false),
     CORBEAU(13, "Corbeau", false),
@@ -22,7 +20,16 @@ public enum Bloc {
     ARBUSTE_MORT(17, "Arbuste Mort", false),
     ECHELLE(18, "Echelle", false), // TODO : Ajouter le mouvement de l'échelle
     FLECHE_VERS_LA_DROITE(19, "Flèche vers la droite", false), // Pour guider le joueur
-    ESCALIER_DROITE(20, "Escalier vers la droite", true);
+    ESCALIER_DROITE(20, "Escalier vers la droite", true),
+    GRES_CISELE(21, "Grès Ciselé", true),
+    GRES_COUPE(22, "Grès Coupé", true),
+    POUSSE_ACACIA(23, "Pousse d'Acacia", false),
+    FEUILLAGE_ACACIA(24, "Feuillage d'Acacia", true),
+    GRES(25, "Grès", true),
+    FEU(26, "Feu", false),
+    CACTUS(27, "Cactus", true),
+    NUAGE(28, "Nuage", false),
+    CIEL_VIOLET(29, "Ciel Violet", false);
 
     private final int id;
     private final String nom;
@@ -46,6 +53,8 @@ public enum Bloc {
         return estSolide;
     }
 
+
+    // Méthode pour obtenir un Bloc à partir de son id
     public static Bloc depuisId(int id) {
         for (Bloc bloc : values()) {
             if (bloc.id == id) return bloc;

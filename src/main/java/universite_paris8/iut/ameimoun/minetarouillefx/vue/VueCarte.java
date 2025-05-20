@@ -65,8 +65,6 @@ public class VueCarte {
             case CIEL -> "/img/blocs/traversable/ciel.png";
             case GAY_CIEL -> "/img/blocs/traversable/gayciel.png";
             case SABLE_ROUGE -> "/img/blocs/solide/sable_rouge.png";
-            case TERRE_STYLEE -> "/img/blocs/solide/terre_stylee.png";
-            case TERRE_STYLEE_SOMBRE -> "/img/blocs/solide/terre_stylee_sombre.png";
             case CIEL_SOMBRE -> "/img/blocs/traversable/ciel_sombre.png";
             case CORBEAU -> "/img/decors/corbeau.png";
             case LUNE -> "/img/decors/lune.png";
@@ -76,6 +74,15 @@ public class VueCarte {
             case ECHELLE -> "/img/decors/echelle.png";
             case FLECHE_VERS_LA_DROITE -> "/img/decors/flecheVersDroite.png";
             case ESCALIER_DROITE -> "/img/decors/escalier_Droite.png";
+            case GRES_CISELE -> "/img/blocs/solide/gres_cisele.png";
+            case GRES_COUPE -> "/img/blocs/solide/gres_coupe.png";
+            case POUSSE_ACACIA -> "/img/decors/pousse_acacia.png";
+            case FEUILLAGE_ACACIA -> "/img/blocs/solide/feuillage_acacia.png";
+            case GRES -> "/img/blocs/solide/gres.png";
+            case FEU -> "/img/decors/feu.png";
+            case CACTUS -> "/img/blocs/solide/cactus.png";
+            case NUAGE -> "/img/blocs/traversable/nuage.png";
+            case CIEL_VIOLET -> "/img/blocs/traversable/ciel_violet.png";
             default -> "/img/default.png"; // Dans le cas ou le bloc n'est pas trouvé
         };
         return Loader.loadImage(chemin);

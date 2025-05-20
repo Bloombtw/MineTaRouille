@@ -29,29 +29,32 @@ public class Clavier {
         this.debugManager = debugManager;
     }
 
+    //Gestion des événements clavier
     public void gestionClavier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
 
             switch(event.getCode()) {
 
-                case Z:
+
+                // Déplacements
+                case Z, SPACE, UP:
                     joueur.sauter();
                     vueJoueur.miseAJourPosition(joueur);
                     break;
 
-                case Q:
+                case Q, LEFT:
                     enDeplacementGauche = true;
                     joueur.deplacerGauche();
                     vueJoueur.miseAJourPosition(joueur);
                     break;
 
-                case D:
+                case D, RIGHT:
                     enDeplacementDroite = true;
                     joueur.deplacerDroite();
                     vueJoueur.miseAJourPosition(joueur);
                     break;
 
-                case S:
+                case S, DOWN:
                     // s'accroupir
                     break;
 
@@ -62,6 +65,8 @@ public class Clavier {
 
             String caractere = event.getText();
 
+
+            // Inventaire
             switch (caractere) {
                 case "&":
                     inventaire.setSelectedIndex(0);
@@ -100,13 +105,13 @@ public class Clavier {
         tilePane.setOnKeyReleased(event -> {
 
             switch(event.getCode()) {
-                case Z:
+                case Z, SPACE, UP:
                     if(joueur.getPeutSauter()){
                         joueur.sauter();
                         vueJoueur.miseAJourPosition(joueur);
                     }
                     break;
-                case Q:
+                case Q, LEFT:
                     enDeplacementGauche = false;
                     if (!enDeplacementDroite) {
                         joueur.arreterMouvementX();
@@ -114,7 +119,7 @@ public class Clavier {
                     }
                     break;
 
-                case D:
+                case D, RIGHT:
                     enDeplacementDroite = false;
                     if (!enDeplacementGauche) {
                         joueur.arreterMouvementX();
@@ -125,6 +130,7 @@ public class Clavier {
         });
     }
 
+    // Méthode pour désactiver les événements clavier
     public void desactiverClavier(TilePane tilePane) {
             tilePane.setOnKeyPressed(null);
             tilePane.setOnKeyReleased(null);
