@@ -122,4 +122,9 @@ public class Clavier {
             }
         });
     }
+
+    public void desactiverClavier(TilePane tilePane) {
+            tilePane.setOnKeyPressed(null);
+            tilePane.setOnKeyReleased(null);
+    }
 }

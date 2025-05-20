@@ -137,6 +137,7 @@ public class JeuController implements Initializable {
     private void gererVie() {
         if (vie.estMort()) {
             gameLoop.stop();
+            clavier.desactiverClavier(tileMap);
             Platform.runLater(() -> overlayDeMort.setVisible(true));
         }
     }
