@@ -13,7 +13,6 @@ public class Personnage {
     private double pointsDeVieMax;
     private double pointsDeVie;
     private String nom;
-    private double vitesseDeplacement;
     private int satiete;
 
     private Item[] inventaire;
@@ -22,14 +21,13 @@ public class Personnage {
     private boolean isMining;
     private boolean isAttacking;
     private boolean isAlive;
-    protected Direction direction;
+    private Direction direction;
 
     // Déplacement / physique
-    protected double vitesseX = 0;
-    protected double vitesseY = 0;
-    protected boolean peutSauter = true;
-
-    protected Carte carte;
+    private double vitesseX = 0;
+    private double vitesseY = 0;
+    private boolean peutSauter = true;
+    private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement) {
         this.x = x;
@@ -37,7 +35,7 @@ public class Personnage {
         this.pointsDeVieMax = pointsDeVieMax;
         this.pointsDeVie = pointsDeVieMax;
         this.nom = nom;
-        this.vitesseDeplacement = vitesseDeplacement;
+        vitesseDeplacement = Constantes.VITESSE_DEPLACEMENT;
         this.satiete = 100;
         this.isAlive = true;
         this.isMining = false;
@@ -65,7 +63,7 @@ public class Personnage {
     }
 
     public void deplacerGauche() {
-        double futurX = x - vitesseDeplacement;
+        double futurX = x - Constantes.VITESSE_DEPLACEMENT;
         if (!collision(futurX, y)) {
             x = futurX;
         }
@@ -97,25 +95,20 @@ public class Personnage {
     }
 
 
-
-
-
-    protected boolean collision(double futurX, double futurY) {
-        int tileSize = Constantes.TAILLE_TUILE;
-
-        int left = (int)(futurX / tileSize);
-        int right = (int)((futurX + tileSize - 1) / tileSize);
-        int top = (int)(futurY / tileSize);
-        int bottom = (int)((futurY + tileSize - 1) / tileSize);
+    private boolean collision(double x, double y) {
+        int left = (int) (x / Constantes.TAILLE_PERSO);
+        int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+        int top = (int) (y / Constantes.TAILLE_PERSO);
+        int bottom = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
 
         for (int tx = left; tx <= right; tx++) {
             for (int ty = top; ty <= bottom; ty++) {
                 if (carte.estBlocSolide(tx, ty)) return true;
             }
         }
-
         return false;
     }
+
 
     public void ajouterAuTilePane(TilePane tilePane) {
         tilePane.getChildren().add(getPerso());
@@ -144,6 +137,10 @@ public class Personnage {
 
     public boolean getPeutSauter() { return peutSauter; }
     public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
+
+    public double getPointsDeVie() {
+        return pointsDeVie;
+    }
 
 
 }

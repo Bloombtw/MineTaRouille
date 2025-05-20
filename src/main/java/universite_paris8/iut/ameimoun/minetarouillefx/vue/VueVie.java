@@ -3,43 +3,44 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 
-public class VueVie extends StackPane {
-    /*
-    private final Rectangle fond;
-    private final Rectangle barreVie;
+public class VueVie {
 
-    public VueVie(int largeur, int hauteur) {
+    private static final double LARGEUR = 200;
+    private static final double HAUTEUR = 20;
 
-        fond = new Rectangle(largeur, hauteur);
-        fond.setFill(Color.GRAY);
-        fond.setStroke(Color.BLACK);
+    private Rectangle fond;
+    private Rectangle barre;
+    private StackPane container;
 
-        barreVie = new Rectangle(largeur, hauteur);
-        barreVie.setFill(Color.GREEN);
-        barreVie.setStroke(Color.BLACK);
+    public VueVie() {
+        fond = new Rectangle(LARGEUR, HAUTEUR);
+        fond.setFill(Color.DARKGRAY);
 
-        this.getChildren().addAll(fond, barreVie);
+        barre = new Rectangle(LARGEUR, HAUTEUR);
+        barre.setFill(Color.LIMEGREEN);
+
+        container = new StackPane(fond, barre);
+        container.setTranslateX(20); // En haut à gauche
+        container.setTranslateY(20);
     }
 
-    public void lierAuJoueur(Joueur joueur) {
-        // Conversion explicite en double pour éviter l'erreur
-        barreVie.widthProperty().bind(
-                joueur.vieActuelleProperty()
-                        .multiply(fond.getWidth())
-                        .divide(joueur.getVieMax())
-        );
-        joueur.vieActuelleProperty().addListener((obs, oldVal, newVal) -> {
-            double pourcentage = newVal.doubleValue() / joueur.getVieMax();
-            if (pourcentage < 0.3) {
-                barreVie.setFill(Color.RED);
-            } else if (pourcentage < 0.6) {
-                barreVie.setFill(Color.ORANGE);
-            } else {
-                barreVie.setFill(Color.GREEN);
-            }
-        });
-    }*/
+    public void mettreAJour(double vie, double vieMax) {
+        double ratio = vie / vieMax;
+        barre.setWidth(LARGEUR * ratio);
+
+        if (ratio > 0.6) {
+            barre.setFill(Color.LIMEGREEN);
+        } else if (ratio > 0.3) {
+            barre.setFill(Color.ORANGE);
+        } else {
+            barre.setFill(Color.RED);
+        }
+    }
+
+    public StackPane getNoeud() {
+        return container;
+    }
 }
+
 

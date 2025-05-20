@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class Deplacement {
+
     private Personnage joueur;
     private Carte carte;
     private boolean enMouvementGauche = false;
@@ -54,13 +55,5 @@ public class Deplacement {
             }
         }
         return false;
-    }
-
-    public boolean estEnMouvementGauche() {
-        return enMouvementGauche;
-    }
-
-    public boolean estEnMouvementDroite() {
-        return enMouvementDroite;
     }
 }
