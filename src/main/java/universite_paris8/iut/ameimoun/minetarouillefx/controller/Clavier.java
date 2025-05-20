@@ -3,34 +3,33 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 
+
 public class Clavier {
 
-    private Joueur joueur;
-    private VueJoueur vueJoueur;
-    private Inventaire inventaire;
-    private VueInventaire vueInventaire;
-
+    private final Joueur joueur;
+    private final VueJoueur vueJoueur;
+    private final Inventaire inventaire;
+    private final VueInventaire vueInventaire;
+    private DebugManager debugManager;
     private boolean enDeplacementGauche = false;
 
     private boolean enDeplacementDroite = false;
 
 
-    public Clavier(Joueur joueur, VueJoueur vueJoueur, Inventaire inventaire, VueInventaire vueInventaire) {
+    public Clavier(Joueur joueur, VueJoueur vueJoueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
         this.vueJoueur = vueJoueur;
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
+        this.debugManager = debugManager;
     }
 
-
     public void gestionClavier(TilePane tilePane) {
-
-//appuis sur les touches
-
         tilePane.setOnKeyPressed(event -> {
 
             switch(event.getCode()) {
@@ -56,7 +55,10 @@ public class Clavier {
                     // s'accroupir
                     break;
 
+                case F3 : debugManager.toggle();
+                break;
             }
+
 
             String caractere = event.getText();
 

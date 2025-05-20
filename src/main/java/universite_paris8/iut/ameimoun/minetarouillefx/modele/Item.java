@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Item {
-    private ArrayList<Item> listeDeToutLesItems = new ArrayList<>();
-    private int id;
-    private String nom;
-    private int durabilite;
-    private int stackSize;
-    private String description;
-    private Type type;
-    private Rarete rarete;
+    private final ArrayList<Item> listeDeToutLesItems = new ArrayList<>();
+    private final int id;
+    private final String nom;
+    private final int stackSize;
+    private final String description;
+    private final Type type;
+    private final Rarete rarete;
     private double x, y;
 
     public Item(int id, String nom, int stackSize, String description, Type type, Rarete rarete) {
@@ -23,8 +22,6 @@ public class Item {
         this.description = description;
         this.type = type;
         this.rarete = rarete;
-        this.x = x;
-        this.y = y;
         listeDeToutLesItems.add(this);
     }
 
@@ -35,7 +32,6 @@ public class Item {
 
         int x, y;
 
-        // position aléeatoire
         do {
             x = random.nextInt(largeur);
             y = random.nextInt(hauteur);
@@ -47,17 +43,13 @@ public class Item {
         this.listeDeToutLesItems.add(i);
 
         System.out.println("Item ajouté à la position : " + x + ", " + y);
-    }//à finir
-
+    }
 
     public void retirerItem(Item i){
         this.listeDeToutLesItems.remove(i);
     }
 
     public String getNom() {return this.nom;}
-    public ArrayList<Item> getListeDeToutLesItems() {
-        return listeDeToutLesItems;
-    }
 
     public double getX() { return x; }
     public double getY() { return y; }

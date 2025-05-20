@@ -11,22 +11,20 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 public class DebugManager {
 
     private final AnchorPane rootPane;
-    private final Carte carte;
     private final Joueur joueur;
 
     private Canvas debugCanvas;
     private Canvas hitboxCanvas;
     private boolean debugVisible = false;
 
-    public DebugManager(AnchorPane rootPane, Carte carte, Joueur joueur) {
+    public DebugManager(AnchorPane rootPane,Joueur joueur) {
         this.rootPane = rootPane;
-        this.carte = carte;
         this.joueur = joueur;
     }
 
     public void toggle() {
         if (debugCanvas == null) {
-            debugCanvas = DebugOverlay.genererGrille(carte);
+            debugCanvas = DebugOverlay.genererGrille(Carte.getInstance());
             rootPane.getChildren().add(debugCanvas);
 
             hitboxCanvas = new Canvas(

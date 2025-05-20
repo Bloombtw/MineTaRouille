@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
 public class VueItem {
-    public static final int TAILLE_ITEM = 32;
+    public static final int TAILLE_ITEM = 30;
     private ImageView itemView;
 
     public VueItem(Item item) {

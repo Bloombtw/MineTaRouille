@@ -2,17 +2,16 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public class Inventaire {
 
-    private Item[] slots = new Item[9];
+    private final Item[] slots = new Item[9];
     private int selectedIndex = 0;
 
-    public boolean ajouterItem(Item item) {
+    public void ajouterItem(Item item) {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] == null) {
                 slots[i] = item;
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     public Item getItem(int index) {

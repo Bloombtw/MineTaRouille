@@ -12,6 +12,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,6 +35,7 @@ public class JeuController implements Initializable {
     private VueJoueur joueurVue;
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
+    private DebugManager debugManager;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,9 +47,10 @@ public class JeuController implements Initializable {
         initialiserControles();
         demarrerBoucleDeJeu();
     }
-
+;
     private void initialiserJoueur() {
-        joueurModele = new Joueur(Carte.getInstance());
+        joueurModele = new Joueur();
+        debugManager = new DebugManager(rootPane, joueurModele);
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getImageView());
     }
@@ -91,7 +94,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueurModele, joueurVue, inventaire, vueInventaire); // Passe les instances ici
+        clavier = new Clavier(joueurModele, joueurVue, inventaire, vueInventaire,debugManager); // Passe les instances ici
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
