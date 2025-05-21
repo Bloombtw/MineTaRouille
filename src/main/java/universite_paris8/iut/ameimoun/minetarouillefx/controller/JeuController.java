@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ public class JeuController implements Initializable {
     @FXML
     private AnchorPane overlayDeMort;
 
+    private MusiqueManager musiqueManager;
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
     private Clavier clavier;
@@ -43,6 +45,7 @@ public class JeuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initialiserMusique();
         initialiserCarte();
         //initialiserItems(); à debogguer
         initialiserJoueur();
@@ -53,6 +56,12 @@ public class JeuController implements Initializable {
         demarrerBoucleDeJeu();
     }
 ;
+
+    private void initialiserMusique() {
+        musiqueManager = new MusiqueManager();
+        musiqueManager.jouerMusiqueEnBoucle("/mp3/Maes_magie.mp3");
+        musiqueManager.setVolume(0.5);
+    }
     private void initialiserJoueur() {
         joueurModele = new Joueur();
         debugManager = new DebugManager(rootPane, joueurModele);
@@ -159,10 +168,12 @@ public class JeuController implements Initializable {
     }
 
 
-    // Lie la vie du joueur à la vue + Stoppe le jeu quand joueur est mort
     private void gererVie() {
         vie.verifierDegats(joueurModele, Carte.getInstance());
         if (vie.estMort()) {
+            musiqueManager.arreterMusique();
+            musiqueManager.setVolume(1);
+            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
             gameLoop.stop();
             clavier.desactiverClavier(tileMap);
             Platform.runLater(() -> overlayDeMort.setVisible(true));
@@ -171,6 +182,7 @@ public class JeuController implements Initializable {
 
     @FXML
     private void handleQuitter() {
+        musiqueManager.arreterMusique();
         Platform.exit();
     }
 }

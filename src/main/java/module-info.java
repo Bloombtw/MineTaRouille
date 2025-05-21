@@ -5,6 +5,7 @@ module universite_paris.iut.ameimoun.minetarouillefx {
     requires org.controlsfx.controls;
     requires java.desktop;
     requires javafx.graphics;
+    requires javafx.media;
 
     opens universite_paris8.iut.ameimoun.minetarouillefx to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx;

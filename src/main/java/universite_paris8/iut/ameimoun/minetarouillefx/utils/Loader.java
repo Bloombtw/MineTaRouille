@@ -2,7 +2,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+
 import java.net.URL;
+
 
 public class Loader {
 
@@ -23,6 +26,16 @@ public class Loader {
             return new Image(Loader.class.getResource("/img/default.jpg").toExternalForm());
         }
     }
+
+    public static Media loadMP3(String path) {
+        URL resource = Loader.class.getResource(path);
+        if (resource != null) {
+            return new Media(resource.toExternalForm());
+        } else {
+            throw new IllegalArgumentException("Fichier MP3 non trouvé : " + path);
+        }
+    }
+
 
     public static FXMLLoader loadFXML(String path) {
         return new FXMLLoader(getResource(path));
