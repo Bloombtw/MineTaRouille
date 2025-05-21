@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class VueJoueur {
     public static final int TAILLE_PERSO = 30;
@@ -21,10 +22,11 @@ public class VueJoueur {
         perso.setFitHeight(TAILLE_PERSO);
 
         // Chargement des sprite sheets
-        Image spriteIdle = new Image(getClass().getResource("/img/joueur/idle.png").toExternalForm());
-        Image spriteGauche = new Image(getClass().getResource("/img/joueur/gauche.png").toExternalForm());
-        Image spriteDroite = new Image(getClass().getResource("/img/joueur/droite.png").toExternalForm());
-        Image spriteSaut = new Image(getClass().getResource("/img/joueur/saut.png").toExternalForm());
+        Image spriteIdle = Loader.loadImage("/img/joueur/idle.png");
+        Image spriteGauche = Loader.loadImage("/img/joueur/gauche.png");
+        Image spriteDroite = Loader.loadImage("/img/joueur/droite.png");
+        Image spriteSaut = Loader.loadImage("/img/joueur/saut.png");
+
 
         // Découpage en frames
         Image[] framesIdle = Animation.decouperSpriteSheet(spriteIdle, 32, 32, 4);  // par exemple 4 frames pour idle
@@ -68,7 +70,6 @@ public class VueJoueur {
 
     private void jouerAnimation(Animation animation) {
         if (animActuelle != animation) {
-            System.out.println("Changement animation: " + animation);
             if (animActuelle != null) animActuelle.stop();
             animActuelle = animation;
             animActuelle.start();

@@ -29,13 +29,12 @@ public class Personnage {
     private boolean peutSauter = true;
     private Carte carte;
 
-    public Personnage(double x, double y, double pointsDeVieMax, String nom, double vitesseDeplacement) {
+    public Personnage(double x, double y, double pointsDeVieMax, String nom) {
         this.x = x;
         this.y = y;
         this.pointsDeVieMax = pointsDeVieMax;
         this.pointsDeVie = pointsDeVieMax;
         this.nom = nom;
-        vitesseDeplacement = Constantes.VITESSE_DEPLACEMENT;
         this.satiete = 100;
         this.isAlive = true;
         this.isMining = false;
