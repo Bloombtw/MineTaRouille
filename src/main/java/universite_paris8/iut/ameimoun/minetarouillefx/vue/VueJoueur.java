@@ -4,11 +4,10 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class VueJoueur {
-    public static final int TAILLE_PERSO = 30;
-
     private final ImageView perso;
     private final Group container;
     private Animation animDroite;
@@ -21,8 +20,8 @@ public class VueJoueur {
     public VueJoueur(Joueur joueur) {
         perso = new ImageView();
         container = new Group(perso);
-        perso.setFitWidth(TAILLE_PERSO);
-        perso.setFitHeight(TAILLE_PERSO);
+        perso.setFitWidth(Constantes.TAILLE_PERSO);
+        perso.setFitHeight(Constantes.TAILLE_PERSO);
 
         container.translateXProperty().bind(joueur.xProperty());
         container.translateYProperty().bind(joueur.yProperty());

@@ -14,8 +14,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,51 +33,64 @@ public class JeuController implements Initializable {
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
     private Clavier clavier;
-    private Vie vie;
-    private VueVie vueVie;
-
     private Joueur joueurModele;
     private VueJoueur joueurVue;
+    private VueVie vueVie;
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
     private DebugManager debugManager;
-    private Rectangle overlayDegats;
+    private Rectangle overlayDegats; // Declared here
+    private double derniereVieConnue;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initialiserCarte();
-        //initialiserItems(); à debogguer
         initialiserJoueur();
-        initialiserBarreDeVie();
         initialiserInventaire();
         initialiserControles();
-        initialiserEffetDegats();
+        initialiserBarreDeVie();
+        initialiserOverlayDegats(); // Add this new initialization method
+        initialiserEcouteurDegats();
         demarrerBoucleDeJeu();
     }
-;
+
     private void initialiserJoueur() {
         joueurModele = new Joueur();
         debugManager = new DebugManager(rootPane, joueurModele);
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getNode());
+        this.derniereVieConnue = joueurModele.getVie().getVieActuelle();
     }
 
     private void initialiserBarreDeVie() {
-
-        vie = new Vie( joueurModele.getPointsDeVie());
-        vie.setControleur(this);
-        vueVie = new VueVie();
-
-        // Liaison modèle vue via
-        vie.setObservateur(() -> Platform.runLater(() ->
-                vueVie.mettreAJour(vie.getVieActuelle(), vie.getVieMax())
-        ));
-
-        vueVie.mettreAJour(vie.getVieActuelle(), vie.getVieMax());
+        vueVie = new VueVie(joueurModele.getVie());
         rootPane.getChildren().add(vueVie.getNoeud());
-
     }
 
+    // New method to initialize the damage overlay
+    private void initialiserOverlayDegats() {
+        overlayDegats = new Rectangle(0, 0, rootPane.getWidth(), rootPane.getHeight());
+        overlayDegats.setFill(Color.RED);
+        overlayDegats.setOpacity(0.3);
+        overlayDegats.setVisible(false);
+        rootPane.getChildren().add(overlayDegats);
+
+        // Bind overlay size to rootPane size to ensure it always covers the screen
+        overlayDegats.widthProperty().bind(rootPane.widthProperty());
+        overlayDegats.heightProperty().bind(rootPane.heightProperty());
+    }
+
+    private void initialiserEcouteurDegats() {
+        joueurModele.getVie().vieActuelleProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.doubleValue() < oldValue.doubleValue()) {
+                    afficherDegats();
+                }
+                derniereVieConnue = newValue.doubleValue();
+            }
+        });
+    }
     private void initialiserInventaire() {
         inventaire = new Inventaire();
         inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
@@ -87,85 +102,59 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueurModele, joueurVue, inventaire, vueInventaire,debugManager); // Passe les instances ici
+        clavier = new Clavier(joueurModele, inventaire, vueInventaire, debugManager);
         clavier.gestionClavier(tileMap);
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
     }
-
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
-
-   /* private void initialiserItems() {
-        listeDesItems = new ArrayList<>();
-        Random random = new Random();
-
-        for (int i = 0; i < 5; i++) {
-            Item item = new Item(i, "Item_" + i, 1, "Description", Type.CONSOMMABLE, Rarete.COMMUN);
-            item.ajouterItem(carte, item);
-            listeDesItems.add(item);
-
-            VueItem vueItem = new VueItem(item);
-            rootPane.getChildren().add(vueItem.getImageView()); // 🆕 Ajout visuel
-        }
-    }*/
-
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 mettreAJourJeu();
-                gererVie();
             }
         };
         gameLoop.start();
     }
 
-
-    private void mettreAJourJeu() {
-        joueurModele.gravite();
-        gererVie();
-        if (debugManager.isDebugVisible()) {
-            debugManager.update();
-        }
-    }
-
-    private void initialiserEffetDegats() {
-        overlayDegats = new Rectangle(Constantes.NB_COLONNES * Constantes.TAILLE_TUILE,
-                Constantes.NB_LIGNES * Constantes.TAILLE_TUILE);
-        overlayDegats.setFill(Color.rgb(255, 0, 0, 0.3));
-        overlayDegats.setVisible(false);
-        rootPane.getChildren().add(overlayDegats);
-    }
-
     public void afficherDegats() {
         Platform.runLater(() -> {
-            overlayDegats.setVisible(true);
-            new AnimationTimer() {
-                private long start = -1;
+            if (overlayDegats != null) {
+                overlayDegats.setVisible(true);
+                new AnimationTimer() {
+                    private long start = -1;
 
-                @Override
-                public void handle(long now) {
-                    if (start < 0) start = now;
-                    if (now - start > 100_000_000L) { // ~100ms
-                        overlayDegats.setVisible(false);
-                        stop();
+                    @Override
+                    public void handle(long now) {
+                        if (start < 0) start = now;
+                        if (now - start > 100_000_000L) { // ~100ms
+                            overlayDegats.setVisible(false);
+                            stop();
+                        }
                     }
-                }
-            }.start();
+                }.start();
+            }
         });
     }
 
-
-    // Lie la vie du joueur à la vue + Stoppe le jeu quand joueur est mort
-    private void gererVie() {
-        vie.verifierDegats(joueurModele, Carte.getInstance());
-        if (vie.estMort()) {
+    private void gererFinDeJeu() {
+        if (joueurModele.getVie().estMort()) {
             gameLoop.stop();
             clavier.desactiverClavier(tileMap);
             Platform.runLater(() -> overlayDeMort.setVisible(true));
+        }
+    }
+
+    private void mettreAJourJeu() {
+        joueurModele.gravite();
+        joueurModele.getVie().verifierDegats(joueurModele, Carte.getInstance());
+        gererFinDeJeu();
+        if (debugManager.isDebugVisible()) {
+            debugManager.update();
         }
     }
 

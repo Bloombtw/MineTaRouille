@@ -2,12 +2,12 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
+// import javafx.scene.image.ImageView; // Pas utilisé ici, peut-être dans VuePersonnage
+// import javafx.scene.layout.TilePane; // Pas utilisé ici, peut-être dans VueCarte
+// import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController; // Pas pertinent ici
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
-import java.util.Properties;
+// import java.util.Properties; // Non utilisé
 
 public class Personnage {
 
@@ -17,10 +17,11 @@ public class Personnage {
     public DoubleProperty xProperty() { return x; }
     public DoubleProperty yProperty() { return y; }
 
+    // --- Ajout de la vie du personnage ---
+    private Vie vie; // Le Personnage possède une Vie
+    // private double pointsDeVieMax; // Plus besoin, la Vie gère son propre max
+    // --- Fin de l'ajout ---
 
-
-    private double pointsDeVieMax;
-    private double pointsDeVie;
     private String nom;
     private int satiete;
 
@@ -36,25 +37,30 @@ public class Personnage {
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
-    private Carte carte;
+    private Carte carte; // Référence à la carte pour les collisions
 
     public Personnage(double x, double y, double pointsDeVieMax, String nom) {
         this.x.set(x);
         this.y.set(y);
-        this.pointsDeVieMax = pointsDeVieMax;
-        this.pointsDeVie = pointsDeVieMax;
+        // Initialise l'objet Vie du personnage avec les points de vie max
+        this.vie = new Vie(pointsDeVieMax);
         this.nom = nom;
         this.satiete = 100;
-        this.isAlive = true;
+        this.isAlive = true; // Dépendra de la vie.estMort()
         this.isMining = false;
         this.isAttacking = false;
         this.inventaire = new Item[10];
         this.selectedSlot = 0;
         this.direction = Direction.DROITE;
-        this.carte = Carte.getInstance();
+        this.carte = Carte.getInstance(); // Assurez-vous que Carte.getInstance() est géré correctement
     }
 
-    // Mvts
+    // Nouveau : Obtenir l'objet Vie du personnage
+    public Vie getVie() {
+        return vie;
+    }
+
+    // Méthodes de mouvement et de collision (inchangées)
 
     public void sauter() {
         if (peutSauter) {
@@ -93,8 +99,9 @@ public class Personnage {
             vitesseY = 0;
             peutSauter = true;
         }
+        // C'est ici que vous pourriez appeler la vérification des dégâts liés aux blocs
+        // vie.verifierDegats(this, carte); // À appeler dans la boucle de jeu principale plutôt
     }
-
 
     private boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
@@ -121,18 +128,10 @@ public class Personnage {
     public boolean onGround() {
         return getY() >= carte.getHauteur() - Constantes.TAILLE_PERSO;
     }
-
-    // === À surcharger dans Joueur ===
-
     public double getVitesseY() { return vitesseY; }
-    public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
 
-    public boolean getPeutSauter() { return peutSauter; }
-    public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
-
-    public double getPointsDeVie() {
-        return pointsDeVie;
+    // Vous pouvez ajouter une méthode isAlive() qui se base sur la vie du personnage
+    public boolean isAlive() {
+        return !vie.estMort();
     }
-
-
 }

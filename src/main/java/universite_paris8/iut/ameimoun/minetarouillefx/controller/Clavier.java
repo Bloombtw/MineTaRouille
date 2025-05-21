@@ -11,7 +11,6 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 public class Clavier {
     private final Joueur joueur;
-    private final VueJoueur vueJoueur;
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private DebugManager debugManager;
@@ -21,8 +20,7 @@ public class Clavier {
 
     private AnimationTimer boucleDeplacement;
 
-    public Clavier(Joueur joueur, VueJoueur vueJoueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
-        this.vueJoueur = vueJoueur;
+    public Clavier(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
