@@ -83,6 +83,9 @@ public class VueCarte {
             case CACTUS -> "/img/blocs/solide/cactus.png";
             case NUAGE -> "/img/blocs/traversable/nuage.png";
             case CIEL_VIOLET -> "/img/blocs/traversable/ciel_violet.png";
+            case NUAGE_PARTIE1 -> "/img/blocs/traversable/nuage_partie1.png";
+            case NUAGE_PARTIE2 -> "/img/blocs/traversable/nuage_partie2.png";
+            case NUAGE_PARTIE3 -> "/img/blocs/traversable/nuage_partie3.png";
             default -> "/img/default.png"; // Dans le cas ou le bloc n'est pas trouvé
         };
         return Loader.loadImage(chemin);

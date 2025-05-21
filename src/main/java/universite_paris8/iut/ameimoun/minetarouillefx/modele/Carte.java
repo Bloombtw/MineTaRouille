@@ -135,13 +135,13 @@ public class Carte {
             }
             // Nuages
             for (int x = 0; x < Constantes.NB_COLONNES - 2; x++) {
-                if (rand.nextDouble() < 0.15) {
+                if (rand.nextDouble() < 0.05) {
                     int y = 2 + rand.nextInt(5);
 
                     // Nuage horizontal
-                    terrain[2][y][x] = Bloc.NUAGE;
-                    terrain[2][y][x + 1] = Bloc.NUAGE;
-                    terrain[2][y][x + 2] = Bloc.NUAGE;
+                    terrain[2][y][x] = Bloc.NUAGE_PARTIE1;
+                    terrain[2][y][x + 1] = Bloc.NUAGE_PARTIE2;
+                    terrain[2][y][x + 2] = Bloc.NUAGE_PARTIE3;
                 }
             }
 

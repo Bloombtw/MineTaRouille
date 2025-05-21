@@ -29,7 +29,10 @@ public enum Bloc {
     FEU(26, "Feu", false),
     CACTUS(27, "Cactus", true),
     NUAGE(28, "Nuage", false),
-    CIEL_VIOLET(29, "Ciel Violet", false);
+    CIEL_VIOLET(29, "Ciel Violet", false),
+    NUAGE_PARTIE1(30, "Nuage Partie 1", false),
+    NUAGE_PARTIE2(31, "Nuage Partie 2", false),
+    NUAGE_PARTIE3(32, "Nuage Partie 3", false);
 
     private final int id;
     private final String nom;
