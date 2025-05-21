@@ -11,7 +11,7 @@ public class Constantes {
     public static final int TAILLE_ITEM = 32;
     public static final int TAILLE_BOUTON = 200;
     public static final double GRAVITE = 0.2;
-    public static final double VITESSE_DEPLACEMENT = 10;
-    public static final double FORCE_SAUT = -10;
+    public static final double VITESSE_DEPLACEMENT = 2;
+    public static final double FORCE_SAUT = -8;
 
 }
