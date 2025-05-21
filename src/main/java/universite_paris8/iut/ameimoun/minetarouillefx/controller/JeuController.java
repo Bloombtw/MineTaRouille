@@ -67,7 +67,6 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(vueVie.getNoeud());
     }
 
-    // New method to initialize the damage overlay
     private void initialiserOverlayDegats() {
         overlayDegats = new Rectangle(0, 0, rootPane.getWidth(), rootPane.getHeight());
         overlayDegats.setFill(Color.RED);
@@ -75,7 +74,6 @@ public class JeuController implements Initializable {
         overlayDegats.setVisible(false);
         rootPane.getChildren().add(overlayDegats);
 
-        // Bind overlay size to rootPane size to ensure it always covers the screen
         overlayDegats.widthProperty().bind(rootPane.widthProperty());
         overlayDegats.heightProperty().bind(rootPane.heightProperty());
     }

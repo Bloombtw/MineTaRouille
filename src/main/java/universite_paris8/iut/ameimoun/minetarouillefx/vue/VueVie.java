@@ -35,7 +35,7 @@ public class VueVie {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 double vieActuelle = newValue.doubleValue();
-                double vieMax = vieModele.getVieMax(); // Ou vieModele.vieMaxProperty().get()
+                double vieMax = vieModele.getVieMax();
 
                 double ratio = vieActuelle / vieMax;
 
@@ -51,7 +51,6 @@ public class VueVie {
         mettreAJourCouleurInitiale(vieModele.getVieActuelle(), vieModele.getVieMax());
     }
 
-    // Petite méthode utilitaire pour la couleur initiale, appelée une fois dans le constructeur
     private void mettreAJourCouleurInitiale(double vie, double vieMax) {
         double ratio = vie / vieMax;
         if (ratio > 0.6) {
