@@ -13,11 +13,15 @@ la gestion du clavier ainsi que le déroulement du jeu, appelées **Clavier** et
 La classe **Clavier** prend en paramètre **Joueur** et utilise `setOnKeyPressed` et `setOnKeyReleased`  
 pour gérer les animations et mettre à jour l'affichage du personnage.
 
+note : j'ai ajouter une méthode initialiserBoucleDeplacement qui fluidifie les mvts des perso
+(rigidité du personnage il ne pouvait pas sauter tout en avancant).
+
 > **Note :** J'ajoute la vue du joueur pour que la mise à jour du personnage s'actualise à chaque déplacement.  
 > (J'ai hésité à appeler la méthode dans **Joueur** directement, mais cela mélangerait vue et modèle...)
 
 Le clavier appelle la méthode `peutSauter()` de **Joueur**,  
 car une gestion de la gravité a été ajoutée.
+
 
 ---
 

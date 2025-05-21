@@ -83,3 +83,11 @@
         - Droite   
 
     Sont utilisés pour choisir le sprite à afficher.
+
+## Inventaire :
+
+        Classe qui représente les items sous forme de tab[] que possède le Joueur.
+
+    Gère :
+        - Les coordonnées en px. (X et Y)
+        -l'ajout d'Item à l'inventaire

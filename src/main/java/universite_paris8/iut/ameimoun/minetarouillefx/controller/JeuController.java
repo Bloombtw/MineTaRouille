@@ -74,7 +74,6 @@ public class JeuController implements Initializable {
         vueVie.mettreAJour(vie.getVieActuelle(), vie.getVieMax());
         rootPane.getChildren().add(vueVie.getNoeud());
 
-
 //        //degat tout 2sec
 //        new AnimationTimer() {
 //            private long lastUpdate = 0;

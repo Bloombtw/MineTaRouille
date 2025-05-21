@@ -21,7 +21,7 @@ public class Personnage {
     private boolean isMining;
     private boolean isAttacking;
     private boolean isAlive;
-    private Direction direction;
+    public Direction direction;
 
     // Déplacement / physique
     private double vitesseX = 0;

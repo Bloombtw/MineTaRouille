@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 
 public class Animation {
@@ -34,6 +35,17 @@ public class Animation {
         imageView.setImage(frames[0]);
         timeline.playFromStart();
     }
+
+        public static Image[] decouperSpriteSheet(Image spriteSheet, int frameWidth, int frameHeight, int nbFrames) {
+            Image[] frames = new Image[nbFrames];
+            for (int i = 0; i < nbFrames; i++) {
+                frames[i] = new WritableImage(spriteSheet.getPixelReader(),
+                        i * frameWidth, 0,
+                        frameWidth, frameHeight);
+            }
+            return frames;
+        }
+
 
     public void stop() {
         timeline.stop();

@@ -5,18 +5,40 @@ import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 
 public class VueJoueur {
-    public static final int TAILLE_PERSO= 30;
-    private ImageView perso=null;
-    private Animation animMarche;
-    private Animation animSaut;
+    public static final int TAILLE_PERSO = 30;
+
+    private final ImageView perso;
+    private Animation animDroite;
+    private Animation animGauche;
     private Animation animIdle;
+    private Animation animSaut;
+    private Animation animActuelle;
+
 
     public VueJoueur(Joueur joueur) {
-        Image img = new Image(getClass().getResource(
-                "/img/joueur/base.png").toExternalForm());
-        perso = new ImageView(img);
+        perso = new ImageView();
         perso.setFitWidth(TAILLE_PERSO);
         perso.setFitHeight(TAILLE_PERSO);
+
+        // Chargement des sprite sheets
+        Image spriteIdle = new Image(getClass().getResource("/img/joueur/idle.png").toExternalForm());
+        Image spriteGauche = new Image(getClass().getResource("/img/joueur/gauche.png").toExternalForm());
+        Image spriteDroite = new Image(getClass().getResource("/img/joueur/droite.png").toExternalForm());
+        Image spriteSaut = new Image(getClass().getResource("/img/joueur/saut.png").toExternalForm());
+
+        // Découpage en frames
+        Image[] framesIdle = Animation.decouperSpriteSheet(spriteIdle, 32, 32, 4);  // par exemple 4 frames pour idle
+        Image[] framesGauche = Animation.decouperSpriteSheet(spriteGauche, 32, 32, 6); // 6 frames marche
+        Image[] frameDroite = Animation.decouperSpriteSheet(spriteDroite, 32, 32, 6);
+        Image[] framesSaut = Animation.decouperSpriteSheet(spriteSaut, 32, 32, 8);    // 6 frames saut
+
+        // Création des animations (durée par frame en ms)
+        animIdle = new Animation(perso, framesIdle, 150);
+        animGauche = new Animation(perso, framesGauche, 100);
+        animDroite = new Animation(perso, frameDroite, 100);
+        animSaut = new Animation(perso, framesSaut, 120);
+
+        animIdle.start();
     }
 
     public ImageView getImageView() {
@@ -24,8 +46,33 @@ public class VueJoueur {
     }
 
     public void miseAJourPosition(Joueur joueur) {
-        perso.setLayoutX(joueur.getX());
-        perso.setLayoutY(joueur.getY());
+        double x = joueur.getX();
+        double y = joueur.getY();
+
+        perso.setLayoutX(x);
+        perso.setLayoutY(y);
+
+        boolean enSaut = joueur.getVitesseY() != 0;
+
+        if (enSaut) {
+            jouerAnimation(animSaut);
+        } else {
+            switch (joueur.direction) {  // Assure-toi que "direction" est public ou ajoute un getter getDirection()
+                case GAUCHE -> jouerAnimation(animGauche);
+                case DROITE -> jouerAnimation(animDroite);
+                default -> jouerAnimation(animIdle);
+            }
+        }
+    }
+
+
+    private void jouerAnimation(Animation animation) {
+        if (animActuelle != animation) {
+            System.out.println("Changement animation: " + animation);
+            if (animActuelle != null) animActuelle.stop();
+            animActuelle = animation;
+            animActuelle.start();
+        }
     }
 
 }
