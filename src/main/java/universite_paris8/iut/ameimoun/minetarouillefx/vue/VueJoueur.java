@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
@@ -9,6 +10,7 @@ public class VueJoueur {
     public static final int TAILLE_PERSO = 30;
 
     private final ImageView perso;
+    private final Group container;
     private Animation animDroite;
     private Animation animGauche;
     private Animation animIdle;
@@ -18,8 +20,20 @@ public class VueJoueur {
 
     public VueJoueur(Joueur joueur) {
         perso = new ImageView();
+        container = new Group(perso);
         perso.setFitWidth(TAILLE_PERSO);
         perso.setFitHeight(TAILLE_PERSO);
+
+        container.translateXProperty().bind(joueur.xProperty());
+        container.translateYProperty().bind(joueur.yProperty());
+
+        joueur.xProperty().addListener((obs, oldX, newX) -> {
+            mettreAJourAnimation(joueur);
+        });
+
+        joueur.yProperty().addListener((obs, oldY, newY) -> {
+            mettreAJourAnimation(joueur);
+        });
 
         // Chargement des sprite sheets
         Image spriteIdle = Loader.loadImage("/img/joueur/idle.png");
@@ -43,30 +57,25 @@ public class VueJoueur {
         animIdle.start();
     }
 
-    public ImageView getImageView() {
-        return perso;
+    public Group getNode() {
+        return container;
     }
 
-    public void miseAJourPosition(Joueur joueur) {
-        double x = joueur.getX();
-        double y = joueur.getY();
 
-        perso.setLayoutX(x);
-        perso.setLayoutY(y);
 
+    public void mettreAJourAnimation(Joueur joueur) {
         boolean enSaut = joueur.getVitesseY() != 0;
 
         if (enSaut) {
             jouerAnimation(animSaut);
         } else {
-            switch (joueur.direction) {  // Assure-toi que "direction" est public ou ajoute un getter getDirection()
+            switch (joueur.direction) {
                 case GAUCHE -> jouerAnimation(animGauche);
                 case DROITE -> jouerAnimation(animDroite);
                 default -> jouerAnimation(animIdle);
             }
         }
     }
-
 
     private void jouerAnimation(Animation animation) {
         if (animActuelle != animation) {

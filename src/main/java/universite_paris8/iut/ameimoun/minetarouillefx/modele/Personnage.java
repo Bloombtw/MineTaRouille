@@ -1,14 +1,23 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
+import java.util.Properties;
+
 public class Personnage {
 
-    protected double x;
-    protected double y;
+    private final DoubleProperty x = new SimpleDoubleProperty();
+    private final DoubleProperty y = new SimpleDoubleProperty();
+
+    public DoubleProperty xProperty() { return x; }
+    public DoubleProperty yProperty() { return y; }
+
+
 
     private double pointsDeVieMax;
     private double pointsDeVie;
@@ -30,8 +39,8 @@ public class Personnage {
     private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVieMax, String nom) {
-        this.x = x;
-        this.y = y;
+        this.x.set(x);
+        this.y.set(y);
         this.pointsDeVieMax = pointsDeVieMax;
         this.pointsDeVie = pointsDeVieMax;
         this.nom = nom;
@@ -47,13 +56,6 @@ public class Personnage {
 
     // Mvts
 
-    public void placer(double x, double y) {
-        this.x = x;
-        this.y = y;
-        getPerso().setTranslateX(x);
-        getPerso().setTranslateY(y);
-    }
-
     public void sauter() {
         if (peutSauter) {
             vitesseY = Constantes.FORCE_SAUT;
@@ -62,17 +64,17 @@ public class Personnage {
     }
 
     public void deplacerGauche() {
-        double futurX = x - Constantes.VITESSE_DEPLACEMENT;
-        if (!collision(futurX, y)) {
-            x = futurX;
+        double futurX = getX() - Constantes.VITESSE_DEPLACEMENT;
+        if (!collision(futurX, getY())) {
+            setX(futurX);
         }
         direction = Direction.GAUCHE;
     }
 
     public void deplacerDroite() {
-        double futurX = x + Constantes.VITESSE_DEPLACEMENT;
-        if (!collision(futurX, y)) {
-            x = futurX;
+        double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
+        if (!collision(futurX, getY())) {
+            setX(futurX);
         }
         direction = Direction.DROITE;
     }
@@ -83,10 +85,10 @@ public class Personnage {
 
     public void gravite() {
         vitesseY += Constantes.GRAVITE;
-        double futurY = y + vitesseY;
+        double futurY = getY() + vitesseY;
 
-        if (!collision(x, futurY)) {
-            y = futurY;
+        if (!collision(getX(), futurY)) {
+            setY(futurY);
         } else {
             vitesseY = 0;
             peutSauter = true;
@@ -109,28 +111,19 @@ public class Personnage {
     }
 
 
-    public void ajouterAuTilePane(TilePane tilePane) {
-        tilePane.getChildren().add(getPerso());
-        getPerso().setTranslateX(x);
-        getPerso().setTranslateY(y);
-    }
+    public double getX() { return x.get(); }
+    public void setX(double val) { x.set(val); }
+
+    public double getY() { return y.get(); }
+    public void setY(double val) { y.set(val); }
+
 
     public boolean onGround() {
         return getY() >= carte.getHauteur() - Constantes.TAILLE_PERSO;
     }
 
     // === À surcharger dans Joueur ===
-    public ImageView getPerso() {
-        return null;
-    }
 
-    public int getX() { return (int) x; }
-    public void setX(double x) { this.x = x; }
-
-    public int getY() { return (int) y; }
-    public void setY(double y) { this.y = y; }
-
-    public double getVitesseDeplacement() { return Constantes.VITESSE_DEPLACEMENT; }
     public double getVitesseY() { return vitesseY; }
     public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
 

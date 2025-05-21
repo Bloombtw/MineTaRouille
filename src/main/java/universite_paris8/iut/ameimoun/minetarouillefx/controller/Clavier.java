@@ -41,7 +41,6 @@ public class Clavier {
                 if (enDeplacementDroite) {
                     joueur.deplacerDroite();
                 }
-                vueJoueur.miseAJourPosition(joueur);
             }
         };
         boucleDeplacement.start();
@@ -101,7 +100,6 @@ public class Clavier {
                     enDeplacementGauche = false;
                     if (!enDeplacementDroite) {
                         joueur.arreterMouvementX();
-                        vueJoueur.miseAJourPosition(joueur);
                     }
                     break;
 
@@ -109,7 +107,6 @@ public class Clavier {
                     enDeplacementDroite = false;
                     if (!enDeplacementGauche) {
                         joueur.arreterMouvementX();
-                        vueJoueur.miseAJourPosition(joueur);
                     }
                     break;
 

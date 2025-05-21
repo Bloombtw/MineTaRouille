@@ -57,7 +57,7 @@ public class JeuController implements Initializable {
         joueurModele = new Joueur();
         debugManager = new DebugManager(rootPane, joueurModele);
         joueurVue = new VueJoueur(joueurModele);
-        rootPane.getChildren().add(joueurVue.getImageView());
+        rootPane.getChildren().add(joueurVue.getNode());
     }
 
     private void initialiserBarreDeVie() {
@@ -74,18 +74,6 @@ public class JeuController implements Initializable {
         vueVie.mettreAJour(vie.getVieActuelle(), vie.getVieMax());
         rootPane.getChildren().add(vueVie.getNoeud());
 
-//        //degat tout 2sec
-//        new AnimationTimer() {
-//            private long lastUpdate = 0;
-//
-//            @Override
-//            public void handle(long now) {
-//                if (now - lastUpdate > 2_000_000_000L) {
-//                    vie.subirDegats(10);
-//                    lastUpdate = now;
-//                }
-//            }
-//        }.start();
     }
 
     private void initialiserInventaire() {
@@ -138,7 +126,6 @@ public class JeuController implements Initializable {
 
     private void mettreAJourJeu() {
         joueurModele.gravite();
-        joueurVue.miseAJourPosition(joueurModele);
         gererVie();
         if (debugManager.isDebugVisible()) {
             debugManager.update();
@@ -186,6 +173,4 @@ public class JeuController implements Initializable {
     private void handleQuitter() {
         Platform.exit();
     }
-
-
 }

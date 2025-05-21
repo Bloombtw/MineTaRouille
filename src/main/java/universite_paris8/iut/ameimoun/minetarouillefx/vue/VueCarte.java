@@ -40,7 +40,7 @@ public class VueCarte {
 
         for (int y = 0; y < terrain[0].length; y++) {
             for (int x = 0; x < terrain[0][0].length; x++) {
-                Pane cellule = new StackPane();
+                Pane cellule = new Pane();
                 for (int layer = 0; layer < nbCouches; layer++) {
                     ajouterBloc(terrain[layer][y][x], cellule);
                 }

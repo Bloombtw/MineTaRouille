@@ -165,6 +165,7 @@ public class Carte {
             terrain[2][arbreY - 3][arbreX - 1] = Bloc.FEUILLAGE_ACACIA;
             terrain[2][arbreY - 3][arbreX + 1] = Bloc.FEUILLAGE_ACACIA;
 
+
             int nbEtoiles = 6;
             for (int i = 0; i < nbEtoiles; i++) {
                 int xEtoile = rand.nextInt(Constantes.NB_COLONNES);

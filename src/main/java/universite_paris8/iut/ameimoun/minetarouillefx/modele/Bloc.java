@@ -41,13 +41,6 @@ public enum Bloc {
         this.estSolide = estSolide;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
 
     public boolean estSolide() {
         return estSolide;
