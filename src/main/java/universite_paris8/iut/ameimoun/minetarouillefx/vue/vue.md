@@ -27,7 +27,7 @@ Actuellement, ce package contient **6 classes**, dont **4 actives sans bug**.
 - **`miseAJourPosition()`**  
   → Modifie la position du **Joueur** via `setLayoutX()` et `setLayoutY()`.
 -ajt d'animation (gérer le bug côté gauche)
-- Systeme de découpage de frames appelé de la classe Animation.
+- Système de découpage de frames appelé de la classe Animation.
 ---
 
 ## Dernières modifications :
