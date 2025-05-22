@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 
 import javafx.beans.Observable;
+import javafx.scene.text.Text;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -10,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
+
+import java.io.InputStream;
 
 public class VueInventaire extends HBox {
 
@@ -36,11 +39,44 @@ public class VueInventaire extends HBox {
             StackPane caseSlot = new StackPane(slot);
 
             if (item != null) {
-                String cheminImage = "/img/items/" + item.getNom().toLowerCase().replace("é", "e") + ".png";
-                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(cheminImage)));
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
-                caseSlot.getChildren().add(imageView);
+                String nomFichier = item.getNom()
+                        .toLowerCase()
+                        .replace("é", "e")
+                        .replace("è", "e")
+                        .replace("à", "a")
+                        .replace("ù", "u")
+                        .replace(" ", "_");
+
+                // 1. Tente dossier des items classiques
+                String cheminImage = "/img/items/" + nomFichier + ".png";
+                InputStream stream = getClass().getResourceAsStream(cheminImage);
+
+                // 2. Si pas trouvé, tente dossier des blocs solides
+                if (stream == null) {
+                    cheminImage = "/img/blocs/solide/" + nomFichier + ".png";
+                    stream = getClass().getResourceAsStream(cheminImage);
+                }
+
+                // 3. Affiche image ou fallback texte
+                if (stream != null) {
+                    ImageView imageView = new ImageView(new Image(stream));
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+                    caseSlot.getChildren().add(imageView);
+                } else {
+                    Text fallback = new Text(item.getNom());
+                    fallback.setFill(Color.WHITE);
+                    caseSlot.getChildren().add(fallback);
+                    System.out.println("Image non trouvée pour : " + nomFichier);
+                }
+
+                if (item.getQuantite() > 1) {
+                    Text qteText = new Text("x" + item.getQuantite());
+                    qteText.setFill(Color.WHITE);
+                    qteText.setTranslateX(15); // ajuste selon la position
+                    qteText.setTranslateY(15);
+                    caseSlot.getChildren().add(qteText);
+                }
             }
 
             getChildren().add(caseSlot);

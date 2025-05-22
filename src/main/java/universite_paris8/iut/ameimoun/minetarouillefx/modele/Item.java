@@ -14,6 +14,7 @@ public class Item {
     private final Type type;
     private final Rarete rarete;
     private double x, y;
+    private int quantite = 1;
 
     public Item(int id, String nom, int stackSize, String description, Type type, Rarete rarete) {
         this.id = id;
@@ -41,8 +42,17 @@ public class Item {
         i.setY(y * Constantes.TAILLE_PERSO);
 
         this.listeDeToutLesItems.add(i);
+    }
 
-        System.out.println("Item ajouté à la position : " + x + ", " + y);
+    public void appliquerGravite(Carte carte) {
+        double nouvelleY = y + Constantes.GRAVITE;
+
+        int blocDessousX = (int) (x / Constantes.TAILLE_TUILE);
+        int blocDessousY = (int) ((nouvelleY + Constantes.TAILLE_TUILE / 2) / Constantes.TAILLE_TUILE);
+
+        if (!carte.estBlocSolide(blocDessousX, blocDessousY)) {
+            y = nouvelleY;
+        }
     }
 
     public void retirerItem(Item i){
@@ -55,4 +65,9 @@ public class Item {
     public double getY() { return y; }
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
+    public int getQuantite() { return quantite; }
+
+    public void incrementeQuantite(int n) {
+        this.quantite += n;
+    }
 }

@@ -9,11 +9,8 @@
     import javafx.scene.shape.Rectangle;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
-    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+    import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
     import javafx.application.Platform;
-    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 
     import javafx.beans.value.ChangeListener;
@@ -21,7 +18,10 @@
     import javafx.scene.input.MouseButton;
 
     import java.net.URL;
+    import java.util.Iterator;
     import java.util.ResourceBundle;
+    import java.util.List;
+    import java.util.ArrayList;
 
     public class JeuController implements Initializable {
         @FXML
@@ -42,6 +42,8 @@
         private DebugManager debugManager;
         private Rectangle overlayDegats; // Declared here
         private double derniereVieConnue;
+        private final List<Item> itemsAuSol = new ArrayList<>();
+        private final List<VueItem> vuesItemsAuSol = new ArrayList<>();
 
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,8 +99,8 @@
             inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
             inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
             vueInventaire = new VueInventaire(inventaire);
-            vueInventaire.setLayoutX(20);
-            vueInventaire.setLayoutY(950);
+            AnchorPane.setTopAnchor(vueInventaire, 10.0);
+            AnchorPane.setRightAnchor(vueInventaire, 10.0);
             rootPane.getChildren().add(vueInventaire);
             inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
                 joueurVue.mettreAJourItemEnMain();
@@ -107,53 +109,78 @@
 
 
         private void initialiserControles() {
+            initialiserClavier();
+            initialiserClicSouris();
+        }
+
+        private void initialiserClavier() {
             clavier = new Clavier(joueurModele, inventaire, vueInventaire, debugManager);
             clavier.gestionClavier(tileMap);
             tileMap.setFocusTraversable(true);
             Platform.runLater(() -> tileMap.requestFocus());
+        }
 
+        private void initialiserClicSouris() {
             tileMap.setOnMouseClicked(event -> {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    double mouseX = event.getX();
-                    double mouseY = event.getY();
+                if (event.getButton() != MouseButton.PRIMARY) return;
 
-                    int xBlocCible = (int) (mouseX / Constantes.TAILLE_TUILE);
-                    int yBlocCible = (int) (mouseY / Constantes.TAILLE_TUILE);
+                int xBlocCible = (int) (event.getX() / Constantes.TAILLE_TUILE);
+                int yBlocCible = (int) (event.getY() / Constantes.TAILLE_TUILE);
 
-                    int xJoueurBloc = (int) ((joueurModele.getX() + joueurModele.getLargeur() / 2.0) / Constantes.TAILLE_TUILE);
-                    int yJoueurBloc = (int) ((joueurModele.getY() + joueurModele.getHauteur() / 2.0) / Constantes.TAILLE_TUILE);
+                int xJoueurBloc = (int) ((joueurModele.getX() + joueurModele.getLargeur() / 2.0) / Constantes.TAILLE_TUILE);
+                int yJoueurBloc = (int) ((joueurModele.getY() + joueurModele.getHauteur() / 2.0) / Constantes.TAILLE_TUILE);
 
-                    double distance = Math.sqrt(
-                            Math.pow(xBlocCible - xJoueurBloc, 2) +
-                                    Math.pow(yBlocCible - yJoueurBloc, 2)
-                    );
+                if (distanceEntre(xBlocCible, yBlocCible, xJoueurBloc, yJoueurBloc) > 2.0) return;
 
-                    if (distance <= 2.0) { // Distance de casse (peut être ajustée)
-                        Carte carte = Carte.getInstance();
-                        boolean blocCasse = false;
-                        int coucheCasse = -1;
-
-                        // On parcourt les couches du haut vers le bas pour casser le bloc le plus "visible"
-                        for (int couche = carte.getNbCouches() - 1; couche >= 0; couche--) {
-                            if (carte.estDansLaMap(xBlocCible, yBlocCible)) {
-                                if (carte.casserBloc(couche, xBlocCible, yBlocCible)) {
-                                    blocCasse = true;
-                                    coucheCasse = couche; // On stocke la couche du bloc cassé
-                                    break; // On a cassé un bloc, on arrête de chercher
-                                }
-                            }
-                        }
-
-                        if (blocCasse) {
-                            // Appelle la méthode de mise à jour spécifique de la vue pour la tuile concernée
-                            // La couche ici n'est pas utilisée directement par la méthode de mise à jour,
-                            // car elle re-scanne toutes les couches pour la tuile.
-                            vueCarte.mettreAJourAffichage(xBlocCible, yBlocCible, coucheCasse);
-                        }
-                    }
-                }
+                casserBlocEtMettreAJour(xBlocCible, yBlocCible);
             });
         }
+
+        private double distanceEntre(int x1, int y1, int x2, int y2) {
+            return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        }
+
+        private void casserBlocEtMettreAJour(int x, int y) {
+            Carte carte = Carte.getInstance();
+            boolean blocCasse = false;
+            int coucheCasse = -1;
+
+            for (int couche = carte.getNbCouches() - 1; couche >= 0; couche--) {
+                if (!carte.estDansLaMap(x, y)) continue;
+
+                Bloc bloc = carte.getTerrain()[couche][y][x];
+                if (carte.casserBloc(couche, x, y)) {
+                    blocCasse = true;
+                    coucheCasse = couche;
+
+                    if (bloc != null && bloc.estSolide()) {
+                        String nom = bloc.name().toLowerCase().replace("_", " ");
+                        Item item = new Item(1000 + bloc.ordinal(), nom, 1, "Bloc cassé : " + nom, Type.ARME, Rarete.COMMUN);
+                        item.setX(x * Constantes.TAILLE_TUILE + Constantes.TAILLE_TUILE / 2.0);
+                        item.setY(y * Constantes.TAILLE_TUILE + Constantes.TAILLE_TUILE / 2.0);
+
+                        itemsAuSol.add(item);
+
+                        VueItem vueItem = new VueItem(item);
+                        vuesItemsAuSol.add(vueItem);
+                        rootPane.getChildren().add(vueItem.getImageView());
+                    }
+                }
+            }
+
+            if (blocCasse) {
+                vueCarte.mettreAJourAffichage(x, y, coucheCasse);
+            }
+        }
+
+        private void ajouterBlocDansInventaire(Bloc bloc) {
+            if (bloc != null && bloc.estSolide()) {
+                String nom = bloc.name().toLowerCase().replace("_", " ");
+                Item item = new Item(1000 + bloc.ordinal(), nom, 1, "Bloc cassé : " + nom, Type.ARME, Rarete.COMMUN);
+                inventaire.ajouterItem(item);
+            }
+        }
+
 
         private void initialiserCarte() {
             vueCarte = new VueCarte(Carte.getInstance());
@@ -201,6 +228,37 @@
             joueurModele.gravite();
             joueurModele.getVie().verifierDegats(joueurModele, Carte.getInstance());
             gererFinDeJeu();
+
+            Carte carte = Carte.getInstance();
+
+            // Appliquer la gravité aux items au sol
+            for (Item item : itemsAuSol) {
+                item.appliquerGravite(carte);
+            }
+
+            // Gestion du ramassage des items au sol
+            Iterator<Item> itItem = itemsAuSol.iterator();
+            Iterator<VueItem> itVue = vuesItemsAuSol.iterator();
+
+            while (itItem.hasNext() && itVue.hasNext()) {
+                Item item = itItem.next();
+                VueItem vue = itVue.next();
+
+                double distance = Math.hypot(
+                        (joueurModele.getX() + Constantes.TAILLE_PERSO / 2.0) - item.getX(),
+                        (joueurModele.getY() + Constantes.TAILLE_PERSO / 2.0) - item.getY()
+                );
+
+                if (distance < Constantes.TAILLE_TUILE / 2.0) {
+                    inventaire.ajouterItem(item);
+                    rootPane.getChildren().remove(vue.getImageView());
+                    itItem.remove();
+                    itVue.remove();
+                } else {
+                    vue.updatePosition(item);
+                }
+            }
+
             if (debugManager.isDebugVisible()) {
                 debugManager.update();
             }
