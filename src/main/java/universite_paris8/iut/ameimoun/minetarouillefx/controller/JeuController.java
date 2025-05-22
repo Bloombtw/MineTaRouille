@@ -89,6 +89,7 @@ public class JeuController implements Initializable {
             }
         });
     }
+
     private void initialiserInventaire() {
         inventaire = new Inventaire();
         inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
