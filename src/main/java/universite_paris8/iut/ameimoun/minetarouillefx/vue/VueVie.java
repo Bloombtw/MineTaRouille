@@ -2,14 +2,13 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Vie;
 import javafx.util.Duration;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Vie;
 
 public class VueVie {
 
@@ -27,55 +26,79 @@ public class VueVie {
     public VueVie(Vie vieModele, Region rootPane) {
         this.vieModele = vieModele;
 
-        fond = new Rectangle(LARGEUR_BARRE_MAX, HAUTEUR);
-        fond.setFill(Color.DARKGRAY);
-
-        barre = new Rectangle(LARGEUR_BARRE_MAX, HAUTEUR);
-        barre.setFill(Color.LIMEGREEN);
-
+        fond = creerFond();
+        barre = creerBarre();
         containerBarreVie = new StackPane(fond, barre);
-        containerBarreVie.setTranslateX(20);
-        containerBarreVie.setTranslateY(20);
-        barre.widthProperty().bind(
-                vieModele.vieActuelleProperty().divide(vieModele.vieMaxProperty()).multiply(LARGEUR_BARRE_MAX)
-        );
+        configurerPositionBarre();
 
-        vieModele.vieActuelleProperty().addListener(new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (!vieModele.isTakingDamageProperty().get()) {
-                    mettreAJourCouleurBarre(newValue.doubleValue(), vieModele.vieMaxProperty().get());
-                }
-            }
-        });
+        lierLargeurBarre();
+        lierModele();
+        overlayDegatsGlobal = creerOverlayDegats(rootPane);
+        fadeTransition = creerFadeTransition();
 
-        vieModele.isTakingDamageProperty().addListener(new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean isCurrentlyTakingDamage) {
-                if (isCurrentlyTakingDamage) {
-                    barre.setFill(Color.BLUE);
-                } else {
-                    mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
-                }
-            }
-        });
-
-        overlayDegatsGlobal = new Rectangle();
-        overlayDegatsGlobal.setFill(Color.RED);
-        overlayDegatsGlobal.setOpacity(0.0);
-        overlayDegatsGlobal.setVisible(false);
-
-        overlayDegatsGlobal.widthProperty().bind(rootPane.widthProperty());
-        overlayDegatsGlobal.heightProperty().bind(rootPane.heightProperty());
-
-        fadeTransition = new FadeTransition(Duration.millis(DUREE_FLASH_MS), overlayDegatsGlobal);
-        fadeTransition.setFromValue(0.3);
-        fadeTransition.setToValue(0.0);
-        fadeTransition.setOnFinished(event -> {
-            overlayDegatsGlobal.setVisible(false);
-        });
         vieModele.ajouterCallbackDegatsSubis(this::afficherDegats);
         mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+    }
+
+    private Rectangle creerFond() {
+        Rectangle fond = new Rectangle(LARGEUR_BARRE_MAX, HAUTEUR);
+        fond.setFill(Color.DARKGRAY);
+        return fond;
+    }
+
+    private Rectangle creerBarre() {
+        Rectangle barre = new Rectangle(LARGEUR_BARRE_MAX, HAUTEUR);
+        barre.setFill(Color.LIMEGREEN);
+        return barre;
+    }
+
+    private void configurerPositionBarre() {
+        containerBarreVie.setTranslateX(20);
+        containerBarreVie.setTranslateY(20);
+    }
+
+    private void lierLargeurBarre() {
+        barre.widthProperty().bind(
+                vieModele.vieActuelleProperty()
+                        .divide(vieModele.vieMaxProperty())
+                        .multiply(LARGEUR_BARRE_MAX)
+        );
+    }
+
+    private void lierModele() {
+        vieModele.vieActuelleProperty().addListener((obs, oldVal, newVal) -> {
+            if (!vieModele.isTakingDamageProperty().get()) {
+                mettreAJourCouleurBarre(newVal.doubleValue(), vieModele.vieMaxProperty().get());
+            }
+        });
+
+        vieModele.isTakingDamageProperty().addListener((obs, oldVal, isTakingDamage) -> {
+            if (isTakingDamage) {
+                barre.setFill(Color.BLUE);
+            } else {
+                mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+            }
+        });
+    }
+
+    private Rectangle creerOverlayDegats(Region rootPane) {
+        Rectangle overlay = new Rectangle();
+        overlay.setFill(Color.RED);
+        overlay.setOpacity(0.0);
+        overlay.setVisible(false);
+
+        overlay.widthProperty().bind(rootPane.widthProperty());
+        overlay.heightProperty().bind(rootPane.heightProperty());
+
+        return overlay;
+    }
+
+    private FadeTransition creerFadeTransition() {
+        FadeTransition ft = new FadeTransition(Duration.millis(DUREE_FLASH_MS), overlayDegatsGlobal);
+        ft.setFromValue(0.3);
+        ft.setToValue(0.0);
+        ft.setOnFinished(event -> overlayDegatsGlobal.setVisible(false));
+        return ft;
     }
 
     private void mettreAJourCouleurBarre(double vieActuelle, double vieMax) {
@@ -91,12 +114,10 @@ public class VueVie {
 
     public void afficherDegats() {
         Platform.runLater(() -> {
-            if (overlayDegatsGlobal != null) {
-                fadeTransition.stop();
-                overlayDegatsGlobal.setOpacity(0.3);
-                overlayDegatsGlobal.setVisible(true);
-                fadeTransition.playFromStart();
-            }
+            fadeTransition.stop();
+            overlayDegatsGlobal.setOpacity(0.3);
+            overlayDegatsGlobal.setVisible(true);
+            fadeTransition.playFromStart();
         });
     }
 

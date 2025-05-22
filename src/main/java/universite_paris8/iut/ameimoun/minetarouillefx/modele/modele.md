@@ -96,11 +96,24 @@
 
     La classe Vie représente l'état de santé de ton personnage dans le jeu. C'est le modèle. Elle ne s'occupe PAS de dessiner la barre de vie, ni des couleurs, ni des animations. Son unique rôle est de :
 
+        Attributs principaux :
+        vieMax : la vie maximale du joueur.
+        vieActuelle : la vie actuelle.
+        onDamageTakenCallback : une fonction à appeler quand le joueur subit des dégâts.    
+
     Gère :
 
-    -Garder la valeur actuelle de la vie (par exemple, 100 points sur 100).
-    -Savoir la vie maximale (par exemple, 100).
-    -Appliquer des dégâts (subirDegats()).
-    -Appliquer des soins (soigner()).
-    -Vérifier si le personnage est mort (estMort()).
-    -Détecter si le personnage est actuellement sur un danger (comme du feu ou un cactus) via verifierDegats().
+        -Garder la valeur actuelle de la vie (par exemple, 100 points sur 100).
+        -Savoir la vie maximale (par exemple, 100).
+        -Appliquer des dégâts (subirDegats()).
+        -Appliquer des soins (soigner()).
+        -Vérifier si le personnage est mort (estMort()).
+        -Détecter si le personnage est actuellement sur un danger (comme du feu ou un cactus) via verifierDegats().
+
+>Modification apportée : 
+    le listener n'est plus apl dans le constructeur, mais dans subirDegat.
+    Faire attention à ne pas modifier vieActuelle directement (on prend soigner et subirDegat).
+
+> note : subirDegats() : Réduit la vie du joueur. Si elle diminue, le callback est déclenché (ex. effet visuel dans la vue).
+> AjouterCallbackDegatsSubis() : Permet à une vue de s'abonner pour être notifiée en cas de dégâts (utile pour jouer une animation).
+> callbackDegatsSubis : représente la liaison entre Vie et VueVie

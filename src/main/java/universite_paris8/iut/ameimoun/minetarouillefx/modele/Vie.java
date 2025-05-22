@@ -4,8 +4,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 import java.util.ArrayList;
@@ -15,29 +13,19 @@ public class Vie {
 
     private final DoubleProperty vieMax;
     private DoubleProperty vieActuelle;
-    private final List<Runnable> damageTakenCallbacks;
-    private final BooleanProperty isTakingDamage;
+    private final List<Runnable> actionsSurDegats;
+    private final BooleanProperty subitDegats;
+    private Runnable callbackDegatsSubis;
 
     public Vie(double vieMaxInitiale) {
         this.vieMax = new SimpleDoubleProperty(vieMaxInitiale);
         this.vieActuelle = new SimpleDoubleProperty(vieMaxInitiale);
-        this.damageTakenCallbacks = new ArrayList<>();
-        this.isTakingDamage = new SimpleBooleanProperty(false);
-
-        this.vieActuelle.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (newValue.doubleValue() < oldValue.doubleValue()) {
-                    for (Runnable callback : damageTakenCallbacks) {
-                        callback.run();
-                    }
-                }
-            }
-        });
+        this.actionsSurDegats = new ArrayList<>();
+        this.subitDegats = new SimpleBooleanProperty(false);
     }
 
     public BooleanProperty isTakingDamageProperty() {
-        return isTakingDamage;
+        return subitDegats;
     }
 
     public DoubleProperty vieMaxProperty() {
@@ -48,12 +36,16 @@ public class Vie {
         return vieActuelle;
     }
     public void ajouterCallbackDegatsSubis(Runnable callback) {
-        this.damageTakenCallbacks.add(callback);
+        this.actionsSurDegats.add(callback);
     }
 
-    public void subirDegats(double montant) {
-        double nouvelleVie = vieActuelle.get() - montant;
+    public void subirDegats(double quantite) {
+        double ancienneVie = vieActuelle.get();
+        double nouvelleVie = ancienneVie - quantite;
         if (nouvelleVie < 0) nouvelleVie = 0;
+        if (nouvelleVie < ancienneVie && callbackDegatsSubis != null) {
+            callbackDegatsSubis.run(); // On déclenche ici
+        }
         this.vieActuelle.set(nouvelleVie);
     }
 
@@ -82,7 +74,7 @@ public class Vie {
                 }
             }
         }
-        this.isTakingDamage.set(currentlyOnHazard);
+        this.subitDegats.set(currentlyOnHazard);
     }
 
     public boolean estMort() {
@@ -93,6 +85,6 @@ public class Vie {
         double nouvelleVie = vieActuelle.get() + quantite;
         if (nouvelleVie > vieMax.get()) nouvelleVie = vieMax.get();
         this.vieActuelle.set(nouvelleVie);
-    }
+    }//utile pour la suite si on prend des potions
 
 }
