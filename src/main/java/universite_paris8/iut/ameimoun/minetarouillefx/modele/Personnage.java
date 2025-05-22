@@ -124,6 +124,13 @@ public class Personnage {
     public double getY() { return y.get(); }
     public void setY(double val) { y.set(val); }
 
+    public double getLargeur() {
+        return Constantes.TAILLE_PERSO;
+    }
+
+    public double getHauteur() {
+        return Constantes.TAILLE_PERSO;
+    }
 
     public boolean onGround() {
         return getY() >= carte.getHauteur() - Constantes.TAILLE_PERSO;

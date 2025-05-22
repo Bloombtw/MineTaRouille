@@ -8,71 +8,6 @@ public class Carte {
 
     private static Carte instance;
 
-    /**
-     * Constructeur de la carte.
-     * Initialise le terrain avec des blocs.
-     * La carte est toujours la même.
-     */
-    /*
-    private Carte() {
-        terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
-
-        // Couche 0 : sol
-        for (int y = 0; y < Constantes.NB_LIGNES; y++) {
-            for (int x = 0; x < Constantes.NB_COLONNES; x++) {
-                if (y < 25) {
-                    terrain[0][y][x] = Bloc.CIEL_SOMBRE;
-
-                } else if (y == 25) {
-                    terrain[1][y][x] = Bloc.SABLE_ROUGE;
-                } else {
-                    terrain[1][y][x] = Bloc.TERRE_STYLEE_SOMBRE;
-                }
-            }
-
-        }
-        Random rand = new Random();
-        int nbEtoiles = 6;
-        for (int i = 0; i < nbEtoiles; i++) {
-            int xEtoile = rand.nextInt(Constantes.NB_COLONNES);
-            int yEtoile = rand.nextInt(7); // Choisir le nb de couches (en partant du haut)
-            if (terrain[2][yEtoile][xEtoile] == null) {
-                terrain[2][yEtoile][xEtoile] = Bloc.ETOILE;
-            }
-        }
-
-        int arbreX = 10;
-        // Le layer [ ][24][ ] représente le sol
-
-        // L'escalier pour monter sur l'arbre des deux côtés
-        terrain[2][22][arbreX - 2] = Bloc.ESCALIER_DROITE;
-        terrain[2][23][arbreX - 3] = Bloc.ESCALIER_DROITE;
-        terrain[2][24][arbreX - 4] = Bloc.ESCALIER_DROITE;
-
-
-        // L'arbre
-        terrain[2][24][arbreX] = Bloc.TRONC;
-        terrain[2][23][arbreX] = Bloc.TRONC;
-        terrain[2][22][arbreX] = Bloc.TRONC;
-        terrain[2][21][arbreX] = Bloc.FEUILLAGE;
-        terrain[2][21][arbreX - 1] = Bloc.FEUILLAGE;
-        terrain[2][21][arbreX + 1] = Bloc.FEUILLAGE;
-        terrain[2][22][arbreX - 1] = Bloc.FEUILLAGE;
-        terrain[2][22][arbreX + 1] = Bloc.FEUILLAGE;
-
-
-        // Décors en plus
-        terrain[2][10][15] = Bloc.CORBEAU;
-        terrain[2][6][59] = Bloc.LUNE_ZELDA;
-        terrain[2][24][31] = Bloc.ARBUSTE_MORT;
-        terrain[2][24][45] = Bloc.ARBUSTE_MORT;
-        terrain[2][24][12] = Bloc.ARBUSTE_MORT;
-        terrain[2][24][23] = Bloc.ARBUSTE_MORT;
-
-        System.out.println("Carte générée");
-    }
-*/
-
         public Carte() {
         terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
         Random rand = new Random();
@@ -219,4 +154,19 @@ public class Carte {
         return false;
     }
 
+    public boolean casserBloc(int couche, int x, int y) {
+        if (!estDansLaMap(x, y) || terrain[couche][y][x] == null) {
+            return false; // Impossible de casser un bloc hors carte ou déjà inexistant
+        }
+
+        Bloc blocACasser = terrain[couche][y][x];
+
+        // Seuls les blocs solides peuvent être cassés pour révéler ce qu'il y a derrière
+        // ou si c'est un bloc de décor "cassable" (comme l'arbuste mort ou le feu)
+        if (blocACasser.estSolide() || blocACasser == Bloc.ARBUSTE_MORT) {
+            terrain[couche][y][x] = Bloc.CIEL_VIOLET; // Remplace le bloc cassé par un bloc transparent
+            return true;
+        }
+        return false; // Le bloc n'est pas cassable
+    }
 }

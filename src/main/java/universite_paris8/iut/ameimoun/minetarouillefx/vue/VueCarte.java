@@ -23,7 +23,7 @@ public class VueCarte {
     }
 
     private void ajouterBloc(Bloc bloc, Pane cellule) {
-        if (bloc != null && bloc != Bloc.CIEL) {
+        if (bloc != null && bloc != Bloc.TRANSPARENT) {
             Image image = getImageAssociee(bloc);
             if (image != null) {
                 ImageView img = new ImageView(image);
@@ -35,6 +35,7 @@ public class VueCarte {
     }
 
     private void initialiserCarte() {
+        tileMap.getChildren().clear();
         Bloc[][][] terrain = carte.getTerrain();
         int nbCouches = carte.getNbCouches();
 
@@ -90,5 +91,20 @@ public class VueCarte {
         };
         return Loader.loadImage(chemin);
 
+    }
+
+    public void mettreAJourAffichage(int x, int y, int couche) {
+        int index = y * carte.getLargeur() + x;
+        if (index >= 0 && index < tileMap.getChildren().size()) {
+            Pane cellule = (Pane) tileMap.getChildren().get(index);
+            cellule.getChildren().clear(); // Efface toutes les images de cette tuile
+
+            // Re-dessine toutes les couches pour cette tuile, maintenant que le modèle a changé
+            Bloc[][][] terrain = carte.getTerrain();
+            for (couche = 0; couche < carte.getNbCouches(); couche++) {
+                Bloc bloc = terrain[couche][y][x];
+                ajouterBloc(bloc, cellule);  // Cela ajoutera l'image si le bloc n'est pas nul et n'est pas CIEL
+            }
+        }
     }
 }

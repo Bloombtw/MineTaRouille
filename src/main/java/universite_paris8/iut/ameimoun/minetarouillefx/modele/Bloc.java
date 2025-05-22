@@ -38,6 +38,7 @@ public enum Bloc {
     private final String nom;
     private final boolean estSolide;
 
+
     Bloc(int id, String nom, boolean estSolide) {
         this.id = id;
         this.nom = nom;
@@ -46,7 +47,7 @@ public enum Bloc {
 
 
     public boolean estSolide() {
-        return estSolide;
+        return estSolide    ;
     }
 
 
@@ -57,4 +58,6 @@ public enum Bloc {
         }
         return CIEL; // Par défaut
     }
+
+
 }

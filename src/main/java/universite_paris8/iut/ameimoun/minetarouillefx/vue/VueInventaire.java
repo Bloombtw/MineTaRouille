@@ -18,11 +18,7 @@ public class VueInventaire extends HBox {
         this.inventaire = inventaire;
         setSpacing(5);
         mettreAJourAffichage();
-
-        // 🔁 Mise à jour si le contenu change
         inventaire.getSlots().addListener((Observable o) -> mettreAJourAffichage());
-
-        // 🔁 Mise à jour si la sélection change
         inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> mettreAJourAffichage());
     }
 

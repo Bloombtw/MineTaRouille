@@ -12,7 +12,7 @@ public class Inventaire {
 
     public Inventaire() {
         for (int i = 0; i < 9; i++) {
-            slots.add(null); // 9 emplacements vides
+            slots.add(null);
         }
     }
 
