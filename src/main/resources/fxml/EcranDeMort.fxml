@@ -15,7 +15,7 @@
           style="-fx-padding: 40;">
 
         <ImageView fx:id="messageMortImage"
-                   fitWidth="1600" fitHeight="480"
+                   fitWidth="1600" fitHeight="260"
                    preserveRatio="true"
                    pickOnBounds="true"
         />
