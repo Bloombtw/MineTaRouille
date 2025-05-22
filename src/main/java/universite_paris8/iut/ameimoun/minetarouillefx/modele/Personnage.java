@@ -22,18 +22,16 @@ public class Personnage {
     // private double pointsDeVieMax; // Plus besoin, la Vie gère son propre max
     // --- Fin de l'ajout ---
 
-    private String nom;
-    private int satiete;
+    private final String nom;
+    private final int satiete;
 
-    private Item[] inventaire;
+    private final Item[] inventaire;
     private Item equipedItem;
-    private int selectedSlot;
-    private boolean isMining;
-    private boolean isAttacking;
-    private boolean isAlive;
+    private final int selectedSlot;
+    private final boolean isMining;
+    private final boolean isAttacking;
+    private final boolean isAlive;
     public Direction direction;
-
-    // Déplacement / physique
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
@@ -42,25 +40,21 @@ public class Personnage {
     public Personnage(double x, double y, double pointsDeVieMax, String nom) {
         this.x.set(x);
         this.y.set(y);
-        // Initialise l'objet Vie du personnage avec les points de vie max
         this.vie = new Vie(pointsDeVieMax);
         this.nom = nom;
         this.satiete = 100;
-        this.isAlive = true; // Dépendra de la vie.estMort()
+        this.isAlive = true;
         this.isMining = false;
         this.isAttacking = false;
         this.inventaire = new Item[10];
         this.selectedSlot = 0;
         this.direction = Direction.DROITE;
-        this.carte = Carte.getInstance(); // Assurez-vous que Carte.getInstance() est géré correctement
+        this.carte = Carte.getInstance();
     }
 
-    // Nouveau : Obtenir l'objet Vie du personnage
     public Vie getVie() {
         return vie;
     }
-
-    // Méthodes de mouvement et de collision (inchangées)
 
     public void sauter() {
         if (peutSauter) {
@@ -99,8 +93,6 @@ public class Personnage {
             vitesseY = 0;
             peutSauter = true;
         }
-        // C'est ici que vous pourriez appeler la vérification des dégâts liés aux blocs
-        // vie.verifierDegats(this, carte); // À appeler dans la boucle de jeu principale plutôt
     }
 
     private boolean collision(double x, double y) {
@@ -117,21 +109,12 @@ public class Personnage {
         return false;
     }
 
-
     public double getX() { return x.get(); }
     public void setX(double val) { x.set(val); }
 
     public double getY() { return y.get(); }
     public void setY(double val) { y.set(val); }
 
-
-    public boolean onGround() {
-        return getY() >= carte.getHauteur() - Constantes.TAILLE_PERSO;
-    }
     public double getVitesseY() { return vitesseY; }
 
-    // Vous pouvez ajouter une méthode isAlive() qui se base sur la vie du personnage
-    public boolean isAlive() {
-        return !vie.estMort();
-    }
 }

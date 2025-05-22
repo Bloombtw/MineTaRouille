@@ -3,10 +3,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.AnchorPane; // Utilise AnchorPane comme rootPane
 import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color; // Peut être supprimé si Color.RED n'est plus utilisé ici
+import javafx.scene.shape.Rectangle; // Peut être supprimé si Rectangle n'est plus utilisé ici
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
@@ -16,9 +16,6 @@ import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,7 +23,7 @@ public class JeuController implements Initializable {
     @FXML
     private TilePane tileMap;
     @FXML
-    private AnchorPane rootPane;
+    private AnchorPane rootPane; // C'est le nœud racine de ta scène
     @FXML
     private AnchorPane overlayDeMort;
 
@@ -39,8 +36,6 @@ public class JeuController implements Initializable {
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
     private DebugManager debugManager;
-    private Rectangle overlayDegats; // Declared here
-    private double derniereVieConnue;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,8 +44,6 @@ public class JeuController implements Initializable {
         initialiserInventaire();
         initialiserControles();
         initialiserBarreDeVie();
-        initialiserOverlayDegats(); // Add this new initialization method
-        initialiserEcouteurDegats();
         demarrerBoucleDeJeu();
     }
 
@@ -59,35 +52,12 @@ public class JeuController implements Initializable {
         debugManager = new DebugManager(rootPane, joueurModele);
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getNode());
-        this.derniereVieConnue = joueurModele.getVie().getVieActuelle();
     }
 
     private void initialiserBarreDeVie() {
-        vueVie = new VueVie(joueurModele.getVie());
-        rootPane.getChildren().add(vueVie.getNoeud());
-    }
-
-    private void initialiserOverlayDegats() {
-        overlayDegats = new Rectangle(0, 0, rootPane.getWidth(), rootPane.getHeight());
-        overlayDegats.setFill(Color.RED);
-        overlayDegats.setOpacity(0.3);
-        overlayDegats.setVisible(false);
-        rootPane.getChildren().add(overlayDegats);
-
-        overlayDegats.widthProperty().bind(rootPane.widthProperty());
-        overlayDegats.heightProperty().bind(rootPane.heightProperty());
-    }
-
-    private void initialiserEcouteurDegats() {
-        joueurModele.getVie().vieActuelleProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (newValue.doubleValue() < oldValue.doubleValue()) {
-                    afficherDegats();
-                }
-                derniereVieConnue = newValue.doubleValue();
-            }
-        });
+        vueVie = new VueVie(joueurModele.getVie(), rootPane);
+        rootPane.getChildren().add(vueVie.getNoeudBarreVie());
+        rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal()); // Ajoute-le en première position (arrière-plan)
     }
 
     private void initialiserInventaire() {
@@ -106,10 +76,12 @@ public class JeuController implements Initializable {
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
     }
+
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
+
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
             @Override
@@ -118,26 +90,6 @@ public class JeuController implements Initializable {
             }
         };
         gameLoop.start();
-    }
-
-    public void afficherDegats() {
-        Platform.runLater(() -> {
-            if (overlayDegats != null) {
-                overlayDegats.setVisible(true);
-                new AnimationTimer() {
-                    private long start = -1;
-
-                    @Override
-                    public void handle(long now) {
-                        if (start < 0) start = now;
-                        if (now - start > 100_000_000L) { // ~100ms
-                            overlayDegats.setVisible(false);
-                            stop();
-                        }
-                    }
-                }.start();
-            }
-        });
     }
 
     private void gererFinDeJeu() {

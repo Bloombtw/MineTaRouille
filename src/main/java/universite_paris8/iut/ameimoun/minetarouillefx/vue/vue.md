@@ -28,9 +28,21 @@ Actuellement, ce package contient **6 classes**, dont **4 actives sans bug**.
   → Modifie la position du **Joueur** via `setLayoutX()` et `setLayoutY()`.
 -ajt d'animation (gérer le bug côté gauche)
 - Système de découpage de frames appelé de la classe Animation.
+- **`jouerAnimation()`**
+ Sert à lancer l'animation du joueur et elle est appelée dans majAnimation.
+- **`afficherDegats()`**
+Affiche un rectangle rouge autour du joueur (avant de mettre l'image du sprite correspondant), l'overlay est crée dans le constructeur
 ---
 
+
+## VueVie
+
+### Méthodes :
+- **`mettreAJourCouleurBarre()`**  
+  → Modifie la couleur de la barre de vie en fonction de s'il subit des dégats ou non.
+- **`afficherDegats()`**
+  Affiche la barre de vie en bleue
+---
 ## Dernières modifications :
-✅ **Création de `VueItem`** → Inspiré de **VueJoueur**, gère l'affichage visuel des objets (`ImageView`).  
-✅ **Modification de `VueJoueur`** → Optimisation pour un affichage plus propre.  
-✅ **Ajout de `updatePosition()`** → Mise à jour de la position des objets dans la scène.
+✅ **Ajout de l'affichage de dégat sur la barre de vie dans **`VueVie`**
+✅ **Modification de `VueJoueur`** → ajout d'afficher dégat pour que le perso change d'animation quand il subit des dégats

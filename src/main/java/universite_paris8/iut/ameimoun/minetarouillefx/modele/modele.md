@@ -91,3 +91,18 @@
     Gère :
         - Les coordonnées en px. (X et Y)
         -l'ajout d'Item à l'inventaire
+
+
+## Vie : 
+
+    La classe Vie représente l'état de santé de ton personnage dans le jeu. C'est le modèle. Elle ne s'occupe PAS de dessiner la barre de vie, ni des couleurs, ni des animations. Son unique rôle est de :
+    
+    Gère :
+
+        -Garder la valeur actuelle de la vie (par exemple, 100 points sur 100).
+        -Savoir la vie maximale (par exemple, 100).
+        -Appliquer des dégâts (subirDegats()).
+        -Appliquer des soins (soigner()).
+        -Vérifier si le personnage est mort (estMort()).
+        -Détecter si le personnage est actuellement sur un danger (comme du feu ou un cactus) via verifierDegats().
+
