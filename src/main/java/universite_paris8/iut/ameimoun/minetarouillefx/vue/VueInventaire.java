@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
+import javafx.beans.Observable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -10,18 +11,24 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
 public class VueInventaire extends HBox {
 
-    private Inventaire inventaire;
+    private final Inventaire inventaire;
 
     public VueInventaire(Inventaire inventaire) {
         this.inventaire = inventaire;
         setSpacing(5);
         mettreAJourAffichage();
+
+        // 🔁 Mise à jour si le contenu change
+        inventaire.getSlots().addListener((Observable o) -> mettreAJourAffichage());
+
+        // 🔁 Mise à jour si la sélection change
+        inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> mettreAJourAffichage());
     }
 
     public void mettreAJourAffichage() {
         getChildren().clear();
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < inventaire.getSlots().size(); i++) {
             Item item = inventaire.getItem(i);
 
             Rectangle slot = new Rectangle(50, 50);
@@ -40,4 +47,3 @@ public class VueInventaire extends HBox {
         }
     }
 }
-

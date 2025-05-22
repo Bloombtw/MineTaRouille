@@ -2,40 +2,26 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
-
-import java.util.Properties;
 
 public class Personnage {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
 
-    public DoubleProperty xProperty() { return x; }
-    public DoubleProperty yProperty() { return y; }
+
+    private Vie vie;
 
 
+    private final String nom;
+    private final int satiete;
 
-    private double pointsDeVieMax;
-    private double pointsDeVie;
-    private String nom;
-    private int satiete;
-
-    private Item[] inventaire;
-    private Item equipedItem;
-    private int selectedSlot;
-    private boolean isMining;
-    private boolean isAttacking;
-    private boolean estEnVie;
-    public boolean estMort() {
-        return !estEnVie;
-    }
+    private final Item[] inventaire;
+    private final int selectedSlot;
+    private final boolean isMining;
+    private final boolean isAttacking;
+    private final boolean estVivant;
     public Direction direction;
-
-    // Déplacement / physique
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
@@ -44,11 +30,10 @@ public class Personnage {
     public Personnage(double x, double y, double pointsDeVieMax, String nom) {
         this.x.set(x);
         this.y.set(y);
-        this.pointsDeVieMax = pointsDeVieMax;
-        this.pointsDeVie = pointsDeVieMax;
+        this.vie = new Vie(pointsDeVieMax);
         this.nom = nom;
         this.satiete = 100;
-        this.estEnVie = true;
+        this.estVivant = true;
         this.isMining = false;
         this.isAttacking = false;
         this.inventaire = new Item[10];
@@ -57,7 +42,9 @@ public class Personnage {
         this.carte = Carte.getInstance();
     }
 
-    // Mvts
+    public Vie getVie() {
+        return vie;
+    }
 
     public void sauter() {
         if (peutSauter) {
@@ -98,7 +85,6 @@ public class Personnage {
         }
     }
 
-
     private boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
         int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
@@ -113,6 +99,8 @@ public class Personnage {
         return false;
     }
 
+    public DoubleProperty xProperty() { return x; }
+    public DoubleProperty yProperty() { return y; }
 
     public double getX() { return x.get(); }
     public void setX(double val) { x.set(val); }
@@ -120,28 +108,6 @@ public class Personnage {
     public double getY() { return y.get(); }
     public void setY(double val) { y.set(val); }
 
-
-    public boolean onGround() {
-        return getY() >= carte.getHauteur() - Constantes.TAILLE_PERSO;
-    }
-
-    // === À surcharger dans Joueur ===
-
     public double getVitesseY() { return vitesseY; }
-    public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
 
-    public boolean getPeutSauter() { return peutSauter; }
-    public void setPeutSauter(boolean peutSauter) { this.peutSauter = peutSauter; }
-
-    public double getPointsDeVie() {
-        return pointsDeVie;
-    }
-
-    public boolean isEstEnVie() {
-        return estEnVie;
-    }
-
-    public void setEstEnVie(boolean estEnVie) {
-        this.estEnVie = estEnVie;
-    }
 }
