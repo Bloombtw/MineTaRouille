@@ -21,11 +21,11 @@ import java.util.ResourceBundle;
 public class EcranDeMortController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        var media = Loader.getMP4("/mp4/takeTheL.mp4");
-        var player = new javafx.scene.media.MediaPlayer(media);
-        player.setAutoPlay(true);
-        player.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaView.setMediaPlayer(player);
+//        var media = Loader.getMP4("/mp4/takeTheL.mp4");
+//        var player = new javafx.scene.media.MediaPlayer(media);
+//        player.setAutoPlay(true);
+//        player.setCycleCount(MediaPlayer.INDEFINITE);
+//        mediaView.setMediaPlayer(player);
 
     }
 

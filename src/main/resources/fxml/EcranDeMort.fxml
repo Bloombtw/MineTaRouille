@@ -14,7 +14,7 @@
     <VBox alignment="CENTER" spacing="40.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-        <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" />
+        <!-- <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" /> -->
 
         <Label text=" Vous êtes mort !"
                style="-fx-font-size: 64px; -fx-text-fill: red; -fx-font-weight: bold;" />

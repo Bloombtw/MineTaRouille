@@ -43,7 +43,7 @@ public class Loader {
         return new FXMLLoader(getResource(path));
     }
 
-    public static <T> T load(String path) {
+    /*public static <T> T load(String path) {
         try {
             FXMLLoader loader = loadFXML(path);
             return loader.load();
@@ -57,6 +57,27 @@ public class Loader {
             return null;
         }
 
+    }
+*/
+    public static <T> T load(String path) {
+        try {
+            FXMLLoader loader = loadFXML(path);
+            return loader.load();
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de la vue : " + path + " → Boite d'erreur utilisée.");
+
+            // Affiche la stacktrace complète pour comprendre le problème
+            e.printStackTrace();
+
+            // Affiche une alerte utilisateur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de chargement");
+            alert.setHeaderText("Impossible de charger l'interface");
+            alert.setContentText("Fichier FXML introuvable ou invalide : " + path);
+            alert.show();
+
+            return null;
+        }
     }
 
     public static Media getMP4(String path) {

@@ -13,7 +13,6 @@
             fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController">
     <TilePane fx:id="tileMap" />
 
-    <!-- écran de mort -->
 
 
 </AnchorPane>
