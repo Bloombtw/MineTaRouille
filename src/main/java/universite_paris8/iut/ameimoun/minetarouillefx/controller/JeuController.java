@@ -46,8 +46,8 @@
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
             initialiserCarte();
-            initialiserJoueur();
             initialiserInventaire();
+            initialiserJoueur();
             initialiserControles();
             initialiserBarreDeVie();
             initialiserOverlayDegats(); // Add this new initialization method
@@ -57,6 +57,7 @@
 
         private void initialiserJoueur() {
             joueurModele = new Joueur();
+            joueurModele.setInventaire(inventaire);
             debugManager = new DebugManager(rootPane, joueurModele);
             joueurVue = new VueJoueur(joueurModele);
             rootPane.getChildren().add(joueurVue.getNode());
@@ -99,6 +100,9 @@
             vueInventaire.setLayoutX(20);
             vueInventaire.setLayoutY(950);
             rootPane.getChildren().add(vueInventaire);
+            inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+                joueurVue.mettreAJourItemEnMain();
+            });
         }
 
 

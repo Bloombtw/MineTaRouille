@@ -156,15 +156,13 @@ public class Carte {
 
     public boolean casserBloc(int couche, int x, int y) {
         if (!estDansLaMap(x, y) || terrain[couche][y][x] == null) {
-            return false; // Impossible de casser un bloc hors carte ou déjà inexistant
+            return false;
         }
 
         Bloc blocACasser = terrain[couche][y][x];
 
-        // Seuls les blocs solides peuvent être cassés pour révéler ce qu'il y a derrière
-        // ou si c'est un bloc de décor "cassable" (comme l'arbuste mort ou le feu)
         if (blocACasser.estSolide() || blocACasser == Bloc.ARBUSTE_MORT) {
-            terrain[couche][y][x] = Bloc.CIEL_VIOLET; // Remplace le bloc cassé par un bloc transparent
+            terrain[couche][y][x] = Bloc.CIEL_VIOLET;
             return true;
         }
         return false; // Le bloc n'est pas cassable

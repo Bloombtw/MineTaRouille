@@ -1,12 +1,13 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
-import javafx.beans.InvalidationListener;
+
 import javafx.beans.Observable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
@@ -35,9 +36,11 @@ public class VueInventaire extends HBox {
             StackPane caseSlot = new StackPane(slot);
 
             if (item != null) {
-                Text nomItem = new Text(item.getNom());
-                nomItem.setFill(Color.WHITE);
-                caseSlot.getChildren().add(nomItem);
+                String cheminImage = "/img/items/" + item.getNom().toLowerCase().replace("é", "e") + ".png";
+                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(cheminImage)));
+                imageView.setFitWidth(40);
+                imageView.setFitHeight(40);
+                caseSlot.getChildren().add(imageView);
             }
 
             getChildren().add(caseSlot);
