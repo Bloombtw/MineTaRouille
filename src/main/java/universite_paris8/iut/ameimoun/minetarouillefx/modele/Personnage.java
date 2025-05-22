@@ -29,7 +29,10 @@ public class Personnage {
     private int selectedSlot;
     private boolean isMining;
     private boolean isAttacking;
-    private boolean isAlive;
+    private boolean estEnVie;
+    public boolean estMort() {
+        return !estEnVie;
+    }
     public Direction direction;
 
     // Déplacement / physique
@@ -45,7 +48,7 @@ public class Personnage {
         this.pointsDeVie = pointsDeVieMax;
         this.nom = nom;
         this.satiete = 100;
-        this.isAlive = true;
+        this.estEnVie = true;
         this.isMining = false;
         this.isAttacking = false;
         this.inventaire = new Item[10];
@@ -134,5 +137,11 @@ public class Personnage {
         return pointsDeVie;
     }
 
+    public boolean isEstEnVie() {
+        return estEnVie;
+    }
 
+    public void setEstEnVie(boolean estEnVie) {
+        this.estEnVie = estEnVie;
+    }
 }

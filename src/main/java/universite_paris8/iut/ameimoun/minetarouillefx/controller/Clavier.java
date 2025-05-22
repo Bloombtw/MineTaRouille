@@ -6,6 +6,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
@@ -54,6 +55,7 @@ public class Clavier {
             switch (code) {
                 case Z, SPACE, UP:
                     joueur.sauter();
+                    MusiqueManager.getInstance().jouerMusiqueSaut();
                     break;
 
                 case Q, LEFT:

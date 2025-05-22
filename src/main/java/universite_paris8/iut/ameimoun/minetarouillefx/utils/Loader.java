@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 
@@ -32,12 +33,38 @@ public class Loader {
         if (resource != null) {
             return new Media(resource.toExternalForm());
         } else {
-            throw new IllegalArgumentException("Fichier MP3 non trouvé : " + path);
+            System.err.println("Musique non trouvée : " + path + " → Musique par défaut utilisée. (Son d'erreur)");
+            return new Media(Loader.class.getResource("/mp3/error.mp3").toExternalForm());
         }
     }
 
 
     public static FXMLLoader loadFXML(String path) {
         return new FXMLLoader(getResource(path));
+    }
+
+    public static <T> T load(String path) {
+        try {
+            FXMLLoader loader = loadFXML(path);
+            return loader.load();
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de la vue : " + path + " → Boite d'erreur utilisée.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de chargement");
+            alert.setHeaderText("Impossible de charger l'interface");
+            alert.setContentText("Fichier FXML introuvable ou invalide : " + path);
+            alert.show();
+            return null;
+        }
+
+    }
+
+    public static Media getMP4(String path) {
+        URL resource = Loader.class.getResource(path);
+        if (resource != null) {
+            return new Media(resource.toExternalForm());
+        } else {
+            throw new IllegalArgumentException("mp4 pas trouvé : " + path);
+        }
     }
 }

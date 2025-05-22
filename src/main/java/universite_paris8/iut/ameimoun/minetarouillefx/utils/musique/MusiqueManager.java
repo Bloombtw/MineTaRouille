@@ -8,12 +8,23 @@ import java.io.File;
 
 public class MusiqueManager {
 
+
     private MediaPlayer mediaPlayer;
     private double volume = 0.5;
+    private double volumeEffet = 0.2;
+    private static MusiqueManager instance;
 
+    private MusiqueManager() {}
+
+    public static MusiqueManager getInstance() {
+        if (instance == null) {
+            instance = new MusiqueManager();
+        }
+        return instance;
+    }
 
     public void setVolume(double volume) {
-        this.volume = Math.max(0, Math.min(1, volume));
+        this.volume = volume;
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(this.volume);
         }
@@ -49,11 +60,23 @@ public class MusiqueManager {
     public void jouerEffetSonore(String chemin) {
         Media media = Loader.loadMP3(chemin);
         MediaPlayer effet = new MediaPlayer(media);
-        effet.setVolume(volume); // même volume que la musique
+        effet.setVolume(volumeEffet); // même volume que la musique
         effet.play();
+        effet.setOnEndOfMedia(() -> {
+            effet.dispose();
+        });
     }
 
     public void arreterMusique() {
         if (mediaPlayer != null) mediaPlayer.stop();
+    }
+    
+    
+    public void jouerMusiqueFond() {
+        jouerMusiqueEnBoucle("/mp3/Zimmer_interstelar.mp3");
+    }
+    
+    public void jouerMusiqueSaut()  {
+        jouerEffetSonore("/mp3/Mario_saut.mp3");
     }
 }

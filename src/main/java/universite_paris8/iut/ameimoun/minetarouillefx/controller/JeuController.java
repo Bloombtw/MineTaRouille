@@ -3,12 +3,14 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
@@ -26,10 +28,8 @@ public class JeuController implements Initializable {
     private TilePane tileMap;
     @FXML
     private AnchorPane rootPane;
-    @FXML
-    private AnchorPane overlayDeMort;
 
-    private MusiqueManager musiqueManager;
+
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
     private Clavier clavier;
@@ -43,9 +43,10 @@ public class JeuController implements Initializable {
     private DebugManager debugManager;
     private Rectangle overlayDegats;
 
+    private MusiqueManager musiqueManager;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initialiserMusique();
         initialiserCarte();
         //initialiserItems(); à debogguer
         initialiserJoueur();
@@ -54,13 +55,13 @@ public class JeuController implements Initializable {
         initialiserControles();
         initialiserEffetDegats();
         demarrerBoucleDeJeu();
+        initialiserMusique();
     }
 ;
 
     private void initialiserMusique() {
-        musiqueManager = new MusiqueManager();
-        musiqueManager.jouerMusiqueEnBoucle("/mp3/Maes_magie.mp3");
-        musiqueManager.setVolume(0.5);
+        musiqueManager = MusiqueManager.getInstance();
+        musiqueManager.jouerMusiqueFond();
     }
     private void initialiserJoueur() {
         joueurModele = new Joueur();
@@ -158,7 +159,7 @@ public class JeuController implements Initializable {
                 @Override
                 public void handle(long now) {
                     if (start < 0) start = now;
-                    if (now - start > 100_000_000L) { // ~100ms
+                    if (now - start > 500_000_000L) { // ~500ms
                         overlayDegats.setVisible(false);
                         stop();
                     }
@@ -170,19 +171,17 @@ public class JeuController implements Initializable {
 
     private void gererVie() {
         vie.verifierDegats(joueurModele, Carte.getInstance());
-        if (vie.estMort()) {
+        if (!joueurModele.estMort() && vie.estMort()) {
+            joueurModele.setEstEnVie(false);
             musiqueManager.arreterMusique();
-            musiqueManager.setVolume(1);
             musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
             gameLoop.stop();
             clavier.desactiverClavier(tileMap);
-            Platform.runLater(() -> overlayDeMort.setVisible(true));
+            Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
+            if (overlayDeMort != null) {
+                System.out.println("Overlay de mort chargé");
+                rootPane.getChildren().add(overlayDeMort);
+            }
         }
-    }
-
-    @FXML
-    private void handleQuitter() {
-        musiqueManager.arreterMusique();
-        Platform.exit();
     }
 }

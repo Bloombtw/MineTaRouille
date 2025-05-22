@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.media.MediaView?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.EcranDeMortController"
+            prefHeight="1080.0" prefWidth="1920.0"
+            style="-fx-background-color: rgba(0, 0, 0, 0.6);">
+
+
+
+    <VBox alignment="CENTER" spacing="40.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" />
+
+        <Label text=" Vous êtes mort !"
+               style="-fx-font-size: 64px; -fx-text-fill: red; -fx-font-weight: bold;" />
+
+        <HBox alignment="CENTER" spacing="30">
+
+            <Button text="Rejouer"
+                    onAction="#handleRejouer"
+                    style="-fx-font-size: 20px; -fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-padding: 10 25 10 25; -fx-background-radius: 10;" />
+
+            <Button text="Quitter le jeu"
+                    onAction="#handleQuitter"
+                    style="-fx-font-size: 20px; -fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-padding: 10 25 10 25; -fx-background-radius: 10;" />
+
+        </HBox>
+    </VBox>
+
+</AnchorPane>

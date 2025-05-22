@@ -1,0 +1,59 @@
+package universite_paris8.iut.ameimoun.minetarouillefx.controller;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import universite_paris8.iut.ameimoun.minetarouillefx.MainApp;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class EcranDeMortController implements Initializable {
+
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        var media = Loader.getMP4("/mp4/takeTheL.mp4");
+        var player = new javafx.scene.media.MediaPlayer(media);
+        player.setAutoPlay(true);
+        player.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaView.setMediaPlayer(player);
+
+    }
+
+    @FXML
+    private MediaView mediaView;
+
+    @FXML
+    private AnchorPane overlayDeMort;
+
+    @FXML
+    private void handleQuitter() {
+        MusiqueManager.getInstance().arreterMusique();
+        Platform.exit();
+    }
+
+    @FXML
+    private void handleRejouer() {
+        Parent root = Loader.load("/fxml/Map.fxml");
+        if (root != null) {
+            MainApp.primaryStageGlobal.setScene(new Scene(root, Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE));
+            MainApp.primaryStageGlobal.setTitle("Mine Ta Rouille - Jeu");
+            System.out.println("Nouvelle partie relancée depuis l’écran de mort");
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de chargement de la scène");
+            alert.show();
+        }
+    }
+}
+
+

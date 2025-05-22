@@ -16,9 +16,13 @@ import java.util.Objects;
 
 public class MainApp extends Application {
 
+    public static Stage primaryStageGlobal;
+
 
     @Override
     public void start(Stage primaryStage) {
+
+        primaryStageGlobal = primaryStage;
         // Image de fond
         Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/img/fond/fond.png")).toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -61,7 +65,7 @@ public class MainApp extends Application {
         // Action Nouvelle Partie
         nouvellePartie.setOnAction(e -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/ameimoun/fxml/Map.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
                 Scene jeuScene = new Scene(fxmlLoader.load(), Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
                 primaryStage.setScene(jeuScene);
                 primaryStage.setTitle("Mine Ta Rouille - Jeu");

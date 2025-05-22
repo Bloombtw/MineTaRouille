@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
 
 public class VueJoueur {
     public static final int TAILLE_PERSO = 30;
