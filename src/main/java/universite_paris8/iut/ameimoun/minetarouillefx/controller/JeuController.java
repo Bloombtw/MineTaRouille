@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
@@ -32,7 +33,7 @@ public class JeuController implements Initializable {
 
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
-    private Clavier clavier;
+    private ClavierListener clavierListene;
     private Vie vie;
     private VueVie vueVie;
 
@@ -97,8 +98,8 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavier = new Clavier(joueurModele, joueurVue, inventaire, vueInventaire,debugManager); // Passe les instances ici
-        clavier.gestionClavier(tileMap);
+        clavierListene = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager); // Passe les instances ici
+        clavierListene.lier(tileMap);
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
     }
@@ -176,7 +177,7 @@ public class JeuController implements Initializable {
             musiqueManager.arreterMusique();
             musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
             gameLoop.stop();
-            clavier.desactiverClavier(tileMap);
+            clavierListene.desactiver(tileMap);
             Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
             if (overlayDeMort != null) {
                 System.out.println("Overlay de mort chargé");

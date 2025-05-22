@@ -13,11 +13,11 @@
 
 <VBox fx:id="buttonBox" alignment="CENTER" spacing="40" style="-fx-padding: 20 0 0 0;">
     <ImageView fx:id="nouvellePartieImage" pickOnBounds="true" preserveRatio="true"
-               fitWidth="300" fitHeight="90"
+               fitWidth="560" fitHeight="168"
                onMouseClicked="#lancerNouvellePartie"
                />
     <ImageView fx:id="quitterImage" pickOnBounds="true" preserveRatio="true"
-               fitWidth="300" fitHeight="90"
+               fitWidth="560" fitHeight="168"
                onMouseClicked="#quitter"
                />
 </VBox>

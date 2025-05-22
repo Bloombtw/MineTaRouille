@@ -43,22 +43,6 @@ public class Loader {
         return new FXMLLoader(getResource(path));
     }
 
-    /*public static <T> T load(String path) {
-        try {
-            FXMLLoader loader = loadFXML(path);
-            return loader.load();
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement de la vue : " + path + " → Boite d'erreur utilisée.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur de chargement");
-            alert.setHeaderText("Impossible de charger l'interface");
-            alert.setContentText("Fichier FXML introuvable ou invalide : " + path);
-            alert.show();
-            return null;
-        }
-
-    }
-*/
     public static <T> T load(String path) {
         try {
             FXMLLoader loader = loadFXML(path);

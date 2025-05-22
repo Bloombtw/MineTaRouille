@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -14,9 +15,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 
 public class EcranDeMortController implements Initializable {
 
@@ -26,8 +28,19 @@ public class EcranDeMortController implements Initializable {
 //        player.setAutoPlay(true);
 //        player.setCycleCount(MediaPlayer.INDEFINITE);
 //        mediaView.setMediaPlayer(player);
-
+        messageMortImage.setImage(Loader.loadImage("/img/boutons/messageMort.png"));
+        rejouerImage.setImage(Loader.loadImage("/img/boutons/rejouer.png"));
+        quitterImage.setImage(Loader.loadImage("/img/boutons/quitter.png"));
     }
+
+    @FXML
+    private ImageView messageMortImage;
+
+    @FXML
+    private ImageView rejouerImage;
+
+    @FXML
+    private ImageView quitterImage;
 
     @FXML
     private MediaView mediaView;
