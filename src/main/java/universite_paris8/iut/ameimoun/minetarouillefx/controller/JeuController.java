@@ -27,21 +27,16 @@ public class JeuController implements Initializable {
     private TilePane tileMap;
     @FXML
     private AnchorPane rootPane;
-
-
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
     private ClavierListener clavierListene;
     private Vie vie;
     private VueVie vueVie;
-
     private Joueur joueurModele;
     private VueJoueur joueurVue;
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
     private DebugManager debugManager;
-    private Rectangle overlayDegats;
-
     private MusiqueManager musiqueManager;
 
     @Override
@@ -66,12 +61,26 @@ public class JeuController implements Initializable {
         gameLoop.start();
     }
 
-
     private void mettreAJourJeu() {
         joueurModele.gravite();
         gererVie();
         if (debugManager.isDebugVisible()) {
             debugManager.update();
+        }
+    }
+
+    private void gererVie() {
+        vie.verifierDegats(joueurModele, Carte.getInstance());
+        if (joueurModele.getVie().estMort() && vie.estMort()) {
+            joueurModele.getVie().setEstEnVie(false);
+            musiqueManager.arreterMusique();
+            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
+            gameLoop.stop();
+            clavierListene.desactiver(tileMap);
+            Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
+            if (overlayDeMort != null) {
+                rootPane.getChildren().add(overlayDeMort);
+            }
         }
     }
 
@@ -88,13 +97,11 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserBarreDeVie() {
-        vie = joueurModele.getVie(); // Correction ici
+        vie = joueurModele.getVie();
         vueVie = new VueVie(vie, rootPane);
         rootPane.getChildren().add(vueVie.getNoeudBarreVie());
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
-
-
 
     private void initialiserInventaire() {
         inventaire = new Inventaire();
@@ -116,21 +123,5 @@ public class JeuController implements Initializable {
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
-    }
-
-
-    private void gererVie() {
-        vie.verifierDegats(joueurModele, Carte.getInstance());
-        if (!joueurModele.getVie().estMort() && vie.estMort()) {
-            musiqueManager.arreterMusique();
-            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
-            gameLoop.stop();
-            clavierListene.desactiver(tileMap);
-            Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
-            if (overlayDeMort != null) {
-                System.out.println("Overlay de mort chargé");
-                rootPane.getChildren().add(overlayDeMort);
-            }
-        }
     }
 }
