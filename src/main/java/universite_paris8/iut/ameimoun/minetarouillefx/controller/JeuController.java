@@ -6,15 +6,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 import javafx.application.Platform;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
@@ -38,6 +35,7 @@ public class JeuController implements Initializable {
     private VueCarte vueCarte;
     private DebugManager debugManager;
     private MusiqueManager musiqueManager;
+    private Souris souris;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,6 +46,7 @@ public class JeuController implements Initializable {
         initialiserControles();
         demarrerBoucleDeJeu();
         initialiserMusique();
+        initialiserSouris();
     }
 
     private void demarrerBoucleDeJeu() {
@@ -108,16 +107,20 @@ public class JeuController implements Initializable {
         inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
         inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
         vueInventaire = new VueInventaire(inventaire);
-        vueInventaire.setLayoutX(20);
-        vueInventaire.setLayoutY(950);
+        AnchorPane.setTopAnchor(vueInventaire, 10.0);
+        AnchorPane.setRightAnchor(vueInventaire, 10.0);
         rootPane.getChildren().add(vueInventaire);
     }
 
     private void initialiserControles() {
-        clavierListene = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager); // Passe les instances ici
+        clavierListene = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager);
         clavierListene.lier(tileMap);
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
+    }
+
+    private void initialiserSouris() {
+        souris = new Souris(tileMap, Carte.getInstance(), inventaire, vueCarte, vueInventaire, joueurModele);
     }
 
     private void initialiserCarte() {

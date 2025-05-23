@@ -12,11 +12,22 @@ public class Inventaire {
 
     public Inventaire() {
         for (int i = 0; i < 9; i++) {
-            slots.add(null); // 9 emplacements vides
+            slots.add(null);
         }
     }
 
     public void ajouterItem(Item item) {
+        // 1. Cherche une case contenant le même type d’item (par nom)
+        for (int i = 0; i < slots.size(); i++) {
+            Item existant = slots.get(i);
+            if (existant != null && existant.getNom().equals(item.getNom())) {
+                // empile
+                existant.incrementeQuantite(item.getQuantite());
+                return;
+            }
+        }
+
+        // 2. Sinon, ajoute dans une case vide
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null) {
                 slots.set(i, item);
@@ -24,6 +35,7 @@ public class Inventaire {
             }
         }
     }
+
 
     public ObservableList<Item> getSlots() {
         return slots;

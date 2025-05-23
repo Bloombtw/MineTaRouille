@@ -17,5 +17,7 @@ module universite_paris.iut.ameimoun.minetarouillefx {
     opens universite_paris8.iut.ameimoun.minetarouillefx.modele to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
     opens universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier to javafx.fxml;
+    exports universite_paris8.iut.ameimoun.minetarouillefx.controller.souris;
+    opens universite_paris8.iut.ameimoun.minetarouillefx.controller.souris to javafx.fxml;
 
 }
