@@ -15,11 +15,17 @@ public class Inventaire {
             slots.add(null); // 9 emplacements vides
         }
     }
+    public void ajouterItem(Item nouvelItem) {
+        for (Item slot : slots) {
+            if (slot != null && slot.getId() == nouvelItem.getId()) {
+                slot.ajouterQuantite(nouvelItem.getQuantite());
+                return;
+            }
+        }
 
-    public void ajouterItem(Item item) {
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null) {
-                slots.set(i, item);
+                slots.set(i, nouvelItem);
                 return;
             }
         }
@@ -46,4 +52,5 @@ public class Inventaire {
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }
+
 }

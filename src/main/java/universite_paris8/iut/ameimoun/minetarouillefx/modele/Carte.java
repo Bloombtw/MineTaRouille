@@ -127,7 +127,7 @@ public class Carte {
         Bloc bloc = terrain[couche][y][x];
         if (bloc == null || !bloc.estSolide()) return null;
         terrain[couche][y][x] = Bloc.CIEL_VIOLET;
-        return bloc; // Nécessite un constructeur dans Item
+        return bloc;
     }
 
 

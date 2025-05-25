@@ -9,9 +9,7 @@ public class Personnage {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
 
-
     private Vie vie;
-
 
     private final String nom;
     private final int satiete;
@@ -40,10 +38,6 @@ public class Personnage {
         this.selectedSlot = 0;
         this.direction = Direction.DROITE;
         this.carte = Carte.getInstance();
-    }
-
-    public Vie getVie() {
-        return vie;
     }
 
     public void sauter() {
@@ -97,6 +91,10 @@ public class Personnage {
             }
         }
         return false;
+    }
+
+    public Vie getVie() {
+        return vie;
     }
 
     public DoubleProperty xProperty() { return x; }

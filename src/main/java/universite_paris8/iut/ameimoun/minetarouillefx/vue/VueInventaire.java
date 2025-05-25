@@ -1,7 +1,11 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.beans.Observable;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -10,6 +14,8 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
 public class VueInventaire extends HBox {
+    @FXML
+    private Label quantiteLabel;
 
     private final Inventaire inventaire;
 
@@ -46,4 +52,21 @@ public class VueInventaire extends HBox {
             getChildren().add(caseSlot);
         }
     }
+
+    private void ajouterItemVisuel(Item item, Pane slot) {//reprendre ici
+        if (item != null) {
+            Label quantiteLabel = new Label();
+            quantiteLabel.textProperty().bind(item.quantiteProperty().asString("x%d")); // Liaison directe
+
+            quantiteLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14; "
+                    + "-fx-background-color: rgba(0,0,0,0.5);");
+
+
+            StackPane itemAffichage = new StackPane(quantiteLabel);
+            slot.getChildren().add(itemAffichage);
+        }
+    }
+
+
+
 }
