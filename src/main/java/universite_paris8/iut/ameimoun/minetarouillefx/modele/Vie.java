@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Vie {
-
+    private final BooleanProperty estEnVieProperty;
     private final DoubleProperty vieMax;
     private DoubleProperty vieActuelle;
     private final List<Runnable> actionsSurDegats;
@@ -22,6 +22,7 @@ public class Vie {
         this.vieActuelle = new SimpleDoubleProperty(vieMaxInitiale);
         this.actionsSurDegats = new ArrayList<>();
         this.subitDegats = new SimpleBooleanProperty(false);
+        this.estEnVieProperty = new SimpleBooleanProperty(true); // Initialisé à true
     }
 
     public BooleanProperty isTakingDamageProperty() {
@@ -85,6 +86,11 @@ public class Vie {
         double nouvelleVie = vieActuelle.get() + quantite;
         if (nouvelleVie > vieMax.get()) nouvelleVie = vieMax.get();
         this.vieActuelle.set(nouvelleVie);
-    }//utile pour la suite si on prend des potions
+    }
+
+
+    public void setEstEnVie(boolean estEnVie) {
+        this.estEnVieProperty.set(estEnVie);
+    }
 
 }

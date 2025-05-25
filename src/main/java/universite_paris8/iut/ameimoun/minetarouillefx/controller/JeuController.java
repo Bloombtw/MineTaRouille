@@ -10,8 +10,11 @@ import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import javafx.application.Platform;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
@@ -24,21 +27,16 @@ public class JeuController implements Initializable {
     private TilePane tileMap;
     @FXML
     private AnchorPane rootPane;
-
-
     private Inventaire inventaire;
     private VueInventaire vueInventaire;
     private ClavierListener clavierListene;
     private Vie vie;
     private VueVie vueVie;
-
     private Joueur joueurModele;
     private VueJoueur joueurVue;
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
     private DebugManager debugManager;
-    private Rectangle overlayDegats;
-
     private MusiqueManager musiqueManager;
 
     @Override
@@ -71,6 +69,21 @@ public class JeuController implements Initializable {
         }
     }
 
+    private void gererVie() {
+        vie.verifierDegats(joueurModele, Carte.getInstance());
+        if (joueurModele.getVie().estMort() && vie.estMort()) {
+            joueurModele.getVie().setEstEnVie(false);
+            musiqueManager.arreterMusique();
+            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
+            gameLoop.stop();
+            clavierListene.desactiver(tileMap);
+            Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
+            if (overlayDeMort != null) {
+                rootPane.getChildren().add(overlayDeMort);
+            }
+        }
+    }
+
     private void initialiserMusique() {
         musiqueManager = MusiqueManager.getInstance();
         musiqueManager.jouerMusiqueFond();
@@ -84,7 +97,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserBarreDeVie() {
-        vie = joueurModele.getVie(); // Correction ici
+        vie = joueurModele.getVie();
         vueVie = new VueVie(vie, rootPane);
         rootPane.getChildren().add(vueVie.getNoeudBarreVie());
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
@@ -92,8 +105,8 @@ public class JeuController implements Initializable {
 
     private void initialiserInventaire() {
         inventaire = new Inventaire();
-       // inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
-       // inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
+        inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
+        inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
         vueInventaire = new VueInventaire(inventaire);
         vueInventaire.setLayoutX(20);
         vueInventaire.setLayoutY(950);
@@ -110,47 +123,5 @@ public class JeuController implements Initializable {
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
-    }
-
-    private void casserBlocEtMettreAJour(int x, int y) {
-        Carte carte = Carte.getInstance();
-        boolean blocCasse = false;
-        int coucheCassee = -1;
-        Bloc blocCasseRetour = null;
-
-        for (int couche = carte.getNbCouches() - 1; couche >= 0; couche--) {
-            Bloc bloc = carte.casserBloc(couche, x, y);
-            if (bloc != null) {
-                blocCasse = true;
-                coucheCassee = couche;
-                blocCasseRetour = bloc;
-                break;
-            }
-        }
-
-        if (blocCasse) {
-            vueCarte.mettreAJourAffichage(x, y, coucheCassee);
-
-            // Si tu veux afficher une particule ou effet ici, c’est le bon endroit
-            System.out.println("Bloc cassé : " + blocCasseRetour.name());
-        }
-    }
-
-
-
-
-    private void gererVie() {
-        vie.verifierDegats(joueurModele, Carte.getInstance());
-        if (!joueurModele.getVie().estMort() && vie.estMort()) {
-            musiqueManager.arreterMusique();
-            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
-            gameLoop.stop();
-            clavierListene.desactiver(tileMap);
-            Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
-            if (overlayDeMort != null) {
-                System.out.println("Overlay de mort chargé");
-                rootPane.getChildren().add(overlayDeMort);
-            }
-        }
     }
 }

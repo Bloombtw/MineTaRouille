@@ -8,9 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
 
 public class MainApp extends Application {
-
     public static Stage primaryStageGlobal;
-
     @Override
     public void start(Stage primaryStage) {
         System.out.println("Resource : " + Loader.getResource("/fxml/EcranAccueil.fxml"));
