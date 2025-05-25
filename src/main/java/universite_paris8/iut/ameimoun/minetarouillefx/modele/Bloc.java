@@ -57,4 +57,8 @@ public enum Bloc {
         }
         return CIEL; // Par défaut
     }
+
+    public String getNom() {
+        return nom;
+    }
 }

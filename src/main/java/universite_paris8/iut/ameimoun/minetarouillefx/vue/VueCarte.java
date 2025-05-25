@@ -49,6 +49,14 @@ public class VueCarte {
         }
     }
 
+    public void mettreAJourAffichage(int x, int y, int couche) {
+        int index = y * carte.getLargeur() + x;
+        Pane cellule = (Pane) tileMap.getChildren().get(index);
+        cellule.getChildren().clear();
+        ajouterBloc(carte.getTerrain()[couche][y][x], cellule);
+    }
+
+
     public TilePane getTileMap() {
         return tileMap;
     }

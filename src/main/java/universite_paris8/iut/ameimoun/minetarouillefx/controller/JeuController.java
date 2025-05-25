@@ -10,11 +10,8 @@ import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 import javafx.application.Platform;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
@@ -66,7 +63,6 @@ public class JeuController implements Initializable {
         gameLoop.start();
     }
 
-
     private void mettreAJourJeu() {
         joueurModele.gravite();
         gererVie();
@@ -94,12 +90,10 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
 
-
-
     private void initialiserInventaire() {
         inventaire = new Inventaire();
-        inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
-        inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
+       // inventaire.ajouterItem(new Item(1, "Épée", 1, "Une épée basique", Type.ARME, Rarete.COMMUN));
+       // inventaire.ajouterItem(new Item(2, "Pioche", 1, "Pioche", Type.ARME, Rarete.RARE));
         vueInventaire = new VueInventaire(inventaire);
         vueInventaire.setLayoutX(20);
         vueInventaire.setLayoutY(950);
@@ -117,6 +111,32 @@ public class JeuController implements Initializable {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
+
+    private void casserBlocEtMettreAJour(int x, int y) {
+        Carte carte = Carte.getInstance();
+        boolean blocCasse = false;
+        int coucheCassee = -1;
+        Bloc blocCasseRetour = null;
+
+        for (int couche = carte.getNbCouches() - 1; couche >= 0; couche--) {
+            Bloc bloc = carte.casserBloc(couche, x, y);
+            if (bloc != null) {
+                blocCasse = true;
+                coucheCassee = couche;
+                blocCasseRetour = bloc;
+                break;
+            }
+        }
+
+        if (blocCasse) {
+            vueCarte.mettreAJourAffichage(x, y, coucheCassee);
+
+            // Si tu veux afficher une particule ou effet ici, c’est le bon endroit
+            System.out.println("Bloc cassé : " + blocCasseRetour.name());
+        }
+    }
+
+
 
 
     private void gererVie() {
