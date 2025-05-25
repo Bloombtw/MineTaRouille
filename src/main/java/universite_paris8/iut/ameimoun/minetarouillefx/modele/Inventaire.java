@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 
 public class Inventaire {
 
-    private final ObservableList<Bloc> slots = FXCollections.observableArrayList();
+    private final ObservableList<Item> slots = FXCollections.observableArrayList();
     private final IntegerProperty selectedIndex = new SimpleIntegerProperty(0);
 
     public Inventaire() {
@@ -16,21 +16,20 @@ public class Inventaire {
         }
     }
 
-    public void ajouterBloc(Bloc bloc) {
+    public void ajouterItem(Item item) {
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null) {
-                slots.set(i, bloc);
+                slots.set(i, item);
                 return;
             }
         }
     }
 
-
-    public ObservableList<Bloc> getSlots() {
+    public ObservableList<Item> getSlots() {
         return slots;
     }
 
-    public Bloc getItem(int index) {
+    public Item getItem(int index) {
         return (index >= 0 && index < slots.size()) ? slots.get(index) : null;
     }
 

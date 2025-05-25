@@ -6,7 +6,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 
@@ -30,7 +29,7 @@ public class VueInventaire extends HBox {
         getChildren().clear();
 
         for (int i = 0; i < inventaire.getSlots().size(); i++) {
-            Bloc item = inventaire.getItem(i);
+            Item item = inventaire.getItem(i);
 
             Rectangle slot = new Rectangle(50, 50);
             slot.setStroke(Color.BLACK);
