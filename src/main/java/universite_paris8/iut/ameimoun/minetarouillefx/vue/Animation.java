@@ -36,16 +36,15 @@ public class Animation {
         timeline.playFromStart();
     }
 
-        public static Image[] decouperSpriteSheet(Image spriteSheet, int frameWidth, int frameHeight, int nbFrames) {
-            Image[] frames = new Image[nbFrames];
-            for (int i = 0; i < nbFrames; i++) {
-                frames[i] = new WritableImage(spriteSheet.getPixelReader(),
-                        i * frameWidth, 0,
-                        frameWidth, frameHeight);
-            }
-            return frames;
+    public static Image[] decouperSpriteSheet(Image spriteSheet, int frameWidth, int frameHeight, int nbFrames) {
+        Image[] frames = new Image[nbFrames];
+        for (int i = 0; i < nbFrames; i++) {
+            frames[i] = new WritableImage(spriteSheet.getPixelReader(),
+                    i * frameWidth, 0,
+                    frameWidth, frameHeight);
         }
-
+        return frames;
+    }
 
     public void stop() {
         timeline.stop();

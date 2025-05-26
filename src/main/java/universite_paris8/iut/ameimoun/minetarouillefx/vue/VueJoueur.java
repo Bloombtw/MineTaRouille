@@ -31,13 +31,9 @@ public class VueJoueur {
 
         lierPositionContainer(joueur);
         lierPositionOverlayDegats();
-
         chargerAnimations();
-
         animIdle.start();
-
         lierListenersDeplacement(joueur);
-
         joueur.getVie().ajouterCallbackDegatsSubis(this::afficherDegats);
     }
 

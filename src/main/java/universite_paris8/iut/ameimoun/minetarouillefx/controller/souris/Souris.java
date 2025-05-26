@@ -44,7 +44,7 @@ public class Souris {
             Item itemBloc = new Item(
                     blocCasse.ordinal(),
                     blocCasse.name(),
-                    64, // Définir le stack maximum
+                    64,
                     "Bloc cassé",
                     Type.BLOC,
                     Rarete.COMMUN

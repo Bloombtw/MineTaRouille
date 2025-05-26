@@ -79,7 +79,7 @@ public class Personnage {
         }
     }
 
-    private boolean collision(double x, double y) {
+    boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
         int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
         int top = (int) (y / Constantes.TAILLE_PERSO);
