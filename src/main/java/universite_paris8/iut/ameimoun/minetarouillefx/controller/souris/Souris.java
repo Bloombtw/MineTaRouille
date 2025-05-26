@@ -1,42 +1,59 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller.souris;
 
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class Souris {
+    private final Joueur joueur;
+    private final Inventaire inventaire;
+    private final VueInventaire vueInventaire;
 
-    private final TilePane tileMap;
-    private final Carte carte; // Added reference to Carte
-    private final Inventaire inventaire; // Added reference to Inventaire
-    private final VueCarte vueCarte; // Added reference to VueCarte
-    private final VueInventaire vueInventaire; // Added reference to VueInventaire
-    private final Joueur joueurModele;
+    private VueCarte vueCarte;
 
-    public Souris(TilePane tileMap, Carte carte, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, Joueur joueurModele) {
-        this.tileMap = tileMap;
-        this.carte = carte;
+    public Souris(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire ) {
+        this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;
         this.vueInventaire = vueInventaire;
-        this.joueurModele = joueurModele;
-        initialiserClicSouris();
     }
 
-    private void initialiserClicSouris() {
+    public void lier(TilePane tilePane) {
+        tilePane.setOnMousePressed(this::gererClicSouris);
     }
 
-    private double distanceEntre(int x1, int y1, int x2, int y2) {
-        double dx = x1 - x2;
-        double dy = y1 - y2;
-        return Math.sqrt(dx * dx + dy * dy);
+    public void desactiver(TilePane tilePane) {
+        tilePane.setOnMousePressed(null);
+        tilePane.setOnMouseReleased(null);
+        tilePane.setOnMouseMoved(null);
     }
+
+    private void gererClicSouris(MouseEvent event) {
+        int x = (int) event.getX() / Constantes.TAILLE_TUILE;
+        int y = (int) event.getY() / Constantes.TAILLE_TUILE;
+        int couche = 1;
+
+        Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
+        if (blocCasse != null && blocCasse.estSolide()) {
+            System.out.println("Bloc cassé : " + blocCasse);
+            vueCarte.mettreAJourAffichage(x, y, couche);
+
+            Item itemBloc = new Item(
+                    blocCasse.ordinal(),
+                    blocCasse.name(),
+                    64, // Définir le stack maximum
+                    "Bloc cassé",
+                    Type.BLOC,
+                    Rarete.COMMUN
+            );
+
+            inventaire.ajouterItem(itemBloc);
+            vueInventaire.mettreAJourAffichage();
+        }
+    }
+
+
 }

@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
@@ -16,14 +17,13 @@ public class VueCarte {
     public VueCarte(Carte carte) {
         this.carte = carte;
         tileMap = new TilePane();
-        tileMap.setPrefColumns(carte.getLargeur());
+        tileMap.setPrefColumns(carte.getLargeur());//pour bien adapter la map à la fenêtre
         tileMap.setPrefRows(carte.getHauteur());
         initialiserCarte();
     }
 
     private void ajouterBloc(Bloc bloc, Pane cellule) {
-        // Now, we also check if the block is not CIEL_VIOLET
-        if (bloc != null && bloc != Bloc.CIEL && bloc != Bloc.CIEL_VIOLET) { // <-- MODIFIED LINE
+        if (bloc != null && bloc != Bloc.CIEL) {
             Image image = getImageAssociee(bloc);
             if (image != null) {
                 ImageView img = new ImageView(image);
@@ -49,22 +49,13 @@ public class VueCarte {
         }
     }
 
-
-    public void mettreAJourAffichage() {
-        tileMap.getChildren().clear(); // Efface toutes les tuiles existantes
-        Bloc[][][] terrain = carte.getTerrain();
-        int nbCouches = carte.getNbCouches();
-
-        for (int y = 0; y < terrain[0].length; y++) {
-            for (int x = 0; x < terrain[0][0].length; x++) {
-                Pane cellule = new Pane(); // Chaque cellule est un Pane pour empiler les couches
-                for (int layer = 0; layer < nbCouches; layer++) {
-                    ajouterBloc(terrain[layer][y][x], cellule);
-                }
-                tileMap.getChildren().add(cellule);
-            }
-        }
+    public void mettreAJourAffichage(int x, int y, int couche) {
+        int index = y * carte.getLargeur() + x;
+        Pane cellule = (Pane) tileMap.getChildren().get(index);
+        cellule.getChildren().clear();
+        ajouterBloc(carte.getTerrain()[couche][y][x], cellule);
     }
+
 
     public TilePane getTileMap() {
         return tileMap;

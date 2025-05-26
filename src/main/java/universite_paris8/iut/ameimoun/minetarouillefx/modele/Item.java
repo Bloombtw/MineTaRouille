@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ public class Item {
     private final Type type;
     private final Rarete rarete;
     private double x, y;
-    private int quantite = 1;
+    private final SimpleIntegerProperty quantite;
+
+
 
     public Item(int id, String nom, int stackSize, String description, Type type, Rarete rarete) {
         this.id = id;
@@ -24,7 +27,22 @@ public class Item {
         this.type = type;
         this.rarete = rarete;
         listeDeToutLesItems.add(this);
+        this.quantite = new SimpleIntegerProperty(1);
     }
+
+
+    public int getQuantite() {
+        return quantite.get();
+    }
+
+    public void ajouterQuantite(int qte) {
+        quantite.set(quantite.get() + qte);
+    }
+
+    public SimpleIntegerProperty quantiteProperty() {
+        return quantite;
+    }
+
 
     public void ajouterItem(Carte c, Item i) {
         Random random = new Random();
@@ -42,17 +60,8 @@ public class Item {
         i.setY(y * Constantes.TAILLE_PERSO);
 
         this.listeDeToutLesItems.add(i);
-    }
 
-    public void appliquerGravite(Carte carte) {
-        double nouvelleY = y + Constantes.GRAVITE;
-
-        int blocDessousX = (int) (x / Constantes.TAILLE_TUILE);
-        int blocDessousY = (int) ((nouvelleY + Constantes.TAILLE_TUILE / 2) / Constantes.TAILLE_TUILE);
-
-        if (!carte.estBlocSolide(blocDessousX, blocDessousY)) {
-            y = nouvelleY;
-        }
+        System.out.println("Item ajouté à la position : " + x + ", " + y);
     }
 
     public void retirerItem(Item i){
@@ -65,9 +74,8 @@ public class Item {
     public double getY() { return y; }
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
-    public int getQuantite() { return quantite; }
-
-    public void incrementeQuantite(int n) {
-        this.quantite += n;
+    public int getId() {
+        return id;
     }
+
 }

@@ -10,12 +10,14 @@ import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.Clavier
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import javafx.application.Platform;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,7 +37,7 @@ public class JeuController implements Initializable {
     private VueCarte vueCarte;
     private DebugManager debugManager;
     private MusiqueManager musiqueManager;
-    private Souris souris;
+    private Souris sourisListener;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,7 +48,6 @@ public class JeuController implements Initializable {
         initialiserControles();
         demarrerBoucleDeJeu();
         initialiserMusique();
-        initialiserSouris();
     }
 
     private void demarrerBoucleDeJeu() {
@@ -76,6 +77,7 @@ public class JeuController implements Initializable {
             musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
             gameLoop.stop();
             clavierListene.desactiver(tileMap);
+            sourisListener.desactiver(tileMap);
             Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
             if (overlayDeMort != null) {
                 rootPane.getChildren().add(overlayDeMort);
@@ -114,17 +116,20 @@ public class JeuController implements Initializable {
 
     private void initialiserControles() {
         clavierListene = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager);
+        sourisListener = new Souris(joueurModele, inventaire,vueCarte,vueInventaire);
+
         clavierListene.lier(tileMap);
+        sourisListener.lier(tileMap);
+
         tileMap.setFocusTraversable(true);
         Platform.runLater(() -> tileMap.requestFocus());
     }
 
-    private void initialiserSouris() {
-        souris = new Souris(tileMap, Carte.getInstance(), inventaire, vueCarte, vueInventaire, joueurModele);
-    }
 
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
+
+
 }

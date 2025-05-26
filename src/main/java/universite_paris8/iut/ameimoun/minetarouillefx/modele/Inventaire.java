@@ -12,30 +12,24 @@ public class Inventaire {
 
     public Inventaire() {
         for (int i = 0; i < 9; i++) {
-            slots.add(null);
+            slots.add(null); // 9 emplacements vides
         }
     }
-
-    public void ajouterItem(Item item) {
-        // 1. Cherche une case contenant le même type d’item (par nom)
-        for (int i = 0; i < slots.size(); i++) {
-            Item existant = slots.get(i);
-            if (existant != null && existant.getNom().equals(item.getNom())) {
-                // empile
-                existant.incrementeQuantite(item.getQuantite());
+    public void ajouterItem(Item nouvelItem) {
+        for (Item slot : slots) {
+            if (slot != null && slot.getId() == nouvelItem.getId()) {
+                slot.ajouterQuantite(nouvelItem.getQuantite());
                 return;
             }
         }
 
-        // 2. Sinon, ajoute dans une case vide
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null) {
-                slots.set(i, item);
+                slots.set(i, nouvelItem);
                 return;
             }
         }
     }
-
 
     public ObservableList<Item> getSlots() {
         return slots;
@@ -58,4 +52,5 @@ public class Inventaire {
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }
+
 }

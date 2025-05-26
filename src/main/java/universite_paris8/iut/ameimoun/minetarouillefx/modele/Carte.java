@@ -8,6 +8,12 @@ public class Carte {
 
     private static Carte instance;
 
+    /**
+     * Constructeur de la carte.
+     * Initialise le terrain avec des blocs.
+     * La carte est toujours la même.
+     */
+
     public Carte() {
         terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
         Random rand = new Random();
@@ -114,6 +120,29 @@ public class Carte {
         terrain[2][6][59] = Bloc.LUNE;
     }
 
+
+
+    public Bloc casserBloc(int couche, int x, int y) {
+        if (!estDansLaMap(x, y)) return null;
+        Bloc bloc = terrain[couche][y][x];
+        if (bloc == null || !bloc.estSolide()) return null;
+        terrain[couche][y][x] = Bloc.CIEL_VIOLET;
+        return bloc;
+    }
+
+
+
+    public boolean estDansLaMap(int x, int y) {
+        return x >= 0 && y >= 0 && y < getHauteur() && x < getLargeur();
+    }
+
+    public static Carte getInstance() {
+        if (instance == null) {
+            instance = new Carte();
+        }
+        return instance;
+    }
+
     public Bloc[][][] getTerrain() {
         return terrain;
     }
@@ -130,18 +159,6 @@ public class Carte {
         return Constantes.NB_COUCHES;
     }
 
-    public boolean estDansLaMap(int x, int y) {
-        return x >= 0 && y >= 0 && y < getHauteur() && x < getLargeur();
-    }
-
-    public static Carte getInstance() {
-        if (instance == null) {
-            instance = new Carte();
-        }
-        return instance;
-    }
-
-
     public boolean estBlocSolide(int x, int y) {
         if (!estDansLaMap(x, y)) return true;
 
@@ -154,17 +171,4 @@ public class Carte {
         return false;
     }
 
-    public boolean casserBloc(int couche, int x, int y) {
-        if (!estDansLaMap(x, y) || terrain[couche][y][x] == null) {
-            return false;
-        }
-
-        Bloc blocACasser = terrain[couche][y][x];
-
-        if (blocACasser.estSolide() || blocACasser == Bloc.ARBUSTE_MORT) {
-            terrain[couche][y][x] = Bloc.CIEL_VIOLET;
-            return true;
-        }
-        return false;
-    }
 }
