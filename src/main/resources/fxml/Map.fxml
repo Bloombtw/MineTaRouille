@@ -13,6 +13,10 @@
             fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController">
     <TilePane fx:id="tileMap" />
 
+    <VBox fx:id="inventaireBox">
+        <TilePane fx:id="inventaireGrid"/>
+        <Label fx:id="quantiteLabel" text="0" style="-fx-text-fill: white; -fx-font-size: 14;"/>
+    </VBox>
 
 
 </AnchorPane>
