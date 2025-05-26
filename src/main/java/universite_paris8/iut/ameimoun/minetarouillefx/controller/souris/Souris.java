@@ -36,24 +36,13 @@ public class Souris {
         int y = (int) event.getY() / Constantes.TAILLE_TUILE;
         int couche = 1;
 
-        Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
-        if (blocCasse != null && blocCasse.estSolide()) {
-            System.out.println("Bloc cassé : " + blocCasse);
+        Item itemBloc = GestionnaireBloc.casserBlocEtDonnerItem(couche, x, y);
+        if (itemBloc != null) {
             vueCarte.mettreAJourAffichage(x, y, couche);
-
-            Item itemBloc = new Item(
-                    blocCasse.ordinal(),
-                    blocCasse.name(),
-                    64, // Définir le stack maximum
-                    "Bloc cassé",
-                    Type.BLOC,
-                    Rarete.COMMUN
-            );
-
             inventaire.ajouterItem(itemBloc);
             vueInventaire.mettreAJourAffichage();
         }
+
     }
-
-
 }
+

@@ -1,21 +1,21 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.paint.Color;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Item {
-    private final ArrayList<Item> listeDeToutLesItems = new ArrayList<>();
     private final int id;
     private final String nom;
     private final int stackSize;
     private final String description;
     private final Type type;
-    private final Rarete rarete;
+    private final Rarete rarete; // Peut être null si le type ne permet pas de rareté
     private double x, y;
-    private final SimpleIntegerProperty quantite;
+    private final SimpleIntegerProperty quantite; // Utilisé pour la quantité d'items dans l'inventaire pas la limite de stack
 
 
 
@@ -25,8 +25,7 @@ public class Item {
         this.stackSize = stackSize;
         this.description = description;
         this.type = type;
-        this.rarete = rarete;
-        listeDeToutLesItems.add(this);
+        this.rarete = type.permetRarete() ? rarete : null;
         this.quantite = new SimpleIntegerProperty(1);
     }
 
@@ -59,14 +58,10 @@ public class Item {
         i.setX(x * Constantes.TAILLE_PERSO);
         i.setY(y * Constantes.TAILLE_PERSO);
 
-        this.listeDeToutLesItems.add(i);
 
         System.out.println("Item ajouté à la position : " + x + ", " + y);
     }
 
-    public void retirerItem(Item i){
-        this.listeDeToutLesItems.remove(i);
-    }
 
     public String getNom() {return this.nom;}
 
@@ -77,5 +72,13 @@ public class Item {
     public int getId() {
         return id;
     }
+
+    public Color getCouleurFond() {
+        if (rarete != null) {
+            return rarete.getCouleurHex();
+        }
+        return Color.TRANSPARENT;
+    }
+
 
 }

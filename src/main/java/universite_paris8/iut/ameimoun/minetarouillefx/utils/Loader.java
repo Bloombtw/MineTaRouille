@@ -49,11 +49,6 @@ public class Loader {
             return loader.load();
         } catch (Exception e) {
             System.err.println("Erreur lors du chargement de la vue : " + path + " → Boite d'erreur utilisée.");
-
-            // Affiche la stacktrace complète pour comprendre le problème
-            e.printStackTrace();
-
-            // Affiche une alerte utilisateur
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur de chargement");
             alert.setHeaderText("Impossible de charger l'interface");

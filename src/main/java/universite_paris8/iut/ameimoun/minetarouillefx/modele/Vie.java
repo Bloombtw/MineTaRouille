@@ -93,4 +93,8 @@ public class Vie {
         this.estEnVieProperty.set(estEnVie);
     }
 
+    public boolean estLow() {
+        return vieActuelle.get() < vieMax.get() * 0.3; // 30% de la vie max
+    }
+
 }

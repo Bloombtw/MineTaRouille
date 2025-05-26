@@ -1,18 +1,19 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
-public enum Rarete {
-    COMMUN("Commun", "#A0A0A0" ),
-    RARE("Rare", "#007BFF"),
-    EPIQUE("Epique", "#800080"),
-    LEGENDAIRE("Legendaire", "#FFD700");
+import javafx.scene.paint.Color;
 
+public enum Rarete {
+    COMMUN("Commun", Color.GREEN),
+    RARE("Rare", Color.BLUE),
+    EPIQUE("Epique", Color.PURPLE),
+    LEGENDAIRE("Legendaire", Color.GOLD);
 
 
 
     private final String nomRarete;
-    private final String couleurRarete;
+    private final Color couleurRarete;
 
-    Rarete(String nomRarete, String couleurRarete) {
+    Rarete(String nomRarete, Color couleurRarete) {
         this.nomRarete = nomRarete;
         this.couleurRarete = couleurRarete;
     }
@@ -21,7 +22,7 @@ public enum Rarete {
         return nomRarete;
     }
 
-    public String getCouleurHex() {
+    public Color getCouleurHex() {
         return couleurRarete;
     }
 

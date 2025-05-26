@@ -8,13 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import universite_paris8.iut.ameimoun.minetarouillefx.MainApp;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 

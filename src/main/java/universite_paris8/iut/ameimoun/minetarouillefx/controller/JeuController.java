@@ -10,6 +10,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.Clavier
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.AudioManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
@@ -17,7 +18,7 @@ import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -38,6 +39,7 @@ public class JeuController implements Initializable {
     private DebugManager debugManager;
     private MusiqueManager musiqueManager;
     private Souris sourisListener;
+    private boolean sonDegatJoue = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,10 +73,19 @@ public class JeuController implements Initializable {
 
     private void gererVie() {
         vie.verifierDegats(joueurModele, Carte.getInstance());
+        if (joueurModele.getVie().estLow() && !sonDegatJoue) {
+            sonDegatJoue = true;
+            AudioManager.getInstance().jouerAlerteVieBasse();
+        } else if (!joueurModele.getVie().estLow()) {
+            sonDegatJoue = false;
+        }
+
         if (joueurModele.getVie().estMort() && vie.estMort()) {
             joueurModele.getVie().setEstEnVie(false);
             musiqueManager.arreterMusique();
-            musiqueManager.jouerMusique("/mp3/GTA5_mort.mp3", 1);
+            AudioManager.getInstance().arreterTousLesSons();
+            sonDegatJoue = false;
+            AudioManager.getInstance().jouerAlerteMort();
             gameLoop.stop();
             clavierListene.desactiver(tileMap);
             sourisListener.desactiver(tileMap);
@@ -125,11 +136,9 @@ public class JeuController implements Initializable {
         Platform.runLater(() -> tileMap.requestFocus());
     }
 
-
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
-
 
 }

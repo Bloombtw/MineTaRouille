@@ -5,7 +5,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.musique.MusiqueManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
@@ -28,7 +28,8 @@ public class ClavierListener {
             switch (event.getCode()) {
                 case Z, SPACE, UP -> {
                     joueur.sauter();
-                    MusiqueManager.getInstance().jouerMusiqueSaut();
+                    MusiqueManager.getInstance();
+
                 }
                 case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
                 case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
