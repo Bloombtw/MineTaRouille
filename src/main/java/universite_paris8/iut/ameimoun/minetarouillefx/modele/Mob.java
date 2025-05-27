@@ -20,5 +20,4 @@ public class Mob extends Personnage {
             deplacerDroite();
         }
     }
-
 }
