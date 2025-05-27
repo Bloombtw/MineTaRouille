@@ -36,3 +36,10 @@ build/
 
 ### Mac OS ###
 .DS_Storesrc/main.zip
+
+# Exclure les dossiers générés automatiquement
+/out/
+/.idea/
+*.class
+*.patch
+*.log
