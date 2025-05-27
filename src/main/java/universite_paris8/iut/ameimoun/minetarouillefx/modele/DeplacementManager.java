@@ -1,8 +1,6 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
+package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.animation.AnimationTimer;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Personnage;
 
 public class DeplacementManager {
     private boolean enDeplacementGauche = false;
@@ -46,7 +44,7 @@ public class DeplacementManager {
 
     public boolean isEnDeplacementGauche() {
         return enDeplacementGauche;
-    }
+    }//à utiliser dans collisions
     public boolean isEnDeplacementDroite() {
         return enDeplacementDroite;
     }

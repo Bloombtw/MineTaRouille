@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.DeplacementManager;
 
 public class Personnage {
 
@@ -13,7 +14,7 @@ public class Personnage {
 
     private final String nom;
     private final int satiete;
-
+    private DeplacementManager deplacement;
     private final Item[] inventaire;
     private final int selectedSlot;
     private final boolean isMining;
@@ -66,6 +67,10 @@ public class Personnage {
     public void arreterMouvementX() {
         vitesseX = 0;
     }
+    public void arreterMouvementY() {
+        vitesseY = 0;
+    }
+
 
     public void gravite() {
         vitesseY += Constantes.GRAVITE;
@@ -74,7 +79,7 @@ public class Personnage {
         if (!collision(getX(), futurY)) {
             setY(futurY);
         } else {
-            vitesseY = 0;
+            arreterMouvementY();
             peutSauter = true;
         }
     }

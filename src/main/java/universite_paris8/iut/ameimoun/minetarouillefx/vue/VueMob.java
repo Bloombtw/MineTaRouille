@@ -3,10 +3,8 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Loader;
-
-
-
 
 public class VueMob {
     private final ImageView mobImage;
@@ -17,8 +15,8 @@ public class VueMob {
 
     public VueMob(Mob mob) {
         mobImage = new ImageView();
-        mobImage.setFitWidth(128);
-        mobImage.setFitHeight(128);
+        mobImage.setFitWidth(Constantes.TAILLE_TUILE);
+        mobImage.setFitHeight(Constantes.TAILLE_TUILE);
 
         container = new Group(mobImage);
         lierPositionContainer(mob);
@@ -41,10 +39,8 @@ public class VueMob {
         if (spriteMarche == null) {
             System.out.println("Erreur : impossible de charger marche.png");
         }
-
         animIdle = creerAnimation("/img/mob/idle.png", 128, 128, 8, 200);
         animMarche = creerAnimation("/img/mob/saut.png", 128, 128, 13, 200);
-
     }
 
 
@@ -61,19 +57,6 @@ public class VueMob {
         Image[] framesArray = Animation.decouperSpriteSheet(sprite, frameWidth, height, frames);
         return new Animation(mobImage, framesArray, duree);
     }
-
-
-
-    public void mettreAJourAnimation(Mob mob) {
-        if (mob.getSeDeplace()) {
-            jouerAnimation(animMarche);
-            System.out.println("Animation marche activée");
-        } else {
-            jouerAnimation(animIdle);
-            System.out.println("Animation idle activée");
-        }
-    }
-
 
     private void jouerAnimation(Animation animation) {
         if (animActuelle != animation) {

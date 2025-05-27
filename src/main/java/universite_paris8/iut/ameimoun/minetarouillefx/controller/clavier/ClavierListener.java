@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.DeplacementManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
@@ -61,7 +62,7 @@ public class ClavierListener {
                     joueur.arreterMouvementX();
                 }
             }
-            case Z, SPACE, UP -> {} // RIEN
+            case Z, SPACE, UP -> {} // s'accroupir ?
         }
     }
 

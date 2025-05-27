@@ -30,12 +30,6 @@ Actuellement, ce package contient **6 classes**, dont **4 actives sans bug**.
 - Système de découpage de frames appelé de la classe Animation.
 ---
 
-## Dernières modifications :
-✅ **Création de `VueItem`** → Inspiré de **VueJoueur**, gère l'affichage visuel des objets (`ImageView`).  
-✅ **Modification de `VueJoueur`** → Optimisation pour un affichage plus propre.  
-✅ **Ajout de `updatePosition()`** → Mise à jour de la position des objets dans la scène.
-
-
 ## VueVie
 
   Attributs principaux :
@@ -51,4 +45,20 @@ Actuellement, ce package contient **6 classes**, dont **4 actives sans bug**.
 - Système de découpage de frames appelé de la classe Animation.
 ---
 
->Modification : allégement du constructeur en séparant la créa de la barre de vie sous plusieurs methodes.
+## VueMob
+
+  Attributs principaux :
+                          -private final ImageView mobImage : stocke les images en fonction de la selection
+                          -private final Group container : fait office d'intermédiaire entre la vue et le modele
+                          -Animation
+
+### Méthodes :
+  - charger, creer, jouer Animation
+
+
+## Dernières modifications :
+✅ **Création de `VueItem`** → Inspiré de **VueJoueur**, gère l'affichage visuel des objets (`ImageView`).  
+✅ **Modification de `VueJoueur`** → Optimisation pour un affichage plus propre.  
+✅ **Ajout de `updatePosition()`** → Mise à jour de la position des objets dans la scène.
+
+✅ **Créa de la classe VueMob** qui s'occupe de l'affichage du mob sur la map

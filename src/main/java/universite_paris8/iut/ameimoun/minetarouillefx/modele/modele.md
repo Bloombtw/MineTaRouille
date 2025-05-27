@@ -110,10 +110,19 @@
         -Vérifier si le personnage est mort (estMort()).
         -Détecter si le personnage est actuellement sur un danger (comme du feu ou un cactus) via verifierDegats().
 
->Modification apportée : 
-    le listener n'est plus apl dans le constructeur, mais dans subirDegat.
-    Faire attention à ne pas modifier vieActuelle directement (on prend soigner et subirDegat).
+## Mob :
 
-> note : subirDegats() : Réduit la vie du joueur. Si elle diminue, le callback est déclenché (ex. effet visuel dans la vue).
-> AjouterCallbackDegatsSubis() : Permet à une vue de s'abonner pour être notifiée en cas de dégâts (utile pour jouer une animation).
-> callbackDegatsSubis : représente la liaison entre Vie et VueVie
+    La classe Mob génère un mob sur la map tout en respectant les collisions (por l'instant on ne peux pas encore le tué)
+
+        Attributs principaux :
+        private Direction mouvementDirection qui définit le mouvement du mob.
+
+    Gère :
+            -la maj des déplacement du mob en prenant en compte gravité et collisions.
+            -extend de personnage (donc des x et y en property pour la liaision avec la VueMob)
+
+>Modification apportée : nvl Classe Mob qui génère un mob sur la map tout en respectant les collisions
+> 
+> A suivre : Se déplace réellement aleatoirement
+>            -Possibilité de le tué, de récup son cadavre en tant qu'item.
+>            -Possibilité de dégât ?
