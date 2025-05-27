@@ -8,6 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationBloc;
 
 public class VueCarte {
     private final TilePane tileMap;
@@ -25,8 +26,17 @@ public class VueCarte {
     private void ajouterBloc(Bloc bloc, Pane cellule) {
         if (bloc != null) {
             if (bloc == Bloc.FEU) {
-                // Feu est animation.
-                GestionnaireAnimation.ajouterAnimation(cellule, "/img/animations/Explosion_", 6, 60);
+                // Feu est une animation.
+                GestionnaireAnimation.ajouterAnimation(cellule, "/img/animations/Explosion_/Explosion_", 6, 60);
+                return;
+            }
+
+            if (bloc == Bloc.CORBEAU) {
+                ImageView corbeauView = new ImageView();
+                corbeauView.setFitWidth(TAILLE_TUILE);
+                corbeauView.setFitHeight(TAILLE_TUILE);
+                cellule.getChildren().add(corbeauView);
+                new AnimationBloc(corbeauView, "/img/animations/Corbeau_/Vole.png", 32, 32, 6, 120, true);
                 return;
             }
 

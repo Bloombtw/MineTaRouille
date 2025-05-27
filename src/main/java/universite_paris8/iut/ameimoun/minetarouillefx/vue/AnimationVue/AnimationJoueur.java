@@ -1,4 +1,4 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.vue;
+package universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;

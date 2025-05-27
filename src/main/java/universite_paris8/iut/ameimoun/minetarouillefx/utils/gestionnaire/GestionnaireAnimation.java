@@ -9,6 +9,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 import static universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader.loadAnimation;
 
+/*
+    Le gestionnaire d'animations marche seulement si on à plusieurs fichiers distincts.
+    Sinon, il faut utiliser AnimationJoueur ou AnimationBloc qui permettent de découper l'image
+    et de l'afficher.
+ */
 public class GestionnaireAnimation {
 
     // Utilisation : GestionnaireAnimation.ajouterAnimation(pane, "/img/animations/Explosion_", 6, 60);
