@@ -23,7 +23,7 @@ public class Personnage {
     public Direction direction;
     private double vitesseX = 0;
     private double vitesseY = 0;
-    private boolean peutSauter = true;
+    public boolean peutSauter = true;
     private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVieMax, String nom) {

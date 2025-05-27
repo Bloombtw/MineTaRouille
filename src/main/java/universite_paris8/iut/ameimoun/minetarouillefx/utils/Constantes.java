@@ -12,6 +12,7 @@ public class Constantes {
     public static final int TAILLE_BOUTON = 200;
     public static final double GRAVITE = 0.2;
     public static final double VITESSE_DEPLACEMENT = 0.5;
+    public static final double VITESSE_MOB = 0.2;
     public static final double FORCE_SAUT = -8;
 
 }
