@@ -2,7 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class Personnage {
 

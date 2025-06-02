@@ -9,7 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
@@ -49,7 +50,7 @@ public class VueInventaire extends HBox {
     }
 
     private ImageView creerFondSlot(int index) {
-        Image imageSlot = Loader.loadImage(Constantes.CHEMIN_SLOT);
+        Image imageSlot = Loader.loadImage(Chemin.CHEMIN_SLOT);
         ImageView imageViewSlot = new ImageView(imageSlot);
         imageViewSlot.setFitWidth(Constantes.TAILLE_SLOT);
         imageViewSlot.setFitHeight(Constantes.TAILLE_SLOT);

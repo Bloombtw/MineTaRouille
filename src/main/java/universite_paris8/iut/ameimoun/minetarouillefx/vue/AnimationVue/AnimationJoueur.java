@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
@@ -40,13 +42,13 @@ public class AnimationJoueur {
 
 
     private void initialiserAnimations() {
-        framesIdle = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage("/img/joueur/idle.png"), 32, 32, 4);
+        framesIdle = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_IDLE), 32, 32, 4);
         frameIdleDuration = 150;
-        framesGauche = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage("/img/joueur/gauche.png"), 32, 32, 6);
+        framesGauche = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_GAUCHE), 32, 32, 6);
         frameGaucheDuration = 100;
-        framesDroite = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage("/img/joueur/droite.png"), 32, 32, 6);
+        framesDroite = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_DROITE), 32, 32, 6);
         frameDroiteDuration = 100;
-        framesSaut = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage("/img/joueur/saut.png"), 32, 32, 8);
+        framesSaut = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_SAUT), 32, 32, 8);
         frameSautDuration = 120;
 
         // On démarre en idle

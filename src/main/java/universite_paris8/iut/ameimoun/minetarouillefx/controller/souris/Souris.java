@@ -7,7 +7,7 @@
     import javafx.scene.layout.TilePane;
     import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
-    import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+    import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;

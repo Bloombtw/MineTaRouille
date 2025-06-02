@@ -1,7 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
-import java.util.Random;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class Carte {
     private final Bloc[][][] terrain;
