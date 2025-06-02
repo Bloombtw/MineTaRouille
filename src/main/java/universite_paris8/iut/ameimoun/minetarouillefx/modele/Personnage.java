@@ -81,6 +81,7 @@ public class Personnage {
             arreterMouvementY();
             peutSauter = true;
         }
+
     }
 
     boolean collision(double x, double y) {

@@ -2,6 +2,8 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
+import java.lang.reflect.GenericArrayType;
+
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
 
@@ -11,13 +13,30 @@ public class Mob extends Personnage {
 
     public void mettreAJour() {
         gravite();
-        double prochaineX = getX() + Constantes.VITESSE_DEPLACEMENT;
+        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
+        double prochaineY = getY() +getVitesseY();
 
-        if (collision(prochaineX, getY())) {//si il y a collision trop haut, qu'il aille à gauche
+        boolean collisionVerticale = collision(prochaineX,prochaineY-Constantes.FORCE_SAUT);
+        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT,getY());
+        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT,getY());
+
+        if(collisionDroite && collisionGauche){
             sauter();
+        }
+        else if (collisionDroite || collisionGauche){
+            if(collisionVerticale){
+                sauter();
+                mouvementDirection=(mouvementDirection==Direction.DROITE)? Direction.GAUCHE : Direction.DROITE;
+            }
+            else{
+                sauter();
+            }
+        }
+        if(mouvementDirection==Direction.DROITE){
             deplacerDroite();
-        } else {
-            deplacerDroite();
+        }
+        else{
+            deplacerGauche();
         }
     }
 }
