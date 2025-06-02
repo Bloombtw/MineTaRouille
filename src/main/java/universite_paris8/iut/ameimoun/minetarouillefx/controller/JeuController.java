@@ -46,6 +46,8 @@ public class JeuController implements Initializable {
     private final List<Item> itemsAuSol = new ArrayList<>();
     private final List<VueItem> vuesItemsAuSol = new ArrayList<>();
     private boolean sonDegatJoue = false;
+    private VueMob vueMob;
+    private Mob mob;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -57,6 +59,7 @@ public class JeuController implements Initializable {
         initialiserBarreDeVie();
         initialiserInventaire();
         initialiserControles();
+        initialiserMob();
         demarrerBoucleDeJeu();
         initialiserMusique();
     }
@@ -77,10 +80,19 @@ public class JeuController implements Initializable {
     private void mettreAJourJeu() {
         joueurModele.gravite();
         gererVie();
+        if (mob != null && vueMob != null) {
+            mob.mettreAJour();
+        }
         mettreAJourItemsAuSol();
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }
+    }
+
+    private void initialiserMob() {
+        mob = new Mob();
+        vueMob = new VueMob(mob);
+        rootPane.getChildren().add(vueMob.getNode());
     }
 
     // Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.
@@ -131,7 +143,7 @@ public class JeuController implements Initializable {
 
     private void initialiserJoueur() {
         joueurModele = new Joueur();
-        debugManager = new DebugManager(rootPane, joueurModele);
+        debugManager = new DebugManager(rootPane, joueurModele, mob);
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getNode());
         joueurVue.mettreAJourObjetTenu(null);

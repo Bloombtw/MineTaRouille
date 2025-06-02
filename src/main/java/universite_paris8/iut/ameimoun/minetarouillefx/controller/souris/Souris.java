@@ -98,8 +98,8 @@
         int couche1 = 1;
         int couche2 = 2;
 
-        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y);
-        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y);
+        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
+        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
             if (itemBloc1 != null || itemBloc2 != null) {
                 dropItemEtMettreAJour(itemBloc1, x, y, couche1);
                 dropItemEtMettreAJour(itemBloc2, x, y, couche2);

@@ -5,7 +5,8 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 public class GestionnaireBloc {
 
     // Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)
-    public static Item casserBlocEtDonnerItem(int couche, int x, int y) {
+    public static Item casserBlocEtDonnerItem(int couche, int x, int y, Joueur joueur) {
+        if (!estADistanceAutorisee(joueur, x, y, 3)) return null;
         Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
         if (blocCasse != null && blocCasse.estSolide()) {
             // On crée un Item de type Bloc, quantité 1 (un bloc tombé au sol)
@@ -13,6 +14,15 @@ public class GestionnaireBloc {
         }
         return null;
     }
+
+    public static boolean estADistanceAutorisee(Joueur joueur, int x, int y, int distanceMax) {
+        // Distance euclidienne entre le joueur et le bloc
+        int joueurX = (int) ((joueur.getX() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
+        int joueurY = (int) ((joueur.getY() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
+        double distance = Math.sqrt(Math.pow(joueurX - x, 2) + Math.pow(joueurY - y, 2));
+        return distance <= distanceMax;
+    }
+
 
     // Place un bloc à la position (x, y) dans la couche spécifiée
     public static boolean placerBloc(
@@ -27,6 +37,7 @@ public class GestionnaireBloc {
         if (!carte.estDansLaMap(x, y)) return false;
         if (carte.getTerrain()[couche][y][x] != null && carte.getTerrain()[couche][y][x].estSolide()) return false;
         if (hitboxSurBloc(joueur, x, y)) return false; // Ne pas placer un bloc sur le joueur
+        if (!estADistanceAutorisee(joueur, x, y, 3)) return false;
 
         Item itemSelectionne = inventaire.getItem(indexItem);
 

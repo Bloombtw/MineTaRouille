@@ -6,7 +6,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
+
+import java.util.List;
 
 public class DebugManager {
 
@@ -16,10 +19,12 @@ public class DebugManager {
     private Canvas debugCanvas;
     private Canvas hitboxCanvas;
     private boolean debugVisible = false;
+    private final Mob mob;
 
-    public DebugManager(AnchorPane rootPane,Joueur joueur) {
+    public DebugManager(AnchorPane rootPane,Joueur joueur, Mob mobs) {
         this.rootPane = rootPane;
         this.joueur = joueur;
+        this.mob = mobs;
     }
 
     public void toggle() {
@@ -53,9 +58,26 @@ public class DebugManager {
                 Constantes.TAILLE_PERSO,
                 Constantes.TAILLE_PERSO
         );
+
+        /*
+        // Hitbox des mobs (rouge, par exemple)
+        if (mob != null) {
+            gc.setStroke(Color.GREEN);
+
+            gc.strokeRect(
+                    mob.getX(),
+                    mob.getY(),
+                    Constantes.TAILLE_PERSO,
+                    Constantes.TAILLE_PERSO
+            );
+        }
+
+         */
     }
 
     public boolean isDebugVisible() {
         return debugVisible;
     }
 }
+
+

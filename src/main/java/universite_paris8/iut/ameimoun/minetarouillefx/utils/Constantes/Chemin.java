@@ -65,5 +65,8 @@ public class Chemin {
         public static final String ANIMATION_JOUEUR_DROITE = "/img/animations/joueur/droite.png";
         public static final String ANIMATION_JOUEUR_SAUT   = "/img/animations/joueur/saut.png";
 
+        public static final String ANIMATION_MOB_IDLE = "/img/animations/Mob/idle.png";
+        public static final String ANIMATION_MOB_SAUT = "/img/animations/Mob/saut.png";
+
         public static final String ANIMATION_CORBEAU_VOLE = "/img/animations/Corbeau_/Vole.png";
 }
