@@ -11,6 +11,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireControles;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMort;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
@@ -42,6 +43,7 @@ public class JeuController implements Initializable {
     private GestionnaireItem gestionnaireItem;
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
+    private GestionnaireMort gestionnaireMort;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -55,8 +57,20 @@ public class JeuController implements Initializable {
         initialiserInventaire();
         initialiserControles();
         initialiserMob();
-        demarrerBoucleDeJeu();
         initialiserMusique();
+        demarrerBoucleDeJeu();
+        initialiserGestionnaireMort();
+    }
+
+    private void initialiserGestionnaireMort() {
+        gestionnaireMort = new GestionnaireMort(
+                joueurModele,
+                vie,
+                musiqueManager,
+                rootPane,
+                gestionnaireControles,
+                vueCarte
+        );
     }
 
     private void initialiserControles() {
@@ -113,23 +127,10 @@ public class JeuController implements Initializable {
     private void gererVie() {
         vie.verifierDegats(joueurModele, Carte.getInstance());
         gererAlerteVieBasse();
-        gererMort();
+        gestionnaireMort.gererMort(gameLoop);
     }
 
-    // Vérifie si le joueur est mort, arrête la musique et affiche l'écran de mort.
-    private void gererMort() {
-        if (joueurModele.getVie().estMort() && vie.estMort()) {
-            joueurModele.getVie().setEstEnVie(false);
-            musiqueManager.arreterMusique();
-            AudioManager.getInstance().arreterTousLesSons();
-            sonDegatJoue = false;
-            AudioManager.getInstance().jouerAlerteMort();
-            gameLoop.stop();
-            gestionnaireControles.getSourisListener().desactiver(tileMap);
-            gestionnaireControles.getClavierListener().desactiver(tileMap);
-            afficherEcranDeMort();
-        }
-    }
+
 
     // Joue une alerte sonore si la vie du joueur est basse, et arrête de jouer si la vie redevient normale.
     private void gererAlerteVieBasse() {
@@ -139,14 +140,6 @@ public class JeuController implements Initializable {
             AudioManager.getInstance().jouerAlerteVieBasse();
         } else if (!vieLow) {
             sonDegatJoue = false;
-        }
-    }
-
-    // Affiche l'écran de mort en chargeant le FXML.
-    private void afficherEcranDeMort() {
-        Parent overlayDeMort = Loader.load(Chemin.FXML_ECRAN_MORT);
-        if (overlayDeMort != null) {
-            rootPane.getChildren().add(overlayDeMort);
         }
     }
 
