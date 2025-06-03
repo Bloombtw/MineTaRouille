@@ -9,6 +9,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
@@ -29,8 +30,6 @@ public class JeuController implements Initializable {
     private TilePane tileMap;
     @FXML
     private AnchorPane rootPane;
-    private Inventaire inventaire;
-    private VueInventaire vueInventaire;
     private ClavierListener clavierListener;
     private Vie vie;
     private VueVie vueVie;
@@ -45,6 +44,7 @@ public class JeuController implements Initializable {
     private VueMob vueMob;
     private Mob mob;
     private GestionnaireItem gestionnaireItem;
+    private GestionnaireInventaire gestionnaireInventaire;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -60,6 +60,11 @@ public class JeuController implements Initializable {
         initialiserMob();
         demarrerBoucleDeJeu();
         initialiserMusique();
+    }
+
+    private void initialiserInventaire() {
+        gestionnaireInventaire = new GestionnaireInventaire(rootPane, joueurVue);
+        gestionnaireInventaire.initialiserInventaire();
     }
 
     private void initialiserGestionnaireItem() {
@@ -85,7 +90,11 @@ public class JeuController implements Initializable {
         if (mob != null && vueMob != null) {
             mob.mettreAJour();
         }
-        gestionnaireItem.update(joueurModele, inventaire, vueInventaire);
+        gestionnaireItem.update(
+                joueurModele,
+                gestionnaireInventaire.getInventaire(),
+                gestionnaireInventaire.getVueInventaire()
+        );
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }
@@ -158,27 +167,11 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
 
-    private void initialiserInventaire() {
-        inventaire = new Inventaire();
-        inventaire.ajouterItem(new Item(Objet.EPEE));
-        inventaire.ajouterItem(new Item(Bloc.PIERRE, 32));
-        vueInventaire = new VueInventaire(inventaire);
-        AnchorPane.setTopAnchor(vueInventaire, 10.0);
-        AnchorPane.setRightAnchor(vueInventaire, 10.0);
-        rootPane.getChildren().add(vueInventaire);
-        joueurVue.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
-        inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
-            joueurVue.mettreAJourObjetTenu(inventaire.getItem(newVal.intValue()));
-        });
-        inventaire.getSlots().addListener((ListChangeListener.Change<? extends Item> change) -> {
-            // Met à jour l'objet tenu dans la main à chaque changement de la liste
-            joueurVue.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
-        });
-    }
+
 
     private void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager);
-        sourisListener = new Souris(joueurModele, inventaire,vueCarte,vueInventaire);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
+        sourisListener = new Souris(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire());
 
         clavierListener.lier(tileMap);
         sourisListener.lier(tileMap);
