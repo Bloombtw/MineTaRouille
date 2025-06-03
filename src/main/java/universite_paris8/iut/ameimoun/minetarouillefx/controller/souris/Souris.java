@@ -52,7 +52,6 @@
             });
         }
 
-
         public void setJeuController(JeuController jeuController) {
             this.jeuController = jeuController;
         }
@@ -74,7 +73,7 @@
                 );
 
                 if (blocPlace) {
-                    vueCarte.mettreAJourAffichage(x, y);
+                    vueCarte.mettreAJourBloc(x, y);
                     vueInventaire.mettreAJourAffichage();
                     if (vueJoueur != null) {
                         vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
@@ -82,8 +81,6 @@
                 }
             }
         }
-
-
 
         private void gererClicSouris(MouseEvent event) {
             if (event.getButton() != MouseButton.PRIMARY) return; // On ne gère que les clics gauches.
@@ -104,9 +101,9 @@
 
         private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
             if (item != null) {
-                vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
+                vueCarte.mettreAJourBloc(x, y); // le bloc cassé
                 if (couche == 1 && y - 1 >= 0) {
-                    vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
+                    vueCarte.mettreAJourBloc(x, y - 1); // décor au-dessus si sol cassé
                 }
                 jeuController.spawnItemAuSol(item, x, y);
             }

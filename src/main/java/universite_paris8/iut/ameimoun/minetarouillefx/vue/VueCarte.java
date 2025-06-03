@@ -77,7 +77,30 @@ public class VueCarte {
         }
     }
 
-    //TODO faire une methode mettreAJourBloc qui remet à jour seulement le bloc cassé.
+    //TODO faire une methode mettreAJourBloc qui remet à jour seulement le bloc cassé. à finir
+    public void mettreAJourBloc(int x, int y) {
+        int index = y * carte.getLargeur() + x;
+        Pane cellule = (Pane) tileMap.getChildren().get(index);
+
+        for (int couche = 0; couche < carte.getNbCouches(); couche++) {
+            Bloc bloc = carte.getTerrain()[couche][y][x];
+
+            if (bloc != null) {
+                // Suppression uniquement du bloc affecté
+                supprimerBloc(bloc,cellule);
+
+                // Ajout du nouveau bloc modifié
+                ajouterBloc(bloc, cellule);
+            }
+        }
+    }
+
+    private void supprimerBloc(Bloc bloc, Pane cellule) {
+        if (bloc != null) {
+            cellule.getChildren().removeIf(node -> node instanceof ImageView && ((ImageView) node).getImage().equals(getImageAssociee(bloc)));
+        }
+    }
+
 
     public TilePane getTileMap() {
         return tileMap;

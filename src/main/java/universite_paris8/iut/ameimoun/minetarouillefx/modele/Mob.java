@@ -1,8 +1,5 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
-
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-
-import java.lang.reflect.GenericArrayType;
 
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
