@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Vie {
     private final BooleanProperty estEnVieProperty;
-    private final DoubleProperty vieMax;
+    private final DoubleProperty vieMax;// en double
     private DoubleProperty vieActuelle;
     private final List<Runnable> actionsSurDegats;
     private final BooleanProperty subitDegats;
@@ -36,6 +36,7 @@ public class Vie {
     public DoubleProperty vieActuelleProperty() {
         return vieActuelle;
     }
+
     public void ajouterCallbackDegatsSubis(Runnable callback) {
         this.actionsSurDegats.add(callback);
     }
