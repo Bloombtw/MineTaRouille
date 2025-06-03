@@ -1,5 +1,6 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.modele;
+package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class GestionnaireBloc {
