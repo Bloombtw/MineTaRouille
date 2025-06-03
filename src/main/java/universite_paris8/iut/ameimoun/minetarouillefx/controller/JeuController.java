@@ -81,6 +81,7 @@ public class JeuController implements Initializable {
         joueurModele.gravite();
         gererVie();
         if (mob != null && vueMob != null) {
+            mob.attaquer(joueurModele);
             mob.mettreAJour();
         }
         mettreAJourItemsAuSol();
@@ -93,6 +94,7 @@ public class JeuController implements Initializable {
         mob = new Mob();
         vueMob = new VueMob(mob);
         rootPane.getChildren().add(vueMob.getNode());
+        mob.attaquer(joueurModele);
     }
 
     // Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.

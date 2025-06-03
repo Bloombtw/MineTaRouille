@@ -79,6 +79,16 @@ public class Personnage {
         }
     }
 
+    public void attaquer(Personnage personnage) { //à optimisé
+        double distanceX = Math.abs(this.getX() - personnage.getX());
+        double distanceY = Math.abs(this.getY() - personnage.getY());
+        double distanceTotale = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        if (distanceTotale <= 1) {
+            personnage.getVie().subirDegats(1);
+        }
+    }
+
     boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
         int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);

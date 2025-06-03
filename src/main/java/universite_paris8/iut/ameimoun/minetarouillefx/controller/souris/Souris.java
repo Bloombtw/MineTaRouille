@@ -57,12 +57,6 @@
             this.jeuController = jeuController;
         }
 
-
-
-
-
-
-
         private void gererPlacementBloc(MouseEvent event) {
             if (event.getButton() == MouseButton.SECONDARY) { // clic droit
                 int x = (int) event.getX() / Constantes.TAILLE_TUILE;

@@ -15,7 +15,7 @@ public class GestionnaireBloc {
         return null;
     }
 
-    public static boolean estADistanceAutorisee(Joueur joueur, int x, int y, int distanceMax) {
+    public static boolean estADistanceAutorisee(Joueur joueur, int x, int y, int distanceMax) {//Type personnage pour pouvoir l'utilisé pour les attaques...
         // Distance euclidienne entre le joueur et le bloc
         int joueurX = (int) ((joueur.getX() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
         int joueurY = (int) ((joueur.getY() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
