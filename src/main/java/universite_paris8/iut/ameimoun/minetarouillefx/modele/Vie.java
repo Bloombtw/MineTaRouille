@@ -59,7 +59,7 @@ public class Vie {
         boolean currentlyOnHazard = false;
 
         if (carte.estDansLaMap(joueurX, joueurY)) {
-            for (int couche = Constantes.NB_COUCHES - 1; couche >= 0; couche--) {
+            for (int couche = Constantes.NB_COUCHES - 1; couche >= 0; couche--) {//TODO voir si on peut juste verifie par la hitBOX
                 Bloc bloc = carte.getTerrain()[couche][joueurY][joueurX];
                 if (bloc == Bloc.FEU) {
                     this.subirDegats(0.01);

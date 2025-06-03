@@ -77,8 +77,7 @@ public class VueCarte {
         }
     }
 
-
-
+    //TODO faire une methode mettreAJourBloc qui remet à jour seulement le bloc cassé.
 
     public TilePane getTileMap() {
         return tileMap;
