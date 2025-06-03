@@ -14,7 +14,7 @@ public class GenerateurCarte {
         remplirTerrain(hauteurSol, rand, terrain);
         ajouterNuages(rand, terrain);
         ajouterArbre(hauteurSol, terrain);
-        ajouterEtoiles(rand, terrain);
+        ajouterEtoiles(rand, terrain); // AZAD
         ajouterObjetsSpeciaux(terrain);
 
         return new Carte(terrain);
