@@ -192,6 +192,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserCarte() {
+        System.out.println("Initialisation de la carte avec la seed : " + Carte.getInstance().getSeed());
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
