@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+//TODO verif de raison de lag (décalage de gstion d'image)
+
 public class JeuController implements Initializable {
     @FXML
     private TilePane tileMap;
