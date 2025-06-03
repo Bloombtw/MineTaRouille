@@ -14,23 +14,48 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VueInventaire extends HBox {
 
     private final Inventaire inventaire;
+    private final List<StackPane> casesSlots = new ArrayList<>();
 
 
     public VueInventaire(Inventaire inventaire) {
         this.inventaire = inventaire;
         setSpacing(3);
-        mettreAJourAffichage();
+        initCasesSlots();
         inventaire.getSlots().addListener((Observable o) -> mettreAJourAffichage());
         inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> mettreAJourAffichage());
     }
 
     public void mettreAJourAffichage() {
-        getChildren().clear();
+        for (int i = 0; i < casesSlots.size(); i++) {
+            updateCaseSlot(casesSlots.get(i), i);
+        }
+    }
+
+    private void updateCaseSlot(StackPane caseSlot, int index) {
+        caseSlot.getChildren().clear();
+
+        caseSlot.getChildren().add(creerFondSlot(index));
+
+        Item item = inventaire.getItem(index);
+        if (item != null) {
+            caseSlot.getChildren().add(creerImageItem(item));
+            if (item.getQuantite() > 1) {
+                caseSlot.getChildren().add(creerQuantiteText(item));
+            }
+        }
+    }
+
+    private void initCasesSlots() {
         for (int i = 0; i < inventaire.getSlots().size(); i++) {
-            getChildren().add(creerCaseSlot(i));
+            StackPane caseSlot = creerCaseSlot(i);
+            casesSlots.add(caseSlot);
+            getChildren().add(caseSlot);
         }
     }
 
