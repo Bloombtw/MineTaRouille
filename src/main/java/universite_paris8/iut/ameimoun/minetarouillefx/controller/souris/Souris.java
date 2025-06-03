@@ -8,6 +8,7 @@
     import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
+    import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -18,14 +19,16 @@
         private final Inventaire inventaire;
         private final VueInventaire vueInventaire;
         private JeuController jeuController;
+        private GestionnaireItem gestionnaireItem;
         private VueCarte vueCarte;
         private VueJoueur vueJoueur;
 
-        public Souris(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire ) {
+        public Souris(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem) {
             this.joueur = joueur;
             this.inventaire = inventaire;
             this.vueCarte = vueCarte;
             this.vueInventaire = vueInventaire;
+            this.gestionnaireItem = gestionnaireItem;
         }
 
         public void lier(TilePane tilePane) {
@@ -115,7 +118,7 @@
                 if (couche == 1 && y - 1 >= 0) {
                     vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
                 }
-                jeuController.spawnItemAuSol(item, x, y);
+                gestionnaireItem.spawnItemAuSol(item, x, y);
             }
         }
 

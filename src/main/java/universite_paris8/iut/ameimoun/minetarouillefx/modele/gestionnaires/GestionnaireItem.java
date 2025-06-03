@@ -92,4 +92,5 @@ public class GestionnaireItem {
         vuesItemsAuSol.add(vue);
         rootPane.getChildren().add(vue.getImageView());
     }
+
 }

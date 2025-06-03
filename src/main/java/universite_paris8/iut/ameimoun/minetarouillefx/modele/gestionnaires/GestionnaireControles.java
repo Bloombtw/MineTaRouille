@@ -15,18 +15,20 @@ public class GestionnaireControles {
     private final VueCarte vueCarte;
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
+    private final GestionnaireItem gestionnaireItem;
 
-    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager) {
+    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
         this.debugManager = debugManager;
+        this.gestionnaireItem = gestionnaireItem;
         initialiserControles();
     }
 
     public void initialiserControles() {
         clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
-        sourisListener = new Souris(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire());
+        sourisListener = new Souris(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem);
         TilePane tileMap = vueCarte.getTileMap();
 
         clavierListener.lier(tileMap);

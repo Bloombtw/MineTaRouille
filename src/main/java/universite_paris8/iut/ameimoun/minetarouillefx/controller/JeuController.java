@@ -94,7 +94,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager);
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
         gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.initialiserControles();
     }
@@ -162,7 +162,4 @@ public class JeuController implements Initializable {
         }
     }
 
-    public void spawnItemAuSol(Item item, int x, int y) {
-        gestionnaireItem.spawnItemAuSol(item, x, y);
-    }
 }
