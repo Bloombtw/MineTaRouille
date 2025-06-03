@@ -2,20 +2,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireControles;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMort;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.AudioManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
@@ -37,13 +28,14 @@ public class JeuController implements Initializable {
     private VueCarte vueCarte;
     private DebugManager debugManager;
     private MusiqueManager musiqueManager;
-    private boolean sonDegatJoue = false;
     private VueMob vueMob;
     private Mob mob;
     private GestionnaireItem gestionnaireItem;
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
+    private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
+    private GestionnaireSon gestionnaireSon;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -54,98 +46,23 @@ public class JeuController implements Initializable {
         initialiserGestionnaireItem();
         initialiserJoueur();
         initialiserBarreDeVie();
+        initialiserGestionnaireSon();
+        initialiserGestionnaireMort();
+        initialiserGestionnaireVie();
         initialiserInventaire();
         initialiserControles();
         initialiserMob();
         initialiserMusique();
         demarrerBoucleDeJeu();
-        initialiserGestionnaireMort();
     }
 
-    private void initialiserGestionnaireMort() {
-        gestionnaireMort = new GestionnaireMort(
-                joueurModele,
-                vie,
-                musiqueManager,
-                rootPane,
-                gestionnaireControles,
-                vueCarte
-        );
-    }
+    /*
+        INITIALISATIONS
+     */
 
-    private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager);
-        gestionnaireControles.getSourisListener().setJeuController(this);
-        gestionnaireControles.initialiserControles();
-    }
-
-    private void initialiserInventaire() {
-        gestionnaireInventaire = new GestionnaireInventaire(rootPane, joueurVue);
-        gestionnaireInventaire.initialiserInventaire();
-    }
-
-    private void initialiserGestionnaireItem() {
-        gestionnaireItem = new GestionnaireItem(rootPane);
-    }
-
-    // Démarre la boucle de jeu qui met à jour l'état du jeu à chaque frame.
-    private void demarrerBoucleDeJeu() {
-        gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                mettreAJourJeu();
-                gererVie();
-            }
-        };
-        gameLoop.start();
-    }
-
-    // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
-    private void mettreAJourJeu() {
-        joueurModele.gravite();
-        gererVie();
-        if (mob != null && vueMob != null) {
-            mob.mettreAJour();
-        }
-        gestionnaireItem.update(
-                joueurModele,
-                gestionnaireInventaire.getInventaire(),
-                gestionnaireInventaire.getVueInventaire()
-        );
-        if (debugManager.isDebugVisible()) {
-            debugManager.update();
-        }
-    }
-
-    private void initialiserMob() {
-        mob = new Mob();
-        vueMob = new VueMob(mob);
-        rootPane.getChildren().add(vueMob.getNode());
-    }
-
-    // Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.
-    private void gererVie() {
-        vie.verifierDegats(joueurModele, Carte.getInstance());
-        gererAlerteVieBasse();
-        gestionnaireMort.gererMort(gameLoop);
-    }
-
-
-
-    // Joue une alerte sonore si la vie du joueur est basse, et arrête de jouer si la vie redevient normale.
-    private void gererAlerteVieBasse() {
-        boolean vieLow = joueurModele.getVie().estLow();
-        if (vieLow && !sonDegatJoue) {
-            sonDegatJoue = true;
-            AudioManager.getInstance().jouerAlerteVieBasse();
-        } else if (!vieLow) {
-            sonDegatJoue = false;
-        }
-    }
-
-    private void initialiserMusique() {
-        musiqueManager = MusiqueManager.getInstance();
-        musiqueManager.jouerMusiqueFond();
+    private void initialiserCarte() {
+        vueCarte = new VueCarte(Carte.getInstance());
+        tileMap.getChildren().add(vueCarte.getTileMap());
     }
 
     private void initialiserJoueur() {
@@ -163,10 +80,86 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
 
+    private void initialiserInventaire() {
+        gestionnaireInventaire = new GestionnaireInventaire(rootPane, joueurVue);
+        gestionnaireInventaire.initialiserInventaire();
+    }
 
-    private void initialiserCarte() {
-        vueCarte = new VueCarte(Carte.getInstance());
-        tileMap.getChildren().add(vueCarte.getTileMap());
+    private void initialiserGestionnaireItem() {
+        gestionnaireItem = new GestionnaireItem(rootPane);
+    }
+
+    private void initialiserGestionnaireSon() {
+        gestionnaireSon = new GestionnaireSon(joueurModele);
+    }
+
+    private void initialiserControles() {
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager);
+        gestionnaireControles.getSourisListener().setJeuController(this);
+        gestionnaireControles.initialiserControles();
+    }
+
+    private void initialiserMob() {
+        mob = new Mob();
+        vueMob = new VueMob(mob);
+        rootPane.getChildren().add(vueMob.getNode());
+    }
+
+    private void initialiserMusique() {
+        musiqueManager = MusiqueManager.getInstance();
+        musiqueManager.jouerMusiqueFond();
+    }
+
+    private void initialiserGestionnaireMort() {
+        gestionnaireMort = new GestionnaireMort(
+                joueurModele,
+                vie,
+                musiqueManager,
+                rootPane,
+                gestionnaireControles,
+                vueCarte
+        );
+    }
+
+    private void  initialiserGestionnaireVie() {
+        gestionnaireVie = new GestionnaireVie(
+                joueurModele,
+                gestionnaireSon,
+                gestionnaireMort,
+                vie
+        );
+    }
+
+    /*
+        BOUCLES DE JEU
+     */
+
+    // Démarre la boucle de jeu qui met à jour l'état du jeu à chaque frame.
+    private void demarrerBoucleDeJeu() {
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                mettreAJourJeu();
+            }
+        };
+        gameLoop.start();
+    }
+
+    // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
+    private void mettreAJourJeu() {
+        joueurModele.gravite();
+        gestionnaireVie.mettreAJour(gameLoop);
+        if (mob != null && vueMob != null) {
+            mob.mettreAJour();
+        }
+        gestionnaireItem.update(
+                joueurModele,
+                gestionnaireInventaire.getInventaire(),
+                gestionnaireInventaire.getVueInventaire()
+        );
+        if (debugManager.isDebugVisible()) {
+            debugManager.update();
+        }
     }
 
     public void spawnItemAuSol(Item item, int x, int y) {
