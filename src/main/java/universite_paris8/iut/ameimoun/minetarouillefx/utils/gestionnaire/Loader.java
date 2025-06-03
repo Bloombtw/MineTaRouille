@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 
 import java.net.URL;
 
@@ -24,7 +25,7 @@ public class Loader {
             return new Image(resource.toExternalForm());
         } else {
             System.err.println("Image non trouvée : " + path + " → Image par défaut utilisée.");
-            return new Image(Loader.class.getResource("/img/default.jpg").toExternalForm());
+            return new Image(Loader.class.getResource(Chemin.IMAGE_DEFAULT).toExternalForm());
         }
     }
 
@@ -34,7 +35,7 @@ public class Loader {
             return new Media(resource.toExternalForm());
         } else {
             System.err.println("Musique non trouvée : " + path + " → Musique par défaut utilisée. (Son d'erreur)");
-            return new Media(Loader.class.getResource("/mp3/error.mp3").toExternalForm());
+            return new Media(Loader.class.getResource(Chemin.SON_DEFAULT).toExternalForm());
         }
     }
 

@@ -50,7 +50,7 @@ public class VueInventaire extends HBox {
     }
 
     private ImageView creerFondSlot(int index) {
-        Image imageSlot = Loader.loadImage(Chemin.CHEMIN_SLOT);
+        Image imageSlot = Loader.loadImage(Chemin.SLOT);
         ImageView imageViewSlot = new ImageView(imageSlot);
         imageViewSlot.setFitWidth(Constantes.TAILLE_SLOT);
         imageViewSlot.setFitHeight(Constantes.TAILLE_SLOT);

@@ -9,6 +9,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
@@ -130,7 +131,7 @@ public class JeuController implements Initializable {
 
     // Affiche l'écran de mort en chargeant le FXML.
     private void afficherEcranDeMort() {
-        Parent overlayDeMort = Loader.load("/fxml/EcranDeMort.fxml");
+        Parent overlayDeMort = Loader.load(Chemin.FXML_ECRAN_MORT);
         if (overlayDeMort != null) {
             rootPane.getChildren().add(overlayDeMort);
         }

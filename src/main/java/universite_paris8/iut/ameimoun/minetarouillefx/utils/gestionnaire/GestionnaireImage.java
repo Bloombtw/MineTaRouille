@@ -1,7 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire;
 
-import javafx.scene.image.Image;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,48 +11,49 @@ public class GestionnaireImage {
 
     static {
         // --- BLOCS ---
-        itemToImage.put("DEFAULT",         "/img/default.png");
-        itemToImage.put("CIEL",            "/img/blocs/traversable/ciel.png");
-        itemToImage.put("PIERRE",          "/img/blocs/solide/pierre.png");
-        itemToImage.put("SABLE",           "/img/blocs/solide/sable.png");
-        itemToImage.put("TRONC",           "/img/blocs/solide/tronc.png");
-        itemToImage.put("FEUILLAGE",       "/img/blocs/solide/feuillage.png");
-        itemToImage.put("TERRE",           "/img/blocs/solide/terre.png");
-        itemToImage.put("CIEL_CLAIR",      "/img/blocs/traversable/ciel_clair.png");
-        itemToImage.put("GAY_CIEL",        "/img/blocs/traversable/gayciel.png");
-        itemToImage.put("SABLE_ROUGE",     "/img/blocs/solide/sable_rouge.png");
-        itemToImage.put("TRANSPARENT",     "/img/blocs/traversable/transparent.png");
-        itemToImage.put("CIEL_SOMBRE",     "/img/blocs/traversable/ciel_sombre.png");
-        itemToImage.put("CORBEAU",         "/img/decors/corbeau.png");
-        itemToImage.put("LUNE",            "/img/decors/lune.png");
-        itemToImage.put("LUNE_ZELDA",      "/img/decors/lune_zelda.jpg");
-        itemToImage.put("ETOILE",          "/img/decors/etoile.png");
-        itemToImage.put("ARBUSTE_MORT",    "/img/decors/arbuste_mort.png");
-        itemToImage.put("ECHELLE",         "/img/decors/echelle.png");
-        itemToImage.put("FLECHE_VERS_LA_DROITE", "/img/decors/flecheVersDroite.png");
-        itemToImage.put("ESCALIER_DROITE", "/img/decors/escalier_Droite.png");
-        itemToImage.put("GRES_CISELE",     "/img/blocs/solide/gres_cisele.png");
-        itemToImage.put("GRES_COUPE",      "/img/blocs/solide/gres_coupe.png");
-        itemToImage.put("POUSSE_ACACIA",   "/img/decors/pousse_acacia.png");
-        itemToImage.put("FEUILLAGE_ACACIA","/img/blocs/solide/feuillage_acacia.png");
-        itemToImage.put("GRES",            "/img/blocs/solide/gres.png");
-        itemToImage.put("FEU",             "/img/decors/feu.png");
-        itemToImage.put("CACTUS",          "/img/blocs/solide/cactus.png");
-        itemToImage.put("NUAGE",           "/img/blocs/traversable/nuage.png");
-        itemToImage.put("CIEL_VIOLET",     "/img/blocs/traversable/ciel_violet.png");
-        itemToImage.put("NUAGE_PARTIE1",   "/img/blocs/traversable/nuage_partie1.png");
-        itemToImage.put("NUAGE_PARTIE2",   "/img/blocs/traversable/nuage_partie2.png");
-        itemToImage.put("NUAGE_PARTIE3",   "/img/blocs/traversable/nuage_partie3.png");
+        itemToImage.put("DEFAULT",             Chemin.IMAGE_DEFAULT);
+        itemToImage.put("CIEL",                Chemin.IMAGE_CIEL);
+        itemToImage.put("PIERRE",              Chemin.IMAGE_PIERRE);
+        itemToImage.put("SABLE",               Chemin.IMAGE_SABLE);
+        itemToImage.put("TRONC",               Chemin.IMAGE_TRONC);
+        itemToImage.put("FEUILLAGE",           Chemin.IMAGE_FEUILLAGE);
+        itemToImage.put("TERRE",               Chemin.IMAGE_TERRE);
+        itemToImage.put("CIEL_CLAIR",          Chemin.IMAGE_CIEL_CLAIR);
+        itemToImage.put("GAY_CIEL",            Chemin.IMAGE_GAY_CIEL);
+        itemToImage.put("SABLE_ROUGE",         Chemin.IMAGE_SABLE_ROUGE);
+        itemToImage.put("TRANSPARENT",         Chemin.IMAGE_TRANSPARENT);
+        itemToImage.put("CIEL_SOMBRE",         Chemin.IMAGE_CIEL_SOMBRE);
+        itemToImage.put("CORBEAU",             Chemin.IMAGE_DECORS_CORBEAU);
+        itemToImage.put("LUNE",                Chemin.IMAGE_DECORS_LUNE);
+        itemToImage.put("LUNE_ZELDA",          Chemin.IMAGE_DECORS_LUNE_ZELDA);
+        itemToImage.put("ETOILE",              Chemin.IMAGE_DECORS_ETOILE);
+        itemToImage.put("ARBUSTE_MORT",        Chemin.IMAGE_DECORS_ARBUSTE_MORT);
+        itemToImage.put("ECHELLE",             Chemin.IMAGE_DECORS_ECHELLE);
+        itemToImage.put("FLECHE_VERS_LA_DROITE", Chemin.IMAGE_DECORS_FLECHE_VERS_LA_DROITE);
+        itemToImage.put("ESCALIER_DROITE",     Chemin.IMAGE_DECORS_ESCALIER_DROITE);
+        itemToImage.put("GRES_CISELE",         Chemin.IMAGE_GRES_CISELE);
+        itemToImage.put("GRES_COUPE",          Chemin.IMAGE_GRES_COUPE);
+        itemToImage.put("POUSSE_ACACIA",       Chemin.IMAGE_DECORS_POUSSE_ACACIA);
+        itemToImage.put("FEUILLAGE_ACACIA",    Chemin.IMAGE_FEUILLAGE_ACACIA);
+        itemToImage.put("GRES",                Chemin.IMAGE_GRES);
+        itemToImage.put("FEU",                 Chemin.IMAGE_DECORS_FEU);
+        itemToImage.put("CACTUS",              Chemin.IMAGE_CACTUS);
+        itemToImage.put("NUAGE",               Chemin.IMAGE_NUAGE);
+        itemToImage.put("CIEL_VIOLET",         Chemin.IMAGE_CIEL_VIOLET);
+        itemToImage.put("NUAGE_PARTIE1",       Chemin.IMAGE_NUAGE_PARTIE1);
+        itemToImage.put("NUAGE_PARTIE2",       Chemin.IMAGE_NUAGE_PARTIE2);
+        itemToImage.put("NUAGE_PARTIE3",       Chemin.IMAGE_NUAGE_PARTIE3);
+
         // --- ITEMS ---
-        itemToImage.put("ARC",            "/img/items/arc.png");
-        itemToImage.put("EPEE",       "/img/items/epee.png");
-        itemToImage.put("MOUTON_CUIT", "/img/items/mouton_cuit.png");
-        itemToImage.put("PELLE", "/img/items/pelle.png");
-        itemToImage.put("PIOCHE", "/img/items/pioche.png");
+        itemToImage.put("ARC",                 Chemin.ITEM_ARC);
+        itemToImage.put("EPEE",                Chemin.ITEM_EPEE);
+        itemToImage.put("MOUTON_CUIT",         Chemin.ITEM_MOUTON_CUIT);
+        itemToImage.put("PELLE",               Chemin.ITEM_PELLE);
+        itemToImage.put("PIOCHE",              Chemin.ITEM_PIOCHE);
     }
 
     public static String getCheminImage(Item item) {
-        String clef = null;
+        String clef;
         if (item.getTypeItem() == Item.TypeItem.BLOC && item.getBloc() != null)
             clef = item.getBloc().name();
         else if (item.getTypeItem() == Item.TypeItem.OBJET && item.getObjet() != null)
@@ -60,7 +61,7 @@ public class GestionnaireImage {
         else
             clef = item.getNom().toUpperCase();
 
-        return itemToImage.getOrDefault(clef, "/img/default.jpg");
+        return itemToImage.getOrDefault(clef, Chemin.IMAGE_DEFAULT);
     }
 
 }
