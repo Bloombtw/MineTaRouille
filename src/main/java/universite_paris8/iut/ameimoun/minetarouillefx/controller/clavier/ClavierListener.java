@@ -7,6 +7,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 
 public class ClavierListener {
     private final DeplacementManager deplacementManager;
@@ -14,27 +15,37 @@ public class ClavierListener {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
+    private final JeuController jeuController;
 
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager,  JeuController jeuController) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new DeplacementManager(joueur);
+        this.jeuController = jeuController;
     }
 
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
+            KeyCode code = event.getCode();
+            switch (code) {
                 case Z, SPACE, UP -> {
                     joueur.sauter();
                     MusiqueManager.getInstance();
 
                 }
+
                 case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
                 case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
                 case F3 -> debugManager.toggle();
+
             }
+
+            if (code == KeyCode.A) {
+                inventaire.jeterItemSelectionne(joueur, vueInventaire, jeuController);
+            }
+
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichage();
         });

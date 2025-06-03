@@ -48,7 +48,7 @@ public class JeuController implements Initializable {
     private boolean sonDegatJoue = false;
     private VueMob vueMob;
     private Mob mob;
-
+    private JeuController jeuController;
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
     // Démarre la boucle de jeu et initialise la musique de fond.
@@ -175,7 +175,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager);
+        clavierListener = new ClavierListener(joueurModele, inventaire, vueInventaire, debugManager, this);
         sourisListener = new Souris(joueurModele, inventaire,vueCarte,vueInventaire);
 
         clavierListener.lier(tileMap);
@@ -260,7 +260,7 @@ public class JeuController implements Initializable {
     public void spawnItemAuSol(Item item, int x, int y) {
 
         item.setX(x * Constantes.TAILLE_TUILE);
-        item.setY(y * Constantes.TAILLE_TUILE);
+        item.setY((y * Constantes.TAILLE_TUILE) - Constantes.TAILLE_ITEM);
 
         VueItem vue = new VueItem(item);
         vue.updatePosition(item);
