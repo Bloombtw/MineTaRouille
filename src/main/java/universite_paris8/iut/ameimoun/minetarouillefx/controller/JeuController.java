@@ -1,6 +1,5 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.animation.AnimationTimer;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -11,14 +10,13 @@ import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireControles;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.AudioManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
-import javafx.application.Platform;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
@@ -30,7 +28,6 @@ public class JeuController implements Initializable {
     private TilePane tileMap;
     @FXML
     private AnchorPane rootPane;
-    private ClavierListener clavierListener;
     private Vie vie;
     private VueVie vueVie;
     private Joueur joueurModele;
@@ -39,12 +36,12 @@ public class JeuController implements Initializable {
     private VueCarte vueCarte;
     private DebugManager debugManager;
     private MusiqueManager musiqueManager;
-    private Souris sourisListener;
     private boolean sonDegatJoue = false;
     private VueMob vueMob;
     private Mob mob;
     private GestionnaireItem gestionnaireItem;
     private GestionnaireInventaire gestionnaireInventaire;
+    private GestionnaireControles gestionnaireControles;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -60,6 +57,12 @@ public class JeuController implements Initializable {
         initialiserMob();
         demarrerBoucleDeJeu();
         initialiserMusique();
+    }
+
+    private void initialiserControles() {
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager);
+        gestionnaireControles.getSourisListener().setJeuController(this);
+        gestionnaireControles.initialiserControles();
     }
 
     private void initialiserInventaire() {
@@ -122,8 +125,8 @@ public class JeuController implements Initializable {
             sonDegatJoue = false;
             AudioManager.getInstance().jouerAlerteMort();
             gameLoop.stop();
-            clavierListener.desactiver(tileMap);
-            sourisListener.desactiver(tileMap);
+            gestionnaireControles.getSourisListener().desactiver(tileMap);
+            gestionnaireControles.getClavierListener().desactiver(tileMap);
             afficherEcranDeMort();
         }
     }
@@ -167,23 +170,6 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
 
-
-
-    private void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
-        sourisListener = new Souris(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire());
-
-        clavierListener.lier(tileMap);
-        sourisListener.lier(tileMap);
-        sourisListener.setJeuController(this);
-
-
-        Platform.runLater(() -> {
-            tileMap.setFocusTraversable(true);
-            sourisListener.lierScrollInventaire(tileMap.getScene());
-            tileMap.requestFocus();
-        });
-    }
 
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());

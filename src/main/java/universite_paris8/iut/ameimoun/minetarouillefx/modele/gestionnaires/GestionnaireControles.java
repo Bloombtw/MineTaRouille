@@ -8,7 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 
-public class GestionnnaireControles {
+public class GestionnaireControles {
     private ClavierListener clavierListener;
     private Souris sourisListener;
     private final Joueur joueurModele;
@@ -16,7 +16,7 @@ public class GestionnnaireControles {
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
 
-    public GestionnnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager) {
+    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
@@ -31,7 +31,6 @@ public class GestionnnaireControles {
 
         clavierListener.lier(tileMap);
         sourisListener.lier(tileMap);
-        sourisListener.setJeuController(this);
 
 
         Platform.runLater(() -> {
@@ -39,5 +38,13 @@ public class GestionnnaireControles {
             sourisListener.lierScrollInventaire(tileMap.getScene());
             tileMap.requestFocus();
         });
+    }
+
+    public Souris getSourisListener() {
+        return sourisListener;
+    }
+
+    public ClavierListener getClavierListener() {
+        return clavierListener;
     }
 }
