@@ -2,23 +2,20 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
     private final DeplacementManager deplacementManager;
     private final Joueur joueur;
-    private final Inventaire inventaire;
-    private final VueInventaire vueInventaire;
+    private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
 
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
+    public ClavierListener(Joueur joueur, DebugManager debugManager, GestionnaireInventaire gestionnaireInventaire) {
         this.joueur = joueur;
-        this.inventaire = inventaire;
-        this.vueInventaire = vueInventaire;
+        this.gestionnaireInventaire = gestionnaireInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new DeplacementManager(joueur);
     }
@@ -29,14 +26,13 @@ public class ClavierListener {
                 case Z, SPACE, UP -> {
                     joueur.sauter();
                     MusiqueManager.getInstance();
-
                 }
                 case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
                 case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
+                case A -> gestionnaireInventaire.jeterItemSelectionne(joueur); // Appel pour jeter un item
                 case F3 -> debugManager.toggle();
             }
             gererSelectionInventaire(event.getText());
-            vueInventaire.mettreAJourAffichage();
         });
 
         tilePane.setOnKeyReleased(event -> gereTouchePressee(event.getCode()));
@@ -67,6 +63,8 @@ public class ClavierListener {
     }
 
     private void gererSelectionInventaire(String caractere) {
+        // Accès à l'inventaire via GestionnaireInventaire
+        var inventaire = gestionnaireInventaire.getInventaire();
         switch (caractere) {
             case "&" -> inventaire.setSelectedIndex(0);
             case "é" -> inventaire.setSelectedIndex(1);
@@ -80,5 +78,3 @@ public class ClavierListener {
         }
     }
 }
-
-

@@ -32,6 +32,16 @@ public class Inventaire {
         }
     }
 
+   public void retirerItem(int index) { if (index < 0 || index >= slots.size()) return; Item item = slots.get(index);
+        if (item == null) return;
+
+        if (item.getQuantite() > 1)
+            item.ajouterQuantite(-1);
+        else
+            slots.set(index, null);
+
+    }
+
     public ObservableList<Item> getSlots() {
         return slots;
     }

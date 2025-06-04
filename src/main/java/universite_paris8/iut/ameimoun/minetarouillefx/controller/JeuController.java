@@ -169,6 +169,5 @@ public class JeuController implements Initializable {
                 gestionnaireInventaire.getVueInventaire()
         );
     }
-        // Mise à jour d
 
 }
