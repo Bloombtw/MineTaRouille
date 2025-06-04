@@ -49,6 +49,7 @@ public class GenerateurCarte {
     }
 
     private static void placerBlocSurface(int x, int y, Random rand, Bloc[][][] terrain) {
+
         if (rand.nextDouble() < 0.7) {
             terrain[1][y][x] = Bloc.SABLE;
         } else {
@@ -57,10 +58,9 @@ public class GenerateurCarte {
 
         // Décors superficiels
         if (rand.nextDouble() < Constantes.PROBA_ARBUSTE && terrain[1][y][x] == Bloc.SABLE) {
-            double r = Math.random();
-            if (r < 0.3) {
+            if (rand.nextDouble() < 0.3) {
                 terrain[2][y - 1][x] = Bloc.FEU;
-            } else if (r < 0.6) {
+            } else if (rand.nextDouble() < 0.6) {
                 terrain[2][y - 1][x] = Bloc.ARBUSTE_MORT;
             } else {
                 terrain[2][y - 1][x] = Bloc.POUSSE_ACACIA;
@@ -75,10 +75,9 @@ public class GenerateurCarte {
     }
 
     private static void placerBlocProfondeur(int x, int y, Random rand, Bloc[][][] terrain) {
-        double r = Math.random();
-        if (r < 0.3) {
+        if (rand.nextDouble() < 0.3) {
             terrain[1][y][x] = Bloc.GRES_COUPE;
-        } else if (r < 0.6) {
+        } else if (rand.nextDouble() < 0.6) {
             terrain[1][y][x] = Bloc.GRES_CISELE;
         } else {
             terrain[1][y][x] = Bloc.GRES;

@@ -2,10 +2,12 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.audio;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
-public class MusiqueManager {
+import java.nio.charset.CharsetEncoder;
 
+public class MusiqueManager {
 
     private MediaPlayer mediaPlayer;
     private double volume = 0.5;
@@ -62,7 +64,7 @@ public class MusiqueManager {
     
     
     public void jouerMusiqueFond() {
-        jouerMusiqueEnBoucle("/mp3/musique/Zimmer_interstelar.mp3");
+        jouerMusiqueEnBoucle(Chemin.MUSIQUE_FOND);
     }
     
 }

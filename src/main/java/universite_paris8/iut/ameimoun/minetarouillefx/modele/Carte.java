@@ -6,8 +6,6 @@ public class Carte {
     private final Bloc[][][] terrain;
 
     private static Carte instance;
-
-
     public Carte(Bloc[][][] terrain) {
         this.terrain = terrain;
     }

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import universite_paris8.iut.ameimoun.minetarouillefx.MainApp;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
@@ -32,15 +33,15 @@ public class EcranAccueilController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        backgroundView.setImage(Loader.loadImage("/img/fond/fond.png"));
+        backgroundView.setImage(Loader.loadImage(Chemin.FOND));
         backgroundView.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 backgroundView.fitWidthProperty().bind(newScene.widthProperty());
                 backgroundView.fitHeightProperty().bind(newScene.heightProperty());
             }
         });
-        nouvellePartieImage.setImage(Loader.loadImage("/img/boutons/nouvellePartie.png"));
-        quitterImage.setImage(Loader.loadImage("/img/boutons/quitter.png"));
+        nouvellePartieImage.setImage(Loader.loadImage(Chemin.BOUTON_NOUVELLE_PARTIE));
+        quitterImage.setImage(Loader.loadImage(Chemin.BOUTON_QUITTER));
         nouvellePartieImage.setOnMouseClicked(e -> {
                         System.out.println("Lancement d'une nouvelle partie depuis le bouton nouvelle Partie.");
                 lancerNouvellePartie();
@@ -56,7 +57,7 @@ public class EcranAccueilController implements Initializable {
     @FXML
     private void lancerNouvellePartie() {
         try {
-            FXMLLoader fxmlLoader = Loader.loadFXML("/fxml/Map.fxml");
+            FXMLLoader fxmlLoader = Loader.loadFXML(Chemin.FXML_MAP);
             Parent jeuRoot = fxmlLoader.load();
             Scene jeuScene = new Scene(jeuRoot, Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
             MainApp.primaryStageGlobal.setScene(jeuScene);

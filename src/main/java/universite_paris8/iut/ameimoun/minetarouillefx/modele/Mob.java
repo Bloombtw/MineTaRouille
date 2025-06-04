@@ -18,7 +18,7 @@ public class Mob extends Personnage {
     }
 
     private boolean doitChangerDirection() {
-        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
+        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
         return collision(prochaineX, getY());
     }
 
@@ -29,13 +29,13 @@ public class Mob extends Personnage {
 
     private void deplacerDansDirection() {
         if (mouvementDirection == Direction.DROITE) {
-            deplacerDroite();
+            setX(getX() + Constantes.VITESSE_DEPLACEMENT_MOB);
         } else {
-            deplacerGauche();
+            setX(getX() - Constantes.VITESSE_DEPLACEMENT_MOB);
         }
     }
 
     public double getVitesseX() {
-        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
+        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 }

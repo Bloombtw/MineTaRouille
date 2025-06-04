@@ -7,48 +7,77 @@ public class Chemin {
      */
 
         // Traversables
-        public static final String CIEL_CLAIR = "/img/blocs/traversable/ciel_clair.png";
-        public static final String TRANSPARENT = "/img/blocs/traversable/transparent.png";
-        public static final String CIEL = "/img/blocs/traversable/ciel.png";
-        public static final String GAY_CIEL = "/img/blocs/traversable/gayciel.png";
-        public static final String CIEL_SOMBRE = "/img/blocs/traversable/ciel_sombre.png";
-        public static final String CIEL_VIOLET = "/img/blocs/traversable/ciel_violet.png";
-        public static final String NUAGE = "/img/blocs/traversable/nuage.png";
-        public static final String NUAGE_PARTIE1 = "/img/blocs/traversable/nuage_partie1.png";
-        public static final String NUAGE_PARTIE2 = "/img/blocs/traversable/nuage_partie2.png";
-        public static final String NUAGE_PARTIE3 = "/img/blocs/traversable/nuage_partie3.png";
+        public static final String IMAGE_CIEL_CLAIR = "/img/blocs/traversable/ciel_clair.png";
+        public static final String IMAGE_TRANSPARENT = "/img/blocs/traversable/transparent.png";
+        public static final String IMAGE_CIEL = "/img/blocs/traversable/ciel.png";
+        public static final String IMAGE_GAY_CIEL = "/img/blocs/traversable/gayciel.png";
+        public static final String IMAGE_CIEL_SOMBRE = "/img/blocs/traversable/ciel_sombre.png";
+        public static final String IMAGE_CIEL_VIOLET = "/img/blocs/traversable/ciel_violet.png";
+        public static final String IMAGE_NUAGE = "/img/blocs/traversable/nuage.png";
+        public static final String IMAGE_NUAGE_PARTIE1 = "/img/blocs/traversable/nuage_partie1.png";
+        public static final String IMAGE_NUAGE_PARTIE2 = "/img/blocs/traversable/nuage_partie2.png";
+        public static final String IMAGE_NUAGE_PARTIE3 = "/img/blocs/traversable/nuage_partie3.png";
 
         // Solides
-        public static final String PIERRE = "/img/blocs/solide/pierre.png";
-        public static final String SABLE = "/img/blocs/solide/sable.png";
-        public static final String TRONC = "/img/blocs/solide/tronc.png";
-        public static final String FEUILLAGE = "/img/blocs/solide/feuillage.png";
-        public static final String TERRE = "/img/blocs/solide/terre.png";
-        public static final String SABLE_ROUGE = "/img/blocs/solide/sable_rouge.png";
-        public static final String GRES_CISELE = "/img/blocs/solide/gres_cisele.png";
-        public static final String GRES_COUPE = "/img/blocs/solide/gres_coupe.png";
-        public static final String FEUILLAGE_ACACIA = "/img/blocs/solide/feuillage_acacia.png";
-        public static final String GRES = "/img/blocs/solide/gres.png";
-        public static final String CACTUS = "/img/blocs/solide/cactus.png";
+        public static final String IMAGE_PIERRE = "/img/blocs/solide/pierre.png";
+        public static final String IMAGE_SABLE = "/img/blocs/solide/sable.png";
+        public static final String IMAGE_TRONC = "/img/blocs/solide/tronc.png";
+        public static final String IMAGE_FEUILLAGE = "/img/blocs/solide/feuillage.png";
+        public static final String IMAGE_TERRE = "/img/blocs/solide/terre.png";
+        public static final String IMAGE_SABLE_ROUGE = "/img/blocs/solide/sable_rouge.png";
+        public static final String IMAGE_GRES_CISELE = "/img/blocs/solide/gres_cisele.png";
+        public static final String IMAGE_GRES_COUPE = "/img/blocs/solide/gres_coupe.png";
+        public static final String IMAGE_FEUILLAGE_ACACIA = "/img/blocs/solide/feuillage_acacia.png";
+        public static final String IMAGE_GRES = "/img/blocs/solide/gres.png";
+        public static final String IMAGE_CACTUS = "/img/blocs/solide/cactus.png";
 
         // Décors
-        public static final String CORBEAU = "/img/decors/corbeau.png";
-        public static final String LUNE = "/img/decors/lune.png";
-        public static final String LUNE_ZELDA = "/img/decors/lune_zelda.jpg";
-        public static final String ETOILE = "/img/decors/etoile.png";
-        public static final String ARBUSTE_MORT = "/img/decors/arbuste_mort.png";
-        public static final String ECHELLE = "/img/decors/echelle.png";
-        public static final String FLECHE_VERS_LA_DROITE = "/img/decors/flecheVersDroite.png";
-        public static final String ESCALIER_DROITE = "/img/decors/escalier_Droite.png";
-        public static final String POUSSE_ACACIA = "/img/decors/pousse_acacia.png";
-        public static final String FEU = "/img/decors/feu.png";
+        public static final String IMAGE_DECORS_CORBEAU = "/img/decors/corbeau.png";
+        public static final String IMAGE_DECORS_LUNE = "/img/decors/lune.png";
+        public static final String IMAGE_DECORS_LUNE_ZELDA = "/img/decors/lune_zelda.jpg";
+        public static final String IMAGE_DECORS_ETOILE = "/img/decors/etoile.png";
+        public static final String IMAGE_DECORS_ARBUSTE_MORT = "/img/decors/arbuste_mort.png";
+        public static final String IMAGE_DECORS_ECHELLE = "/img/decors/echelle.png";
+        public static final String IMAGE_DECORS_FLECHE_VERS_LA_DROITE = "/img/decors/flecheVersDroite.png";
+        public static final String IMAGE_DECORS_ESCALIER_DROITE = "/img/decors/escalier_Droite.png";
+        public static final String IMAGE_DECORS_POUSSE_ACACIA = "/img/decors/pousse_acacia.png";
+        public static final String IMAGE_DECORS_FEU = "/img/decors/feu.png";
+
+        // Items
+        public static final String ITEM_ARC = "/img/items/arc.png";
+        public static final String ITEM_EPEE = "/img/items/epee.png";
+        public static final String ITEM_MOUTON_CUIT = "/img/items/mouton_cuit.png";
+        public static final String ITEM_PELLE = "/img/items/pelle.png";
+        public static final String ITEM_PIOCHE = "/img/items/pioche.png";
+
 
         // Défaut
-        public static final String DEFAULT = "/img/default.png";
+        public static final String IMAGE_DEFAULT = "/img/default.png";
+        public static final String SON_DEFAULT = "/mp3/error.mp3";
 
         // Slots
-        public static final String CHEMIN_SLOT = "/img/ui/slot.png";
+        public static final String SLOT = "/img/ui/slot.png";
 
+        // Fond
+        public static final String FOND = "/img/fond/fond.png";
+
+        // Boutons
+        public static final String BOUTON_NOUVELLE_PARTIE = "/img/boutons/nouvellePartie.png";
+        public static final String BOUTON_REJOUER = "/img/boutons/rejouer.png";
+        public static final String BOUTON_MESSAGE_MORT = "/img/boutons/messageMort.png";
+        public static final String BOUTON_QUITTER = "/img/boutons/quitter.png";
+
+        // FXML
+        public static final String FXML_MAP = "/fxml/Map.fxml";
+        public static final String FXML_ECRAN_MORT = "/fxml/EcranDeMort.fxml";
+
+
+        // Son
+        public static final String SON_VIE_LOW = "/mp3/effets/joueur/degat/vieLow.mp3";
+        public static final String SON_MORT = "/mp3/effets/joueur/degat/mort/GTA5_mort.mp3";
+
+        // Musique
+        public static final String MUSIQUE_FOND = "/mp3/musique/Zimmer_interstelar.mp3";
 
     /*
     ANIMATIONS

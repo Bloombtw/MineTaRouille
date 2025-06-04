@@ -20,12 +20,13 @@ public class Constantes {
     public static final int NB_ETOILES = 6;
 
     // Joueur / Personnage
-    public static final int TAILLE_PERSO = TAILLE_TUILE; // 30
+    public static final int TAILLE_PERSO = TAILLE_TUILE;
     public static final double GRAVITE = 0.1;
     public static final double VITESSE_DEPLACEMENT = 0.5;
     public static final double FORCE_SAUT = -8;
-    public static final double DISTANCE_ATTAQUE = 3;//À CHANGÉ
-    public static final double DEGATS_MOB_HOSTILE = 1;
+    public static final double DISTANCE_ATTAQUE = 3;
+    public static final double VITESSE_DEPLACEMENT_MOB = 0.2;
+    public static final double DEGATS_MOB_HOSTILE = 0.1;
 
     // Items
     public static final int TAILLE_ITEM = 32;

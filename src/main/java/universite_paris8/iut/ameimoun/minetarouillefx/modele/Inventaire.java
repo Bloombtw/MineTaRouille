@@ -12,9 +12,10 @@ public class Inventaire {
 
     public Inventaire() {
         for (int i = 0; i < 9; i++) {
-            slots.add(null); // 9 emplacements vides
+            slots.add(null); // 9 empty slots
         }
     }
+
     public void ajouterItem(Item nouvelItem) {
         for (Item slot : slots) {
             if (slot != null && slot.getId() == nouvelItem.getId()) {
@@ -52,5 +53,4 @@ public class Inventaire {
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }
-
 }

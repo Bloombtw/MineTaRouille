@@ -13,6 +13,7 @@ public class MobHostile extends Mob {
     @Override
     public void mettreAJour() {
         gravite();
+        sauterSiObstacle();
         suivreJoueur();
         attaquerJoueur();
     }
@@ -35,6 +36,13 @@ public class MobHostile extends Mob {
 
         if (distanceTotale <= Constantes.DISTANCE_ATTAQUE) {
             joueur.getVie().subirDegats(Constantes.DEGATS_MOB_HOSTILE);
+        }
+    }
+
+    private void sauterSiObstacle() {
+        double prochaineX = getX() + (getVitesseX());
+        if (collision(prochaineX, getY())) {
+            sauter();
         }
     }
 }

@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.audio;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
 import java.util.ArrayList;
@@ -63,12 +64,12 @@ public class AudioManager {
     }
 
     public void jouerAlerteVieBasse() {
-        jouerSonEnBoucle("/mp3/effets/joueur/degat/vieLow.mp3");
+        jouerSonEnBoucle(Chemin.SON_VIE_LOW);
     }
 
 
     public void jouerAlerteMort() {
-        jouerSon("/mp3/effets/joueur/degat/mort/GTA5_mort.mp3");
+        jouerSon(Chemin.SON_MORT);
     }
 
     public void arreterTousLesSons() {

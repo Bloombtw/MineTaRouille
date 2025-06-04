@@ -1,5 +1,6 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.modele;
+package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class GestionnaireBloc {
@@ -32,26 +33,41 @@ public class GestionnaireBloc {
             int couche,
             int x,
             int y,
-            Joueur joueur // Pour avoir la hitbox de facon à ne pas placer un bloc sur le joueur
+            Joueur joueur
     ) {
-        if (!carte.estDansLaMap(x, y)) return false;
-        if (carte.getTerrain()[couche][y][x] != null && carte.getTerrain()[couche][y][x].estSolide()) return false;
-        if (hitboxSurBloc(joueur, x, y)) return false; // Ne pas placer un bloc sur le joueur
-        if (!estADistanceAutorisee(joueur, x, y, 3)) return false;
+        if (!peutPlacerBloc(carte, inventaire, indexItem, couche, x, y, joueur)) return false;
 
         Item itemSelectionne = inventaire.getItem(indexItem);
-
-        if (itemSelectionne == null || itemSelectionne.getTypeItem() != Item.TypeItem.BLOC || itemSelectionne.getQuantite() <= 0)
-            return false;
-
         Bloc bloc = itemSelectionne.getBloc();
-        if (bloc == null) return false; // Sécurité
 
         carte.getTerrain()[couche][y][x] = bloc;
         itemSelectionne.ajouterQuantite(-1);
         if (itemSelectionne.getQuantite() <= 0) {
             inventaire.getSlots().set(indexItem, null);
         }
+        return true;
+    }
+
+    private static boolean peutPlacerBloc(
+            Carte carte,
+            Inventaire inventaire,
+            int indexItem,
+            int couche,
+            int x,
+            int y,
+            Joueur joueur
+    ) {
+        if (!carte.estDansLaMap(x, y)) return false;
+        Bloc blocExistant = carte.getTerrain()[couche][y][x];
+        if (blocExistant != null && blocExistant.estSolide()) return false;
+        if (hitboxSurBloc(joueur, x, y)) return false;
+        if (!estADistanceAutorisee(joueur, x, y, 3)) return false;
+
+        Item itemSelectionne = inventaire.getItem(indexItem);
+        if (itemSelectionne == null) return false;
+        if (itemSelectionne.getTypeItem() != Item.TypeItem.BLOC) return false;
+        if (itemSelectionne.getQuantite() <= 0) return false;
+        if (itemSelectionne.getBloc() == null) return false;
         return true;
     }
 
