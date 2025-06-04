@@ -13,6 +13,9 @@ public class Personnage {
 
     private final String nom;
     private final int satiete;
+    private boolean sautEnCours = false;
+    private long debutSaut = 0;
+    private static final long DUREE_MAX_SAUT = 300;
 
     private final Item[] inventaire;
     private final int selectedSlot;
@@ -41,7 +44,9 @@ public class Personnage {
     }
 
     public void sauter() {
-        if (peutSauter) {
+        if (peutSauter && !sautEnCours) {
+            sautEnCours = true;
+            debutSaut = System.currentTimeMillis();
             vitesseY = Constantes.FORCE_SAUT;
             peutSauter = false;
         }
@@ -67,7 +72,15 @@ public class Personnage {
         vitesseX = 0;
     }
 
+
     public void gravite() {
+        if (sautEnCours) {
+            long tempsEcoule = System.currentTimeMillis() - debutSaut;
+            if (tempsEcoule > DUREE_MAX_SAUT) {
+                sautEnCours = false;
+            }
+        }
+
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
 
@@ -76,10 +89,11 @@ public class Personnage {
         } else {
             vitesseY = 0;
             peutSauter = true;
+            sautEnCours = false;
         }
     }
 
-    public void attaquer(Personnage personnage) { //à optimisé
+  /*  public void attaquer(Personnage personnage) { //à optimisé
         double distanceX = Math.abs(this.getX() - personnage.getX());
         double distanceY = Math.abs(this.getY() - personnage.getY());
         double distanceTotale = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -87,7 +101,7 @@ public class Personnage {
         if (distanceTotale <= 1) {
             personnage.getVie().subirDegats(1);
         }
-    }
+    }*/
 
     boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);

@@ -21,7 +21,7 @@ public class GestionnaireVie {
     // Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.
     public void mettreAJour(AnimationTimer gameLoop) {
         vie.verifierDegats(joueurModele, Carte.getInstance());
-        gestionnaireSon.gererAlerteVieBasse();
+       // gestionnaireSon.gererAlerteVieBasse();
         gestionnaireMort.gererMort(gameLoop);
     }
 }
