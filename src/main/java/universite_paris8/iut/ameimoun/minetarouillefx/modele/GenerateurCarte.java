@@ -98,7 +98,7 @@ public class GenerateurCarte {
     private static void ajouterArbre(int[] hauteurSol, Bloc[][][] terrain) {
         int arbreX = 10;
         int arbreY = hauteurSol[arbreX];
-        terrain[1][arbreY][arbreX] = Bloc.TERRE;
+        terrain[1][arbreY][arbreX] = Bloc.TABLE_CRAFT;
         terrain[2][arbreY - 1][arbreX] = Bloc.TRONC;
         terrain[2][arbreY - 2][arbreX] = Bloc.TRONC;
         terrain[2][arbreY - 3][arbreX] = Bloc.TRONC;

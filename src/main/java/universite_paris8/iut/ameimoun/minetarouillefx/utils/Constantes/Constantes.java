@@ -23,7 +23,7 @@ public class Constantes {
     public static final int TAILLE_PERSO = TAILLE_TUILE; // 30
     public static final double GRAVITE = 0.1;
     public static final double VITESSE_DEPLACEMENT = 0.5;
-    public static final double FORCE_SAUT = -8;
+    public static final double FORCE_SAUT = -4;
 
     // Items
     public static final int TAILLE_ITEM = 32;

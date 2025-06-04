@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
@@ -15,6 +16,7 @@ public class ClavierListener {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
+    private JeuController jeuController;
 
     public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
         this.joueur = joueur;
@@ -79,6 +81,12 @@ public class ClavierListener {
             case "_" -> inventaire.setSelectedIndex(7);
             case "ç" -> inventaire.setSelectedIndex(8);
         }
+    }
+
+
+
+    public void setJeuController(JeuController jeuController) {
+        this.jeuController = jeuController;
     }
 }
 

@@ -5,6 +5,7 @@
     import javafx.scene.input.MouseEvent;
     import javafx.scene.input.ScrollEvent;
     import javafx.scene.layout.TilePane;
+    import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
     import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
@@ -22,13 +23,15 @@
         private GestionnaireItem gestionnaireItem;
         private VueCarte vueCarte;
         private VueJoueur vueJoueur;
+        private CraftController craftController;
 
-        public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem) {
+        public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, CraftController craftController) {
             this.joueur = joueur;
             this.inventaire = inventaire;
             this.vueCarte = vueCarte;
             this.vueInventaire = vueInventaire;
             this.gestionnaireItem = gestionnaireItem;
+            this.craftController = craftController;
         }
 
         public void lier(TilePane tilePane) {
@@ -62,36 +65,63 @@
         }
 
 
+        private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
+            Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);
+            if (blocClique != null && blocClique.estBlocAction()) {
+                switch (blocClique) {
+                    case TABLE_CRAFT -> {
+                        craftController.afficherInterfaceCraft();
+                        return true;
+                    }
+                    default -> {
+                        System.err.println("Bloc spécial non géré : " + blocClique.getNom());
+                        return false; // Aucun bloc spécial géré
+                    }
+                }
 
-
-
-
+            }
+            return false;
+        }
 
         private void gererPlacementBloc(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) { // clic droit
+            if (event.getButton() == MouseButton.SECONDARY) {
                 int x = (int) event.getX() / Constantes.TAILLE_TUILE;
                 int y = (int) event.getY() / Constantes.TAILLE_TUILE;
                 int couche = 1;
 
-                boolean blocPlace = GestionnaireBloc.placerBloc(
-                        Carte.getInstance(),
-                        inventaire,
-                        inventaire.getSelectedIndex(),
-                        couche,
-                        x,
-                        y,
-                        joueur
-                );
+                // Si une interaction spéciale a eu lieu, on arrête ici
+                if (gererInteractionBlocSpecial(couche, x, y)) return;
 
-                if (blocPlace) {
-                    vueCarte.mettreAJourAffichage(x, y);
-                    vueInventaire.mettreAJourAffichage();
-                    if (vueJoueur != null) {
-                        vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
-                    }
+                // Sinon, on gère le placement de bloc
+                placerBloc(couche, x, y);
+            }
+        }
+
+        private void placerBloc(int couche, int x, int y) {
+            boolean blocPlace = GestionnaireBloc.placerBloc(
+                Carte.getInstance(),
+                inventaire,
+                inventaire.getSelectedIndex(),
+                couche,
+                x,
+                y,
+                joueur
+            );
+
+            if (blocPlace) {
+                vueCarte.mettreAJourAffichage(x, y);
+                vueInventaire.mettreAJourAffichage();
+                if (vueJoueur != null) {
+                    vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
                 }
             }
         }
+
+
+
+
+
+
 
 
 
@@ -105,22 +135,14 @@
         Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
         Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
             if (itemBloc1 != null || itemBloc2 != null) {
-                dropItemEtMettreAJour(itemBloc1, x, y, couche1);
-                dropItemEtMettreAJour(itemBloc2, x, y, couche2);
+                gestionnaireItem.dropItemEtMettreAJour(itemBloc1, x, y, couche1, vueCarte);
+                gestionnaireItem.dropItemEtMettreAJour(itemBloc2, x, y, couche2, vueCarte);
                 vueInventaire.mettreAJourAffichage();
             }
 
         }
 
-        private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
-            if (item != null) {
-                vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
-                if (couche == 1 && y - 1 >= 0) {
-                    vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
-                }
-                gestionnaireItem.spawnItemAuSol(item, x, y);
-            }
-        }
+
 
 }
 

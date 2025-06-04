@@ -80,4 +80,8 @@ public class GestionnaireBloc {
         return px + taille > blocX && px < blocX + Constantes.TAILLE_TUILE
                 && py + taille > blocY && py < blocY + Constantes.TAILLE_TUILE;
     }
+
+    public static Bloc getBloc(int couche, int x, int y) {
+        return Carte.getInstance().getTerrain()[couche][y][x];
+    }
 }

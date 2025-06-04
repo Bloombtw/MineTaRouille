@@ -36,12 +36,14 @@ public class JeuController implements Initializable {
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
-
+    private CraftController craftController;
+    private boolean jeuEstEnPause = false;
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
     // Démarre la boucle de jeu et initialise la musique de fond.
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         initialiserCarte();
         initialiserGestionnaireItem();
         initialiserJoueur();
@@ -50,6 +52,7 @@ public class JeuController implements Initializable {
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
         initialiserInventaire();
+        initialiserCraftController();
         initialiserControles();
         initialiserMob();
         initialiserMusique();
@@ -59,6 +62,7 @@ public class JeuController implements Initializable {
     /*
         INITIALISATIONS
      */
+
 
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
@@ -94,8 +98,10 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem, craftController);
         gestionnaireControles.getSourisListener().setJeuController(this);
+        gestionnaireControles.getClavierListener().setJeuController(this);
+        gestionnaireControles.getClavierListener().lier(tileMap);
         gestionnaireControles.initialiserControles();
     }
 
@@ -130,6 +136,12 @@ public class JeuController implements Initializable {
         );
     }
 
+    private void initialiserCraftController() {
+        craftController = new CraftController();
+        craftController.setJeucontroller(this);
+        craftController.initialiserCraftController();
+    }
+
     /*
         BOUCLES DE JEU
      */
@@ -147,6 +159,9 @@ public class JeuController implements Initializable {
 
     // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
     private void mettreAJourJeu() {
+        if (jeuEstEnPause) {
+            return; // Si le jeu est en pause, on ne met pas à jour l'état du jeu.
+        }
         joueurModele.gravite();
         gestionnaireVie.mettreAJour(gameLoop);
         if (mob != null && vueMob != null) {
@@ -162,4 +177,16 @@ public class JeuController implements Initializable {
         }
     }
 
+    public void mettreEnPauseJeu() {
+        jeuEstEnPause = true;
+    }
+
+    public void reprendreJeu() {
+        jeuEstEnPause = false;
+    }
+
+
+    public boolean isEnPause() {
+        return jeuEstEnPause;
+    }
 }
