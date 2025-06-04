@@ -1,16 +1,18 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
+package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 
 import javafx.application.Platform;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.Souris;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 
 public class GestionnaireControles {
     private ClavierListener clavierListener;
-    private Souris sourisListener;
+    private SourisListener sourisListener;
     private final Joueur joueurModele;
     private final VueCarte vueCarte;
     private final GestionnaireInventaire gestionnaireInventaire;
@@ -28,7 +30,7 @@ public class GestionnaireControles {
 
     public void initialiserControles() {
         clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
-        sourisListener = new Souris(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem);
+        sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem);
         TilePane tileMap = vueCarte.getTileMap();
 
         clavierListener.lier(tileMap);
@@ -42,7 +44,7 @@ public class GestionnaireControles {
         });
     }
 
-    public Souris getSourisListener() {
+    public SourisListener getSourisListener() {
         return sourisListener;
     }
 

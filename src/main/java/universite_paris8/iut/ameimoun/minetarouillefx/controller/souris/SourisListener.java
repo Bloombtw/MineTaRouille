@@ -14,7 +14,7 @@
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
-    public class Souris {
+    public class SourisListener {
         private final Joueur joueur;
         private final Inventaire inventaire;
         private final VueInventaire vueInventaire;
@@ -23,7 +23,7 @@
         private VueCarte vueCarte;
         private VueJoueur vueJoueur;
 
-        public Souris(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem) {
+        public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem) {
             this.joueur = joueur;
             this.inventaire = inventaire;
             this.vueCarte = vueCarte;

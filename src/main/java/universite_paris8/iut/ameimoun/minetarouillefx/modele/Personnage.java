@@ -12,30 +12,17 @@ public class Personnage {
     private Vie vie;
 
     private final String nom;
-    private final int satiete;
-
-    private final Item[] inventaire;
-    private final int selectedSlot;
-    private final boolean isMining;
-    private final boolean isAttacking;
-    private final boolean estVivant;
     public Direction direction;
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
     private Carte carte;
 
-    public Personnage(double x, double y, double pointsDeVieMax, String nom) {
+    public Personnage(double x, double y, double pointsDeVie, String nom) {
         this.x.set(x);
         this.y.set(y);
-        this.vie = new Vie(pointsDeVieMax);
+        this.vie = new Vie(pointsDeVie);
         this.nom = nom;
-        this.satiete = 100;
-        this.estVivant = true;
-        this.isMining = false;
-        this.isAttacking = false;
-        this.inventaire = new Item[10];
-        this.selectedSlot = 0;
         this.direction = Direction.DROITE;
         this.carte = Carte.getInstance();
     }

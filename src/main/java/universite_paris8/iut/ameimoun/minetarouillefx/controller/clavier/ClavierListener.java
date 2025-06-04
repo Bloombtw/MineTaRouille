@@ -4,12 +4,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
-    private final DeplacementManager deplacementManager;
+    private final GestionnaireDeplacement deplacementManager;
     private final Joueur joueur;
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
@@ -20,7 +21,7 @@ public class ClavierListener {
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
-        this.deplacementManager = new DeplacementManager(joueur);
+        this.deplacementManager = new GestionnaireDeplacement(joueur);
     }
 
     public void lier(TilePane tilePane) {

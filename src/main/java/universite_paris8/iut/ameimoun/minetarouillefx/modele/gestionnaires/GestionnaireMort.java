@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.GestionnaireControles;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.AudioManager;

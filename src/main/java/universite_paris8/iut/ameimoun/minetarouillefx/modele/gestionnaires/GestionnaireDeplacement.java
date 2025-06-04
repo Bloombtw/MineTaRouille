@@ -1,15 +1,15 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
+package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 
-public class DeplacementManager {
+public class GestionnaireDeplacement {
     private boolean enDeplacementGauche = false;
     private boolean enDeplacementDroite = false;
     private final Joueur joueur;
     private AnimationTimer boucleDeplacement;
 
-    public DeplacementManager(Joueur joueur) {
+    public GestionnaireDeplacement(Joueur joueur) {
         this.joueur = joueur;
         initialiserBoucleDeplacement();
     }
