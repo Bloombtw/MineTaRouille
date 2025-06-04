@@ -1,4 +1,5 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
+
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class Mob extends Personnage {
@@ -10,29 +11,26 @@ public class Mob extends Personnage {
 
     public void mettreAJour() {
         gravite();
+        if (doitChangerDirection()) {
+            changerDirection();
+        }
+        deplacerDansDirection();
+    }
+
+    private boolean doitChangerDirection() {
         double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
-        double prochaineY = getY() +getVitesseY();
+        return collision(prochaineX, getY());
+    }
 
-        boolean collisionVerticale = collision(prochaineX,prochaineY-Constantes.FORCE_SAUT);
-        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT,getY());
-        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT,getY());
+    private void changerDirection() {
+        mouvementDirection = (mouvementDirection == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
+        sauter();
+    }
 
-        if(collisionDroite && collisionGauche){
-            sauter();
-        }
-        else if (collisionDroite || collisionGauche){
-            if(collisionVerticale){
-                sauter();
-                mouvementDirection=(mouvementDirection==Direction.DROITE)? Direction.GAUCHE : Direction.DROITE;
-            }
-            else{
-                sauter();
-            }
-        }
-        if(mouvementDirection==Direction.DROITE){
+    private void deplacerDansDirection() {
+        if (mouvementDirection == Direction.DROITE) {
             deplacerDroite();
-        }
-        else{
+        } else {
             deplacerGauche();
         }
     }

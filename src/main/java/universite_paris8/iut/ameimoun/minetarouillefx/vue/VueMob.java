@@ -29,11 +29,12 @@ public class VueMob {
         container.translateYProperty().bind(mob.yProperty());
     }
 
-    public void mettreAJourAnimation(Mob mob) {
-        animationMob.mettreAJourAnimation(mob);
+    public ImageView getMobImage() {
+        return mobImage;
     }
+
 
     public Group getNode() {
         return container;
-    }
+    }//si pas de superposition, pas de group
 }
