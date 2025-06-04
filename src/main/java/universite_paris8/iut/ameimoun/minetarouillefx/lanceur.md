@@ -1,27 +1,29 @@
-# Explications sur le MainApp
+# Lanceur de l’application
+
+Ce dossier contient la classe principale permettant de lancer l’application JavaFX.  
+Il initialise la fenêtre principale, charge l’écran d’accueil et configure la scène de départ.
+
+---
 
 ## MainApp
-        MainApp est la classe principale JavaFX du jeu MTR. Elle gère l'écran d'accueil, l'accès au jeu et le style des boutons.
 
-### Méthodes :
-    start(Stage primaryStage) :
-        - Gère le fond d'écran, se charge en appelant le loader et s'adapte à la taille de la fenêtre avec bind().
+Classe principale héritant de `Application` (JavaFX), point d’entrée du programme.
 
-        - Gère les deux boutons :
-                            - Nouvelle partie, démarre le jeu en chargeant Map.fxml et met à jour le stage avec la nouvelle scène et l'autre titre.
-                            - Quitter, ferme l'application
+Gère :
+- L’initialisation de la fenêtre principale (`Stage`).
+- Le chargement de la première interface graphique via un fichier FXML.
+- L’application des dimensions et du titre de la fenêtre.
+- La gestion d’une référence statique au `Stage` principal pour un accès global.
 
-        - Gère la structure de la scène :
-                            - StackPane en conteneur racine
-                            - Vbox centralisé pour les boutons
-                            - Scene définie par les constantes LARGEUR_FENETRE et HAUTEUR_FENETRE
+**Principaux attributs :**
+- `public static Stage primaryStageGlobal` : référence statique à la fenêtre principale.
 
-    styleBouton(Button bouton) :
-        - Personnalise l'apparence des boutons, leur donne :
-            - Un fond transparent
-            - Un texte blanc
-            - Une taille de police augmentée
-            - Une animation de zoom léger lorsque la souris les survole
+**Méthodes principales :**
+- `public void start(Stage primaryStage)` : méthode appelée au lancement, configure la scène et affiche la fenêtre.
+- `public static void main(String[] args)` : point d’entrée Java, lance l’application JavaFX.
 
-    main(String[] args) :
-        - Appelle launch(args) pour démarrer JavaFx.
+**Résumé du fonctionnement :**
+- Charge l’écran d’accueil depuis le FXML.
+- Crée la scène avec les dimensions définies dans les constantes.
+- Affiche la fenêtre principale avec le titre du jeu.
+- Gère les exceptions lors du chargement de l’interface.
