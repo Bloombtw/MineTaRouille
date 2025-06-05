@@ -93,4 +93,47 @@ public class GestionnaireItem {
         rootPane.getChildren().add(vue.getImageView());
     }
 
+    public void jeterItemSelectionne(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
+        int idx = inventaire.getSelectedIndex();
+        Item item = inventaire.getItem(idx);
+        if (item == null) {
+            // rien à jeter si la case est vide
+            return;
+        }
+
+        // 1) Retirer une unité de l'inventaire (quantité ou vider la case)
+        inventaire.retirerItem(idx);
+        vueInventaire.mettreAJourAffichage();
+
+        // 2) Créer un nouvel Item distinct pour le drop (une seule unité)
+        Item dropItem;
+        if (item.getTypeItem() == Item.TypeItem.BLOC) {
+            dropItem = new Item(item.getBloc());
+        } else {
+            dropItem = new Item(item.getBloc());
+        }
+
+
+        // 4) Calculer la tuile **centrée** sous les pieds du joueur
+        //    - On prend la position X du joueur + moitié de sa largeur (pour le centrer),
+        //      puis on divise par TAILLE_TUILE
+        double joueurCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        int centerTileX = (int) (joueurCenterX / Constantes.TAILLE_TUILE);
+
+        //    - Pour l'axe Y, on prend le pixel juste sous les pieds :
+        double yPixelPieds = joueur.getY() + Constantes.TAILLE_PERSO - 1;
+        int playerTileY = (int) (yPixelPieds / Constantes.TAILLE_TUILE);
+
+        // 5) Calculer la tuile **devant** le joueur sur l'axe X selon la direction
+        int direction = joueur.estRegardADroite() ? +1 : -1;
+        int xTuileSpawn = centerTileX + direction;
+        // On laisse spawn juste **au-dessus du sol**, donc y = playerTileY - 1
+        int yTuileSpawn = playerTileY - 1;
+
+        System.out.println("[DEBUG] centreTile = (" + centerTileX + "," + playerTileY + "), "
+                + "spawnTile = (" + xTuileSpawn + "," + yTuileSpawn + ")");
+
+        // 6) Lâcher l'item au sol via le contrôleur de jeu
+        spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
+    }
 }

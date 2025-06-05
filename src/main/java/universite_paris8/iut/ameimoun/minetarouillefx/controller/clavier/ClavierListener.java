@@ -5,6 +5,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -15,18 +16,20 @@ public class ClavierListener {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
-
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
+    private final GestionnaireItem gestionnaireItem;
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new GestionnaireDeplacement(joueur);
+        this.gestionnaireItem = gestionnaireItem;
     }
 
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
+            KeyCode code = event.getCode();
+            switch (code) {
                 case Z, SPACE, UP -> {
                     joueur.sauter();
                     MusiqueManager.getInstance();
@@ -35,7 +38,11 @@ public class ClavierListener {
                 case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
                 case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
                 case F3 -> debugManager.toggle();
+                case A -> {
+                    gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
+                }
             }
+
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichage();
         });

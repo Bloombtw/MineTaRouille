@@ -29,7 +29,7 @@ public class GestionnaireControles {
     }
 
     public void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, gestionnaireItem);
         sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem);
         TilePane tileMap = vueCarte.getTileMap();
 
