@@ -1,9 +1,12 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
+    private boolean enVie = true;
 
     public Mob() {
         super(30, 50, 10, "MOB");
@@ -37,5 +40,9 @@ public class Mob extends Personnage {
 
     public double getVitesseX() {
         return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
+    }
+
+    public boolean enVie() {
+        return enVie;
     }
 }

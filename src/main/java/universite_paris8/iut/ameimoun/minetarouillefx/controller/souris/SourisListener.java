@@ -1,6 +1,8 @@
     package universite_paris8.iut.ameimoun.minetarouillefx.controller.souris;
 
     import javafx.scene.Scene;
+    import javafx.scene.Node;
+    import javafx.scene.layout.Pane;
     import javafx.scene.input.MouseButton;
     import javafx.scene.input.MouseEvent;
     import javafx.scene.input.ScrollEvent;
@@ -9,10 +11,12 @@
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
+    import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMobHostile;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMob;
 
     public class SourisListener {
         private final Joueur joueur;
@@ -96,21 +100,57 @@
 
 
         private void gererClicSouris(MouseEvent event) {
-            if (event.getButton() != MouseButton.PRIMARY) return; // On ne gère que les clics gauches.
-        int x = (int) event.getX() / Constantes.TAILLE_TUILE;
-        int y = (int) event.getY() / Constantes.TAILLE_TUILE;
-        int couche1 = 1;
-        int couche2 = 2;
+            if (event.getButton() != MouseButton.PRIMARY) {
+                return;
+            }
 
-        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
-        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
+            // 1) Casser un bloc si applicable
+            double clickX = event.getX();
+            double clickY = event.getY();
+            int tx = (int) (clickX / Constantes.TAILLE_TUILE);
+            int ty = (int) (clickY / Constantes.TAILLE_TUILE);
+            Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(1, tx, ty, joueur);
+            Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(2, tx, ty, joueur);
             if (itemBloc1 != null || itemBloc2 != null) {
-                dropItemEtMettreAJour(itemBloc1, x, y, couche1);
-                dropItemEtMettreAJour(itemBloc2, x, y, couche2);
+                dropItemEtMettreAJour(itemBloc1, tx, ty, 1);
+                dropItemEtMettreAJour(itemBloc2, tx, ty, 2);
                 vueInventaire.mettreAJourAffichage();
             }
 
+            // 2) One‐shot kill par test de distance euclidienne
+            if (jeuController != null) {
+                // Position centrée du joueur
+                double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+                double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
+
+                // 2a) Mobs hostiles
+                GestionnaireMobHostile gestionHostile = jeuController.getGestionnaireMobHostile();
+                if (gestionHostile != null) {
+                    gestionHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
+                }
+
+                /*
+                // 2b) Mob normal unique
+                Mob mobNormal = jeuController.getMobNormal();
+                VueMob vueMobNormal = jeuController.getVueMobNormal();
+                if (mobNormal != null && mobNormal.enVie() && vueMobNormal != null) {
+                    double mobCenterX = mobNormal.getX() + (Constantes.TAILLE_TUILE / 2.0);
+                    double mobCenterY = mobNormal.getY() + (Constantes.TAILLE_TUILE / 2.0);
+                    double dx = playerCenterX - mobCenterX;
+                    double dy = playerCenterY - mobCenterY;
+                    double distanceTotale = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distanceTotale <= Constantes.DISTANCE_ATTAQUE) {
+                        // Suppression de la vue du mob normal
+                        jeuController.getRootPane().getChildren().remove(vueMobNormal.getNode());
+                        // Marquer le mob comme mort
+                        mobNormal.tuerSiClique();
+                        System.out.println("Mob normal tué (distance ≤ " + Constantes.DISTANCE_ATTAQUE + ").");
+                    }
+                }*/
+            }
         }
+
 
         private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
             if (item != null) {

@@ -37,6 +37,8 @@ public class JeuController implements Initializable {
     private GestionnaireMort gestionnaireMort;
     private GestionnaireMobHostile gestionnaireMobHostile;
     private GestionnaireSon gestionnaireSon;
+    private Mob mobNormal;
+    private VueMob vueMobNormal;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -48,6 +50,7 @@ public class JeuController implements Initializable {
         initialiserJoueur();
         initialiserBarreDeVie();
         initialiserMobHostile();
+        initialiserMobNormal();
         initialiserGestionnaireSon();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
@@ -96,7 +99,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem, this );
         gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.initialiserControles();
     }
@@ -113,6 +116,19 @@ public class JeuController implements Initializable {
         vueMob = new VueMob(mob);
         rootPane.getChildren().add(vueMob.getNode());
     }
+
+    private void initialiserMobNormal() {
+        mobNormal = new Mob();
+        vueMobNormal = new VueMob(mobNormal);
+        rootPane.getChildren().add(vueMobNormal.getNode());
+    }
+
+    public Mob getMobNormal() { return mobNormal; }
+    public VueMob getVueMobNormal() { return vueMobNormal; }
+    public GestionnaireMobHostile getGestionnaireMobHostile() {
+        return gestionnaireMobHostile;
+    }
+
 
     private void initialiserMusique() {
         musiqueManager = MusiqueManager.getInstance();
