@@ -11,6 +11,7 @@
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
+    import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMob;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMobHostile;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
@@ -129,27 +130,14 @@
                     gestionHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
                 }
 
-                /*
-                // 2b) Mob normal unique
-                Mob mobNormal = jeuController.getMobNormal();
-                VueMob vueMobNormal = jeuController.getVueMobNormal();
-                if (mobNormal != null && mobNormal.enVie() && vueMobNormal != null) {
-                    double mobCenterX = mobNormal.getX() + (Constantes.TAILLE_TUILE / 2.0);
-                    double mobCenterY = mobNormal.getY() + (Constantes.TAILLE_TUILE / 2.0);
-                    double dx = playerCenterX - mobCenterX;
-                    double dy = playerCenterY - mobCenterY;
-                    double distanceTotale = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distanceTotale <= Constantes.DISTANCE_ATTAQUE) {
-                        // Suppression de la vue du mob normal
-                        jeuController.getRootPane().getChildren().remove(vueMobNormal.getNode());
-                        // Marquer le mob comme mort
-                        mobNormal.tuerSiClique();
-                        System.out.println("Mob normal tué (distance ≤ " + Constantes.DISTANCE_ATTAQUE + ").");
-                    }
-                }*/
+                // 2b) Mob passif (via GestionnaireMob)
+                GestionnaireMob gestionPassif = jeuController.getGestionnaireMob();
+                if (gestionPassif != null) {
+                    gestionPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
+                }
             }
         }
+
 
 
         private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
