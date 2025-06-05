@@ -35,6 +35,7 @@ public class JeuController implements Initializable {
     private GestionnaireControles gestionnaireControles;
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
+    private GestionnaireMobHostile gestionnaireMobHostile;
     private GestionnaireSon gestionnaireSon;
 
 
@@ -46,6 +47,7 @@ public class JeuController implements Initializable {
         initialiserGestionnaireItem();
         initialiserJoueur();
         initialiserBarreDeVie();
+        initialiserMobHostile();
         initialiserGestionnaireSon();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
@@ -98,6 +100,13 @@ public class JeuController implements Initializable {
         gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.initialiserControles();
     }
+
+    private void initialiserMobHostile() {
+        gestionnaireMobHostile = new GestionnaireMobHostile();
+        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 200, rootPane);
+        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 400, rootPane);
+    }
+
 
     private void initialiserMob() {
         mob = new Mob();
@@ -157,6 +166,7 @@ public class JeuController implements Initializable {
                 gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()
         );
+        gestionnaireMobHostile.mettreAJour();
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }

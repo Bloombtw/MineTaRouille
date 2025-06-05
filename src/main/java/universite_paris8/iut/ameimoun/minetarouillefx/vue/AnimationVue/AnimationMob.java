@@ -71,4 +71,5 @@ public class AnimationMob {
                 mobImage.setImage(frames[0]);
         }
     }
+
 }
