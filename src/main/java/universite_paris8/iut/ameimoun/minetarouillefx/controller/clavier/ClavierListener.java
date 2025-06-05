@@ -41,6 +41,13 @@ public class ClavierListener {
                 case A -> {
                     gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
                 }
+                //Pour perdre de la vie sur commande
+                case P -> {
+                    double vieMax = joueur.getVie().vieMaxProperty();
+                    joueur.getVie().subirDegats(vieMax / 4.0);
+                }
+
+                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
             }
 
             gererSelectionInventaire(event.getText());

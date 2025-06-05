@@ -37,7 +37,7 @@ public class VueVie {
         fadeTransition = creerFadeTransition();
 
         vieModele.ajouterCallbackDegatsSubis(this::afficherDegats);
-        mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+        mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty());
     }
 
     private Rectangle creerFond() {
@@ -68,7 +68,7 @@ public class VueVie {
     private void lierModele() {
         vieModele.vieActuelleProperty().addListener((obs, oldVal, newVal) -> {
             if (!vieModele.isTakingDamageProperty().get()) {
-                mettreAJourCouleurBarre(newVal.doubleValue(), vieModele.vieMaxProperty().get());
+                mettreAJourCouleurBarre(newVal.doubleValue(), vieModele.vieMaxProperty());
             }
         });
 
@@ -76,7 +76,7 @@ public class VueVie {
             if (isTakingDamage) {
                 barre.setFill(Color.BLUE);
             } else {
-                mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+                mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty());
             }
         });
     }

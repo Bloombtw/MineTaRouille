@@ -1,10 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.scene.layout.AnchorPane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueItem;
@@ -97,20 +94,17 @@ public class GestionnaireItem {
         int idx = inventaire.getSelectedIndex();
         Item item = inventaire.getItem(idx);
         if (item == null) {
-            // rien à jeter si la case est vide
             return;
         }
 
-        // 1) Retirer une unité de l'inventaire (quantité ou vider la case)
         inventaire.retirerItem(idx);
         vueInventaire.mettreAJourAffichage();
 
-        // 2) Créer un nouvel Item distinct pour le drop (une seule unité)
         Item dropItem;
         if (item.getTypeItem() == Item.TypeItem.BLOC) {
             dropItem = new Item(item.getBloc());
         } else {
-            dropItem = new Item(item.getBloc());
+            dropItem = new Item(item.getObjet());
         }
 
 
@@ -133,7 +127,30 @@ public class GestionnaireItem {
         System.out.println("[DEBUG] centreTile = (" + centerTileX + "," + playerTileY + "), "
                 + "spawnTile = (" + xTuileSpawn + "," + yTuileSpawn + ")");
 
-        // 6) Lâcher l'item au sol via le contrôleur de jeu
         spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
     }
+
+    public void consommerMoutonCuitSelectionne(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
+        int idx = inventaire.getSelectedIndex();
+        Item item = inventaire.getItem(idx);
+        if (item == null) {
+            return;
+        }
+
+        if (item.getTypeItem() != Item.TypeItem.OBJET || item.getObjet() != Objet.MOUTON_CUIT) {
+            return;
+        }
+
+        double vieActuelle = joueur.getVie().vieActuelleProperty().get();
+        double vieMax       = joueur.getVie().vieMaxProperty();
+
+        if (vieActuelle >= vieMax) {
+            return;
+        }
+
+        joueur.getVie().soigner(20);
+        inventaire.retirerItem(idx);
+        vueInventaire.mettreAJourAffichage();
+    }
+
 }

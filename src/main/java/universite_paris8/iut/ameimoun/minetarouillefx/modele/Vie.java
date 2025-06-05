@@ -11,14 +11,14 @@ import java.util.List;
 
 public class Vie {
     private final BooleanProperty estEnVieProperty;
-    private final DoubleProperty vieMax;// en double
+    private final double vieMax;// en double
     private DoubleProperty vieActuelle;
     private final List<Runnable> actionsSurDegats;
     private final BooleanProperty subitDegats;
     private Runnable callbackDegatsSubis;
 
     public Vie(double vieMaxInitiale) {
-        this.vieMax = new SimpleDoubleProperty(vieMaxInitiale);
+        this.vieMax = vieMaxInitiale;
         this.vieActuelle = new SimpleDoubleProperty(vieMaxInitiale);
         this.actionsSurDegats = new ArrayList<>();
         this.subitDegats = new SimpleBooleanProperty(false);
@@ -29,7 +29,7 @@ public class Vie {
         return subitDegats;
     }
 
-    public DoubleProperty vieMaxProperty() {
+    public double vieMaxProperty() {
         return vieMax;
     }
 
@@ -85,7 +85,7 @@ public class Vie {
 
     public void soigner(double quantite) {
         double nouvelleVie = vieActuelle.get() + quantite;
-        if (nouvelleVie > vieMax.get()) nouvelleVie = vieMax.get();
+        if (nouvelleVie > vieMax) nouvelleVie = vieMax;
         this.vieActuelle.set(nouvelleVie);
     }
 
@@ -95,7 +95,7 @@ public class Vie {
     }
 
     public boolean estLow() {
-        return vieActuelle.get() < vieMax.get() * 0.3; // 30% de la vie max
+        return vieActuelle.get() < vieMax * 0.3; // 30% de la vie max
     }
 
 }
