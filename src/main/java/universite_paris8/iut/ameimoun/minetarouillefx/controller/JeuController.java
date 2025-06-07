@@ -111,7 +111,7 @@
         }
 
         private void initialiserMobPassif() {
-            gestionnaireMob = new GestionnaireMob();
+            gestionnaireMob = new GestionnaireMob(gestionnaireItem);
             gestionnaireMob.ajouterMob(joueurModele, 400, rootPane);
         }
 

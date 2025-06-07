@@ -1,7 +1,9 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.scene.layout.Pane;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Objet;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Personnage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMob;
@@ -20,6 +22,11 @@ public class GestionnaireMob {
     private final Random random = new Random();
     private static final double MAP_WIDTH = 1920.0;
     private Pane rootPane;
+    private GestionnaireItem gestionnaireItem;
+
+    public GestionnaireMob(GestionnaireItem gestionnaireItem) {
+        this.gestionnaireItem= gestionnaireItem;
+    }
 
     /**
      * Ajoute un nouveau mob « passif » :
@@ -85,14 +92,22 @@ public class GestionnaireMob {
             double distanceTotale = Math.sqrt(dx * dx + dy * dy);
 
             if (distanceTotale <= seuil) {
-                // Suppression du modèle de la liste
-                mobSimple.remove(i);
+
                 // Suppression de la vue du Pane
                 if (rootPane != null) {
                     VueMob vue = vuesMob.get(i);
                     rootPane.getChildren().remove(vue.getNode());
                     System.out.println("Mob passif tué (distance ≤ " + seuil + ").");
+                    Item loot = new Item(Objet.MOUTON_CUIT, 1);
+
+                    // Convertir les coordonnées pixels en indices de tuiles
+                    int tileX = (int) (mobCenterX / Constantes.TAILLE_TUILE);
+                    int tileY = (int) (mobCenterY / Constantes.TAILLE_TUILE);
+
+                    gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
                 }
+                // Suppression du modèle de la liste
+                mobSimple.remove(i);
                 // Suppression de la vue dans la liste
                 vuesMob.remove(i);
             }
@@ -100,7 +115,7 @@ public class GestionnaireMob {
     }
 
     /** Retourne la liste des mobs passifs (modèles). */
-    public List<Mob> getMobSimple() {d
+    public List<Mob> getMobSimple() {
         return mobSimple;
     }
 
