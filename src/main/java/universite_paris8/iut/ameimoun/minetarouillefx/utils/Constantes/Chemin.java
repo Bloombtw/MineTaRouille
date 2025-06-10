@@ -31,6 +31,7 @@ public class Chemin {
         public static final String IMAGE_GRES = "/img/blocs/solide/gres.png";
         public static final String IMAGE_CACTUS = "/img/blocs/solide/cactus.png";
         public static final String IMAGE_TABLE_CRAFT = "/img/blocs/solide/table_craft.jpg";
+        public static final String IMAGE_PLANCHE = "/img/blocs/solide/planche.png";
 
         // Décors
         public static final String IMAGE_DECORS_CORBEAU = "/img/decors/corbeau.png";

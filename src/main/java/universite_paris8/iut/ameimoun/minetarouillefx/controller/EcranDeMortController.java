@@ -30,8 +30,8 @@ public class EcranDeMortController implements Initializable {
 //        player.setCycleCount(MediaPlayer.INDEFINITE);
 //        mediaView.setMediaPlayer(player);
         messageMortImage.setImage(Loader.loadImage(Chemin.BOUTON_MESSAGE_MORT));
-        rejouerImage.setImage(Loader.loadImage(Chemin.BOUTON_QUITTER));
-        quitterImage.setImage(Loader.loadImage(Chemin.BOUTON_REJOUER));
+        rejouerImage.setImage(Loader.loadImage(Chemin.BOUTON_REJOUER));
+        quitterImage.setImage(Loader.loadImage(Chemin.BOUTON_QUITTER));
     }
 
     @FXML

@@ -9,6 +9,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 
 public class GestionnaireControles {
     private ClavierListener clavierListener;
@@ -18,22 +19,22 @@ public class GestionnaireControles {
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
     private final GestionnaireItem gestionnaireItem;
-    private CraftController craftController;
+    private final VueCraft vuecraft;
 
-    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem, CraftController craftController) {
+    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem, VueCraft vuecraft) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
-        this.craftController = craftController;
+        this.vuecraft = vuecraft;
         clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
         initialiserControles();
     }
 
     public void initialiserControles() {
         clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
-        sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem, craftController);
+        sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem, vuecraft);
         TilePane tileMap = vueCarte.getTileMap();
 
         clavierListener.lier(tileMap);

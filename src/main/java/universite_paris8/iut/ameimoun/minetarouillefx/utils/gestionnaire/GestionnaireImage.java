@@ -45,6 +45,7 @@ public class GestionnaireImage {
         itemToImage.put("NUAGE_PARTIE2",       Chemin.IMAGE_NUAGE_PARTIE2);
         itemToImage.put("NUAGE_PARTIE3",       Chemin.IMAGE_NUAGE_PARTIE3);
         itemToImage.put("TABLE_CRAFT",         Chemin.IMAGE_TABLE_CRAFT);
+        itemToImage.put("PLANCHE",             Chemin.IMAGE_PLANCHE);
 
         // --- ITEMS ---
         itemToImage.put("ARC",                 Chemin.ITEM_ARC);

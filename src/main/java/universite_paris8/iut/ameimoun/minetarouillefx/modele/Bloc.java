@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public enum Bloc {
+    //Ajouter le bloc dans GestionnaireImage pour l'affichage des blocs.
     DEFAULT(-1, "Default", true, false, 64, false, false),
     CIEL(0, "Ciel", false, false, 64, false, false),
     PIERRE(1, "Pierre", true, false, 64, false, false),
@@ -33,7 +34,8 @@ public enum Bloc {
     NUAGE_PARTIE1(30, "Nuage Partie 1", false, false, 64, false, false),
     NUAGE_PARTIE2(31, "Nuage Partie 2", false, false, 64, false, false),
     NUAGE_PARTIE3(32, "Nuage Partie 3", false, false, 64, false, false),
-    TABLE_CRAFT(33, "Table de Craft", true, false, 64, false, true);
+    TABLE_CRAFT(33, "Table de Craft", true, false, 64, false, true),
+    PLANCHE(34, "Planche", true, false, 64, false, false);
 
     private final int id;
     private final String nom;

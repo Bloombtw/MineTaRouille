@@ -36,26 +36,25 @@ public class JeuController implements Initializable {
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
-    private CraftController craftController;
     private boolean jeuEstEnPause = false;
+    private VueCraft vuecraft;
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
     // Démarre la boucle de jeu et initialise la musique de fond.
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         initialiserCarte();
         initialiserGestionnaireItem();
         initialiserJoueur();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
+        initialiserMusique();
+        initialiserInventaire();
+        initialiserVueCraft();
+        initialiserControles();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
-        initialiserInventaire();
-        initialiserCraftController();
-        initialiserControles();
         initialiserMob();
-        initialiserMusique();
         demarrerBoucleDeJeu();
     }
 
@@ -67,6 +66,11 @@ public class JeuController implements Initializable {
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
+    }
+
+    private void initialiserVueCraft() {
+        GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
+        vuecraft = new VueCraft(gestionnaireCraft, rootPane);
     }
 
     private void initialiserJoueur() {
@@ -98,7 +102,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem, craftController);
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem, vuecraft);
         gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.getClavierListener().setJeuController(this);
         gestionnaireControles.getClavierListener().lier(tileMap);
@@ -134,12 +138,6 @@ public class JeuController implements Initializable {
                 gestionnaireMort,
                 vie
         );
-    }
-
-    private void initialiserCraftController() {
-        craftController = new CraftController();
-        craftController.setJeucontroller(this);
-        craftController.initialiserCraftController();
     }
 
     /*

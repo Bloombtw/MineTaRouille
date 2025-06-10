@@ -5,13 +5,13 @@
     import javafx.scene.input.MouseEvent;
     import javafx.scene.input.ScrollEvent;
     import javafx.scene.layout.TilePane;
-    import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
     import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
     import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+    import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
     import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
@@ -22,16 +22,16 @@
         private JeuController jeuController;
         private GestionnaireItem gestionnaireItem;
         private VueCarte vueCarte;
+        private VueCraft vueCraft;
         private VueJoueur vueJoueur;
-        private CraftController craftController;
 
-        public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, CraftController craftController) {
+        public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, VueCraft vueCraft) {
             this.joueur = joueur;
             this.inventaire = inventaire;
             this.vueCarte = vueCarte;
             this.vueInventaire = vueInventaire;
             this.gestionnaireItem = gestionnaireItem;
-            this.craftController = craftController;
+            this.vueCraft = vueCraft;
         }
 
         public void lier(TilePane tilePane) {
@@ -70,7 +70,7 @@
             if (blocClique != null && blocClique.estBlocAction()) {
                 switch (blocClique) {
                     case TABLE_CRAFT -> {
-                        craftController.afficherInterfaceCraft();
+                        vueCraft.toggleCraftWindow();
                         return true;
                     }
                     default -> {
