@@ -24,6 +24,7 @@ public class GestionnaireInventaire {
 
     public void initialiserInventaire() {
         inventaire.ajouterItem(new Item(Objet.EPEE));
+        inventaire.ajouterItem(new Item(Objet.ARC));
         inventaire.ajouterItem(new Item(Bloc.PIERRE, 32));
         AnchorPane.setTopAnchor(vueInventaire, 10.0);
         AnchorPane.setRightAnchor(vueInventaire, 10.0);

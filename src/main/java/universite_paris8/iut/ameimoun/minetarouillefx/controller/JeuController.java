@@ -61,7 +61,7 @@ public class JeuController implements Initializable {
 
     /*
         INITIALISATIONS
-     */
+    */
 
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
@@ -130,6 +130,14 @@ public class JeuController implements Initializable {
         );
     }
 
+    public GestionnaireMob getGestionnaireMob() {
+        return gestionnaireMob;
+    }
+
+    public GestionnaireMobHostile getGestionnaireMobHostile() {
+        return gestionnaireMobHostile;
+    }
+
     private void  initialiserGestionnaireVie() {
         gestionnaireVie = new GestionnaireVie(
                 joueurModele,
@@ -140,8 +148,9 @@ public class JeuController implements Initializable {
     }
 
     /*
-        BOUCLES DE JEU
+       BOUCLES DE JEU
      */
+
     // Démarre la boucle de jeu qui met à jour l'état du jeu à chaque frame.
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
