@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
@@ -8,6 +9,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
@@ -17,26 +19,45 @@ public class ClavierListener {
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
     private JeuController jeuController;
+    private VueCraft vueCraft;
 
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager, VueCraft vueCraft) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new GestionnaireDeplacement(joueur);
+        this.vueCraft = vueCraft;
     }
 
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
+
             switch (event.getCode()) {
                 case Z, SPACE, UP -> {
+                    ignorerToucheSiJeuEnPause(event);
                     joueur.sauter();
                     MusiqueManager.getInstance();
 
                 }
-                case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
-                case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
-                case F3 -> debugManager.toggle();
+                case Q, LEFT -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    deplacementManager.setEnDeplacementGauche(true);
+                }
+                case D, RIGHT -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    deplacementManager.setEnDeplacementDroite(true);
+                }
+                case F3 -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    debugManager.toggle();
+                }
+
+                case E -> {
+                    vueCraft.toggleCraftWindow();
+                    event.consume();
+                    return;
+                }
             }
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichage();
@@ -84,6 +105,12 @@ public class ClavierListener {
     }
 
 
+    private void ignorerToucheSiJeuEnPause(KeyEvent event) {
+        if (jeuController != null && jeuController.isEnPause()) {
+            event.consume();
+            return;
+        }
+    }
 
     public void setJeuController(JeuController jeuController) {
         this.jeuController = jeuController;

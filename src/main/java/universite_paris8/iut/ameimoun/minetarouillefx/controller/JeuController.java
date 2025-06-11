@@ -70,7 +70,7 @@ public class JeuController implements Initializable {
 
     private void initialiserVueCraft() {
         GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
-        vuecraft = new VueCraft(gestionnaireCraft, rootPane);
+        vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
     }
 
     private void initialiserJoueur() {

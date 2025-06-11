@@ -1,17 +1,21 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import javafx.scene.shape.Rectangle;
@@ -23,13 +27,32 @@ public class VueCraft {
     private Label resultatLabel;
     private final AnchorPane rootPane;
     private AnchorPane craftPane;
+    private final JeuController jeuController;
+    private AnchorPane overlayPane;
+    private TilePane tilePane;
 
-    public VueCraft(GestionnaireCraft gestionnaireCraft, AnchorPane rootPane) {
+    public VueCraft(GestionnaireCraft gestionnaireCraft, AnchorPane rootPane, JeuController jeuController, TilePane tilePane) {
         this.gestionnaireCraft = gestionnaireCraft;
         this.rootPane = rootPane;
+        this.jeuController = jeuController;
+        this.tilePane = tilePane;
     }
 
     public void showCraftWindow() {
+
+
+        // Pane transparent qui bloque tout
+        overlayPane = new AnchorPane();
+        overlayPane.setPrefSize(Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.01);"); // Presque invisible
+        overlayPane.setFocusTraversable(true);
+        overlayPane.requestFocus();
+
+        // Bloque tous les événements souris/clavier
+        overlayPane.setOnMousePressed(Event::consume);
+        overlayPane.setOnMouseReleased(Event::consume);
+        overlayPane.setOnMouseClicked(Event::consume);
+
         craftPane = new AnchorPane();
         craftPane.setPrefSize(300, 300);
 
@@ -85,7 +108,9 @@ public class VueCraft {
 
         craftPane.getChildren().addAll(background, grillePane, boutonCrafter, resultatLabel);
 
-        rootPane.getChildren().add(craftPane);
+        rootPane.getChildren().addAll(overlayPane ,craftPane);
+        overlayPane.requestFocus();
+        jeuController.mettreEnPauseJeu();
     }
 
 
@@ -112,10 +137,15 @@ public class VueCraft {
     }
 
     public void toggleCraftWindow() {
+        System.out.println("Toggle Craft Window");
         if (craftPane == null || !rootPane.getChildren().contains(craftPane)) {
+            System.out.println("Showing Craft Window");
             showCraftWindow();
         } else {
-            rootPane.getChildren().remove(craftPane);
+            System.out.println("Hiding Craft Window");
+            rootPane.getChildren().removeAll(craftPane, overlayPane);
+            jeuController.reprendreJeu();
+            tilePane.requestFocus();
         }
     }
 }

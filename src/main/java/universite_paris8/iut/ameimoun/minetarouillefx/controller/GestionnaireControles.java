@@ -28,12 +28,12 @@ public class GestionnaireControles {
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
         this.vuecraft = vuecraft;
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, vuecraft);
         initialiserControles();
     }
 
     public void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, vuecraft);
         sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem, vuecraft);
         TilePane tileMap = vueCarte.getTileMap();
 

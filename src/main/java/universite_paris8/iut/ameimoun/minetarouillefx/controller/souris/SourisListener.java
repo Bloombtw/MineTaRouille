@@ -67,7 +67,7 @@
 
         private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
             Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);
-            if (blocClique != null && blocClique.estBlocAction()) {
+            if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
                 switch (blocClique) {
                     case TABLE_CRAFT -> {
                         vueCraft.toggleCraftWindow();
@@ -88,7 +88,6 @@
                 int x = (int) event.getX() / Constantes.TAILLE_TUILE;
                 int y = (int) event.getY() / Constantes.TAILLE_TUILE;
                 int couche = 1;
-
                 // Si une interaction spéciale a eu lieu, on arrête ici
                 if (gererInteractionBlocSpecial(couche, x, y)) return;
 
