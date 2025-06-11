@@ -37,6 +37,7 @@ public enum Bloc {
     TABLE_CRAFT(33, "Table de Craft", true, false, 64, false, true),
     PLANCHE(34, "Planche", true, false, 64, false, false);
 
+
     private final int id;
     private final String nom;
     private final boolean estSolide;

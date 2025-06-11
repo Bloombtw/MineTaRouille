@@ -52,15 +52,9 @@ public class ClavierListener {
                     ignorerToucheSiJeuEnPause(event);
                     debugManager.toggle();
                 }
-
-                case E -> {
-                    vueCraft.toggleCraftWindow();
-                    event.consume();
-                    return;
-                }
             }
             gererSelectionInventaire(event.getText());
-            vueInventaire.mettreAJourAffichage();
+            vueInventaire.mettreAJourAffichageInventaire();
         });
 
         tilePane.setOnKeyReleased(event -> gereTouchePressee(event.getCode()));
@@ -90,7 +84,7 @@ public class ClavierListener {
         }
     }
 
-    private void gererSelectionInventaire(String caractere) {
+    public void gererSelectionInventaire(String caractere) {
         switch (caractere) {
             case "&" -> inventaire.setSelectedIndex(0);
             case "é" -> inventaire.setSelectedIndex(1);
@@ -115,6 +109,7 @@ public class ClavierListener {
     public void setJeuController(JeuController jeuController) {
         this.jeuController = jeuController;
     }
+
 }
 
 

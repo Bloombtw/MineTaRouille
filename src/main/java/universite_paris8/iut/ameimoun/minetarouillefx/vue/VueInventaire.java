@@ -27,11 +27,11 @@ public class VueInventaire extends HBox {
         this.inventaire = inventaire;
         setSpacing(3);
         initCasesSlots();
-        inventaire.getSlots().addListener((Observable o) -> mettreAJourAffichage());
-        inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> mettreAJourAffichage());
+        inventaire.getSlots().addListener((Observable o) -> mettreAJourAffichageInventaire());
+        inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> mettreAJourAffichageInventaire());
     }
 
-    public void mettreAJourAffichage() {
+    public void mettreAJourAffichageInventaire() {
         for (int i = 0; i < casesSlots.size(); i++) {
             updateCaseSlot(casesSlots.get(i), i);
         }

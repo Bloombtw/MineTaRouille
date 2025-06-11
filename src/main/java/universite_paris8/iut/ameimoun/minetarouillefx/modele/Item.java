@@ -57,4 +57,21 @@ public class Item {
     public void setQuantite(int quantite) {
         this.quantite.set(quantite);
     }
+
+    public int getStackMax() {
+        if (typeItem == TypeItem.BLOC && bloc != null) {
+            return bloc.getStackMax();
+        } else if (typeItem == TypeItem.OBJET && objet != null) {
+            return objet.getStackSize();
+        }
+        return 64; // Valeur par défaut si jamais
+    }
+
+    @Override
+    public boolean equals(Object autreObjet) {
+        if (this == autreObjet) return true;
+        if (!(autreObjet instanceof Item)) return false;
+        Item autreItem = (Item) autreObjet;
+        return typeItem == autreItem.typeItem && getId() == autreItem.getId();
+    }
 }

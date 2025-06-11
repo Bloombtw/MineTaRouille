@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
@@ -21,7 +22,6 @@ public class JeuController implements Initializable {
     @FXML
     private AnchorPane rootPane;
     private Vie vie;
-    private VueVie vueVie;
     private Joueur joueurModele;
     private VueJoueur joueurVue;
     private AnimationTimer gameLoop;
@@ -37,7 +37,6 @@ public class JeuController implements Initializable {
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
     private boolean jeuEstEnPause = false;
-    private VueCraft vuecraft;
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
     // Démarre la boucle de jeu et initialise la musique de fond.
@@ -50,8 +49,8 @@ public class JeuController implements Initializable {
         initialiserGestionnaireSon();
         initialiserMusique();
         initialiserInventaire();
-        initialiserVueCraft();
         initialiserControles();
+        initialiserVueCraft();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
         initialiserMob();
@@ -69,8 +68,10 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserVueCraft() {
-        GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
-        vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
+        GestionnaireCraft gestionnaireCraft =new GestionnaireCraft(gestionnaireInventaire.getInventaire());
+        VueCraft vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
+        gestionnaireControles.getSourisListener().setVueCraft(vuecraft);
+        gestionnaireControles.setVueCraft(vuecraft);
     }
 
     private void initialiserJoueur() {
@@ -83,7 +84,7 @@ public class JeuController implements Initializable {
 
     private void initialiserBarreDeVie() {
         vie = joueurModele.getVie();
-        vueVie = new VueVie(vie, rootPane);
+        VueVie vueVie = new VueVie(vie, rootPane);
         rootPane.getChildren().add(vueVie.getNoeudBarreVie());
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
@@ -102,8 +103,8 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem, vuecraft);
-        gestionnaireControles.getSourisListener().setJeuController(this);
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
+        gestionnaireControles.getSourisListener().setJeuController();
         gestionnaireControles.getClavierListener().setJeuController(this);
         gestionnaireControles.getClavierListener().lier(tileMap);
         gestionnaireControles.initialiserControles();
@@ -186,5 +187,9 @@ public class JeuController implements Initializable {
 
     public boolean isEnPause() {
         return jeuEstEnPause;
+    }
+
+    public ClavierListener getClavierListener() {
+        return gestionnaireControles.getClavierListener();
     }
 }

@@ -19,11 +19,11 @@
         private final Joueur joueur;
         private final Inventaire inventaire;
         private final VueInventaire vueInventaire;
-        private JeuController jeuController;
         private GestionnaireItem gestionnaireItem;
         private VueCarte vueCarte;
         private VueCraft vueCraft;
         private VueJoueur vueJoueur;
+        private JeuController jeuController;
 
         public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, VueCraft vueCraft) {
             this.joueur = joueur;
@@ -60,7 +60,7 @@
         }
 
 
-        public void setJeuController(JeuController jeuController) {
+        public void setJeuController() {
             this.jeuController = jeuController;
         }
 
@@ -70,7 +70,7 @@
             if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
                 switch (blocClique) {
                     case TABLE_CRAFT -> {
-                        vueCraft.toggleCraftWindow();
+                        vueCraft.ouvrirCraftWindow();
                         return true;
                     }
                     default -> {
@@ -78,7 +78,6 @@
                         return false; // Aucun bloc spécial géré
                     }
                 }
-
             }
             return false;
         }
@@ -98,51 +97,43 @@
 
         private void placerBloc(int couche, int x, int y) {
             boolean blocPlace = GestionnaireBloc.placerBloc(
-                Carte.getInstance(),
-                inventaire,
-                inventaire.getSelectedIndex(),
-                couche,
-                x,
-                y,
-                joueur
+                    Carte.getInstance(),
+                    inventaire,
+                    inventaire.getSelectedIndex(),
+                    couche,
+                    x,
+                    y,
+                    joueur
             );
 
             if (blocPlace) {
                 vueCarte.mettreAJourAffichage(x, y);
-                vueInventaire.mettreAJourAffichage();
+                vueInventaire.mettreAJourAffichageInventaire();
                 if (vueJoueur != null) {
                     vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
                 }
             }
         }
 
-
-
-
-
-
-
-
-
         private void gererClicSouris(MouseEvent event) {
             if (event.getButton() != MouseButton.PRIMARY) return; // On ne gère que les clics gauches.
-        int x = (int) event.getX() / Constantes.TAILLE_TUILE;
-        int y = (int) event.getY() / Constantes.TAILLE_TUILE;
-        int couche1 = 1;
-        int couche2 = 2;
+            int x = (int) event.getX() / Constantes.TAILLE_TUILE;
+            int y = (int) event.getY() / Constantes.TAILLE_TUILE;
+            int couche1 = 1;
+            int couche2 = 2;
 
-        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
-        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
+            Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
+            Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
             if (itemBloc1 != null || itemBloc2 != null) {
                 gestionnaireItem.dropItemEtMettreAJour(itemBloc1, x, y, couche1, vueCarte);
                 gestionnaireItem.dropItemEtMettreAJour(itemBloc2, x, y, couche2, vueCarte);
-                vueInventaire.mettreAJourAffichage();
+                vueInventaire.mettreAJourAffichageInventaire();
             }
-
         }
 
-
-
-}
+        public void setVueCraft(VueCraft vueCraft) {
+            this.vueCraft = vueCraft;
+        }
+    }
 
 

@@ -53,6 +53,7 @@ public class GestionnaireImage {
         itemToImage.put("MOUTON_CUIT",         Chemin.ITEM_MOUTON_CUIT);
         itemToImage.put("PELLE",               Chemin.ITEM_PELLE);
         itemToImage.put("PIOCHE",              Chemin.ITEM_PIOCHE);
+        itemToImage.put("BATON",               Chemin.ITEM_BATON);
     }
 
     public static String getCheminImage(Bloc bloc) {

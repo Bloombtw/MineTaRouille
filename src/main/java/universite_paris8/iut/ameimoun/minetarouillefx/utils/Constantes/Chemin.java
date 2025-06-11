@@ -51,6 +51,7 @@ public class Chemin {
         public static final String ITEM_MOUTON_CUIT = "/img/items/mouton_cuit.png";
         public static final String ITEM_PELLE = "/img/items/pelle.png";
         public static final String ITEM_PIOCHE = "/img/items/pioche.png";
+        public static final String ITEM_BATON = "/img/items/baton.png";
 
 
         // Défaut

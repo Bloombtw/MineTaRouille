@@ -40,7 +40,7 @@ public class GestionnaireItem {
             if (detecterRamassage(item, joueur)) {
 
                 inventaire.ajouterItem(item);
-                vueInventaire.mettreAJourAffichage();
+                vueInventaire.mettreAJourAffichageInventaire();
 
                 rootPane.getChildren().remove(vue.getImageView());
                 itemIterator.remove();

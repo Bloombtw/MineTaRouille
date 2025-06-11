@@ -18,25 +18,32 @@ public class Inventaire {
 
 
     public void ajouterItem(Item nouvelItem) {
+        int quantiteRestante = nouvelItem.getQuantite();
+
+        //Compléter les stacks existants du même type
         for (Item slot : slots) {
-            if (slot != null && slot.getId() == nouvelItem.getId()) {
-                slot.ajouterQuantite(nouvelItem.getQuantite());
-                return;
+            if (slot != null && slot.equals(nouvelItem) && slot.getQuantite() < slot.getStackMax()) {
+                int place = slot.getStackMax() - slot.getQuantite();
+                int aAjouter = Math.min(place, quantiteRestante);
+                slot.ajouterQuantite(aAjouter);
+                quantiteRestante -= aAjouter;
+                if (quantiteRestante == 0) return;
             }
         }
+
+        //Mettre le reste dans des slots vides
         for (int i = 0; i < slots.size(); i++) {
-            if (slots.get(i) == null) {
-                // Crée un nouvel item avec la bonne quantité
-                Item itemAAjouter;
-                if (nouvelItem.getTypeItem() == Item.TypeItem.BLOC) {
-                    itemAAjouter = new Item(nouvelItem.getBloc(), nouvelItem.getQuantite());
-                } else {
-                    itemAAjouter = new Item(nouvelItem.getObjet(),nouvelItem.getQuantite());
-                }
+            if (slots.get(i) == null && quantiteRestante > 0) {
+                int aMettre = Math.min(nouvelItem.getStackMax(), quantiteRestante);
+                Item itemAAjouter = (nouvelItem.getTypeItem() == Item.TypeItem.BLOC)
+                        ? new Item(nouvelItem.getBloc(), aMettre)
+                        : new Item(nouvelItem.getObjet(), aMettre);
                 slots.set(i, itemAAjouter);
-                return;
+                quantiteRestante -= aMettre;
+                if (quantiteRestante == 0) return;
             }
         }
+        // Si l'inventaire est plein c'est perdu.
     }
 
     // Retire une quantité d’un item donné (par id)
@@ -64,6 +71,15 @@ public class Inventaire {
             }
         }
         return total;
+    }
+
+    public boolean aDeLaPlacePour(Item item) {
+        // Retourne true si un slot vide existe OU si un slot du même type peut stacker l'item
+        for (Item slot : slots) {
+            if (slot == null) return true;
+            if (slot.equals(item) && slot.getQuantite() + item.getQuantite() <= item.getStackMax()) return true;
+        }
+        return false;
     }
 
 

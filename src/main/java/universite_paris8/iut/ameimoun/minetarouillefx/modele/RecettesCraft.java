@@ -1,45 +1,45 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 public enum RecettesCraft {
-    // 1 bûche n'importe où → 4 planches
     PLANCHE(
-            null, // pattern ignoré pour ce cas spécial
+            new Item[][]{
+                    {null, null, null},
+                    {null, new Item(Bloc.TRONC), null},
+                    {null, null, null}
+            },
             new Item(Bloc.PLANCHE),
             4
+    ),
+    BATON(
+            new Item[][]{
+                    {null, null, null},
+                    {null, new Item(Bloc.PLANCHE), null},
+                    {null, new Item(Bloc.PLANCHE), null}
+            },
+            new Item(Objet.BATON),
+            4
+    ),
+    PIOCHE(
+            new Item[][]{
+                    {new Item(Bloc.PIERRE), new Item(Bloc.PIERRE), new Item(Bloc.PIERRE)},
+                    {null, new Item(Objet.BATON), null},
+                    {null, new Item(Objet.BATON), null}
+            },
+            new Item(Objet.PIOCHE),
+            1
     );
 
-    private final Bloc[][] pattern;
+    private final Item[][] pattern;
     private final Item resultat;
     private final int quantiteResultat;
 
-    RecettesCraft(Bloc[][] pattern, Item resultat, int quantiteResultat) {
+    RecettesCraft(Item[][] pattern, Item resultat, int quantiteResultat) {
         this.pattern = pattern;
         this.resultat = resultat;
         this.quantiteResultat = quantiteResultat;
     }
 
-    public boolean correspond(Item[][] grille) {
-        return switch (this) {
-            case PLANCHE -> correspondPlanches(grille);
-            default      -> correspondPattern(grille);
-        };
-    }
-
-    private boolean correspondPlanches(Item[][] grille) {
-        if (!tailleGrilleEstCorrecte(grille)) return false;
-        int nbBuches = 0;
-        for (Item[] ligne : grille) {
-            for (Item item : ligne) {
-                if (item != null) {
-                    if (item.getBloc() == Bloc.TRONC) nbBuches++;
-                    else return false;
-                }
-            }
-        }
-        return nbBuches == 1;
-    }
-
-    private boolean correspondPattern(Item[][] grille) {
+    public boolean correspondPattern(Item[][] grille) {
         if (!tailleGrilleEstCorrecte(grille)) return false;
         for (int i = 0; i < pattern.length; i++) {
             for (int j = 0; j < pattern[i].length; j++) {
@@ -55,15 +55,11 @@ public enum RecettesCraft {
                 && grille[0].length == pattern[0].length;
     }
 
-    private boolean caseCorrespond(Bloc attendu, Item present) {
-        if (attendu == null) {
-            return present == null;
-        } else {
-            return present != null && present.getBloc() == attendu;
-        }
+    private boolean caseCorrespond(Item attendu, Item present) {
+        return java.util.Objects.equals(attendu, present);
     }
 
-    public Bloc[][] getPattern() { return pattern; }
+    public Item[][] getPattern() { return pattern; }
     public Item getResultat() { return resultat; }
     public int getQuantiteResultat() { return quantiteResultat; }
 }
