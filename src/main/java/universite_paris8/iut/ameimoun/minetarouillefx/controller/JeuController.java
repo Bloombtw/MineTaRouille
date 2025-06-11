@@ -33,6 +33,8 @@ public class JeuController implements Initializable {
     private GestionnaireItem gestionnaireItem;
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
+    private GestionnaireMobHostile gestionnaireMobHostile;
+    private GestionnaireMob gestionnaireMob;
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
@@ -52,6 +54,7 @@ public class JeuController implements Initializable {
         initialiserInventaire();
         initialiserControles();
         initialiserMob();
+        initialiserMobHostile();
         initialiserMusique();
         demarrerBoucleDeJeu();
     }
@@ -105,6 +108,12 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(vueMob.getNode());
     }
 
+    private void initialiserMobHostile() {
+        gestionnaireMobHostile = new GestionnaireMobHostile();
+        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 200, rootPane);
+        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 400, rootPane);
+    }
+
     private void initialiserMusique() {
         musiqueManager = MusiqueManager.getInstance();
         musiqueManager.jouerMusiqueFond();
@@ -133,7 +142,6 @@ public class JeuController implements Initializable {
     /*
         BOUCLES DE JEU
      */
-
     // Démarre la boucle de jeu qui met à jour l'état du jeu à chaque frame.
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
@@ -157,6 +165,7 @@ public class JeuController implements Initializable {
                 gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()
         );
+        gestionnaireMobHostile.mettreAJour();
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }
