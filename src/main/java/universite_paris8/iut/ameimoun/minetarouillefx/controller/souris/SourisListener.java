@@ -128,7 +128,6 @@ public class SourisListener {
     }
 
 
-
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
         if (item != null) {
             vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
