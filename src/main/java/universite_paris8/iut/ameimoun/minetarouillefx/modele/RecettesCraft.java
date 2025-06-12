@@ -39,6 +39,11 @@ public enum RecettesCraft {
         this.quantiteResultat = quantiteResultat;
     }
 
+    /**
+     * Vérifie si la grille fournie correspond au modèle de la recette.
+     * @param grille La grille à vérifier.
+     * @return true si la grille correspond au modèle, false sinon.
+     */
     public boolean correspondPattern(Item[][] grille) {
         if (!tailleGrilleEstCorrecte(grille)) return false;
         for (int i = 0; i < pattern.length; i++) {

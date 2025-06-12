@@ -84,6 +84,8 @@ public class Chemin {
         // Musique
         public static final String MUSIQUE_FOND = "/mp3/musique/Zimmer_interstelar.mp3";
 
+        // CSS
+        public static final String CSS_BUTTON_CRAFT = "/css/styleButtonCraft.css";
     /*
     ANIMATIONS
      */
@@ -103,4 +105,6 @@ public class Chemin {
         public static final String ANIMATION_MOB_SAUT = "/img/animations/Mob/saut.png";
 
         public static final String ANIMATION_CORBEAU_VOLE = "/img/animations/Corbeau_/Vole.png";
+
+
 }

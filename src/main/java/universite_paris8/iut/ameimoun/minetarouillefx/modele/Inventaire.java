@@ -17,21 +17,32 @@ public class Inventaire {
     }
 
 
+    // Ajoute un nouvel item dans l'inventaire
     public void ajouterItem(Item nouvelItem) {
-        int quantiteRestante = nouvelItem.getQuantite();
+        int quantiteRestante = empilerDansStacksExistants(nouvelItem);
+        if (quantiteRestante > 0) {
+            ajouterDansSlotsVides(nouvelItem, quantiteRestante);
+        }
+        // Si l'inventaire est plein on fait r
+    }
 
-        //Compléter les stacks existants du même type
+    // Empile l'item ds les stacks existants et retourne la qtité restante à add
+    private int empilerDansStacksExistants(Item nouvelItem) {
+        int quantiteRestante = nouvelItem.getQuantite();
         for (Item slot : slots) {
             if (slot != null && slot.equals(nouvelItem) && slot.getQuantite() < slot.getStackMax()) {
                 int place = slot.getStackMax() - slot.getQuantite();
                 int aAjouter = Math.min(place, quantiteRestante);
                 slot.ajouterQuantite(aAjouter);
                 quantiteRestante -= aAjouter;
-                if (quantiteRestante == 0) return;
+                if (quantiteRestante == 0) break;
             }
         }
+        return quantiteRestante;
+    }
 
-        //Mettre le reste dans des slots vides
+    // Ajoute l'item dans les slots vides
+    private void ajouterDansSlotsVides(Item nouvelItem, int quantiteRestante) {
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null && quantiteRestante > 0) {
                 int aMettre = Math.min(nouvelItem.getStackMax(), quantiteRestante);
@@ -40,10 +51,9 @@ public class Inventaire {
                         : new Item(nouvelItem.getObjet(), aMettre);
                 slots.set(i, itemAAjouter);
                 quantiteRestante -= aMettre;
-                if (quantiteRestante == 0) return;
+                if (quantiteRestante == 0) break;
             }
         }
-        // Si l'inventaire est plein c'est perdu.
     }
 
     // Retire une quantité d’un item donné (par id)
@@ -62,7 +72,6 @@ public class Inventaire {
         }
     }
 
-
     public int getQuantite(Item item) {
         int total = 0;
         for (Item slot : slots) {
@@ -73,8 +82,8 @@ public class Inventaire {
         return total;
     }
 
+    // Retourne true si un slot vide existe OU si un slot du même type peut stacker l'item
     public boolean aDeLaPlacePour(Item item) {
-        // Retourne true si un slot vide existe OU si un slot du même type peut stacker l'item
         for (Item slot : slots) {
             if (slot == null) return true;
             if (slot.equals(item) && slot.getQuantite() + item.getQuantite() <= item.getStackMax()) return true;
@@ -104,5 +113,4 @@ public class Inventaire {
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }
-
 }

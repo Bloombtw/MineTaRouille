@@ -68,11 +68,24 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserVueCraft() {
-        GestionnaireCraft gestionnaireCraft =new GestionnaireCraft(gestionnaireInventaire.getInventaire());
+        GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
         VueCraft vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
-        gestionnaireControles.getSourisListener().setVueCraft(vuecraft);
-        gestionnaireControles.setVueCraft(vuecraft);
+        CraftController craftController = new CraftController(gestionnaireCraft, vuecraft);
+
+        vuecraft.setCraftController(craftController);
+
+        if (gestionnaireControles.getSourisListener() != null) {
+            gestionnaireControles.getSourisListener().setVueCraft(vuecraft);
+            gestionnaireControles.getSourisListener().setcraftController(craftController);
+        }
+
+        if (gestionnaireControles.getClavierListener() != null) {
+            craftController.setClavierListener(gestionnaireControles.getClavierListener());
+        }
+
+        craftController.initialiserListeners();
     }
+
 
     private void initialiserJoueur() {
         joueurModele = new Joueur();
@@ -104,7 +117,7 @@ public class JeuController implements Initializable {
 
     private void initialiserControles() {
         gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
-        gestionnaireControles.getSourisListener().setJeuController();
+        gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.getClavierListener().setJeuController(this);
         gestionnaireControles.getClavierListener().lier(tileMap);
         gestionnaireControles.initialiserControles();

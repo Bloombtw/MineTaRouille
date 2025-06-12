@@ -81,5 +81,15 @@ public class Loader {
         return frames;
     }
 
+    public static String loadCSS(String path) {
+        URL resource = Loader.class.getResource(path);
+        if (resource != null) {
+            return resource.toExternalForm();
+        } else {
+            System.err.println("CSS non trouvé : " + path);
+            return null;
+        }
+    }
+
 
 }

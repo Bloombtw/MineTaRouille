@@ -1,0 +1,13 @@
+#bouton-crafter {
+    -fx-font-size: 16px;
+    -fx-background-color: rgba(100,100,100,0.8);
+    -fx-background-radius: 15;
+    -fx-text-fill: white;
+    -fx-border-color: #5A5A5A;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+}
+
+#bouton-crafter:hover {
+    -fx-background-color: rgba(120,120,120,1);
+}

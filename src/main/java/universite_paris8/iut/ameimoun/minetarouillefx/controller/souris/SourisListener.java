@@ -5,6 +5,7 @@
     import javafx.scene.input.MouseEvent;
     import javafx.scene.input.ScrollEvent;
     import javafx.scene.layout.TilePane;
+    import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
     import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
     import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
@@ -24,6 +25,7 @@
         private VueCraft vueCraft;
         private VueJoueur vueJoueur;
         private JeuController jeuController;
+        private CraftController craftController;
 
         public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, VueCraft vueCraft) {
             this.joueur = joueur;
@@ -32,6 +34,10 @@
             this.vueInventaire = vueInventaire;
             this.gestionnaireItem = gestionnaireItem;
             this.vueCraft = vueCraft;
+        }
+
+        public void setcraftController(CraftController craftController) {
+            this.craftController = craftController;
         }
 
         public void lier(TilePane tilePane) {
@@ -46,6 +52,9 @@
         }
 
         public void lierScrollInventaire(Scene scene) {
+            if (scene == null) {
+                return;
+            }
             scene.addEventFilter(ScrollEvent.SCROLL, event -> {
                 int index = inventaire.getSelectedIndex();
                 int max = inventaire.getSlots().size();
@@ -60,7 +69,7 @@
         }
 
 
-        public void setJeuController() {
+        public void setJeuController(JeuController jeuController) {
             this.jeuController = jeuController;
         }
 
@@ -70,7 +79,9 @@
             if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
                 switch (blocClique) {
                     case TABLE_CRAFT -> {
-                        vueCraft.ouvrirCraftWindow();
+                        if (craftController != null) {
+                            craftController.ouvrirFenetreCraft();
+                        }
                         return true;
                     }
                     default -> {

@@ -1,43 +1,81 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
-import javafx.scene.layout.AnchorPane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftListener;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.RecettesCraft;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class GestionnaireCraft {
 
-    Inventaire inventaire;
-    private final Item[][] grille;
-    private CraftListener craftListener;
+    private final Inventaire inventaire;
+    private final ObservableList<ObservableList<Item>> grille;
+    private final ObjectProperty<Item> resultatCraft = new SimpleObjectProperty<>(null);
+    private final IntegerProperty quantiteCraft = new SimpleIntegerProperty(-1);
+    private final BooleanProperty fenetreCraftOuverte = new SimpleBooleanProperty(false);
 
-    public GestionnaireCraft(Inventaire inventaire) {
-        grille = new Item[3][3];
-        this.inventaire = inventaire;
+    public BooleanProperty fenetreCraftOuverteProperty() {
+        return fenetreCraftOuverte;
     }
 
-    public void setCraftListener(CraftListener listener) {
-        this.craftListener = listener;
+    public void ouvrirFenetreCraft() {
+        fenetreCraftOuverte.set(true);
+    }
+
+    public void fermerFenetreCraft() {
+        fenetreCraftOuverte.set(false);
+    }
+
+    public GestionnaireCraft(Inventaire inventaire) {
+        this.inventaire = inventaire;
+        this.grille = FXCollections.observableArrayList();
+        for (int i = 0; i < 3; i++) {
+            ObservableList<Item> ligne = FXCollections.observableArrayList();
+            for (int j = 0; j < 3; j++) {
+                ligne.add(null);
+            }
+            grille.add(ligne);
+        }
+    }
+
+    public static Item[][] convertirGrille(ObservableList<ObservableList<Item>> grille) {
+        int rows = grille.size();
+        int cols = rows > 0 ? grille.get(0).size() : 0;
+        Item[][] array = new Item[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                array[i][j] = grille.get(i).get(j);
+            }
+        }
+        return array;
+    }
+
+    public ObservableList<ObservableList<Item>> getGrille() {
+        return grille;
+    }
+
+    public ObjectProperty<Item> resultatCraftProperty() {
+        return resultatCraft;
+    }
+
+    public IntegerProperty quantiteCraftProperty() {
+        return quantiteCraft;
     }
 
     public void placerItem(int ligne, int colonne, Item item) {
-        grille[ligne][colonne] = item;
-        notifierGrilleChange();
+        grille.get(ligne).set(colonne, item);
     }
 
     public void retirerItem(int ligne, int colonne) {
-        grille[ligne][colonne] = null;
-        notifierGrilleChange();
+        grille.get(ligne).set(colonne, null);
     }
 
-    // Dans GestionnaireCraft.java, méthode tenterCraft()
     public void tenterCraft() {
         for (RecettesCraft recette : RecettesCraft.values()) {
-            if (recette.correspondPattern(grille)) {
+            if (recette.correspondPattern(convertirGrille(grille))) {
                 Item resultat = recette.getResultat();
                 int quantite = recette.getQuantiteResultat();
                 Item resultatAvecQuantite = resultat.getBloc() != null
@@ -45,7 +83,8 @@ public class GestionnaireCraft {
                         : new Item(resultat.getObjet(), quantite);
 
                 if (!inventaire.aDeLaPlacePour(resultatAvecQuantite)) {
-                    notifierCraftResult(null, -1); // ou message "Inventaire plein"
+                    quantiteCraft.set(-1);
+                    resultatCraft.set(null);
                     return;
                 }
 
@@ -53,128 +92,77 @@ public class GestionnaireCraft {
                     retirerItemsPourRecette(recette);
                     inventaire.ajouterItem(resultatAvecQuantite);
                     viderGrille();
-                    notifierCraftResult(resultat, quantite);
+                    resultatCraft.set(resultat);
+                    quantiteCraft.set(quantite);
                     return;
                 }
             }
         }
-        notifierCraftResult(null, -2);
+        resultatCraft.set(null);
+        quantiteCraft.set(-2);
     }
 
-    private boolean peutCrafter(RecettesCraft recette) {
-         if (recette.getPattern() != null) {
-            // Vérifie que chaque item du pattern est bien présent dans l'inventaire
-            Item[][] pattern = recette.getPattern();
-            int[][] compte = new int[3][3];
-             for (Item[] items : pattern) {
-                 for (Item item : items) {
-                     if (item != null) {
-                         if (inventaire.getQuantite(item) < 1) return false;
-                     }
-                 }
-             }
-            return true;
+    public void ajouterOuRetirerItem(int row, int col) {
+        Item currentItem = grille.get(row).get(col);
+
+        if (currentItem == null) {
+            Item item = inventaire.getItem(inventaire.getSelectedIndex());
+            if (item == null) return;
+
+            if (item.getBloc() != null) {
+                inventaire.retirer(new Item(item.getBloc()), 1);
+                grille.get(row).set(col, new Item(item.getBloc(), 1));
+            } else if (item.getObjet() != null) {
+                inventaire.retirer(new Item(item.getObjet()), 1);
+                grille.get(row).set(col, new Item(item.getObjet(), 1));
+            }
+        } else {
+            if (currentItem.getBloc() != null) {
+                inventaire.ajouterItem(new Item(currentItem.getBloc(), 1));
+            } else if (currentItem.getObjet() != null) {
+                inventaire.ajouterItem(new Item(currentItem.getObjet(), 1));
+            }
+            grille.get(row).set(col, null);
         }
-        return false;
+    }
+
+
+    private boolean peutCrafter(RecettesCraft recette) {
+        for (Item[] ligne : recette.getPattern()) {
+            for (Item item : ligne) {
+                if (item != null && inventaire.getQuantite(item) < 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void retirerItemsPourRecette(RecettesCraft recette) {
-         if (recette.getPattern() != null) {
-             Item[][] pattern = recette.getPattern();
-             for (Item[] items : pattern) {
-                 for (Item item : items) {
-                     if (item != null) {
-                         inventaire.retirer(item, 1);
-                     }
-                 }
-             }
+        for (Item[] ligne : recette.getPattern()) {
+            for (Item item : ligne) {
+                if (item != null) {
+                    inventaire.retirer(item, 1);
+                }
+            }
         }
     }
 
     private void viderGrille() {
-        for (Item[] items : grille) {
-            Arrays.fill(items, null);
-        }
-        notifierGrilleChange();
-    }
-
-    public Item[][] getGrille() {
-        return grille;
-    }
-
-    public static class ResultatCraft {
-        public final Item resultat;
-        public final int quantite;
-
-        public ResultatCraft(Item resultat, int quantite) {
-            this.resultat = resultat;
-            this.quantite = quantite;
-        }
-    }
-
-    public void ajouterEcouteurs(AnchorPane overlayPane, ClavierListener clavierListener) {
-        overlayPane.setOnMousePressed(event -> {
-            overlayPane.requestFocus();
-            event.consume();
-        });
-
-        overlayPane.setOnKeyPressed(event -> {
-            if (event.getText().matches("[&é\"'(-è_]")) {
-                clavierListener.gererSelectionInventaire(event.getText());
-            }
-            event.consume();
-        });
-    }
-
-    public void gererClicCraft(int row, int col) {
-        if (grille[row][col] == null) {
-            Item item = inventaire.getItem(inventaire.getSelectedIndex());
-            if (item == null) {
-                return;
-            }
-            if (item.getBloc() != null) {
-                inventaire.retirer(new Item(item.getBloc()), 1);
-                grille[row][col] = new Item(item.getBloc(), 1);
-            } else if (item.getObjet() != null) {
-                inventaire.retirer(new Item(item.getObjet()), 1);
-                grille[row][col] = new Item(item.getObjet(), 1);
-            }
-            placerItem(row, col, grille[row][col]);
-        } else {
-            Item item = grille[row][col];
-            if (item.getBloc() != null) {
-                inventaire.ajouterItem(new Item(item.getBloc(), 1));
-            } else if (item.getObjet() != null) {
-                inventaire.ajouterItem(new Item(item.getObjet(), 1));
-            }
-            grille[row][col] = null;
-            retirerItem(row, col);
-        }
-    }
-
-    private void notifierGrilleChange() {
-        if (craftListener != null) {
-            craftListener.onGrilleChange(grille);
-        }
-    }
-
-    private void notifierCraftResult(Item resultat, int quantite) {
-        if (craftListener != null) {
-            craftListener.onCraftResult(resultat, quantite);
+        for (ObservableList<Item> ligne : grille) {
+            ligne.clear();
         }
     }
 
     public void remettreItemsGrilleDansInventaire() {
-        for (int i = 0; i < grille.length; i++) {
-            for (int j = 0; j < grille[i].length; j++) {
-                Item item = grille[i][j];
+        for (ObservableList<Item> ligne : grille) {
+            for (int i = 0; i < ligne.size(); i++) {
+                Item item = ligne.get(i);
                 if (item != null) {
                     inventaire.ajouterItem(item);
-                    grille[i][j] = null;
+                    ligne.set(i, null);
                 }
             }
         }
-        notifierGrilleChange();
     }
-
 }

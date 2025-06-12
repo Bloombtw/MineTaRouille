@@ -6,6 +6,14 @@ public class Constantes {
     public static final int LARGEUR_FENETRE = 1680;
     public static final int HAUTEUR_FENETRE = 1050;
 
+    // Dimensions fenêtre craft
+    public static final int TAILLE_FENETRE_CRAFT = 300;
+    public static final int TAILLE_GRILLE_CRAFT = 3; // 3x3
+
+    // Dimensions bouton craft
+    public static final int HAUTEUR_BOUTON_CRAFT = 30;
+    public static final int LARGEUR_BOUTON_CRAFT = 100;
+
     // Carte / Tuiles
     public static final int TAILLE_TUILE = 30;
     public static final int NB_LIGNES = 35;
