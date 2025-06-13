@@ -79,7 +79,7 @@ Gère :
 - L’état vivant/mort du personnage (propriété observable).
 
 **Principaux attributs :**
-- `DoubleProperty vieMax` : points de vie maximum.
+- `double vieMax` : points de vie maximum.--> Changement de type d'attribut
 - `DoubleProperty vieActuelle` : points de vie actuels.
 - `BooleanProperty estEnVieProperty` : indique si le personnage est vivant.
 - `BooleanProperty subitDegats` : indique si le personnage subit actuellement des dégâts (ex : sur un bloc dangereux).

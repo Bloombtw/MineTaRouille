@@ -119,7 +119,7 @@ Gère :
 - Centralise la gestion de la physique et de l’affichage des items au sol.
 - Permet de faire tomber les items, de les afficher, et de gérer leur ramassage par le joueur.
 - Utilisé par le contrôleur pour gérer les objets lâchés, les récompenses de casse de bloc, etc.
-
+- Spauwn de loot gérer ici.
 ---
 
 ## GestionnaireMort
@@ -199,3 +199,20 @@ Gère :
 - Centralise la gestion de la vie du joueur : dégâts, alertes et mort.
 - Appelée à chaque boucle de jeu pour mettre à jour l’état de la vie, jouer les sons d’alerte et arrêter le jeu si le joueur meurt.
 - Permet de séparer la logique de gestion de la vie du reste du contrôleur.
+
+---
+
+## GestionnaireMob
+
+- Ajout de logs dans la méthode `tuerMobSiProximite()` :
+    - Affiche les coordonnées du joueur et du mob, ainsi que la distance calculée.
+    - Permet de vérifier si la méthode est correctement appelée et si les mobs passifs sont supprimés.
+
+---
+
+## GestionnaireMobHostile
+
+- Ajout de logs dans la méthode `tuerMobSiProximite()` :
+    -le même principe que pour `GestionnaireMob`, mais pour les mobs hostiles.
+    - Permet de vérifier si la méthode est correctement appelée et si les mobs hostiles sont supprimés.
+    - Différence avec gestionnaireMob : spauwn de loot.
