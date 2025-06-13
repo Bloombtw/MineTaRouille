@@ -41,6 +41,7 @@ public class ClavierListener {
                 case A -> {
                     gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
                 }
+                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
             }
 
             gererSelectionInventaire(event.getText());
