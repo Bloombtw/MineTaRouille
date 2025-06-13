@@ -2,7 +2,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -37,7 +36,7 @@ public class VueVie {
         fadeTransition = creerFadeTransition();
 
         vieModele.ajouterCallbackDegatsSubis(this::afficherDegats);
-        mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+        mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.getVieMax());
     }
 
     private Rectangle creerFond() {
@@ -60,7 +59,7 @@ public class VueVie {
     private void lierLargeurBarre() {
         barre.widthProperty().bind(
                 vieModele.vieActuelleProperty()
-                        .divide(vieModele.vieMaxProperty())
+                        .divide(vieModele.getVieMax())
                         .multiply(LARGEUR_BARRE_MAX)
         );
     }
@@ -68,7 +67,7 @@ public class VueVie {
     private void lierModele() {
         vieModele.vieActuelleProperty().addListener((obs, oldVal, newVal) -> {
             if (!vieModele.isTakingDamageProperty().get()) {
-                mettreAJourCouleurBarre(newVal.doubleValue(), vieModele.vieMaxProperty().get());
+                mettreAJourCouleurBarre(newVal.doubleValue(), vieModele.getVieMax());
             }
         });
 
@@ -76,7 +75,7 @@ public class VueVie {
             if (isTakingDamage) {
                 barre.setFill(Color.BLUE);
             } else {
-                mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.vieMaxProperty().get());
+                mettreAJourCouleurBarre(vieModele.vieActuelleProperty().get(), vieModele.getVieMax());
             }
         });
     }
