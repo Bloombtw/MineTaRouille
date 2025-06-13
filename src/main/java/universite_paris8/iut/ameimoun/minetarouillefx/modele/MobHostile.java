@@ -31,6 +31,7 @@ public class MobHostile extends Mob {
 
     private void attaquerJoueur() {
         double distanceX = Math.abs(this.getX() - joueur.getX());
+
         double distanceY = Math.abs(this.getY() - joueur.getY());
         double distanceTotale = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 

@@ -1,12 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Objet;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Personnage;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,24 +63,16 @@ public class GestionnaireMob {
         for (Mob m : mobSimple) {
             m.mettreAJour();
         }
-        // Si vous n'avez pas lié la position de la vue automatiquement,
-        // il faudrait appeler ici : vuesMob.get(i).mettreAJourPosition() pour chaque mob.
     }
-
-    /**
-     * TUE tous les mobs passifs dont la distance euclidienne entre leur centre
-     * et la position (playerCenterX, playerCenterY) du joueur ≤ DISTANCE_ATTAQUE.
-     *
-     * @param playerCenterX coordonnée X (en pixels) du centre du joueur
-     * @param playerCenterY coordonnée Y (en pixels) du centre du joueur
-     */
     public void tuerMobSiProximite(double playerCenterX, double playerCenterY) {
         double seuil = Constantes.DISTANCE_ATTAQUE;
 
+        // On itère de la fin vers le début pour pouvoir supprimer des éléments sans problèmes d'index
         for (int i = mobSimple.size() - 1; i >= 0; i--) {
             Mob mob = mobSimple.get(i);
+            VueMob vue = vuesMob.get(i); // <-- On récupère la vue AVANT de potentiellement retirer le modèle
 
-            // On estime que mob.getX()/getY() sont le coin haut-gauche ; on ajoute TAILLE_TUILE/2 pour avoir le centre
+            // Centre du mob
             double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
             double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
 
@@ -92,40 +82,29 @@ public class GestionnaireMob {
             double distanceTotale = Math.sqrt(dx * dx + dy * dy);
 
             if (distanceTotale <= seuil) {
-
-                // Suppression de la vue du Pane
-                if (rootPane != null) {
-                    VueMob vue = vuesMob.get(i);
+                // 1. Suppression de la vue du Pane (visuellement)
+                if (rootPane != null && vue != null) { // Vérifier que rootPane et vue existent
                     rootPane.getChildren().remove(vue.getNode());
-                    System.out.println("Mob passif tué (distance ≤ " + seuil + ").");
-                    Item loot = new Item(Objet.MOUTON_CUIT, 1);
+                    vuesMob.remove(i);
 
-                    // Convertir les coordonnées pixels en indices de tuiles
-                    int tileX = (int) (mobCenterX / Constantes.TAILLE_TUILE);
-                    int tileY = (int) (mobCenterY / Constantes.TAILLE_TUILE);
-
-                    gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+                    // 2. Drop d'item (si gestionnaireItem est disponible)
+                    if (gestionnaireItem != null) {
+                        Item loot = new Item(Objet.MOUTON_CUIT, 1);
+                        // Convertir les coordonnées pixels en indices de tuiles
+                        int tileX = (int) (mobCenterX / Constantes.TAILLE_TUILE);
+                        int tileY = (int) (mobCenterY / Constantes.TAILLE_TUILE);
+                        gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+                    }
                 }
-                // Suppression du modèle de la liste
+
+                // 3. Suppression du modèle de la liste
                 mobSimple.remove(i);
-                // Suppression de la vue dans la liste
-                vuesMob.remove(i);
+                System.out.println("Mob passif supprimé du modèle.");
+
             }
         }
     }
-
-    /** Retourne la liste des mobs passifs (modèles). */
-    public List<Mob> getMobSimple() {
-        return mobSimple;
-    }
-
-    /** Retourne la liste des vues correspondantes aux mobs passifs. */
-    public List<VueMob> getVuesMob() {
-        return vuesMob;
-    }
-
-    /** Retourne le Pane parent dans lequel les mobs sont ajoutés. */
-    public Pane getRootPane() {
+          public Pane getRootPane() {
         return rootPane;
     }
 }

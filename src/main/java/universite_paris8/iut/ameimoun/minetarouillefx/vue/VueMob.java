@@ -7,7 +7,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationMob;
 
 public class VueMob {
-    private final Mob mob;                   // ← on stocke désormais la référence au modèle
+    private final Mob mob;
     private final ImageView mobImage;
     private final Group container;
     private final AnimationMob animationMob;

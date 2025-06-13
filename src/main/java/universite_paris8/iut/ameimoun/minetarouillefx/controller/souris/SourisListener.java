@@ -5,7 +5,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController; // Peut être retiré si non utilisé ailleurs
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
@@ -20,17 +20,20 @@ public class SourisListener {
     private final Joueur joueur;
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
-    private JeuController jeuController;
     private GestionnaireItem gestionnaireItem;
     private VueCarte vueCarte;
     private VueJoueur vueJoueur;
+    private final GestionnaireMobHostile gestionnaireMobHostile;
+    private final GestionnaireMob gestionnaireMobPassif;
 
-    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem) {
+    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;
         this.vueInventaire = vueInventaire;
         this.gestionnaireItem = gestionnaireItem;
+        this.gestionnaireMobHostile = gestionnaireMobHostile;
+        this.gestionnaireMobPassif = gestionnaireMobPassif;
     }
 
     public void lier(TilePane tilePane) {
@@ -56,10 +59,6 @@ public class SourisListener {
             inventaire.setSelectedIndex(index);
             event.consume();
         });
-    }
-
-    public void setJeuController(JeuController jeuController) {
-        this.jeuController = jeuController;
     }
 
     private void gererPlacementBloc(MouseEvent event) {
@@ -88,12 +87,10 @@ public class SourisListener {
         }
     }
 
-
     private void gererClicSouris(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY) {
             return;
         }
-
         // 1) Casser un bloc si applicable
         double clickX = event.getX();
         double clickY = event.getY();
@@ -107,26 +104,23 @@ public class SourisListener {
             vueInventaire.mettreAJourAffichage();
         }
 
-        // 2) One‐shot kill par test de distance euclidienne
-        if (jeuController != null) {
-            // Position centrée du joueur
-            double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
-            double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
-
-            // 2a) Mobs hostiles
-            GestionnaireMobHostile gestionHostile = jeuController.getGestionnaireMobHostile();
-            if (gestionHostile != null) {
-                gestionHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
-            }
-
-            // 2b) Mob passif (via GestionnaireMob)
-            GestionnaireMob gestionPassif = jeuController.getGestionnaireMob();
-            if (gestionPassif != null) {
-                gestionPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
-            }
-        }
+        // 2) Attaquer les mobs
+        attaquerMobs();
     }
 
+    public void attaquerMobs(){
+        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
+
+        if (gestionnaireMobHostile != null) {
+            gestionnaireMobHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
+        }
+
+        // 2b) Mob passif (via GestionnaireMob)
+        if (gestionnaireMobPassif != null) {
+            gestionnaireMobPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
+        }
+    }
 
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
         if (item != null) {
@@ -137,6 +131,4 @@ public class SourisListener {
             gestionnaireItem.spawnItemAuSol(item, x, y);
         }
     }
-
 }
-

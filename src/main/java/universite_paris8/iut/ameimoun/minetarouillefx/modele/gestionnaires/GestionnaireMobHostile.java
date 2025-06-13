@@ -71,11 +71,12 @@ public class GestionnaireMobHostile {
             if (distanceTotale <= seuil) {
                 // Suppression du modèle
                 mobsHostiles.remove(i);
+                System.out.println("Mob hostile tué modl + seuil +.");
                 // Suppression de la vue
                 if (rootPane != null) {
                     VueMobHostile vue = vuesMobsHostiles.get(i);
                     rootPane.getChildren().remove(vue.getNode());
-                    System.out.println("Mob hostile tué (distance)");
+                    System.out.println("Mob hostile tué (vue)");
                 }
                 vuesMobsHostiles.remove(i);
             }

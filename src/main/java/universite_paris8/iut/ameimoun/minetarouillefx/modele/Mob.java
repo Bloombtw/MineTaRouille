@@ -2,8 +2,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
-import java.lang.reflect.GenericArrayType;
-
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
 
@@ -13,12 +11,12 @@ public class Mob extends Personnage {
 
     public void mettreAJour() {
         gravite();
-        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
+        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
         double prochaineY = getY() +getVitesseY();
 
         boolean collisionVerticale = collision(prochaineX,prochaineY-Constantes.FORCE_SAUT);
-        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT,getY());
-        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT,getY());
+        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
 
         if(collisionDroite && collisionGauche){
             sauter();
@@ -41,6 +39,6 @@ public class Mob extends Personnage {
     }
 
     public double getVitesseX() {
-        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);
+        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 }

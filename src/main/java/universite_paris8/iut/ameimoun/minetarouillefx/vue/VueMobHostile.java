@@ -9,8 +9,6 @@ public class VueMobHostile extends VueMob {
 
     public VueMobHostile(MobHostile mobHostile) {
         super(mobHostile);
-
-        // Initialize specific animation for MobHostile
         animationMobHostile = new AnimationMob(getMobImage());
         animationMobHostile.mettreAJourAnimation(mobHostile);
     }

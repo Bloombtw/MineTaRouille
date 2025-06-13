@@ -15,6 +15,9 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// Importer le SourisListener pour pouvoir l'instancier
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
+
 public class JeuController implements Initializable {
     @FXML
     private TilePane tileMap;
@@ -34,7 +37,7 @@ public class JeuController implements Initializable {
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
     private GestionnaireMobHostile gestionnaireMobHostile;
-    private GestionnaireMob gestionnaireMob;
+    private GestionnaireMob gestionnaireMob; // Assurez-vous que celui-ci est bien initialisé
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
@@ -52,9 +55,9 @@ public class JeuController implements Initializable {
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
         initialiserInventaire();
-        initialiserControles();
-        initialiserMob();
-        initialiserMobHostile();
+        initialiserMob(); // Initialiser mob avant initialiserControles pour que gestionnaireMob soit prêt
+        initialiserMobHostile(); // Initialiser mob hostile avant initialiserControles
+        initialiserControles(); // Maintenant, il aura accès aux gestionnaires de mobs
         initialiserMusique();
         demarrerBoucleDeJeu();
     }
@@ -97,15 +100,39 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte, gestionnaireInventaire, debugManager, gestionnaireItem);
-        gestionnaireControles.getSourisListener().setJeuController(this);
+        // Obtenez l'inventaire et la vueInventaire du gestionnaire d'inventaire
+        Inventaire inventaire = gestionnaireInventaire.getInventaire();
+        VueInventaire vueInventaire = gestionnaireInventaire.getVueInventaire();
+
+        // Créer l'instance de SourisListener en passant les gestionnaires de mobs
+        SourisListener sourisListener = new SourisListener(
+                joueurModele,
+                inventaire,
+                vueCarte,
+                vueInventaire,
+                gestionnaireItem,
+                gestionnaireMobHostile, // Passe le gestionnaire de mobs hostiles
+                gestionnaireMob           // Passe le gestionnaire de mobs passifs
+        );
+
+        // Initialiser GestionnaireControles avec le SourisListener créé
+        gestionnaireControles = new GestionnaireControles(
+                joueurModele,
+                vueCarte,
+                gestionnaireInventaire,
+                debugManager,
+                gestionnaireItem,
+                sourisListener // Passe le SourisListener créé
+        );
+        // La ligne suivante n'est plus nécessaire car JeuController n'est plus directement lié
+        // gestionnaireControles.getSourisListener().setJeuController(this);
         gestionnaireControles.initialiserControles();
     }
 
     private void initialiserMob() {
-        mob = new Mob();
-        vueMob = new VueMob(mob);
-        rootPane.getChildren().add(vueMob.getNode());
+        gestionnaireMob = new GestionnaireMob(gestionnaireItem);
+        gestionnaireMob.ajouterMob(null, 200, rootPane);
+        gestionnaireMob.ajouterMob(null, 400, rootPane);
     }
 
     private void initialiserMobHostile() {
@@ -130,13 +157,7 @@ public class JeuController implements Initializable {
         );
     }
 
-    public GestionnaireMob getGestionnaireMob() {
-        return gestionnaireMob;
-    }
 
-    public GestionnaireMobHostile getGestionnaireMobHostile() {
-        return gestionnaireMobHostile;
-    }
 
     private void  initialiserGestionnaireVie() {
         gestionnaireVie = new GestionnaireVie(
@@ -175,6 +196,11 @@ public class JeuController implements Initializable {
                 gestionnaireInventaire.getVueInventaire()
         );
         gestionnaireMobHostile.mettreAJour();
+        // Assurez-vous que gestionnaireMob est aussi mis à jour si nécessaire
+        if (gestionnaireMob != null) {
+            gestionnaireMob.mettreAJour(); // Ajoutez cette ligne si votre GestionnaireMob a une méthode de mise à jour
+        }
+
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }

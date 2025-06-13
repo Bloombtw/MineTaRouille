@@ -12,30 +12,31 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 
 public class GestionnaireControles {
     private ClavierListener clavierListener;
-    private SourisListener sourisListener;
+    private SourisListener sourisListener; // Now received via constructor
     private final Joueur joueurModele;
     private final VueCarte vueCarte;
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
     private final GestionnaireItem gestionnaireItem;
 
-    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
+    // Modified constructor to accept SourisListener
+    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem, SourisListener sourisListener) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
+        this.sourisListener = sourisListener;
+
         initialiserControles();
     }
 
     public void initialiserControles() {
         clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, gestionnaireItem);
-        sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem);
         TilePane tileMap = vueCarte.getTileMap();
 
         clavierListener.lier(tileMap);
         sourisListener.lier(tileMap);
-
 
         Platform.runLater(() -> {
             tileMap.setFocusTraversable(true);
