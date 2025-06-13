@@ -30,8 +30,9 @@ public class Chemin {
         public static final String IMAGE_FEUILLAGE_ACACIA = "/img/blocs/solide/feuillage_acacia.png";
         public static final String IMAGE_GRES = "/img/blocs/solide/gres.png";
         public static final String IMAGE_CACTUS = "/img/blocs/solide/cactus.png";
-        public static final String IMAGE_TABLE_CRAFT = "/img/blocs/solide/table_craft.jpg";
+        public static final String IMAGE_TABLE_CRAFT = "/img/blocs/action/table_craft.jpg";
         public static final String IMAGE_PLANCHE = "/img/blocs/solide/planche.png";
+        public static final String IMAGE_COFFRE = "/img/blocs/action/coffre.png";
 
         // Décors
         public static final String IMAGE_DECORS_CORBEAU = "/img/decors/corbeau.png";
@@ -75,7 +76,6 @@ public class Chemin {
         public static final String FXML_MAP = "/fxml/Map.fxml";
         public static final String FXML_ECRAN_MORT = "/fxml/EcranDeMort.fxml";
         public static final String FXML_ECRAN_ACCUEIL = "/fxml/EcranAccueil.fxml";
-        public static final String FXML_MENU_CRAFT = "/fxml/InterfaceCraft.fxml";
 
         // Son
         public static final String SON_VIE_LOW = "/mp3/effets/joueur/degat/vieLow.mp3";

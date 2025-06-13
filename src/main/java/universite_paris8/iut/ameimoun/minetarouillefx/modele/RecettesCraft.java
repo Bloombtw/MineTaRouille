@@ -27,6 +27,15 @@ public enum RecettesCraft {
             },
             new Item(Objet.PIOCHE),
             1
+    ),
+    COFFRE(
+            new Item[][]{
+                    {new Item(Bloc.PLANCHE), new Item(Bloc.PLANCHE), new Item(Bloc.PLANCHE)},
+                    {new Item(Bloc.PLANCHE), null, new Item(Bloc.PLANCHE)},
+                    {new Item(Bloc.PLANCHE), new Item(Bloc.PLANCHE), new Item(Bloc.PLANCHE)}
+            },
+            new Item(Bloc.COFFRE),
+            1
     );
 
     private final Item[][] pattern;

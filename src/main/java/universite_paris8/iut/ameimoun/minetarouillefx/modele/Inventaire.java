@@ -43,6 +43,14 @@ public class Inventaire {
 
     // Ajoute l'item dans les slots vides
     private void ajouterDansSlotsVides(Item nouvelItem, int quantiteRestante) {
+        StringBuilder slotsLibres = new StringBuilder();
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i) == null) {
+                if (slotsLibres.length() > 0) slotsLibres.append(", ");
+                slotsLibres.append(i);
+            }
+        }
+
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null && quantiteRestante > 0) {
                 int aMettre = Math.min(nouvelItem.getStackMax(), quantiteRestante);
@@ -64,10 +72,11 @@ public class Inventaire {
                 int reste = slot.getQuantite() - quantite;
                 if (reste > 0) {
                     slot.setQuantite(reste);
+                    return;
                 } else {
                     slots.set(i, null);
+                    quantite = -reste; // On continue à retirer sur les autres slots si besoin
                 }
-                return;
             }
         }
     }

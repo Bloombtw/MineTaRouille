@@ -52,7 +52,6 @@ public class EcranDeMortController implements Initializable {
     @FXML
     private void handleQuitter() {
         MusiqueManager.getInstance().arreterMusique();
-        System.out.println("Fermeture de l'application depuis l'écran de mort.");
         Platform.exit();
     }
 

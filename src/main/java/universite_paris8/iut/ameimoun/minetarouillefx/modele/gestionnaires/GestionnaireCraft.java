@@ -1,13 +1,13 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.RecettesCraft;
 
-import java.util.Collections;
+
+import static javafx.collections.FXCollections.observableArrayList;
 
 public class GestionnaireCraft {
 
@@ -16,11 +16,13 @@ public class GestionnaireCraft {
     private final ObjectProperty<Item> resultatCraft = new SimpleObjectProperty<>(null);
     private final IntegerProperty quantiteCraft = new SimpleIntegerProperty(-1);
     private final BooleanProperty fenetreCraftOuverte = new SimpleBooleanProperty(false);
-
     public BooleanProperty fenetreCraftOuverteProperty() {
         return fenetreCraftOuverte;
     }
 
+    /**
+=     * Met à jour la propriété fenetreCraftOuverte pour indiquer que la fenêtre est ouverte.
+     */
     public void ouvrirFenetreCraft() {
         fenetreCraftOuverte.set(true);
     }
@@ -29,18 +31,32 @@ public class GestionnaireCraft {
         fenetreCraftOuverte.set(false);
     }
 
+    /**
+     * Constructeur de la classe GestionnaireCraft.
+     * Initialise la grille de craft avec des cases vides et la quantité de craft à -3
+     * -> toutes les quantités négatives sont interprétées comme des messages à afficher dans le label de résultat du craft.
+     *
+     * @param inventaire L'inventaire associé au gestionnaire de craft.
+     */
     public GestionnaireCraft(Inventaire inventaire) {
         this.inventaire = inventaire;
-        this.grille = FXCollections.observableArrayList();
+        this.grille = observableArrayList();
         for (int i = 0; i < 3; i++) {
-            ObservableList<Item> ligne = FXCollections.observableArrayList();
+            ObservableList<Item> ligne = observableArrayList();
             for (int j = 0; j < 3; j++) {
                 ligne.add(null);
             }
             grille.add(ligne);
         }
+        quantiteCraft.set(-3);
     }
 
+    /**
+     * Convertit une grille d'ObservableList<Item> en un tableau 2D d'Item.
+     *
+     * @param grille La grille à convertir.
+     * @return Un tableau 2D d'Item représentant la grille.
+     */
     public static Item[][] convertirGrille(ObservableList<ObservableList<Item>> grille) {
         int rows = grille.size();
         int cols = rows > 0 ? grille.get(0).size() : 0;
@@ -57,6 +73,10 @@ public class GestionnaireCraft {
         return grille;
     }
 
+    /**
+     *
+     * @return La propriété de l'item résultant du craft.
+     */
     public ObjectProperty<Item> resultatCraftProperty() {
         return resultatCraft;
     }
@@ -73,6 +93,12 @@ public class GestionnaireCraft {
         grille.get(ligne).set(colonne, null);
     }
 
+    /**
+     * Tente de crafter un item en fonction des recettes disponibles.
+     * Vérifie si la grille correspond à une recette, si l'inventaire a de la place pour le résultat,
+     * et si les items nécessaires sont présents dans l'inventaire.
+     * Si le craft est possible, ajoute l'item résultant à l'inventaire et vide la grille.
+     */
     public void tenterCraft() {
         for (RecettesCraft recette : RecettesCraft.values()) {
             if (recette.correspondPattern(convertirGrille(grille))) {
@@ -89,7 +115,6 @@ public class GestionnaireCraft {
                 }
 
                 if (peutCrafter(recette)) {
-                    retirerItemsPourRecette(recette);
                     inventaire.ajouterItem(resultatAvecQuantite);
                     viderGrille();
                     resultatCraft.set(resultat);
@@ -99,9 +124,14 @@ public class GestionnaireCraft {
             }
         }
         resultatCraft.set(null);
-        quantiteCraft.set(-2);
+        quantiteCraft.set(-3);
     }
 
+    /**
+     * Ajoute ou retire un item de la grille de craft quand on clique sur une case.
+     * @param row La ligne de la grille où l'item doit être ajouté ou retiré.
+     * @param col La colonne de la grille où l'item doit être ajouté ou retiré.
+     */
     public void ajouterOuRetirerItem(int row, int col) {
         Item currentItem = grille.get(row).get(col);
 
@@ -126,7 +156,12 @@ public class GestionnaireCraft {
         }
     }
 
-
+    /**
+     * Vérifie si l'inventaire contient tous les items nécessaires pour crafter la recette.
+     *
+     * @param recette La recette à vérifier.
+     * @return true si tous les items nécessaires sont présents, false sinon.
+     */
     private boolean peutCrafter(RecettesCraft recette) {
         for (Item[] ligne : recette.getPattern()) {
             for (Item item : ligne) {
@@ -138,22 +173,21 @@ public class GestionnaireCraft {
         return true;
     }
 
-    private void retirerItemsPourRecette(RecettesCraft recette) {
-        for (Item[] ligne : recette.getPattern()) {
-            for (Item item : ligne) {
-                if (item != null) {
-                    inventaire.retirer(item, 1);
-                }
+    /**
+     * Vide la grille de craft en remplaçant tous les items par null.
+     */
+    private void viderGrille() {
+        for (ObservableList<Item> ligne : grille) {
+            for (int i = 0; i < ligne.size();i++) {
+               ligne.set(i, null);
             }
         }
     }
 
-    private void viderGrille() {
-        for (ObservableList<Item> ligne : grille) {
-            ligne.clear();
-        }
-    }
-
+    /**
+     * Remet tous les items de la grille de craft dans l'inventaire.
+     * Utilisé lors de la fermeture de la fenêtre de craft pour récupérer les items.
+     */
     public void remettreItemsGrilleDansInventaire() {
         for (ObservableList<Item> ligne : grille) {
             for (int i = 0; i < ligne.size(); i++) {

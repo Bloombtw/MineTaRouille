@@ -54,6 +54,15 @@ public class Item {
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
 
+    public Item getItem(int id) {
+        if (typeItem == TypeItem.BLOC && bloc != null && bloc.getId() == id) {
+            return this;
+        } else if (typeItem == TypeItem.OBJET && objet != null && objet.getId() == id) {
+            return this;
+        }
+        return null; // Si l'ID ne correspond pas
+    }
+    
     public void setQuantite(int quantite) {
         this.quantite.set(quantite);
     }
@@ -73,5 +82,14 @@ public class Item {
         if (!(autreObjet instanceof Item)) return false;
         Item autreItem = (Item) autreObjet;
         return typeItem == autreItem.typeItem && getId() == autreItem.getId();
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "type=" + (getTypeItem() == TypeItem.BLOC ? bloc : objet) +
+                ", quantite=" + quantite +
+                ", id=" + getId() +
+                '}';
     }
 }

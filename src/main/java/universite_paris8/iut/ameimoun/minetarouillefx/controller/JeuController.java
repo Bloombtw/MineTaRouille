@@ -202,7 +202,7 @@ public class JeuController implements Initializable {
         return jeuEstEnPause;
     }
 
-    public ClavierListener getClavierListener() {
-        return gestionnaireControles.getClavierListener();
+    public GestionnaireInventaire getGestionnaireInventaire() {
+        return gestionnaireInventaire;
     }
 }

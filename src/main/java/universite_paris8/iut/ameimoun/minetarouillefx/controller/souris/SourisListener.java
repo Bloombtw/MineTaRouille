@@ -86,7 +86,7 @@
                     }
                     default -> {
                         System.err.println("Bloc spécial non géré : " + blocClique.getNom());
-                        return false; // Aucun bloc spécial géré
+                        return false;
                     }
                 }
             }

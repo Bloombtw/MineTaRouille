@@ -10,6 +10,7 @@ import java.net.URL;
 
 
 public class Loader {
+    public static final Image SLOT_IMAGE = loadImage(Chemin.SLOT);
 
     public static URL getResource(String path) {
         URL ressource = Loader.class.getResource(path);

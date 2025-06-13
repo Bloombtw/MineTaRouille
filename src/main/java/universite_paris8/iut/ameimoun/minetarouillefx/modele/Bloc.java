@@ -35,7 +35,8 @@ public enum Bloc {
     NUAGE_PARTIE2(31, "Nuage Partie 2", false, false, 64, false, false),
     NUAGE_PARTIE3(32, "Nuage Partie 3", false, false, 64, false, false),
     TABLE_CRAFT(33, "Table de Craft", true, false, 64, false, true),
-    PLANCHE(34, "Planche", true, false, 64, false, false);
+    PLANCHE(34, "Planche", true, false, 64, false, false),
+    COFFRE(35, "Coffre", true, false, 64, false, true);
 
 
     private final int id;
