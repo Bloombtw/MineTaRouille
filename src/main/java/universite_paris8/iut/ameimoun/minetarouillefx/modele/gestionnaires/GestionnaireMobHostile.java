@@ -61,6 +61,19 @@ public class GestionnaireMobHostile extends GestionnaireMobA {
         }
     }
 
+    public void supprimerMob(Mob mob) {
+        int index = mobsHostiles.indexOf(mob);
+        if (index != -1) {
+            // Retirer la vue du mob hostile
+            if (rootPane != null && index < vuesMobsHostiles.size()) {
+                rootPane.getChildren().remove(vuesMobsHostiles.get(index).getNode());
+                vuesMobsHostiles.remove(index);
+            }
+            // Supprimer le mob de la liste
+            mobsHostiles.remove(index);
+
+        }
+    }
     public List<MobHostile> getMobsHostiles() {
         return mobsHostiles;
     }

@@ -7,18 +7,26 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 public class Fleche {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
+    private double distanceParcourue = 0;
+    private final double distanceMax;
     private double vx, vy;
 
-    public Fleche(double x, double y, double vx, double vy) {
+    public Fleche(double x, double y, double vx, double vy,double distanceMax) {
         this.x.set(x);
         this.y.set(y);
         this.vx = vx;
         this.vy = vy;
+        this.distanceMax = distanceMax;
     }
 
-    public void mettreAJour() {
+    public boolean mettreAJourEtVerifierDistance() {
+        double oldX = x.get();
+        double oldY = y.get();
+        vy +=0.1;
         x.set(x.get() + vx);
         y.set(y.get() + vy);
+        distanceParcourue += Math.hypot(x.get() - oldX, y.get() - oldY);
+        return distanceParcourue > distanceMax;
     }
 
     public boolean estHorsJeu() {

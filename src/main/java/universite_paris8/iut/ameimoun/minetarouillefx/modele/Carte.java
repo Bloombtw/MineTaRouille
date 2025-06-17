@@ -45,6 +45,13 @@ public class Carte {
         return instance;
     }
 
+    public Bloc getBloc(int x, int y, int couche) {
+        if (!estDansLaMap(x, y) || couche < 0 || couche >= getNbCouches()) {
+            return null;
+        }
+        return terrain[couche][y][x];
+    }
+
     public Bloc[][][] getTerrain() {
         return terrain;
     }

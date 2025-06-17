@@ -34,7 +34,6 @@ public class GestionnaireItem {
             vue.updatePosition(item);
 
             if (detecterRamassage(item, joueur)) {
-
                 inventaire.ajouterItem(item);
                 vueInventaire.mettreAJourAffichage();
 
@@ -106,7 +105,6 @@ public class GestionnaireItem {
         } else {
             dropItem = new Item(item.getObjet());
         }
-
 
         // 4) Calculer la tuile **centrée** sous les pieds du joueur
         //    - On prend la position X du joueur + moitié de sa largeur (pour le centrer),

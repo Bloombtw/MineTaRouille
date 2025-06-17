@@ -60,8 +60,6 @@ public class VueInventaire extends HBox {
     }
 
     private StackPane creerCaseSlot(int index) {
-        // Utilisation du StackPane justifié par la superposition de l'image et du texte sans se soucier de coordonnées orécises
-        // Nécessaires si on utilise Pane.
         StackPane caseSlot = new StackPane();
         caseSlot.getChildren().add(creerFondSlot(index));
         Item item = inventaire.getItem(index);

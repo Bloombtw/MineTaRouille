@@ -170,7 +170,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserGestionnaireFleche() {
-        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMob);
+        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMob, gestionnaireMobHostile);
     }
 
     /*
@@ -201,9 +201,8 @@ public class JeuController implements Initializable {
                 gestionnaireInventaire.getVueInventaire()
         );
         gestionnaireMobHostile.mettreAJour();
-        // Assurez-vous que gestionnaireMob est aussi mis à jour si nécessaire
         if (gestionnaireMob != null) {
-            gestionnaireMob.mettreAJour(); // Ajoutez cette ligne si votre GestionnaireMob a une méthode de mise à jour
+            gestionnaireMob.mettreAJour();
         }
 
         if (debugManager.isDebugVisible()) {

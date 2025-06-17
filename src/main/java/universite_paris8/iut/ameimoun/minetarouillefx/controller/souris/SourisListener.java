@@ -133,10 +133,16 @@ public class SourisListener {
                 dx /= norme;
                 dy /= norme;
             }
-            gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 10, dy * 10); // 10 = vitesse
+
+            // Vérification du bloc visé
+            int tileX = (int) (event.getX() / Constantes.TAILLE_TUILE);
+            int tileY = (int) (event.getY() / Constantes.TAILLE_TUILE);
+            Bloc blocVise = Carte.getInstance().getBloc(tileX, tileY, 1);
+        if (blocVise == null || !blocVise.estSolide()) {
+                gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 2, dy * 2);
+            }
         }
     }
-
     private void gererClicSouris(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY) {
             return;
