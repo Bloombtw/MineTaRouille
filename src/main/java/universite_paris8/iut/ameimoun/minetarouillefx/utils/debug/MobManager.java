@@ -1,4 +1,4 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
+package universite_paris8.iut.ameimoun.minetarouillefx.utils.debug;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import java.util.ArrayList;

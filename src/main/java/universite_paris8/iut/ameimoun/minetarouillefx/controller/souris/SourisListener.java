@@ -5,7 +5,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController; // Peut être retiré si non utilisé ailleurs
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireFleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
@@ -25,8 +25,9 @@ public class SourisListener {
     private VueJoueur vueJoueur;
     private final GestionnaireMobHostile gestionnaireMobHostile;
     private final GestionnaireMob gestionnaireMobPassif;
+    private final GestionnaireFleche gestionnaireFleche;
 
-    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif) {
+    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;
@@ -34,6 +35,7 @@ public class SourisListener {
         this.gestionnaireItem = gestionnaireItem;
         this.gestionnaireMobHostile = gestionnaireMobHostile;
         this.gestionnaireMobPassif = gestionnaireMobPassif;
+        this.gestionnaireFleche = gestionnaireFleche;
     }
 
     public void lier(TilePane tilePane) {
@@ -117,14 +119,21 @@ public class SourisListener {
         }
     }
 
-    public void gererAttaqueDistance() {
+    public void gererAttaqueDistance(MouseEvent event) {
         double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
         Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
 
-        // Vérifier si l'objet sélectionné est un arc
         if (Objet.ARC.getNom().equals(objetSelectionne.getNom())) {
-            gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE_ARC);
+            // Calcul de la direction vers la souris
+            double dx = event.getX() - playerCenterX;
+            double dy = event.getY() - playerCenterY;
+            double norme = Math.sqrt(dx * dx + dy * dy);
+            if (norme != 0) {
+                dx /= norme;
+                dy /= norme;
+            }
+            gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 10, dy * 10); // 10 = vitesse
         }
     }
 
@@ -138,7 +147,7 @@ public class SourisListener {
         casserBloc(2, clickX, clickY);
 
         gererAttaqueProximite();
-        gererAttaqueDistance();
+        gererAttaqueDistance(event);
     }
 
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {

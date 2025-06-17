@@ -21,8 +21,6 @@ public class VueJoueur {
     private final ImageView objetTenu;
     private final AnimationJoueur animationJoueur;
 
-
-
     public VueJoueur(Joueur joueur) {
         this.joueur = joueur;
         perso = new ImageView();
@@ -39,7 +37,6 @@ public class VueJoueur {
 
         container = new Group(perso, overlayDegats, objetTenu);
 
-        // Chargement des animations et initialisation
         lierPositionContainer();
         lierListeners();
 

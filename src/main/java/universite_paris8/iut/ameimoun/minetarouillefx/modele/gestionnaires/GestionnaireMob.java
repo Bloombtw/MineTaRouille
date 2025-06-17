@@ -75,6 +75,31 @@ public class GestionnaireMob extends GestionnaireMobA {
         }
     }
 
+    public List<Mob> getMobs() {
+        return mobSimple;
+    }
+
+    public void supprimerMobEtGetLoot(Mob mob) {
+        int index = mobSimple.indexOf(mob);
+        if (index != -1) {
+            // Supprimer la vue du mob de l'interface graphique
+            if (rootPane != null && index < vuesMob.size()) {
+                rootPane.getChildren().remove(vuesMob.get(index).getNode());
+                vuesMob.remove(index);
+            }
+            // Supprimer le mob de la liste
+            mobSimple.remove(index);
+
+            // Gérer le loot ici si besoin
+             if (gestionnaireItem != null) {
+                 Item loot = new Item(Objet.MOUTON_CUIT, 1);
+                 int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
+               int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
+                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+             }
+        }
+    }
+
     public Pane getRootPane() {
         return rootPane;
     }

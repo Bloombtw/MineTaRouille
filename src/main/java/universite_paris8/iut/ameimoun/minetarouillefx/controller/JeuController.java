@@ -6,16 +6,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-// Importer le SourisListener pour pouvoir l'instancier
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 
 public class JeuController implements Initializable {
@@ -42,6 +38,7 @@ public class JeuController implements Initializable {
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
+    private GestionnaireFleche gestionnaireFleche;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -58,6 +55,7 @@ public class JeuController implements Initializable {
         initialiserInventaire();
         initialiserMob();
         initialiserMobHostile();
+        initialiserGestionnaireFleche();
         initialiserControles();
         initialiserMusique();
         demarrerBoucleDeJeu();
@@ -114,7 +112,8 @@ public class JeuController implements Initializable {
                 vueInventaire,
                 gestionnaireItem,
                 gestionnaireMobHostile, // Passe le gestionnaire de mobs hostiles
-                gestionnaireMob           // Passe le gestionnaire de mobs passifs
+                gestionnaireMob,
+                gestionnaireFleche
         );
 
         // Initialiser GestionnaireControles avec le SourisListener créé
@@ -170,6 +169,10 @@ public class JeuController implements Initializable {
         );
     }
 
+    private void initialiserGestionnaireFleche() {
+        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMob);
+    }
+
     /*
        BOUCLES DE JEU
      */
@@ -205,6 +208,9 @@ public class JeuController implements Initializable {
 
         if (debugManager.isDebugVisible()) {
             debugManager.update();
+        }
+        if (gestionnaireFleche != null) {
+            gestionnaireFleche.mettreAJour();
         }
     }
 
