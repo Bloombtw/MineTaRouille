@@ -47,6 +47,27 @@ public class GestionnaireMob extends GestionnaireMobA {
         return new double[]{mobCenterX, mobCenterY};
     }
 
+    public void supprimerMobEtGetLoot(Mob mob) {
+        int index = mobSimple.indexOf(mob);
+        if (index != -1) {
+            if (rootPane != null && index < vuesMob.size()) {
+                rootPane.getChildren().remove(vuesMob.get(index).getNode());
+                vuesMob.remove(index);
+            }
+            // Supprimer le mob de la liste
+            mobSimple.remove(index);
+
+            // Gérer le loot ici si besoin
+            if (gestionnaireItem != null) {
+                Item loot = new Item(Objet.MOUTON_CUIT, 1);
+                int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
+                int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
+                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+            }
+        }
+    }
+
+    /*
     private void supprimerMobEtGerLoot(int index, double mobCenterX, double mobCenterY) {
         VueMob vue = vuesMob.get(index);
         if (rootPane != null && vue != null) {
@@ -61,7 +82,7 @@ public class GestionnaireMob extends GestionnaireMobA {
             }
         }
         mobSimple.remove(index);
-    }
+    }*/
 
     @Override
     public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
@@ -70,7 +91,7 @@ public class GestionnaireMob extends GestionnaireMobA {
             double[] mobCenter = calculerCentreMob(mob);
             double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
             if (distanceTotale <= distanceMax) {
-                supprimerMobEtGerLoot(i, mobCenter[0], mobCenter[1]);
+                supprimerMobEtGetLoot(mob);
             }
         }
     }
@@ -79,26 +100,7 @@ public class GestionnaireMob extends GestionnaireMobA {
         return mobSimple;
     }
 
-    public void supprimerMobEtGetLoot(Mob mob) {
-        int index = mobSimple.indexOf(mob);
-        if (index != -1) {
-            // Supprimer la vue du mob de l'interface graphique
-            if (rootPane != null && index < vuesMob.size()) {
-                rootPane.getChildren().remove(vuesMob.get(index).getNode());
-                vuesMob.remove(index);
-            }
-            // Supprimer le mob de la liste
-            mobSimple.remove(index);
 
-            // Gérer le loot ici si besoin
-             if (gestionnaireItem != null) {
-                 Item loot = new Item(Objet.MOUTON_CUIT, 1);
-                 int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
-               int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
-                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-             }
-        }
-    }
 
     public Pane getRootPane() {
         return rootPane;
