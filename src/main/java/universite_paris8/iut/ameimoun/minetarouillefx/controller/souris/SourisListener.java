@@ -101,28 +101,30 @@ public class SourisListener {
         }
     }
 
-    public void attaquerMobs() {
+    public void gererAttaqueProximite() {
         double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
 
         Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
         if (Objet.EPEE.getNom().equals(objetSelectionne.getNom())) {
             if (gestionnaireMobHostile != null) {
-                gestionnaireMobHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
+                gestionnaireMobHostile.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE);
             }
 
             if (gestionnaireMobPassif != null) {
-                gestionnaireMobPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
+                gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE);
             }
         }
     }
 
-    public void gererAttaqueDistance(double playerCenterX, double playerCenterY) {
+    public void gererAttaqueDistance() {
+        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
         Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
 
         // Vérifier si l'objet sélectionné est un arc
         if (Objet.ARC.getNom().equals(objetSelectionne.getNom())) {
-            gestionnaireMobPassif.attaquerMobsDistance(playerCenterX, playerCenterY);
+            gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE_ARC);
         }
     }
 
@@ -135,7 +137,8 @@ public class SourisListener {
         casserBloc(1, clickX, clickY);
         casserBloc(2, clickX, clickY);
 
-        attaquerMobs();
+        gererAttaqueProximite();
+        gererAttaqueDistance();
     }
 
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {

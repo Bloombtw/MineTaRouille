@@ -19,12 +19,12 @@ public class DebugManager {
     private Canvas debugCanvas;
     private Canvas hitboxCanvas;
     private boolean debugVisible = false;
-    private final Mob mob;
+    private final List<Mob> mobs;
 
-    public DebugManager(AnchorPane rootPane,Joueur joueur, Mob mobs) {
+    public DebugManager(AnchorPane rootPane,Joueur joueur,List<Mob> mobs) {
         this.rootPane = rootPane;
         this.joueur = joueur;
-        this.mob = mobs;
+        this.mobs = mobs;
     }
 
     public void toggle() {
@@ -50,6 +50,7 @@ public class DebugManager {
         GraphicsContext gc = hitboxCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, hitboxCanvas.getWidth(), hitboxCanvas.getHeight());
 
+        // Hitbox du joueur
         gc.setStroke(Color.YELLOW);
         gc.setLineWidth(2);
         gc.strokeRect(
@@ -59,20 +60,16 @@ public class DebugManager {
                 Constantes.TAILLE_PERSO
         );
 
-        /*
-        // Hitbox des mobs (rouge, par exemple)
-        if (mob != null) {
-            gc.setStroke(Color.GREEN);
-
+        // Hitbox des mobs
+        gc.setStroke(Color.RED);
+        for (Mob mob : mobs) {
             gc.strokeRect(
                     mob.getX(),
                     mob.getY(),
-                    Constantes.TAILLE_PERSO,
-                    Constantes.TAILLE_PERSO
+                    mob.getLargeur(),
+                    mob.getHauteur()
             );
         }
-
-         */
     }
 
     public boolean isDebugVisible() {

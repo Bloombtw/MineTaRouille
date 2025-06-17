@@ -47,8 +47,6 @@ public class VueJoueur {
         animationJoueur.mettreAJourAnimation(joueur); // Mettre à jour l'animation initiale du joueur
     }
 
-
-
     private Rectangle creerOverlayDegats() {
         Rectangle rect = new Rectangle(Constantes.TAILLE_PERSO, Constantes.TAILLE_PERSO);
         rect.setFill(Color.RED);
@@ -70,8 +68,6 @@ public class VueJoueur {
     public Group getNode() {
         return container;
     }
-
-
 
     public void afficherDegats() {
         Platform.runLater(() -> {

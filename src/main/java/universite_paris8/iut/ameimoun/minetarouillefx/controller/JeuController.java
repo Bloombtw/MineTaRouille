@@ -30,6 +30,7 @@ public class JeuController implements Initializable {
     private AnimationTimer gameLoop;
     private VueCarte vueCarte;
     private DebugManager debugManager;
+    private MobManager mobManager;
     private MusiqueManager musiqueManager;
     private VueMob vueMob;
     private Mob mob;
@@ -37,7 +38,7 @@ public class JeuController implements Initializable {
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
     private GestionnaireMobHostile gestionnaireMobHostile;
-    private GestionnaireMob gestionnaireMob; // Assurez-vous que celui-ci est bien initialisé
+    private GestionnaireMob gestionnaireMob;
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
@@ -55,9 +56,9 @@ public class JeuController implements Initializable {
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
         initialiserInventaire();
-        initialiserMob(); // Initialiser mob avant initialiserControles pour que gestionnaireMob soit prêt
-        initialiserMobHostile(); // Initialiser mob hostile avant initialiserControles
-        initialiserControles(); // Maintenant, il aura accès aux gestionnaires de mobs
+        initialiserMob();
+        initialiserMobHostile();
+        initialiserControles();
         initialiserMusique();
         demarrerBoucleDeJeu();
     }
@@ -73,7 +74,8 @@ public class JeuController implements Initializable {
 
     private void initialiserJoueur() {
         joueurModele = new Joueur();
-        debugManager = new DebugManager(rootPane, joueurModele, mob);
+        mobManager= new MobManager();
+        debugManager = new DebugManager(rootPane, joueurModele, mobManager.getMobs());
         joueurVue = new VueJoueur(joueurModele);
         rootPane.getChildren().add(joueurVue.getNode());
         joueurVue.mettreAJourObjetTenu(null);
@@ -131,14 +133,16 @@ public class JeuController implements Initializable {
 
     private void initialiserMob() {
         gestionnaireMob = new GestionnaireMob(gestionnaireItem);
-        gestionnaireMob.ajouterMob(null, 200, rootPane);
-        gestionnaireMob.ajouterMob(null, 400, rootPane);
+        Mob mob1 = gestionnaireMob.ajouterMob(null, 200, rootPane);
+        Mob mob2 = gestionnaireMob.ajouterMob(null, 400, rootPane);
+        mobManager.ajouterMob(mob1);
+        mobManager.ajouterMob(mob2);
     }
 
     private void initialiserMobHostile() {
         gestionnaireMobHostile = new GestionnaireMobHostile();
-        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 200, rootPane);
-        gestionnaireMobHostile.ajouterMobHostile(joueurModele, 400, rootPane);
+        gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
+        gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
     }
 
     private void initialiserMusique() {
@@ -156,8 +160,6 @@ public class JeuController implements Initializable {
                 vueCarte
         );
     }
-
-
 
     private void  initialiserGestionnaireVie() {
         gestionnaireVie = new GestionnaireVie(

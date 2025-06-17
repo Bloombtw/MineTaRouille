@@ -41,4 +41,12 @@ public class Mob extends Personnage {
     public double getVitesseX() {
         return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
+
+    public double getLargeur() {
+        return Constantes.TAILLE_PERSO;
+    }
+
+    public double getHauteur() {
+        return Constantes.TAILLE_PERSO;
+    }
 }
