@@ -26,7 +26,8 @@ public class Constantes {
     public static final double FORCE_SAUT = -8;
     public static final double VITESSE_DEPLACEMENT_MOB = 0.01;
     public static final double DEGATS_MOB_HOSTILE = 0.01;
-    public static final double DISTANCE_ATTAQUE = 3 * TAILLE_TUILE;
+    public static final double DISTANCE_ATTAQUE = 1 * TAILLE_TUILE;
+    public static final double DISTANCE_ATTAQUE_ARC = 3 * TAILLE_TUILE;
     // Items
     public static final int TAILLE_ITEM = 32;
 

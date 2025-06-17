@@ -37,19 +37,15 @@ public class GestionnaireMob {
      * @param rootPane le Pane JavaFX qui contiendra la vue du mob
      */
     public void ajouterMob(Personnage cible, double y, Pane rootPane) {
-        // Stocker rootPane si ce n'est pas déjà fait
         if (this.rootPane == null) {
             this.rootPane = rootPane;
         }
-
-        // 1) Création et positionnement du modèle Mob
         Mob nouveauMob = new Mob();
         double randomX = random.nextDouble() * MAP_WIDTH;
         nouveauMob.setX(randomX);
         nouveauMob.setY(y);
         mobSimple.add(nouveauMob);
 
-        // 2) Création de la vue associée et ajout au Pane
         VueMob vue = new VueMob(nouveauMob);
         vuesMob.add(vue);
         rootPane.getChildren().add(vue.getNode());
@@ -64,47 +60,77 @@ public class GestionnaireMob {
             m.mettreAJour();
         }
     }
-    public void tuerMobSiProximite(double playerCenterX, double playerCenterY) {
-        double seuil = Constantes.DISTANCE_ATTAQUE;
+    private double calculerDistance(double x1, double y1, double x2, double y2) {
+        double dx = x1 - x2;
+        double dy = y1 - y2;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 
-        // On itère de la fin vers le début pour pouvoir supprimer des éléments sans problèmes d'index
+    private double[] calculerCentreMob(Mob mob) {
+        double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
+        double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
+        return new double[]{mobCenterX, mobCenterY};
+    }
+
+    private void supprimerMobEtGerLoot(int index, double mobCenterX, double mobCenterY) {
+        VueMob vue = vuesMob.get(index);
+        if (rootPane != null && vue != null) {
+            rootPane.getChildren().remove(vue.getNode());
+            vuesMob.remove(index);
+
+            if (gestionnaireItem != null) {
+                Item loot = new Item(Objet.MOUTON_CUIT, 1);
+                int tileX = (int) (mobCenterX / Constantes.TAILLE_TUILE);
+                int tileY = (int) (mobCenterY / Constantes.TAILLE_TUILE);
+                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+            }
+        }
+        mobSimple.remove(index);
+    }
+
+    private void attaquerMobsDistance(double playerCenterX, double playerCenterY) {
+        double seuilDistance = Constantes.DISTANCE_ATTAQUE_DISTANCE; // Define a constant for ranged attack distance
+
         for (int i = mobSimple.size() - 1; i >= 0; i--) {
             Mob mob = mobSimple.get(i);
-            VueMob vue = vuesMob.get(i); // <-- On récupère la vue AVANT de potentiellement retirer le modèle
+            double[] mobCenter = calculerCentreMob(mob);
+            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
 
-            // Centre du mob
-            double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
-            double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
-
-            // Calcul de la distance euclidienne
-            double dx = playerCenterX - mobCenterX;
-            double dy = playerCenterY - mobCenterY;
-            double distanceTotale = Math.sqrt(dx * dx + dy * dy);
-
-            if (distanceTotale <= seuil) {
-                // 1. Suppression de la vue du Pane (visuellement)
-                if (rootPane != null && vue != null) { // Vérifier que rootPane et vue existent
-                    rootPane.getChildren().remove(vue.getNode());
-                    vuesMob.remove(i);
-
-                    // 2. Drop d'item (si gestionnaireItem est disponible)
-                    if (gestionnaireItem != null) {
-                        Item loot = new Item(Objet.MOUTON_CUIT, 1);
-                        // Convertir les coordonnées pixels en indices de tuiles
-                        int tileX = (int) (mobCenterX / Constantes.TAILLE_TUILE);
-                        int tileY = (int) (mobCenterY / Constantes.TAILLE_TUILE);
-                        gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-                    }
-                }
-
-                // 3. Suppression du modèle de la liste
-                mobSimple.remove(i);
-                System.out.println("Mob passif supprimé du modèle.");
-
+            if (distanceTotale <= seuilDistance) {
+                supprimerMobEtGerLoot(i, mobCenter[0], mobCenter[1]);
             }
         }
     }
-          public Pane getRootPane() {
+
+    private void attaquerMobsDistance(double playerCenterX, double playerCenterY) {
+        double seuilDistance = Constantes.DISTANCE_ATTAQUE_ARC; // Define a constant for ranged attack distance
+
+        for (int i = mobSimple.size() - 1; i >= 0; i--) {
+            Mob mob = mobSimple.get(i);
+            double[] mobCenter = calculerCentreMob(mob);
+            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
+
+            if (distanceTotale <= seuilDistance) {
+                supprimerMobEtGerLoot(i, mobCenter[0], mobCenter[1]);
+            }
+        }
+    }
+
+
+
+    public void tuerMobSiProximite(double playerCenterX, double playerCenterY) {
+        double seuil = Constantes.DISTANCE_ATTAQUE;
+        for (int i = mobSimple.size() - 1; i >= 0; i--) {
+            Mob mob = mobSimple.get(i);
+            double[] mobCenter = calculerCentreMob(mob);
+            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
+
+            if (distanceTotale <= seuil) {
+                supprimerMobEtGerLoot(i, mobCenter[0], mobCenter[1]);
+            }
+        }
+    }
+    public Pane getRootPane() {
         return rootPane;
     }
 }

@@ -6,7 +6,7 @@ public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
 
     public Mob() {
-        super(200, 10, 10, "MOB");
+        super(200, 10, 5, "MOB");
     }
 
     public void mettreAJour() {

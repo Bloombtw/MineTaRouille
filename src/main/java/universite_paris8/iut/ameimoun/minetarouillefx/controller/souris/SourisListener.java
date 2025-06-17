@@ -87,39 +87,55 @@ public class SourisListener {
         }
     }
 
+    private void casserBloc(int couche, double clickX, double clickY) {
+        int tx = (int) (clickX / Constantes.TAILLE_TUILE);
+        int ty = (int) (clickY / Constantes.TAILLE_TUILE);
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+
+        if (Objet.PIOCHE.getNom().equals(objetSelectionne.getNom())) {
+            Item itemBloc = GestionnaireBloc.casserBlocEtDonnerItem(couche, tx, ty, joueur);
+            if (itemBloc != null) {
+                dropItemEtMettreAJour(itemBloc, tx, ty, couche);
+                vueInventaire.mettreAJourAffichage();
+            }
+        }
+    }
+
+    public void attaquerMobs() {
+        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
+
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+        if (Objet.EPEE.getNom().equals(objetSelectionne.getNom())) {
+            if (gestionnaireMobHostile != null) {
+                gestionnaireMobHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
+            }
+
+            if (gestionnaireMobPassif != null) {
+                gestionnaireMobPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
+            }
+        }
+    }
+
+    public void gererAttaqueDistance(double playerCenterX, double playerCenterY) {
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+
+        // Vérifier si l'objet sélectionné est un arc
+        if (Objet.ARC.getNom().equals(objetSelectionne.getNom())) {
+            gestionnaireMobPassif.attaquerMobsDistance(playerCenterX, playerCenterY);
+        }
+    }
+
     private void gererClicSouris(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY) {
             return;
         }
-        // 1) Casser un bloc si applicable
         double clickX = event.getX();
         double clickY = event.getY();
-        int tx = (int) (clickX / Constantes.TAILLE_TUILE);
-        int ty = (int) (clickY / Constantes.TAILLE_TUILE);
-        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(1, tx, ty, joueur);
-        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(2, tx, ty, joueur);
-        if (itemBloc1 != null || itemBloc2 != null) {
-            dropItemEtMettreAJour(itemBloc1, tx, ty, 1);
-            dropItemEtMettreAJour(itemBloc2, tx, ty, 2);
-            vueInventaire.mettreAJourAffichage();
-        }
+        casserBloc(1, clickX, clickY);
+        casserBloc(2, clickX, clickY);
 
-        // 2) Attaquer les mobs
         attaquerMobs();
-    }
-
-    public void attaquerMobs(){
-        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
-        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
-
-        if (gestionnaireMobHostile != null) {
-            gestionnaireMobHostile.tuerMobSiProximite(playerCenterX, playerCenterY);
-        }
-
-        // 2b) Mob passif (via GestionnaireMob)
-        if (gestionnaireMobPassif != null) {
-            gestionnaireMobPassif.tuerMobSiProximite(playerCenterX, playerCenterY);
-        }
     }
 
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
