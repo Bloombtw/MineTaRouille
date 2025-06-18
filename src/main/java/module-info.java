@@ -28,5 +28,6 @@ module universite_paris.iut.ameimoun.minetarouillefx {
     exports universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
     opens universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+    exports universite_paris8.iut.ameimoun.minetarouillefx.testJunit to junit;
     opens universite_paris8.iut.ameimoun.minetarouillefx.testJunit to org.testng;
 }
