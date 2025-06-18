@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
@@ -22,7 +23,6 @@ public class JeuController implements Initializable {
     @FXML
     private AnchorPane rootPane;
     private Vie vie;
-    private VueVie vueVie;
     private Joueur joueurModele;
     private VueJoueur joueurVue;
     private AnimationTimer gameLoop;
@@ -41,6 +41,7 @@ public class JeuController implements Initializable {
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
     private GestionnaireFleche gestionnaireFleche;
+    private boolean jeuEstEnPause = false;
 
 
     // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
@@ -52,14 +53,18 @@ public class JeuController implements Initializable {
         initialiserJoueur();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
-        initialiserGestionnaireMort();
-        initialiserGestionnaireVie();
+        initialiserMusique();
         initialiserInventaire();
         initialiserMob();
         initialiserMobHostile();
         initialiserGestionnaireFleche();
         initialiserControles();
         initialiserMusique();
+        initialiserControles();
+        initialiserVueCraft();
+        initialiserGestionnaireMort();
+        initialiserGestionnaireVie();
+        initialiserMob();
         demarrerBoucleDeJeu();
     }
 
@@ -67,10 +72,31 @@ public class JeuController implements Initializable {
         INITIALISATIONS
     */
 
+
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
+
+    private void initialiserVueCraft() {
+        GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
+        VueCraft vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
+        CraftController craftController = new CraftController(gestionnaireCraft, vuecraft);
+
+        vuecraft.setCraftController(craftController);
+
+        if (gestionnaireControles.getSourisListener() != null) {
+            gestionnaireControles.getSourisListener().setVueCraft(vuecraft);
+            gestionnaireControles.getSourisListener().setCraftController(craftController);
+        }
+
+        if (gestionnaireControles.getClavierListener() != null) {
+            craftController.setClavierListener(gestionnaireControles.getClavierListener());
+        }
+
+        craftController.initialiserListeners();
+    }
+
 
     private void initialiserJoueur() {
         joueurModele = new Joueur();
@@ -83,7 +109,7 @@ public class JeuController implements Initializable {
 
     private void initialiserBarreDeVie() {
         vie = joueurModele.getVie();
-        vueVie = new VueVie(vie, rootPane);
+        VueVie vueVie = new VueVie(vie, rootPane);
         rootPane.getChildren().add(vueVie.getNoeudBarreVie());
         rootPane.getChildren().add(0, vueVie.getOverlayDegatsGlobal());
     }
@@ -106,7 +132,6 @@ public class JeuController implements Initializable {
         Inventaire inventaire = gestionnaireInventaire.getInventaire();
         VueInventaire vueInventaire = gestionnaireInventaire.getVueInventaire();
 
-        // Créer l'instance de SourisListener en passant les gestionnaires de mobs
         SourisListener sourisListener = new SourisListener(
                 joueurModele,
                 inventaire,
@@ -117,7 +142,6 @@ public class JeuController implements Initializable {
                 gestionnaireMob,
                 gestionnaireFleche
         );
-
         // Initialiser GestionnaireControles avec le SourisListener créé
         gestionnaireControles = new GestionnaireControles(
                 joueurModele,
@@ -129,6 +153,10 @@ public class JeuController implements Initializable {
         );
         // La ligne suivante n'est plus nécessaire car JeuController n'est plus directement lié
         // gestionnaireControles.getSourisListener().setJeuController(this);
+
+        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte,gestionnaireInventaire,debugManager, gestionnaireItem,sourisListener);
+        gestionnaireControles.getClavierListener().setJeuController(this);
+        gestionnaireControles.getClavierListener().lier(tileMap);
         gestionnaireControles.initialiserControles();
     }
 
@@ -192,6 +220,9 @@ public class JeuController implements Initializable {
 
     // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
     private void mettreAJourJeu() {
+        if (jeuEstEnPause) {
+            return; // Si le jeu est en pause, on ne met pas à jour l'état du jeu.
+        }
         joueurModele.gravite();
         gestionnaireVie.mettreAJour(gameLoop);
         if (mob != null && vueMob != null) {
@@ -215,4 +246,21 @@ public class JeuController implements Initializable {
         }
     }
 
+
+    public void mettreEnPauseJeu() {
+        jeuEstEnPause = true;
+    }
+
+    public void reprendreJeu() {
+        jeuEstEnPause = false;
+    }
+
+
+    public boolean isEnPause() {
+        return jeuEstEnPause;
+    }
+
+    public GestionnaireInventaire getGestionnaireInventaire() {
+        return gestionnaireInventaire;
+    }
 }

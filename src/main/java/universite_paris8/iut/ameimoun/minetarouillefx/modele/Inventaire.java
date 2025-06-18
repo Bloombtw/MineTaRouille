@@ -13,21 +13,55 @@ public class Inventaire {
             slots.add(null); // 9 emplacements vides
         }
     }
+
+
+    // Ajoute un nouvel item dans l'inventaire
     public void ajouterItem(Item nouvelItem) {
+        int quantiteRestante = empilerDansStacksExistants(nouvelItem);
+        if (quantiteRestante > 0) {
+            ajouterDansSlotsVides(nouvelItem, quantiteRestante);
+        }
+        // Si l'inventaire est plein on fait r
+    }
+
+    // Empile l'item ds les stacks existants et retourne la qtité restante à add
+    private int empilerDansStacksExistants(Item nouvelItem) {
+        int quantiteRestante = nouvelItem.getQuantite();
         for (Item slot : slots) {
-            if (slot != null && slot.getId() == nouvelItem.getId()) {
-                slot.ajouterQuantite(nouvelItem.getQuantite());
-                return;
+            if (slot != null && slot.equals(nouvelItem) && slot.getQuantite() < slot.getStackMax()) {
+                int place = slot.getStackMax() - slot.getQuantite();
+                int aAjouter = Math.min(place, quantiteRestante);
+                slot.ajouterQuantite(aAjouter);
+                quantiteRestante -= aAjouter;
+                if (quantiteRestante == 0) break;
+            }
+        }
+        return quantiteRestante;
+    }
+
+    // Ajoute l'item dans les slots vides
+    private void ajouterDansSlotsVides(Item nouvelItem, int quantiteRestante) {
+        StringBuilder slotsLibres = new StringBuilder();
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i) == null) {
+                if (slotsLibres.length() > 0) slotsLibres.append(", ");
+                slotsLibres.append(i);
             }
         }
 
         for (int i = 0; i < slots.size(); i++) {
-            if (slots.get(i) == null) {
-                slots.set(i, nouvelItem);
-                return;
+            if (slots.get(i) == null && quantiteRestante > 0) {
+                int aMettre = Math.min(nouvelItem.getStackMax(), quantiteRestante);
+                Item itemAAjouter = (nouvelItem.getTypeItem() == Item.TypeItem.BLOC)
+                        ? new Item(nouvelItem.getBloc(), aMettre)
+                        : new Item(nouvelItem.getObjet(), aMettre);
+                slots.set(i, itemAAjouter);
+                quantiteRestante -= aMettre;
+                if (quantiteRestante == 0) break;
             }
         }
     }
+
 
     public void retirerItem(int index) {
         if (index < 0 || index >= slots.size()) return;
@@ -39,6 +73,45 @@ public class Inventaire {
             slots.set(index, null);
         }
     }
+
+
+    // Retire une quantité d’un item donné (par id)
+    public void retirer(Item item, int quantite) {
+        for (int i = 0; i < slots.size(); i++) {
+            Item slot = slots.get(i);
+            if (slot != null && slot.getId() == item.getId()) {
+                int reste = slot.getQuantite() - quantite;
+                if (reste > 0) {
+                    slot.setQuantite(reste);
+                    return;
+                } else {
+                    slots.set(i, null);
+                    quantite = -reste; // On continue à retirer sur les autres slots si besoin
+                }
+            }
+        }
+    }
+
+    public int getQuantite(Item item) {
+        int total = 0;
+        for (Item slot : slots) {
+            if (slot != null && slot.getId() == item.getId()) {
+                total += slot.getQuantite();
+            }
+        }
+        return total;
+    }
+
+    // Retourne true si un slot vide existe OU si un slot du même type peut stacker l'item
+    public boolean aDeLaPlacePour(Item item) {
+        for (Item slot : slots) {
+            if (slot == null) return true;
+            if (slot.equals(item) && slot.getQuantite() + item.getQuantite() <= item.getStackMax()) return true;
+        }
+        return false;
+    }
+
+
 
     public ObservableList<Item> getSlots() {
         return slots;
@@ -60,5 +133,4 @@ public class Inventaire {
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }
-
 }

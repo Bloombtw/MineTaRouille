@@ -10,6 +10,7 @@ import java.net.URL;
 
 
 public class Loader {
+    public static final Image SLOT_IMAGE = loadImage(Chemin.SLOT);
 
     public static URL getResource(String path) {
         URL ressource = Loader.class.getResource(path);
@@ -79,6 +80,16 @@ public class Loader {
             frames[i] = loadImage(chemin);
         }
         return frames;
+    }
+
+    public static String loadCSS(String path) {
+        URL resource = Loader.class.getResource(path);
+        if (resource != null) {
+            return resource.toExternalForm();
+        } else {
+            System.err.println("CSS non trouvé : " + path);
+            return null;
+        }
     }
 
 

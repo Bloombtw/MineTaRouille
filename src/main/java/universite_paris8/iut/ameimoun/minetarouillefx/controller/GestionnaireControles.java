@@ -9,6 +9,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 
 public class GestionnaireControles {
     private ClavierListener clavierListener;
@@ -18,6 +19,7 @@ public class GestionnaireControles {
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
     private final GestionnaireItem gestionnaireItem;
+    private VueCraft vuecraft;
 
     // Modified constructor to accept SourisListener
     public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem, SourisListener sourisListener) {
@@ -27,12 +29,14 @@ public class GestionnaireControles {
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
         this.sourisListener = sourisListener;
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
 
         initialiserControles();
     }
 
     public void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, gestionnaireItem);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
+
         TilePane tileMap = vueCarte.getTileMap();
 
         clavierListener.lier(tileMap);
@@ -51,5 +55,10 @@ public class GestionnaireControles {
 
     public ClavierListener getClavierListener() {
         return clavierListener;
+    }
+
+
+    public void setVueCraft(VueCraft vueCraft) {
+        this.vuecraft = vueCraft;
     }
 }

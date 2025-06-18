@@ -8,6 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationBloc;
 
@@ -85,40 +86,7 @@ public class VueCarte {
     }
 
     private Image getImageAssociee(Bloc bloc) {
-        String chemin = switch (bloc) {
-            case CIEL_CLAIR -> Chemin.IMAGE_CIEL_CLAIR;
-            case PIERRE -> Chemin.IMAGE_PIERRE;
-            case SABLE -> Chemin.IMAGE_SABLE;
-            case TRONC -> Chemin.IMAGE_TRONC;
-            case FEUILLAGE -> Chemin.IMAGE_FEUILLAGE;
-            case TERRE -> Chemin.IMAGE_TERRE;
-            case TRANSPARENT -> Chemin.IMAGE_TRANSPARENT;
-            case CIEL -> Chemin.IMAGE_CIEL;
-            case GAY_CIEL -> Chemin.IMAGE_GAY_CIEL;
-            case SABLE_ROUGE -> Chemin.IMAGE_SABLE_ROUGE;
-            case CIEL_SOMBRE -> Chemin.IMAGE_CIEL_SOMBRE;
-            case CORBEAU -> Chemin.IMAGE_DECORS_CORBEAU;
-            case LUNE -> Chemin.IMAGE_DECORS_LUNE;
-            case LUNE_ZELDA -> Chemin.IMAGE_DECORS_LUNE_ZELDA;
-            case ETOILE -> Chemin.IMAGE_DECORS_ETOILE;
-            case ARBUSTE_MORT -> Chemin.IMAGE_DECORS_ARBUSTE_MORT;
-            case ECHELLE -> Chemin.IMAGE_DECORS_ECHELLE;
-            case FLECHE_VERS_LA_DROITE -> Chemin.IMAGE_DECORS_FLECHE_VERS_LA_DROITE;
-            case ESCALIER_DROITE -> Chemin.IMAGE_DECORS_ESCALIER_DROITE;
-            case GRES_CISELE -> Chemin.IMAGE_GRES_CISELE;
-            case GRES_COUPE -> Chemin.IMAGE_GRES_COUPE;
-            case POUSSE_ACACIA -> Chemin.IMAGE_DECORS_POUSSE_ACACIA;
-            case FEUILLAGE_ACACIA -> Chemin.IMAGE_FEUILLAGE_ACACIA;
-            case GRES -> Chemin.IMAGE_GRES;
-            case FEU -> Chemin.IMAGE_DECORS_FEU;
-            case CACTUS -> Chemin.IMAGE_CACTUS;
-            case NUAGE -> Chemin.IMAGE_NUAGE;
-            case CIEL_VIOLET -> Chemin.IMAGE_CIEL_VIOLET;
-            case NUAGE_PARTIE1 -> Chemin.IMAGE_NUAGE_PARTIE1;
-            case NUAGE_PARTIE2 -> Chemin.IMAGE_NUAGE_PARTIE2;
-            case NUAGE_PARTIE3 -> Chemin.IMAGE_NUAGE_PARTIE3;
-            default -> Chemin.IMAGE_DEFAULT;
-        };
+        String chemin = GestionnaireImage.getCheminImage(bloc);
         return Loader.loadImage(chemin);
     }
 }

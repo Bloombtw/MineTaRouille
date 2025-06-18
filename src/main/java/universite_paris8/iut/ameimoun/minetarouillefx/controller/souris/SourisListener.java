@@ -1,10 +1,12 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller.souris;
 
+
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireFleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
@@ -13,10 +15,12 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.G
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
 /**
+ /**
  * Classe SourisListener qui gère les interactions de la souris dans le jeu.
  * Elle permet de lier les événements de clic, de défilement et de mouvement de la souris
  * pour effectuer des actions telles que placer des blocs, casser des blocs, attaquer des mobs
@@ -24,101 +28,43 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
  */
 public class SourisListener {
 
-    /**
-     * Modèle du joueur utilisé pour les interactions.
-     */
     private final Joueur joueur;
-
-    /**
-     * Inventaire du joueur.
-     */
     private final Inventaire inventaire;
-
-    /**
-     * Vue de l'inventaire pour mettre à jour l'affichage.
-     */
     private final VueInventaire vueInventaire;
-
-    /**
-     * Gestionnaire des items pour gérer les objets au sol.
-     */
     private GestionnaireItem gestionnaireItem;
-
-    /**
-     * Vue de la carte pour mettre à jour l'affichage des blocs.
-     */
     private VueCarte vueCarte;
-
-    /**
-     * Vue du joueur pour mettre à jour l'objet tenu.
-     */
+    private VueCraft vueCraft;
     private VueJoueur vueJoueur;
+    private CraftController craftController;
 
-    /**
-     * Gestionnaire des mobs hostiles.
-     */
-    private final GestionnaireMobHostile gestionnaireMobHostile;
-
-    /**
-     * Gestionnaire des mobs passifs.
-     */
-    private final GestionnaireMob gestionnaireMobPassif;
-
-    /**
-     * Gestionnaire des flèches pour les attaques à distance.
-     */
-    private final GestionnaireFleche gestionnaireFleche;
-
-    /**
-     * Constructeur de la classe SourisListener.
-     *
-     * @param joueur                Modèle du joueur.
-     * @param inventaire            Inventaire du joueur.
-     * @param vueCarte              Vue de la carte.
-     * @param vueInventaire         Vue de l'inventaire.
-     * @param gestionnaireItem      Gestionnaire des items.
-     * @param gestionnaireMobHostile Gestionnaire des mobs hostiles.
-     * @param gestionnaireMobPassif Gestionnaire des mobs passifs.
-     * @param gestionnaireFleche    Gestionnaire des flèches.
-     */
     public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;
         this.vueInventaire = vueInventaire;
         this.gestionnaireItem = gestionnaireItem;
-        this.gestionnaireMobHostile = gestionnaireMobHostile;
-        this.gestionnaireMobPassif = gestionnaireMobPassif;
-        this.gestionnaireFleche = gestionnaireFleche;
+        this.vueCraft = vueCraft;
     }
 
-    /**
-     * Lie les événements de clic de la souris au TilePane.
-     *
-     * @param tilePane Le conteneur graphique où les événements de souris sont liés.
-     */
+    public void setCraftController(CraftController craftController) {
+        this.craftController = craftController;
+    }
+
     public void lier(TilePane tilePane) {
         tilePane.setOnMousePressed(this::gererClicSouris);
         tilePane.setOnMouseClicked(this::gererPlacementBloc);
     }
 
-    /**
-     * Désactive les événements de souris liés au TilePane.
-     *
-     * @param tilePane Le conteneur graphique où les événements de souris sont désactivés.
-     */
     public void desactiver(TilePane tilePane) {
         tilePane.setOnMousePressed(null);
         tilePane.setOnMouseReleased(null);
         tilePane.setOnMouseMoved(null);
     }
 
-    /**
-     * Lie les événements de défilement de la souris pour gérer la sélection dans l'inventaire.
-     *
-     * @param scene La scène où les événements de défilement sont liés.
-     */
     public void lierScrollInventaire(Scene scene) {
+        if (scene == null) {
+            return;
+        }
         scene.addEventFilter(ScrollEvent.SCROLL, event -> {
             int index = inventaire.getSelectedIndex();
             int max = inventaire.getSlots().size();
@@ -132,140 +78,74 @@ public class SourisListener {
         });
     }
 
-    /**
-     * Gère le placement des blocs dans la carte.
-     *
-     * @param event L'événement de clic de la souris.
-     */
     private void gererPlacementBloc(MouseEvent event) {
-        if (event.getButton() == MouseButton.SECONDARY) { // clic droit
+        if (event.getButton() == MouseButton.SECONDARY) {
             int x = (int) event.getX() / Constantes.TAILLE_TUILE;
             int y = (int) event.getY() / Constantes.TAILLE_TUILE;
             int couche = 1;
+            if (gererInteractionBlocSpecial(couche, x, y)) return;
+            placerBloc(couche, x, y);
+        }
+    }
 
-            boolean blocPlace = GestionnaireBloc.placerBloc(
-                    Carte.getInstance(),
-                    inventaire,
-                    inventaire.getSelectedIndex(),
-                    couche,
-                    x,
-                    y,
-                    joueur
-            );
+    private void placerBloc(int couche, int x, int y) {
+        boolean blocPlace = GestionnaireBloc.placerBloc(
+                Carte.getInstance(),
+                inventaire,
+                inventaire.getSelectedIndex(),
+                couche,
+                x,
+                y,
+                joueur
+        );
 
-            if (blocPlace) {
-                vueCarte.mettreAJourAffichage(x, y);
-                vueInventaire.mettreAJourAffichage();
-                if (vueJoueur != null) {
-                    vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
+        if (blocPlace) {
+            vueCarte.mettreAJourAffichage(x, y);
+            vueInventaire.mettreAJourAffichageInventaire();
+            if (vueJoueur != null) {
+                vueJoueur.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
+            }
+        }
+    }
+
+    private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
+        Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);
+        if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
+            switch (blocClique) {
+                case TABLE_CRAFT -> {
+                    if (craftController != null) {
+                        craftController.ouvrirFenetreCraft();
+                    }
+                    return true;
+                }
+                default -> {
+                    System.err.println("Bloc spécial non géré : " + blocClique.getNom());
+                    return false;
                 }
             }
         }
+        return false;
     }
 
-    /**
-     * Casse un bloc dans la carte et met à jour l'affichage.
-     *
-     * @param couche La couche du bloc à casser.
-     * @param clickX La position X du clic de la souris.
-     * @param clickY La position Y du clic de la souris.
-     */
-    private void casserBloc(int couche, double clickX, double clickY) {
-        int tx = (int) (clickX / Constantes.TAILLE_TUILE);
-        int ty = (int) (clickY / Constantes.TAILLE_TUILE);
-        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
-
-        if (Objet.PIOCHE.getNom().equals(objetSelectionne.getNom())) {
-            Item itemBloc = GestionnaireBloc.casserBlocEtDonnerItem(couche, tx, ty, joueur);
-            if (itemBloc != null) {
-                dropItemEtMettreAJour(itemBloc, tx, ty, couche);
-                vueInventaire.mettreAJourAffichage();
-            }
-        }
-    }
-
-    /**
-     * Gère les attaques de proximité contre les mobs.
-     */
-    public void gererAttaqueProximite() {
-        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
-        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
-
-        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
-        if (Objet.EPEE.getNom().equals(objetSelectionne.getNom())) {
-            if (gestionnaireMobHostile != null) {
-                gestionnaireMobHostile.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
-            }
-
-            if (gestionnaireMobPassif != null) {
-                gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
-            }
-        }
-    }
-
-    /**
-     * Gère les attaques à distance avec des flèches.
-     *
-     * @param event L'événement de clic de la souris.
-     */
-    public void gererAttaqueDistance(MouseEvent event) {
-        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
-        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
-        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
-
-        if (Objet.ARC.getNom().equals(objetSelectionne.getNom())) {
-            // Calcul de la direction vers la souris
-            double dx = event.getX() - playerCenterX;
-            double dy = event.getY() - playerCenterY;
-            double norme = Math.sqrt(dx * dx + dy * dy);
-            if (norme != 0) {
-                dx /= norme;
-                dy /= norme;
-            }
-
-            // Vérification du bloc visé
-            int tileX = (int) (event.getX() / Constantes.TAILLE_TUILE);
-            int tileY = (int) (event.getY() / Constantes.TAILLE_TUILE);
-            Bloc blocVise = Carte.getInstance().getBloc(tileX, tileY, 1);
-            if (blocVise == null || !blocVise.estSolide()) {
-                gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 2, dy * 2);
-            }
-        }
-    }
-
-    /**
-     * Gère les clics de la souris pour casser des blocs et attaquer des mobs.
-     *
-     * @param event L'événement de clic de la souris.
-     */
     private void gererClicSouris(MouseEvent event) {
-        if (event.getButton() != MouseButton.PRIMARY) {
-            return;
-        }
-        double clickX = event.getX();
-        double clickY = event.getY();
-        casserBloc(1, clickX, clickY);
-        casserBloc(2, clickX, clickY);
+        if (event.getButton() != MouseButton.PRIMARY) return;
+        int x = (int) event.getX() / Constantes.TAILLE_TUILE;
+        int y = (int) event.getY() / Constantes.TAILLE_TUILE;
+        int couche1 = 1;
+        int couche2 = 2;
 
-        gererAttaqueProximite();
-        gererAttaqueDistance(event);
-    }
-
-    /**
-     * Dépose un item au sol et met à jour l'affichage.
-     *
-     * @param item   L'item à déposer.
-     * @param x      La position X où déposer l'item.
-     * @param y      La position Y où déposer l'item.
-     * @param couche La couche où déposer l'item.
-     */
-    private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
-        if (item != null) {
-            vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
-            if (couche == 1 && y - 1 >= 0) {
-                vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
-            }
-            gestionnaireItem.spawnItemAuSol(item, x, y);
+        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
+        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
+        if (itemBloc1 != null || itemBloc2 != null) {
+            gestionnaireItem.spawnItemAuSol(itemBloc1, x, y);
+            gestionnaireItem.spawnItemAuSol(itemBloc2, x, y);
+            vueInventaire.mettreAJourAffichageInventaire();
         }
     }
+
+    public void setVueCraft(VueCraft vueCraft) {
+        this.vueCraft = vueCraft;
+    }
+
+
 }

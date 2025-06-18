@@ -6,6 +6,14 @@ public class Constantes {
     public static final int LARGEUR_FENETRE = 1680;
     public static final int HAUTEUR_FENETRE = 1050;
 
+    // Dimensions fenêtre craft
+    public static final int TAILLE_FENETRE_CRAFT = 300;
+    public static final int TAILLE_GRILLE_CRAFT = 3; // 3x3
+
+    // Dimensions bouton craft
+    public static final int HAUTEUR_BOUTON_CRAFT = 10;
+    public static final int LARGEUR_BOUTON_CRAFT = 100;
+
     // Carte / Tuiles
     public static final int TAILLE_TUILE = 30;
     public static final int NB_LIGNES = 35;
@@ -23,11 +31,15 @@ public class Constantes {
     public static final int TAILLE_PERSO = TAILLE_TUILE; // 30
     public static final double GRAVITE = 0.1;
     public static final double VITESSE_DEPLACEMENT = 0.5;
-    public static final double FORCE_SAUT = -8;
+
     public static final double VITESSE_DEPLACEMENT_MOB = 0.01;
     public static final double DEGATS_MOB_HOSTILE = 0.01;
     public static final double DISTANCE_ATTAQUE = 1 * TAILLE_TUILE;
     public static final double DISTANCE_ATTAQUE_ARC = 3 * TAILLE_TUILE;
+
+    public static final double FORCE_SAUT = -4;
+    public static final int DISTANCE_MAX_CASSAGE_BLOC = 3; // Distance max pour casser un bloc
+
     // Items
     public static final int TAILLE_ITEM = 32;
 

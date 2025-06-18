@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire;
 
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import java.util.HashMap;
@@ -43,6 +44,9 @@ public class GestionnaireImage {
         itemToImage.put("NUAGE_PARTIE1",       Chemin.IMAGE_NUAGE_PARTIE1);
         itemToImage.put("NUAGE_PARTIE2",       Chemin.IMAGE_NUAGE_PARTIE2);
         itemToImage.put("NUAGE_PARTIE3",       Chemin.IMAGE_NUAGE_PARTIE3);
+        itemToImage.put("TABLE_CRAFT",         Chemin.IMAGE_TABLE_CRAFT);
+        itemToImage.put("PLANCHE",             Chemin.IMAGE_PLANCHE);
+        itemToImage.put("COFFRE",              Chemin.IMAGE_COFFRE);
 
         // --- ITEMS ---
         itemToImage.put("ARC",                 Chemin.ITEM_ARC);
@@ -50,6 +54,12 @@ public class GestionnaireImage {
         itemToImage.put("MOUTON_CUIT",         Chemin.ITEM_MOUTON_CUIT);
         itemToImage.put("PELLE",               Chemin.ITEM_PELLE);
         itemToImage.put("PIOCHE",              Chemin.ITEM_PIOCHE);
+        itemToImage.put("BATON",               Chemin.ITEM_BATON);
+    }
+
+    public static String getCheminImage(Bloc bloc) {
+        if (bloc == null) return Chemin.IMAGE_DEFAULT;
+        return itemToImage.getOrDefault(bloc.name(), Chemin.IMAGE_DEFAULT);
     }
 
     public static String getCheminImage(Item item) {

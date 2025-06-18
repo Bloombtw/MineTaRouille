@@ -1,11 +1,12 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -16,66 +17,85 @@ public class ClavierListener {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
-    private final GestionnaireItem gestionnaireItem;
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
+    private JeuController jeuController;
+
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new GestionnaireDeplacement(joueur);
-        this.gestionnaireItem = gestionnaireItem;
     }
 
+    /**
+     * Associe les touches du clavier aux actions du jeu.
+     *
+     * @param tilePane Le TilePane sur lequel les événements de clavier seront écoutés.
+     */
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
-            KeyCode code = event.getCode();
-            switch (code) {
+
+            switch (event.getCode()) {
                 case Z, SPACE, UP -> {
+                    ignorerToucheSiJeuEnPause(event);
                     joueur.sauter();
                     MusiqueManager.getInstance();
 
                 }
-                case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
-                case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
-                case F3 -> debugManager.toggle();
-                case A -> {
-                    gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
+                case Q, LEFT -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    deplacementManager.setEnDeplacementGauche(true);
                 }
-                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
+                case D, RIGHT -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    deplacementManager.setEnDeplacementDroite(true);
+                }
+                case F3 -> {
+                    ignorerToucheSiJeuEnPause(event);
+                    debugManager.toggle();
+                }
             }
-
             gererSelectionInventaire(event.getText());
-            vueInventaire.mettreAJourAffichage();
+            vueInventaire.mettreAJourAffichageInventaire();
         });
 
-        tilePane.setOnKeyReleased(event -> gereTouchePressee(event.getCode()));
+        tilePane.setOnKeyReleased(event -> arreterMouvement(event.getCode()));
     }
 
+    /**
+     * Désactive les actions du clavier.
+     *
+     * @param tilePane Le TilePane sur lequel les événements de clavier ne seront plus écoutés.
+     */
     public void desactiver(TilePane tilePane) {
         tilePane.setOnKeyPressed(null);
         tilePane.setOnKeyReleased(null);
         deplacementManager.stop();
     }
 
-    private void gereTouchePressee(KeyCode code) {
+    /**
+     * Arrête le mouvement du joueur en fonction de la touche relâchée.
+     *
+     * @param code La touche relâchée.
+     */
+    private void arreterMouvement(KeyCode code) {
         switch (code) {
             case Q, LEFT -> {
                 deplacementManager.setEnDeplacementGauche(false);
-                if (!deplacementManager.isEnDeplacementDroite()) {
-                    joueur.arreterMouvementX();
-                }
             }
             case D, RIGHT -> {
                 deplacementManager.setEnDeplacementDroite(false);
-                if (!deplacementManager.isEnDeplacementGauche()) {
-                    joueur.arreterMouvementX();
-                }
             }
             case Z, SPACE, UP -> {} // RIEN
         }
     }
 
-    private void gererSelectionInventaire(String caractere) {
+    /**
+     * Gère la sélection de l'inventaire en fonction du caractère entré.
+     *
+     * @param caractere Le caractère entré par l'utilisateur.
+     */
+    public void gererSelectionInventaire(String caractere) {
         switch (caractere) {
             case "&" -> inventaire.setSelectedIndex(0);
             case "é" -> inventaire.setSelectedIndex(1);
@@ -88,6 +108,17 @@ public class ClavierListener {
             case "ç" -> inventaire.setSelectedIndex(8);
         }
     }
-}
 
+
+    private void ignorerToucheSiJeuEnPause(KeyEvent event) {
+        if (jeuController != null && jeuController.isEnPause()) {
+            event.consume();
+        }
+    }
+
+    public void setJeuController(JeuController jeuController) {
+        this.jeuController = jeuController;
+    }
+
+}
 

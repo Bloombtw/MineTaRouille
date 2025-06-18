@@ -30,6 +30,9 @@ public class Chemin {
         public static final String IMAGE_FEUILLAGE_ACACIA = "/img/blocs/solide/feuillage_acacia.png";
         public static final String IMAGE_GRES = "/img/blocs/solide/gres.png";
         public static final String IMAGE_CACTUS = "/img/blocs/solide/cactus.png";
+        public static final String IMAGE_TABLE_CRAFT = "/img/blocs/action/table_craft.jpg";
+        public static final String IMAGE_PLANCHE = "/img/blocs/solide/planche.png";
+        public static final String IMAGE_COFFRE = "/img/blocs/action/coffre.png";
 
         // Décors
         public static final String IMAGE_DECORS_CORBEAU = "/img/decors/corbeau.png";
@@ -49,14 +52,16 @@ public class Chemin {
         public static final String ITEM_MOUTON_CUIT = "/img/items/mouton_cuit.png";
         public static final String ITEM_PELLE = "/img/items/pelle.png";
         public static final String ITEM_PIOCHE = "/img/items/pioche.png";
+        public static final String ITEM_BATON = "/img/items/baton.png";
 
 
         // Défaut
-        public static final String IMAGE_DEFAULT = "/img/default.png";
+        public static final String IMAGE_DEFAULT = "/img/default.jpg";
         public static final String SON_DEFAULT = "/mp3/error.mp3";
 
-        // Slots
+        // UI
         public static final String SLOT = "/img/ui/slot.png";
+        public static final String CRAFT_BACKGROUND = "/img/ui/crafting_menu.png";
 
         // Fond
         public static final String FOND = "/img/fond/fond.png";
@@ -70,7 +75,7 @@ public class Chemin {
         // FXML
         public static final String FXML_MAP = "/fxml/Map.fxml";
         public static final String FXML_ECRAN_MORT = "/fxml/EcranDeMort.fxml";
-
+        public static final String FXML_ECRAN_ACCUEIL = "/fxml/EcranAccueil.fxml";
 
         // Son
         public static final String SON_VIE_LOW = "/mp3/effets/joueur/degat/vieLow.mp3";
@@ -79,6 +84,8 @@ public class Chemin {
         // Musique
         public static final String MUSIQUE_FOND = "/mp3/musique/Zimmer_interstelar.mp3";
 
+        // CSS
+        public static final String CSS_BUTTON_CRAFT = "/css/styleButtonCraft.css";
     /*
     ANIMATIONS
      */
@@ -98,4 +105,6 @@ public class Chemin {
         public static final String ANIMATION_MOB_SAUT = "/img/animations/Mob/saut.png";
 
         public static final String ANIMATION_CORBEAU_VOLE = "/img/animations/Corbeau_/Vole.png";
+
+
 }
