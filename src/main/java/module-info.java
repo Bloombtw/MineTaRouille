@@ -1,12 +1,13 @@
 module universite_paris.iut.ameimoun.minetarouillefx {
     requires javafx.controls;
     requires javafx.fxml;
-
+    requires org.testng;
+    requires org.junit.jupiter.api;
     requires java.desktop;
     requires javafx.graphics;
     requires javafx.media;
     requires org.controlsfx.controls;
-
+    requires junit;
 
     opens universite_paris8.iut.ameimoun.minetarouillefx to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx;
@@ -26,5 +27,6 @@ module universite_paris.iut.ameimoun.minetarouillefx {
     opens universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires to javafx.fxml;
     exports universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
     opens universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob to javafx.fxml;
-
+    exports universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
+    opens universite_paris8.iut.ameimoun.minetarouillefx.testJunit to org.testng;
 }
