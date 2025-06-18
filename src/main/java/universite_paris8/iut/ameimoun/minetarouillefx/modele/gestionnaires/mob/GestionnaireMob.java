@@ -48,10 +48,10 @@ public class GestionnaireMob extends GestionnaireMobA {
     }
 
     /**
-     * Calcule le centre d'un Mob.
+     * Calcule le centre d'un Mob_Hostile.
      *
-     * @param mob Le Mob dont le centre doit être calculé.
-     * @return Un tableau contenant les coordonnées X et Y du centre du Mob.
+     * @param mob Le Mob_Hostile dont le centre doit être calculé.
+     * @return Un tableau contenant les coordonnées X et Y du centre du Mob_Hostile.
      */
     private double[] calculerCentreMob(Mob mob) {
         double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
@@ -60,9 +60,9 @@ public class GestionnaireMob extends GestionnaireMobA {
     }
 
     /**
-     * Supprime un Mob et génère son loot.
+     * Supprime un Mob_Hostile et génère son loot.
      *
-     * @param mob Le Mob à supprimer.
+     * @param mob Le Mob_Hostile à supprimer.
      */
     public void supprimerMobEtGetLoot(Mob mob) {
         int index = mobSimple.indexOf(mob);

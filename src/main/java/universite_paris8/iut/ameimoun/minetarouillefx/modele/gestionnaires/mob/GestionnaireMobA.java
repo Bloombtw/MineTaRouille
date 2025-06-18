@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Classe abstraite GestionnaireMobA qui définit les méthodes de base pour gérer les entités de type Mob.
+ * Classe abstraite GestionnaireMobA qui définit les méthodes de base pour gérer les entités de type Mob_Hostile.
  * Elle fournit des fonctionnalités communes telles que l'ajout, la mise à jour et la suppression des Mobs.
  */
 public abstract class GestionnaireMobA {
@@ -25,12 +25,12 @@ public abstract class GestionnaireMobA {
     protected Pane rootPane;
 
     /**
-     * Ajoute un nouveau Mob au jeu.
+     * Ajoute un nouveau Mob_Hostile au jeu.
      *
-     * @param cible    Le joueur ou entité associée au Mob.
-     * @param y        La position verticale du Mob.
-     * @param rootPane Le conteneur graphique où le Mob sera affiché.
-     * @return Le Mob nouvellement ajouté.
+     * @param cible    Le joueur ou entité associée au Mob_Hostile.
+     * @param y        La position verticale du Mob_Hostile.
+     * @param rootPane Le conteneur graphique où le Mob_Hostile sera affiché.
+     * @return Le Mob_Hostile nouvellement ajouté.
      */
     public abstract Mob ajouterMob(Joueur cible, double y, Pane rootPane);
 

@@ -40,10 +40,10 @@ public class GestionnaireMobHostile extends GestionnaireMobA {
     }
 
     /**
-     * Calcule le centre d'un Mob hostile.
+     * Calcule le centre d'un Mob_Hostile hostile.
      *
-     * @param mob Le Mob hostile dont le centre doit être calculé.
-     * @return Un tableau contenant les coordonnées X et Y du centre du Mob hostile.
+     * @param mob Le Mob_Hostile hostile dont le centre doit être calculé.
+     * @return Un tableau contenant les coordonnées X et Y du centre du Mob_Hostile hostile.
      */
     private double[] calculerCentreMob(MobHostile mob) {
         double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
