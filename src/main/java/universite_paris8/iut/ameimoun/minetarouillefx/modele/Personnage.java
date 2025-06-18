@@ -54,6 +54,11 @@ public class Personnage {
         vitesseX = 0;
     }
 
+    /**
+     * Applique la gravité au personnage.
+     * Si le personnage est en l'air, il tombe vers le bas.
+     * Si une collision est détectée avec un bloc solide, le personnage s'arrête et peut sauter à nouveau.
+     */
     public void gravite() {
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
@@ -66,6 +71,14 @@ public class Personnage {
         }
     }
 
+    /**
+     * Vérifie si le personnage entre en collision avec un bloc solide.
+     * La collision est déterminée par la position du personnage et la taille des blocs.
+     *
+     * @param x Position horizontale du personnage.
+     * @param y Position verticale du personnage.
+     * @return true si une collision est détectée, false sinon.
+     */
     boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
         int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
@@ -80,19 +93,13 @@ public class Personnage {
         return false;
     }
 
-    public Vie getVie() {
-        return vie;
-    }
-
+    public Vie getVie() { return vie; }
     public DoubleProperty xProperty() { return x; }
     public DoubleProperty yProperty() { return y; }
-
     public double getX() { return x.get(); }
     public void setX(double val) { x.set(val); }
-
     public double getY() { return y.get(); }
     public void setY(double val) { y.set(val); }
-
     public double getVitesseY() { return vitesseY; }
 
 }

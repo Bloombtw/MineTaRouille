@@ -1,5 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+/**
+ * Enum représentant les recettes de craft disponibles dans le jeu.
+ * Chaque recette est définie par un modèle de grille, un résultat et une quantité de résultat.
+ * @author Anton
+ */
 public enum RecettesCraft {
     PLANCHE(
             new Item[][]{

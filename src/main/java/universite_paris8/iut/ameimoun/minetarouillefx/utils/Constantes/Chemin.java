@@ -2,6 +2,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class Chemin {
 
+        /**
+         * Liste de tout les chemins utilisés
+         */
+
     /*
     IMAGES
      */

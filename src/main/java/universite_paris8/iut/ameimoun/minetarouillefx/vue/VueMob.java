@@ -28,11 +28,6 @@ public class VueMob {
         container.translateXProperty().bind(mob.xProperty());
         container.translateYProperty().bind(mob.yProperty());
     }
-
-    public void mettreAJourAnimation(Mob mob) {
-        animationMob.mettreAJourAnimation(mob);
-    }
-
     public Group getNode() {
         return container;
     }

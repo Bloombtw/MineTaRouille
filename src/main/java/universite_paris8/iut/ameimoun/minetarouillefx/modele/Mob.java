@@ -6,11 +6,16 @@ import java.lang.reflect.GenericArrayType;
 
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
-
     public Mob() {
         super(200, 10, 10, "MOB");
     }
 
+    /**
+     * Met à jour la gravité du mob et gère les collisions.
+     * Si le mob est en l'air, il subit la gravité.
+     * Si le mob touche un bloc, il saute ou change de direction.
+     * Déplace le mob vers la droite ou la gauche selon sa direction actuelle.
+     */
     public void mettreAJour() {
         gravite();
         double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT : -Constantes.VITESSE_DEPLACEMENT);

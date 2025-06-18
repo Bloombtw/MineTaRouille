@@ -21,18 +21,22 @@ public class GestionnaireControles {
     private final GestionnaireItem gestionnaireItem;
     private VueCraft vuecraft;
 
+    
     public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, vuecraft);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
         initialiserControles();
     }
 
+    /**
+     * Initialise les contrôles du jeu en liant les écouteurs de clavier et de souris aux éléments de la vue.
+     */
     public void initialiserControles() {
-        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager, vuecraft);
+        clavierListener = new ClavierListener(joueurModele, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire(), debugManager);
         sourisListener = new SourisListener(joueurModele, gestionnaireInventaire.getInventaire(),vueCarte,gestionnaireInventaire.getVueInventaire(), gestionnaireItem, vuecraft);
         TilePane tileMap = vueCarte.getTileMap();
 
@@ -46,16 +50,10 @@ public class GestionnaireControles {
             tileMap.requestFocus();
         });
     }
-
     public SourisListener getSourisListener() {
         return sourisListener;
     }
-
     public ClavierListener getClavierListener() {
         return clavierListener;
-    }
-
-    public void setVueCraft(VueCraft vueCraft) {
-        this.vuecraft = vueCraft;
     }
 }

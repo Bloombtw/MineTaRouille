@@ -22,6 +22,12 @@ public class GestionnaireInventaire {
         this.vueInventaire = new VueInventaire(inventaire);
     }
 
+    /**
+     * Initialise l'inventaire avec des items par défaut et ajoute la vue de l'inventaire au rootPane.
+     * Ajoute des items prédéfinis à l'inventaire et configure la vue de l'inventaire.
+     * Écoute les changements dans l'inventaire pour mettre à jour l'objet tenu par le joueur via des listeners.
+     * Met à jour l'objet tenu par le joueur en fonction de l'item sélectionné dans l'inventaire.
+     */
     public void initialiserInventaire() {
         inventaire.ajouterItem(new Item(Objet.EPEE, 1) );
         inventaire.ajouterItem(new Item(Bloc.TRONC, 32));

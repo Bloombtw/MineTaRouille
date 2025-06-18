@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.MediaView;
 import universite_paris8.iut.ameimoun.minetarouillefx.MainApp;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
@@ -22,13 +20,6 @@ import java.util.ResourceBundle;
 public class EcranDeMortController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // les commentaires en dessous sont à enlever si on veut utiliser une vidéo sur l'écran de mort.
-
-//        var media = Loader.getMP4("Lien de la vidéo de mort");
-//        var player = new javafx.scene.media.MediaPlayer(media);
-//        player.setAutoPlay(true);
-//        player.setCycleCount(MediaPlayer.INDEFINITE);
-//        mediaView.setMediaPlayer(player);
         messageMortImage.setImage(Loader.loadImage(Chemin.BOUTON_MESSAGE_MORT));
         rejouerImage.setImage(Loader.loadImage(Chemin.BOUTON_REJOUER));
         quitterImage.setImage(Loader.loadImage(Chemin.BOUTON_QUITTER));
@@ -44,18 +35,16 @@ public class EcranDeMortController implements Initializable {
     private ImageView quitterImage;
 
     @FXML
-    private MediaView mediaView;
-
-    @FXML
-    private AnchorPane overlayDeMort;
-
-    @FXML
     private void handleQuitter() {
         MusiqueManager.getInstance().arreterMusique();
         Platform.exit();
     }
 
     @FXML
+    /**
+     * Gère le clic sur le bouton "Rejouer".
+     * Charge la scène de jeu et réinitialise l'état du jeu.
+     */
     private void handleRejouer() {
         Parent root = Loader.load(Chemin.FXML_MAP);
         if (root != null) {

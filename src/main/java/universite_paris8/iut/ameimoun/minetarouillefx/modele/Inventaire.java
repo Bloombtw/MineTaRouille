@@ -5,19 +5,36 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Classe représentant l'inventaire du joueur.
+ * Gère les emplacements d'objets (slots), l'ajout, le retrait, la sélection et la quantité d'objets.
+ */
 public class Inventaire {
 
+    /**
+     * Liste observable des slots d'inventaire (9 emplacements par défaut).
+     */
     private final ObservableList<Item> slots = FXCollections.observableArrayList();
+
+    /**
+     * Index de l'emplacement sélectionné (barre d'accès rapide).
+     */
     private final IntegerProperty selectedIndex = new SimpleIntegerProperty(0);
 
+    /**
+     * Constructeur : initialise l'inventaire avec 9 emplacements vides.
+     */
     public Inventaire() {
         for (int i = 0; i < 9; i++) {
             slots.add(null); // 9 emplacements vides
         }
     }
 
-
-    // Ajoute un nouvel item dans l'inventaire
+    /**
+     * Ajoute un nouvel item dans l'inventaire.
+     * Empile d'abord dans les stacks existants, puis dans les slots vides si besoin.
+     * @param nouvelItem l'item à ajouter
+     */
     public void ajouterItem(Item nouvelItem) {
         int quantiteRestante = empilerDansStacksExistants(nouvelItem);
         if (quantiteRestante > 0) {
@@ -26,7 +43,11 @@ public class Inventaire {
         // Si l'inventaire est plein on fait r
     }
 
-    // Empile l'item ds les stacks existants et retourne la qtité restante à add
+    /**
+     * Empile l'item dans les stacks existants et retourne la quantité restante à ajouter.
+     * @param nouvelItem l'item à empiler
+     * @return la quantité restante à ajouter dans des slots vides
+     */
     private int empilerDansStacksExistants(Item nouvelItem) {
         int quantiteRestante = nouvelItem.getQuantite();
         for (Item slot : slots) {
@@ -41,16 +62,14 @@ public class Inventaire {
         return quantiteRestante;
     }
 
-    // Ajoute l'item dans les slots vides
+    /**
+     * Ajoute l'item dans les slots vides de l'inventaire.
+     * Si l'item est un bloc, on crée une nouvelle instance pour chaque stack.
+     * Si l'item est un objet, on utilise la même instance pour éviter de créer des doublons.
+     * @param nouvelItem l'item à ajouter
+     * @param quantiteRestante la quantité à répartir dans les slots vides
+     */
     private void ajouterDansSlotsVides(Item nouvelItem, int quantiteRestante) {
-        StringBuilder slotsLibres = new StringBuilder();
-        for (int i = 0; i < slots.size(); i++) {
-            if (slots.get(i) == null) {
-                if (slotsLibres.length() > 0) slotsLibres.append(", ");
-                slotsLibres.append(i);
-            }
-        }
-
         for (int i = 0; i < slots.size(); i++) {
             if (slots.get(i) == null && quantiteRestante > 0) {
                 int aMettre = Math.min(nouvelItem.getStackMax(), quantiteRestante);
@@ -64,7 +83,13 @@ public class Inventaire {
         }
     }
 
-    // Retire une quantité d’un item donné (par id)
+    /**
+     * Retire une quantité d'un item de l'inventaire.
+     * Si la quantité restante est négative, l'item est retiré du slot.
+     * Si la quantité restante est positive, on met à jour la quantité dans le slot.
+     * @param item l'item à retirer
+     * @param quantite la quantité à retirer
+     */
     public void retirer(Item item, int quantite) {
         for (int i = 0; i < slots.size(); i++) {
             Item slot = slots.get(i);
@@ -81,6 +106,11 @@ public class Inventaire {
         }
     }
 
+    /**
+     * Retourne la quantité totale d'un item présent dans l'inventaire.
+     * @param item l'item recherché
+     * @return la quantité totale présente
+     */
     public int getQuantite(Item item) {
         int total = 0;
         for (Item slot : slots) {
@@ -91,7 +121,11 @@ public class Inventaire {
         return total;
     }
 
-    // Retourne true si un slot vide existe OU si un slot du même type peut stacker l'item
+    /**
+     * Indique si l'inventaire a de la place pour un item donné (slot vide ou stackable).
+     * @param item l'item à tester
+     * @return true si une place est disponible, false sinon
+     */
     public boolean aDeLaPlacePour(Item item) {
         for (Item slot : slots) {
             if (slot == null) return true;
@@ -100,25 +134,45 @@ public class Inventaire {
         return false;
     }
 
-
+    /**
+     * Retourne la liste observable des slots d'inventaire.
+     * @return la liste des items (slots)
+     */
     public ObservableList<Item> getSlots() {
         return slots;
     }
 
+    /**
+     * Retourne l'item à l'index donné.
+     * @param index l'index du slot
+     * @return l'item à cet index, ou null si vide ou hors limites
+     */
     public Item getItem(int index) {
         return (index >= 0 && index < slots.size()) ? slots.get(index) : null;
     }
 
+    /**
+     * Retourne l'index sélectionné dans la barre d'accès rapide.
+     * @return l'index sélectionné
+     */
     public int getSelectedIndex() {
         return selectedIndex.get();
     }
 
+    /**
+     * Définit l'index sélectionné dans la barre d'accès rapide.
+     * @param index le nouvel index sélectionné
+     */
     public void setSelectedIndex(int index) {
         if (index >= 0 && index < slots.size()) {
             selectedIndex.set(index);
         }
     }
 
+    /**
+     * Retourne la propriété observable de l'index sélectionné.
+     * @return la propriété selectedIndex
+     */
     public IntegerProperty selectedIndexProperty() {
         return selectedIndex;
     }

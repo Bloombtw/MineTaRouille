@@ -11,7 +11,7 @@
 
 <ImageView fx:id="backgroundView" fitWidth="1680" fitHeight="1050" />
 
-<VBox fx:id="buttonBox" alignment="CENTER" spacing="40" style="-fx-padding: 20 0 0 0;">
+<VBox alignment="CENTER" spacing="40" style="-fx-padding: 20 0 0 0;">
     <ImageView fx:id="nouvellePartieImage" pickOnBounds="true" preserveRatio="true"
                fitWidth="560" fitHeight="168"
                onMouseClicked="#lancerNouvellePartie"

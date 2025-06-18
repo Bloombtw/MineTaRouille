@@ -40,6 +40,11 @@
             this.craftController = craftController;
         }
 
+        /**
+         * Associe les événements de souris aux actions du jeu.
+         *
+         * @param tilePane Le TilePane sur lequel les événements de souris seront écoutés.
+         */
         public void lier(TilePane tilePane) {
             tilePane.setOnMousePressed(this::gererClicSouris);
             tilePane.setOnMouseClicked(this::gererPlacementBloc);
@@ -51,6 +56,11 @@
             tilePane.setOnMouseMoved(null);
         }
 
+        /**
+         * Associe les événements de défilement de la souris pour changer l'index de l'inventaire.
+         *
+         * @param scene La scène sur laquelle les événements de défilement seront écoutés.
+         */
         public void lierScrollInventaire(Scene scene) {
             if (scene == null) {
                 return;
@@ -74,6 +84,15 @@
         }
 
 
+        /**
+         * Gère les interactions avec les blocs spéciaux (comme la table de craft).
+         *
+         * @param couche Le numéro de la couche du bloc.
+         * @param x     La position X du bloc.
+         * @param y     La position Y du bloc.
+         * @return true si l'interaction a été gérée, false sinon.
+         */
+
         private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
             Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);
             if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
@@ -93,6 +112,11 @@
             return false;
         }
 
+        /**
+         * Gère le placement de blocs lorsque l'utilisateur clique avec le bouton droit de la souris.
+         *
+         * @param event L'événement de clic de souris.
+         */
         private void gererPlacementBloc(MouseEvent event) {
             if (event.getButton() == MouseButton.SECONDARY) {
                 int x = (int) event.getX() / Constantes.TAILLE_TUILE;
@@ -106,6 +130,13 @@
             }
         }
 
+        /**
+         * Place un bloc à la position spécifiée dans la couche donnée.
+         *
+         * @param couche La couche où le bloc doit être placé.
+         * @param x     La position X du bloc.
+         * @param y     La position Y du bloc.
+         */
         private void placerBloc(int couche, int x, int y) {
             boolean blocPlace = GestionnaireBloc.placerBloc(
                     Carte.getInstance(),
@@ -126,6 +157,11 @@
             }
         }
 
+        /**
+         * Gère les clics de souris pour casser des blocs et donner des items.
+         *
+         * @param event L'événement de clic de souris.
+         */
         private void gererClicSouris(MouseEvent event) {
             if (event.getButton() != MouseButton.PRIMARY) return; // On ne gère que les clics gauches.
             int x = (int) event.getX() / Constantes.TAILLE_TUILE;

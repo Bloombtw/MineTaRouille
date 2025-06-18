@@ -2,9 +2,18 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class Constantes {
 
+    /**
+     * Liste des constantes
+     */
     // Dimensions de la fenêtre
     public static final int LARGEUR_FENETRE = 1680;
     public static final int HAUTEUR_FENETRE = 1050;
+
+    // Dimensions Barre de vie
+    public static final double LARGEUR_BARRE_MAX_BARRE_DE_VIE = 200;
+    public static final double HAUTEUR_BARRE_DE_VIE = 20;
+    public static final long DUREE_FLASH_MS_VUE_VIE = 100;
+
 
     // Dimensions fenêtre craft
     public static final int TAILLE_FENETRE_CRAFT = 300;

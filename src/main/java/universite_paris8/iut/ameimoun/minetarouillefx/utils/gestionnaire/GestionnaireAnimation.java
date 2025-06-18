@@ -9,15 +9,21 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 
 import static universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader.loadAnimation;
 
-/*
-    Le gestionnaire d'animations marche seulement si on à plusieurs fichiers distincts.
-    Sinon, il faut utiliser AnimationJoueur ou AnimationBloc qui permettent de découper l'image
-    et de l'afficher.
+/**
+ * Gestionnaire d'animations simples à base d'images individuelles.
+ * Fonctionne uniquement avec plusieurs fichiers image (image1.png, image2.png, ...).
+ * Pour les spritesheets, utiliser AnimationJoueur ou AnimationBloc.
  */
 public class GestionnaireAnimation {
 
-    // Utilisation : GestionnaireAnimation.ajouterAnimation(pane, "/img/animations/Explosion_", 6, 60);
-
+    /**
+     * Ajoute une animation à une cellule (Pane) en affichant une suite d'images à intervalle régulier.
+     *
+     * @param cellule             Pane dans lequel l'animation sera affichée.
+     * @param cheminAnimation     Chemin de base des images d'animation (sans numéro ni extension).
+     * @param nbFrames            Nombre d'images dans l'animation.
+     * @param frameDurationMillis Durée d'affichage de chaque image en millisecondes.
+     */
     public static void ajouterAnimation(Pane cellule, String cheminAnimation, int nbFrames, int frameDurationMillis) {
         Image[] frames = loadAnimation(cheminAnimation, nbFrames);
 
@@ -31,7 +37,7 @@ public class GestionnaireAnimation {
 
         AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
-            private final long frameDuration = frameDurationMillis * 1_000_000L; // ms -> ns
+            private final long frameDuration = frameDurationMillis * 1_000_000L; // conversion ms -> ns
 
             @Override
             public void handle(long now) {
@@ -45,14 +51,20 @@ public class GestionnaireAnimation {
         timer.start();
     }
 
-
-// Découpe en n frames.
+    /**
+     * Découpe une planche de sprites horizontale en plusieurs frames distinctes.
+     *
+     * @param plancheSprite Image source contenant toutes les frames côte à côte.
+     * @param largeurFrame  Largeur d'une frame.
+     * @param hauteurFrame  Hauteur d'une frame.
+     * @param nbFrames      Nombre total de frames à extraire.
+     * @return Un tableau d'images correspondant à chaque frame.
+     */
     public static Image[] decouperSpriteSheet(Image plancheSprite, int largeurFrame, int hauteurFrame, int nbFrames) {
         Image[] frames = new Image[nbFrames];
         for (int indice = 0; indice < nbFrames; indice++) {
             frames[indice] = new WritableImage(plancheSprite.getPixelReader(), indice * largeurFrame, 0, largeurFrame, hauteurFrame);
         }
-    return frames;
+        return frames;
     }
-
 }

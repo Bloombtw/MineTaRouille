@@ -3,11 +3,17 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
+
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe utilitaire permettant de faire le lien entre les noms des blocs/items
+ * et leurs chemins d’image correspondants.
+ */
 public class GestionnaireImage {
 
+    /** Map associant les noms des blocs/items à leurs chemins d’image. */
     private static final Map<String, String> itemToImage = new HashMap<>();
 
     static {
@@ -57,11 +63,23 @@ public class GestionnaireImage {
         itemToImage.put("BATON",               Chemin.ITEM_BATON);
     }
 
+    /**
+     * Récupère le chemin d'image associé à un bloc.
+     *
+     * @param bloc Bloc à afficher.
+     * @return Chemin vers l’image correspondante, ou une image par défaut si inconnu.
+     */
     public static String getCheminImage(Bloc bloc) {
         if (bloc == null) return Chemin.IMAGE_DEFAULT;
         return itemToImage.getOrDefault(bloc.name(), Chemin.IMAGE_DEFAULT);
     }
 
+    /**
+     * Récupère le chemin d'image associé à un item.
+     *
+     * @param item Item (bloc ou objet).
+     * @return Chemin vers l’image correspondante, ou une image par défaut si inconnu.
+     */
     public static String getCheminImage(Item item) {
         String clef;
         if (item.getTypeItem() == Item.TypeItem.BLOC && item.getBloc() != null)

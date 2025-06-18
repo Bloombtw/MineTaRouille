@@ -4,10 +4,4 @@ public class Joueur extends Personnage {
     public Joueur() {
         super(30, 50, 50, "Joueur");
     }
-
-    public void creuser(){
-    //s'il a une pelle seulement
-    }
-
-
 }

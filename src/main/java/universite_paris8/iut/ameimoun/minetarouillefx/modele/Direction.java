@@ -10,7 +10,7 @@ public enum Direction {
         this.nom = nom;
     }
 
-    public String getNom() {
+    public String toString() {
         return nom;
     }
 }

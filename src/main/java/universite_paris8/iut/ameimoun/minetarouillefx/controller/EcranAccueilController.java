@@ -22,15 +22,16 @@ public class EcranAccueilController implements Initializable {
     private ImageView backgroundView;
 
     @FXML
-    private VBox buttonBox;
-
-    @FXML
     private ImageView nouvellePartieImage;
 
     @FXML
     private ImageView quitterImage;
 
 
+    /**
+     * Initialise l'écran d'accueil en chargeant les images de fond et des boutons,
+     * et en liant les actions des boutons aux méthodes correspondantes.
+     **/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         backgroundView.setImage(Loader.loadImage(Chemin.FOND));
@@ -54,6 +55,10 @@ public class EcranAccueilController implements Initializable {
     }
 
 
+    /**
+     * Lance une nouvelle partie en chargeant la scène du jeu.
+     * Si le chargement échoue, affiche une erreur dans la console.
+     */
     @FXML
     private void lancerNouvellePartie() {
         try {
@@ -65,7 +70,7 @@ public class EcranAccueilController implements Initializable {
             System.out.println("Chargement de Map.fxml réussi, nouvelle partie lancée.");
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("Erreur lors du chargement de Map.fxml");
+            System.err.println("Erreur lors du chargement de Map.fxml");
         }
     }
 

@@ -38,8 +38,12 @@ public class JeuController implements Initializable {
     private GestionnaireSon gestionnaireSon;
     private boolean jeuEstEnPause = false;
 
-    // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
-    // Démarre la boucle de jeu et initialise la musique de fond.
+
+    /**
+     * Méthode d'initialisation appelée lors du chargement de la vue.
+     * Elle initialise les différents composants du jeu tels que la carte, le joueur, l'inventaire, etc.
+     * Démarre également la boucle de jeu qui met à jour l'état du jeu à chaque frame.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initialiserCarte();
@@ -67,6 +71,10 @@ public class JeuController implements Initializable {
         tileMap.getChildren().add(vueCarte.getTileMap());
     }
 
+    /**
+     * Initialise la vue de craft en créant une instance de VueCraft et en l'associant au gestionnaire de craft.
+     * Configure également les contrôleurs de souris et de clavier pour interagir avec la vue de craft.
+     */
     private void initialiserVueCraft() {
         GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
         VueCraft vuecraft = new VueCraft(gestionnaireCraft, rootPane, this, tileMap);
@@ -87,6 +95,10 @@ public class JeuController implements Initializable {
     }
 
 
+    /**
+     * Initialise le joueur, la vue du joueur et le gestionnaire de débogage.
+     * Ajoute la vue du joueur au rootPane et met à jour l'objet tenu par le joueur à l'initialisation.
+     */
     private void initialiserJoueur() {
         joueurModele = new Joueur();
         debugManager = new DebugManager(rootPane, joueurModele, mob);
@@ -95,6 +107,10 @@ public class JeuController implements Initializable {
         joueurVue.mettreAJourObjetTenu(null);
     }
 
+    /**
+     * Initialise la barre de vie du joueur en créant une instance de VueVie et en l'ajoutant au rootPane.
+     * La barre de vie est initialisée avec la vie actuelle du joueur.
+     */
     private void initialiserBarreDeVie() {
         vie = joueurModele.getVie();
         VueVie vueVie = new VueVie(vie, rootPane);
@@ -169,7 +185,10 @@ public class JeuController implements Initializable {
         gameLoop.start();
     }
 
-    // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
+    /**
+     * Met à jour l'état du jeu, y compris la gravité du joueur, la gestion de la vie, et les mises à jour des mobs et des items.
+     * Si le jeu est en pause, cette méthode ne fait rien.
+     */
     private void mettreAJourJeu() {
         if (jeuEstEnPause) {
             return; // Si le jeu est en pause, on ne met pas à jour l'état du jeu.

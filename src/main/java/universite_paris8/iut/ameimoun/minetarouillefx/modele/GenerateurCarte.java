@@ -10,17 +10,24 @@ public class GenerateurCarte {
         Bloc[][][] terrain = new Bloc[Constantes.NB_COUCHES][Constantes.NB_LIGNES][Constantes.NB_COLONNES];
         Random rand = new Random();
 
-        int[] hauteurSol = genererHauteurSol(rand, terrain);
+        int[] hauteurSol = genererHauteurSol(rand);
         remplirTerrain(hauteurSol, rand, terrain);
         ajouterNuages(rand, terrain);
         ajouterArbre(hauteurSol, terrain);
         ajouterEtoiles(rand, terrain);
-        ajouterObjetsSpeciaux(terrain);
+        ajouterObjetsSpeciaux(hauteurSol, terrain);
 
         return new Carte(terrain);
     }
 
-    private static int[] genererHauteurSol(Random rand, Bloc[][][] terrain) {
+    /**
+     * Génère la hauteur du sol pour chaque colonne de la carte.
+     * La hauteur varie légèrement d'une colonne à l'autre pour créer un terrain naturel.
+     *
+     * @param rand    L'instance de Random pour générer des variations aléatoires.
+     * @return Un tableau contenant la hauteur du sol pour chaque colonne.
+     */
+    private static int[] genererHauteurSol(Random rand) {
         int[] hauteurSol = new int[Constantes.NB_COLONNES];
         for (int x = 0; x < Constantes.NB_COLONNES; x++) {
             if (x > 0) {
@@ -33,6 +40,14 @@ public class GenerateurCarte {
         return hauteurSol;
     }
 
+    /**
+     * Remplit le terrain avec des blocs en fonction de la hauteur du sol générée.
+     * Place des blocs de ciel, de surface et de profondeur selon les règles définies.
+     *
+     * @param hauteurSol Le tableau contenant la hauteur du sol pour chaque colonne.
+     * @param rand       L'instance de Random pour générer des blocs aléatoires.
+     * @param terrain    Le tableau 3D représentant le terrain de la carte.
+     */
     private static void remplirTerrain(int[] hauteurSol, Random rand, Bloc[][][] terrain) {
         for (int x = 0; x < Constantes.NB_COLONNES; x++) {
             int h = hauteurSol[x];
@@ -48,6 +63,16 @@ public class GenerateurCarte {
         }
     }
 
+    /**
+     * Place un bloc de surface à la position (x, y) dans le terrain.
+     * Selon une probabilité, place du sable ou du sable rouge.
+     * Ajoute également des décors superficiels comme des arbustes ou des cactus.
+     *
+     * @param x       La coordonnée x du bloc.
+     * @param y       La coordonnée y du bloc.
+     * @param rand    L'instance de Random pour générer des éléments aléatoires.
+     * @param terrain Le tableau 3D représentant le terrain de la carte.
+     */
     private static void placerBlocSurface(int x, int y, Random rand, Bloc[][][] terrain) {
 
         if (rand.nextDouble() < 0.7) {
@@ -56,7 +81,7 @@ public class GenerateurCarte {
             terrain[1][y][x] = Bloc.SABLE_ROUGE;
         }
 
-        // Décors superficiels
+        // Décors superficiels si le bloc est du sable
         if (rand.nextDouble() < Constantes.PROBA_ARBUSTE && terrain[1][y][x] == Bloc.SABLE) {
             if (rand.nextDouble() < 0.3) {
                 terrain[2][y - 1][x] = Bloc.FEU;
@@ -74,6 +99,15 @@ public class GenerateurCarte {
         }
     }
 
+    /**
+     * Place un bloc de profondeur à la position (x, y) dans le terrain.
+     * Selon une probabilité, place du grès coupé, ciselé ou normal.
+     *
+     * @param x       La coordonnée x du bloc.
+     * @param y       La coordonnée y du bloc.
+     * @param rand    L'instance de Random pour générer des éléments aléatoires.
+     * @param terrain Le tableau 3D représentant le terrain de la carte.
+     */
     private static void placerBlocProfondeur(int x, int y, Random rand, Bloc[][][] terrain) {
         if (rand.nextDouble() < 0.3) {
             terrain[1][y][x] = Bloc.GRES_COUPE;
@@ -95,10 +129,17 @@ public class GenerateurCarte {
         }
     }
 
+    /**
+     * Ajoute un arbre à une position fixe dans le terrain.
+     * Place une table de craft et un tronc avec des feuillages d'acacia.
+     *
+     * @param hauteurSol Le tableau contenant la hauteur du sol pour chaque colonne.
+     * @param terrain    Le tableau 3D représentant le terrain de la carte.
+     */
     private static void ajouterArbre(int[] hauteurSol, Bloc[][][] terrain) {
         int arbreX = 10;
         int arbreY = hauteurSol[arbreX];
-        terrain[1][arbreY][arbreX] = Bloc.TABLE_CRAFT;
+        terrain[1][arbreY][arbreX] = Bloc.TERRE;
         terrain[2][arbreY - 1][arbreX] = Bloc.TRONC;
         terrain[2][arbreY - 2][arbreX] = Bloc.TRONC;
         terrain[2][arbreY - 3][arbreX] = Bloc.TRONC;
@@ -119,8 +160,9 @@ public class GenerateurCarte {
         }
     }
 
-    private static void ajouterObjetsSpeciaux(Bloc[][][] terrain) {
+    private static void ajouterObjetsSpeciaux(int[] hauteurSol, Bloc[][][] terrain) {
         terrain[2][10][15] = Bloc.CORBEAU;
         terrain[2][6][59] = Bloc.LUNE;
+        terrain[1][10][hauteurSol[10]] = Bloc.TABLE_CRAFT;
     }
 }

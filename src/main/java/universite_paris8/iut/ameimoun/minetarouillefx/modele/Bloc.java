@@ -47,6 +47,17 @@ public enum Bloc {
     private final boolean estAnime;
     private final boolean estBlocAction;
 
+    /**
+     * Constructeur pour initialiser les propriétés d'un bloc.
+     *
+     * @param id L'identifiant unique du bloc.
+     * @param nom Le nom du bloc.
+     * @param estSolide Indique si le bloc est solide.
+     * @param necessiteSupport Indique si le bloc nécessite un support pour être placé.
+     * @param stackMax Le nombre maximum de blocs pouvant être empilés dans un inventaire.
+     * @param estAnime Indique si le bloc est animé (par exemple, feu).
+     * @param estBlocAction Indique si le bloc a une action associée (comme une table de craft).
+     */
     Bloc(int id, String nom, boolean estSolide, boolean necessiteSupport, int stackMax, boolean estAnime, boolean estBlocAction) {
         this.id = id;
         this.nom = nom;
@@ -60,34 +71,18 @@ public enum Bloc {
     public boolean estSolide() {
         return estSolide;
     }
-
-    public boolean estAnime() {
-        return estAnime;
-    }
-
     public boolean necessiteSupport() {
         return necessiteSupport;
     }
-
-    public static Bloc depuisId(int id) {
-        for (Bloc bloc : values()) {
-            if (bloc.id == id) return bloc;
-        }
-        return CIEL;
-    }
-
     public String getNom() {
         return nom;
     }
-
     public int getId() {
         return id;
     }
-
     public int getStackMax() {
         return stackMax;
     }
-
     public boolean estBlocAction() {
         return estBlocAction;
     }

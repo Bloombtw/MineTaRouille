@@ -1,5 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
-
+/**
+ * Enum représentant les types d'objets dans le jeu.
+ * Chaque type a un nom et une indication de s'il permet la rareté.
+ *
+ * @author Anton
+ */
 public enum Type {
     ARME("Arme", true),
     OUTIL("Outil", true),
@@ -15,9 +20,7 @@ public enum Type {
         this.permetRarete = permetRarete;
     }
 
-    public boolean permetRarete() {
-        return permetRarete;
-    }
+
 
     @Override
     public String toString() {

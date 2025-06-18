@@ -5,7 +5,15 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 
 public class GestionnaireBloc {
 
-    // Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)
+
+    /** Casse un bloc à la position (x, y) dans la couche spécifiée.
+     * Si le bloc est solide, il est cassé et un Item de type Bloc est créé.
+     * @param couche La couche du bloc à casser.
+     * @param x La coordonnée x du bloc.
+     * @param y La coordonnée y du bloc.
+     * @param joueur Le joueur qui casse le bloc.
+     * @return Un Item de type Bloc si le bloc a été cassé, sinon null.
+     */
     public static Item casserBlocEtDonnerItem(int couche, int x, int y, Joueur joueur) {
         if (!estADistanceAutorisee(joueur, x, y)) return null;
         Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
@@ -16,6 +24,12 @@ public class GestionnaireBloc {
         return null;
     }
 
+    /** Vérifie si le joueur peut casser un bloc à la position (x, y) dans la couche spécifiée.
+     * @param joueur Le joueur qui tente de casser le bloc.
+     * @param x La coordonnée x du bloc.
+     * @param y La coordonnée y du bloc.
+     * @return true si le joueur peut casser le bloc, false sinon.
+     */
     public static boolean estADistanceAutorisee(Joueur joueur, int x, int y) {
         // Distance euclidienne entre le joueur et le bloc
         int joueurX = (int) ((joueur.getX() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
@@ -25,7 +39,16 @@ public class GestionnaireBloc {
     }
 
 
-    // Place un bloc à la position (x, y) dans la couche spécifiée
+    /** Place un bloc à la position (x, y) dans la couche spécifiée.
+     * @param carte La carte sur laquelle placer le bloc.
+     * @param inventaire L'inventaire du joueur.
+     * @param indexItem L'index de l'item dans l'inventaire.
+     * @param couche La couche où placer le bloc.
+     * @param x La coordonnée x où placer le bloc.
+     * @param y La coordonnée y où placer le bloc.
+     * @param joueur Le joueur qui place le bloc.
+     * @return true si le bloc a été placé, false sinon.
+     */
     public static boolean placerBloc(
             Carte carte,
             Inventaire inventaire,
@@ -48,6 +71,16 @@ public class GestionnaireBloc {
         return true;
     }
 
+    /** Vérifie si le joueur peut placer un bloc à la position (x, y) dans la couche spécifiée.
+     * @param carte La carte sur laquelle placer le bloc.
+     * @param inventaire L'inventaire du joueur.
+     * @param indexItem L'index de l'item dans l'inventaire.
+     * @param couche La couche où placer le bloc.
+     * @param x La coordonnée x où placer le bloc.
+     * @param y La coordonnée y où placer le bloc.
+     * @param joueur Le joueur qui place le bloc.
+     * @return true si le bloc peut être placé, false sinon.
+     */
     private static boolean peutPlacerBloc(
             Carte carte,
             Inventaire inventaire,
@@ -71,6 +104,12 @@ public class GestionnaireBloc {
         return true;
     }
 
+    /** Métode empéchant de placer un bloc sur un joueur.
+     * @param joueur Le joueur dont on vérifie la hitbox.
+     * @param x La coordonnée x du bloc.
+     * @param y La coordonnée y du bloc.
+     * @return true si la hitbox du joueur est sur le bloc, false sinon.
+     */
     public static boolean hitboxSurBloc(Joueur joueur, int x, int y) {
         double px = joueur.getX();
         double py = joueur.getY();

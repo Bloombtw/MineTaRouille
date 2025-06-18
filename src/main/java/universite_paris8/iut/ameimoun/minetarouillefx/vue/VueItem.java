@@ -10,7 +10,6 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import java.io.InputStream;
 
 public class VueItem {
-    public static final int TAILLE_ITEM = 30;
     private ImageView itemView;
 
     public VueItem(Item item) {
