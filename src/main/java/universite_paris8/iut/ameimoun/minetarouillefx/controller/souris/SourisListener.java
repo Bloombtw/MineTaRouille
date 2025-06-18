@@ -32,6 +32,9 @@ public class SourisListener {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
     private GestionnaireItem gestionnaireItem;
+    private GestionnaireMobHostile gestionnaireMobHostile;
+    private GestionnaireMob gestionnaireMobPassif;
+    private GestionnaireFleche gestionnaireFleche;
     private VueCarte vueCarte;
     private VueCraft vueCraft;
     private VueJoueur vueJoueur;
@@ -43,6 +46,9 @@ public class SourisListener {
         this.vueCarte = vueCarte;
         this.vueInventaire = vueInventaire;
         this.gestionnaireItem = gestionnaireItem;
+        this.gestionnaireMobHostile = gestionnaireMobHostile;
+        this.gestionnaireMobPassif = gestionnaireMobPassif;
+        this.gestionnaireFleche = gestionnaireFleche;
         this.vueCraft = vueCraft;
     }
 
@@ -108,6 +114,55 @@ public class SourisListener {
         }
     }
 
+    /**
+     * Gère les attaques de proximité contre les mobs.
+     */
+    public void gererAttaqueProximite() {
+        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
+
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+        if (Objet.EPEE.getNom().equals(objetSelectionne.getNom())) {
+            if (gestionnaireMobHostile != null) {
+                gestionnaireMobHostile.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
+            }
+
+            if (gestionnaireMobPassif != null) {
+                gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
+            }
+        }
+    }
+
+    /**
+     * Gère les attaques à distance avec des flèches.
+     *
+     * @param event L'événement de clic de la souris.
+     */
+    public void gererAttaqueDistance(MouseEvent event) {
+        double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
+        double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+
+        if (Objet.ARC.getNom().equals(objetSelectionne.getNom())) {
+            // Calcul de la direction vers la souris
+            double dx = event.getX() - playerCenterX;
+            double dy = event.getY() - playerCenterY;
+            double norme = Math.sqrt(dx * dx + dy * dy);
+            if (norme != 0) {
+                dx /= norme;
+                dy /= norme;
+            }
+
+            // Vérification du bloc visé
+            int tileX = (int) (event.getX() / Constantes.TAILLE_TUILE);
+            int tileY = (int) (event.getY() / Constantes.TAILLE_TUILE);
+            Bloc blocVise = Carte.getInstance().getBloc(tileX, tileY, 1);
+            if (blocVise == null || !blocVise.estSolide()) {
+                gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 2, dy * 2);
+            }
+        }
+    }
+
     private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
         Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);
         if (blocClique != null && blocClique.estBlocAction() && GestionnaireBloc.estADistanceAutorisee(joueur, x, y)) {
@@ -126,23 +181,63 @@ public class SourisListener {
         }
         return false;
     }
-
-    private void gererClicSouris(MouseEvent event) {
-        if (event.getButton() != MouseButton.PRIMARY) return;
-        int x = (int) event.getX() / Constantes.TAILLE_TUILE;
-        int y = (int) event.getY() / Constantes.TAILLE_TUILE;
-        int couche1 = 1;
-        int couche2 = 2;
-
-        Item itemBloc1 = GestionnaireBloc.casserBlocEtDonnerItem(couche1, x, y, joueur);
-        Item itemBloc2 = GestionnaireBloc.casserBlocEtDonnerItem(couche2, x, y, joueur);
-        if (itemBloc1 != null || itemBloc2 != null) {
-            gestionnaireItem.spawnItemAuSol(itemBloc1, x, y);
-            gestionnaireItem.spawnItemAuSol(itemBloc2, x, y);
-            vueInventaire.mettreAJourAffichageInventaire();
+    /**
+     * Dépose un item au sol et met à jour l'affichage.
+     *
+     * @param item   L'item à déposer.
+     * @param x      La position X où déposer l'item.
+     * @param y      La position Y où déposer l'item.
+     * @param couche La couche où déposer l'item.
+     */
+    private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
+        if (item != null) {
+            vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
+            if (couche == 1 && y - 1 >= 0) {
+                vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
+            }
+            gestionnaireItem.spawnItemAuSol(item, x, y);
         }
     }
 
+    /**
+     * Casse un bloc dans la carte et met à jour l'affichage.
+     *
+     * @param couche La couche du bloc à casser.
+     * @param clickX La position X du clic de la souris.
+     * @param clickY La position Y du clic de la souris.
+     */
+    private void casserBloc(int couche, double clickX, double clickY) {
+        int tx = (int) (clickX / Constantes.TAILLE_TUILE);
+        int ty = (int) (clickY / Constantes.TAILLE_TUILE);
+        Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+
+        if (Objet.PIOCHE.getNom().equals(objetSelectionne.getNom())) {
+            Item itemBloc = GestionnaireBloc.casserBlocEtDonnerItem(couche, tx, ty, joueur);
+            if (itemBloc != null) {
+                dropItemEtMettreAJour(itemBloc, tx, ty, couche);
+                vueInventaire.mettreAJourAffichageInventaire();
+            }
+        }
+    }
+
+
+    /**
+     * Gère les clics de la souris pour casser des blocs et attaquer des mobs.
+     *
+     * @param event L'événement de clic de la souris.
+     */
+    private void gererClicSouris(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY) {
+            return;
+        }
+        double clickX = event.getX();
+        double clickY = event.getY();
+        casserBloc(1, clickX, clickY);
+        casserBloc(2, clickX, clickY);
+
+        gererAttaqueProximite();
+        gererAttaqueDistance(event);
+    }
     public void setVueCraft(VueCraft vueCraft) {
         this.vueCraft = vueCraft;
     }
