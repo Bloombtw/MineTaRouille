@@ -1,9 +1,10 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
+package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.MobHostile;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobA;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
@@ -38,12 +39,25 @@ public class GestionnaireMobHostile extends GestionnaireMobA {
         }
     }
 
+    /**
+     * Calcule le centre d'un Mob hostile.
+     *
+     * @param mob Le Mob hostile dont le centre doit être calculé.
+     * @return Un tableau contenant les coordonnées X et Y du centre du Mob hostile.
+     */
     private double[] calculerCentreMob(MobHostile mob) {
         double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
         double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
         return new double[]{mobCenterX, mobCenterY};
     }
 
+    /**
+     * Tue les Mobs hostiles proches d'un joueur en fonction d'une distance maximale.
+     *
+     * @param playerCenterX La position X du centre du joueur.
+     * @param playerCenterY La position Y du centre du joueur.
+     * @param distanceMax   La distance maximale pour tuer les Mobs hostiles.
+     */
     @Override
     public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
         for (int i = mobsHostiles.size() - 1; i >= 0; i--) {

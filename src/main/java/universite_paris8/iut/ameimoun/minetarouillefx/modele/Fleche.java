@@ -19,6 +19,11 @@ public class Fleche {
         this.distanceMax = distanceMax;
     }
 
+    /**
+     * Met à jour la position de la flèche et vérifie si elle a dépassé la distance maximale.
+     *
+     * @return true si la distance parcourue dépasse la distance maximale, sinon false.
+     */
     public boolean mettreAJourEtVerifierDistance() {
         double oldX = x.get();
         double oldY = y.get();

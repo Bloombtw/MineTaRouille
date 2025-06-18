@@ -6,6 +6,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.*;

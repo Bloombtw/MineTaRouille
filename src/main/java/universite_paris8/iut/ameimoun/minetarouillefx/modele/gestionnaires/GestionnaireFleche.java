@@ -3,6 +3,8 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import javafx.scene.layout.AnchorPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Fleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueFleche;
 

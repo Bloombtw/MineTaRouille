@@ -9,24 +9,78 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMob;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireMobHostile;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
+/**
+ * Classe SourisListener qui gère les interactions de la souris dans le jeu.
+ * Elle permet de lier les événements de clic, de défilement et de mouvement de la souris
+ * pour effectuer des actions telles que placer des blocs, casser des blocs, attaquer des mobs
+ * et gérer l'inventaire.
+ */
 public class SourisListener {
+
+    /**
+     * Modèle du joueur utilisé pour les interactions.
+     */
     private final Joueur joueur;
+
+    /**
+     * Inventaire du joueur.
+     */
     private final Inventaire inventaire;
+
+    /**
+     * Vue de l'inventaire pour mettre à jour l'affichage.
+     */
     private final VueInventaire vueInventaire;
+
+    /**
+     * Gestionnaire des items pour gérer les objets au sol.
+     */
     private GestionnaireItem gestionnaireItem;
+
+    /**
+     * Vue de la carte pour mettre à jour l'affichage des blocs.
+     */
     private VueCarte vueCarte;
+
+    /**
+     * Vue du joueur pour mettre à jour l'objet tenu.
+     */
     private VueJoueur vueJoueur;
+
+    /**
+     * Gestionnaire des mobs hostiles.
+     */
     private final GestionnaireMobHostile gestionnaireMobHostile;
+
+    /**
+     * Gestionnaire des mobs passifs.
+     */
     private final GestionnaireMob gestionnaireMobPassif;
+
+    /**
+     * Gestionnaire des flèches pour les attaques à distance.
+     */
     private final GestionnaireFleche gestionnaireFleche;
 
+    /**
+     * Constructeur de la classe SourisListener.
+     *
+     * @param joueur                Modèle du joueur.
+     * @param inventaire            Inventaire du joueur.
+     * @param vueCarte              Vue de la carte.
+     * @param vueInventaire         Vue de l'inventaire.
+     * @param gestionnaireItem      Gestionnaire des items.
+     * @param gestionnaireMobHostile Gestionnaire des mobs hostiles.
+     * @param gestionnaireMobPassif Gestionnaire des mobs passifs.
+     * @param gestionnaireFleche    Gestionnaire des flèches.
+     */
     public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche) {
         this.joueur = joueur;
         this.inventaire = inventaire;
@@ -38,17 +92,32 @@ public class SourisListener {
         this.gestionnaireFleche = gestionnaireFleche;
     }
 
+    /**
+     * Lie les événements de clic de la souris au TilePane.
+     *
+     * @param tilePane Le conteneur graphique où les événements de souris sont liés.
+     */
     public void lier(TilePane tilePane) {
         tilePane.setOnMousePressed(this::gererClicSouris);
         tilePane.setOnMouseClicked(this::gererPlacementBloc);
     }
 
+    /**
+     * Désactive les événements de souris liés au TilePane.
+     *
+     * @param tilePane Le conteneur graphique où les événements de souris sont désactivés.
+     */
     public void desactiver(TilePane tilePane) {
         tilePane.setOnMousePressed(null);
         tilePane.setOnMouseReleased(null);
         tilePane.setOnMouseMoved(null);
     }
 
+    /**
+     * Lie les événements de défilement de la souris pour gérer la sélection dans l'inventaire.
+     *
+     * @param scene La scène où les événements de défilement sont liés.
+     */
     public void lierScrollInventaire(Scene scene) {
         scene.addEventFilter(ScrollEvent.SCROLL, event -> {
             int index = inventaire.getSelectedIndex();
@@ -63,6 +132,11 @@ public class SourisListener {
         });
     }
 
+    /**
+     * Gère le placement des blocs dans la carte.
+     *
+     * @param event L'événement de clic de la souris.
+     */
     private void gererPlacementBloc(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) { // clic droit
             int x = (int) event.getX() / Constantes.TAILLE_TUILE;
@@ -89,6 +163,13 @@ public class SourisListener {
         }
     }
 
+    /**
+     * Casse un bloc dans la carte et met à jour l'affichage.
+     *
+     * @param couche La couche du bloc à casser.
+     * @param clickX La position X du clic de la souris.
+     * @param clickY La position Y du clic de la souris.
+     */
     private void casserBloc(int couche, double clickX, double clickY) {
         int tx = (int) (clickX / Constantes.TAILLE_TUILE);
         int ty = (int) (clickY / Constantes.TAILLE_TUILE);
@@ -103,6 +184,9 @@ public class SourisListener {
         }
     }
 
+    /**
+     * Gère les attaques de proximité contre les mobs.
+     */
     public void gererAttaqueProximite() {
         double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
@@ -110,15 +194,20 @@ public class SourisListener {
         Item objetSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
         if (Objet.EPEE.getNom().equals(objetSelectionne.getNom())) {
             if (gestionnaireMobHostile != null) {
-                gestionnaireMobHostile.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE);
+                gestionnaireMobHostile.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
             }
 
             if (gestionnaireMobPassif != null) {
-                gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY,Constantes.DISTANCE_ATTAQUE);
+                gestionnaireMobPassif.tuerMob(playerCenterX, playerCenterY, Constantes.DISTANCE_ATTAQUE);
             }
         }
     }
 
+    /**
+     * Gère les attaques à distance avec des flèches.
+     *
+     * @param event L'événement de clic de la souris.
+     */
     public void gererAttaqueDistance(MouseEvent event) {
         double playerCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         double playerCenterY = joueur.getY() + (Constantes.TAILLE_PERSO / 2.0);
@@ -138,11 +227,17 @@ public class SourisListener {
             int tileX = (int) (event.getX() / Constantes.TAILLE_TUILE);
             int tileY = (int) (event.getY() / Constantes.TAILLE_TUILE);
             Bloc blocVise = Carte.getInstance().getBloc(tileX, tileY, 1);
-        if (blocVise == null || !blocVise.estSolide()) {
+            if (blocVise == null || !blocVise.estSolide()) {
                 gestionnaireFleche.tirerFleche(playerCenterX, playerCenterY, dx * 2, dy * 2);
             }
         }
     }
+
+    /**
+     * Gère les clics de la souris pour casser des blocs et attaquer des mobs.
+     *
+     * @param event L'événement de clic de la souris.
+     */
     private void gererClicSouris(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY) {
             return;
@@ -156,6 +251,14 @@ public class SourisListener {
         gererAttaqueDistance(event);
     }
 
+    /**
+     * Dépose un item au sol et met à jour l'affichage.
+     *
+     * @param item   L'item à déposer.
+     * @param x      La position X où déposer l'item.
+     * @param y      La position Y où déposer l'item.
+     * @param couche La couche où déposer l'item.
+     */
     private void dropItemEtMettreAJour(Item item, int x, int y, int couche) {
         if (item != null) {
             vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
