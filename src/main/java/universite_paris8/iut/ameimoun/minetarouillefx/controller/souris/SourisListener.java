@@ -14,6 +14,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -40,16 +41,15 @@ public class SourisListener {
     private VueJoueur vueJoueur;
     private CraftController craftController;
 
-    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, VueInventaire vueInventaire, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche) {
+    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche, VueInventaire vueInventaire)   {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;
-        this.vueInventaire = vueInventaire;
         this.gestionnaireItem = gestionnaireItem;
         this.gestionnaireMobHostile = gestionnaireMobHostile;
         this.gestionnaireMobPassif = gestionnaireMobPassif;
         this.gestionnaireFleche = gestionnaireFleche;
-        this.vueCraft = vueCraft;
+        this.vueInventaire = vueInventaire;
     }
 
     public void setCraftController(CraftController craftController) {
@@ -162,6 +162,15 @@ public class SourisListener {
             }
         }
     }
+
+    /**
+     * Gère les interactions avec les blocs spéciaux (comme la table de craft).
+     *
+     * @param couche Le numéro de la couche du bloc.
+     * @param x     La position X du bloc.
+     * @param y     La position Y du bloc.
+     * @return true si l'interaction a été gérée, false sinon.
+     */
 
     private boolean gererInteractionBlocSpecial(int couche, int x, int y) {
         Bloc blocClique = GestionnaireBloc.getBloc(couche, x, y);

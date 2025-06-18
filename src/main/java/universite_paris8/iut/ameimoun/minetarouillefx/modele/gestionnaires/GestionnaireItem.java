@@ -3,7 +3,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import javafx.scene.layout.AnchorPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueItem;
 
@@ -90,7 +89,6 @@ public class GestionnaireItem {
         rootPane.getChildren().add(vue.getImageView());
     }
 
-
     public void jeterItemSelectionne(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
         int idx = inventaire.getSelectedIndex();
         Item item = inventaire.getItem(idx);
@@ -152,15 +150,4 @@ public class GestionnaireItem {
         vueInventaire.mettreAJourAffichageInventaire();
     }
 
-
-    public void dropItemEtMettreAJour(Item item, int x, int y, int couche, VueCarte vueCarte) {
-        if (item != null) {
-            vueCarte.mettreAJourAffichage(x, y); // le bloc cassé
-            if (couche == 1 && y - 1 >= 0) {
-                vueCarte.mettreAJourAffichage(x, y - 1); // décor au-dessus si sol cassé
-            }
-            spawnItemAuSol(item, x, y);
-        }
-    }
 }
-

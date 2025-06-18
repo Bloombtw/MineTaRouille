@@ -46,6 +46,7 @@ public class GestionnaireFleche {
                 if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
                     mobTouche = mob;
                     gestionnaireMob.supprimerMobEtGetLoot(mobTouche);
+                    System.out.println("mob passif tuer");
                     break;
                 }
             }

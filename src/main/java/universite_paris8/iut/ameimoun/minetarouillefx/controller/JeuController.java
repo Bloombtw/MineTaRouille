@@ -64,7 +64,6 @@ public class JeuController implements Initializable {
         initialiserVueCraft();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
-        initialiserMob();
         demarrerBoucleDeJeu();
     }
 
@@ -136,11 +135,12 @@ public class JeuController implements Initializable {
                 joueurModele,
                 inventaire,
                 vueCarte,
-                vueInventaire,
                 gestionnaireItem,
-                gestionnaireMobHostile, // Passe le gestionnaire de mobs hostiles
+                gestionnaireMobHostile,
                 gestionnaireMob,
-                gestionnaireFleche
+                gestionnaireFleche,
+                vueInventaire
+                // Passe le gestionnaire de mobs hostiles
         );
         // Initialiser GestionnaireControles avec le SourisListener créé
         gestionnaireControles = new GestionnaireControles(
@@ -218,35 +218,42 @@ public class JeuController implements Initializable {
         gameLoop.start();
     }
 
-    // Met à jour l'état du jeu, gère la gravité, les collisions et les alertes de vie.
     private void mettreAJourJeu() {
         if (jeuEstEnPause) {
             return; // Si le jeu est en pause, on ne met pas à jour l'état du jeu.
         }
+
+        // Mise à jour de la gravité et des collisions pour le joueur
         joueurModele.gravite();
+
+        // Mise à jour de la vie du joueur
         gestionnaireVie.mettreAJour(gameLoop);
-        if (mob != null && vueMob != null) {
-            mob.mettreAJour();
+
+        // Mise à jour des mobs passifs
+        if (gestionnaireMob != null) {
+            gestionnaireMob.mettreAJour();
         }
+
+        // Mise à jour des mobs hostiles
+        gestionnaireMobHostile.mettreAJour();
+
+        // Mise à jour des items au sol
         gestionnaireItem.update(
                 joueurModele,
                 gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()
         );
-        gestionnaireMobHostile.mettreAJour();
-        if (gestionnaireMob != null) {
-            gestionnaireMob.mettreAJour();
-        }
 
-        if (debugManager.isDebugVisible()) {
-            debugManager.update();
-        }
+        // Mise à jour des flèches
         if (gestionnaireFleche != null) {
             gestionnaireFleche.mettreAJour();
         }
+
+        // Mise à jour du mode debug
+        if (debugManager.isDebugVisible()) {
+            debugManager.update();
+        }
     }
-
-
     public void mettreEnPauseJeu() {
         jeuEstEnPause = true;
     }
@@ -254,7 +261,6 @@ public class JeuController implements Initializable {
     public void reprendreJeu() {
         jeuEstEnPause = false;
     }
-
 
     public boolean isEnPause() {
         return jeuEstEnPause;

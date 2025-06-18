@@ -7,6 +7,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -18,13 +19,15 @@ public class ClavierListener {
     private final VueInventaire vueInventaire;
     private final DebugManager debugManager;
     private JeuController jeuController;
+    private final GestionnaireItem gestionnaireItem;
 
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager) {
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager,GestionnaireItem gestionnaireItem){
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.deplacementManager = new GestionnaireDeplacement(joueur);
+        this.gestionnaireItem = gestionnaireItem;
     }
 
     /**
@@ -42,19 +45,15 @@ public class ClavierListener {
                     MusiqueManager.getInstance();
 
                 }
-                case Q, LEFT -> {
-                    ignorerToucheSiJeuEnPause(event);
-                    deplacementManager.setEnDeplacementGauche(true);
+                case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
+                case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
+                case F3 -> debugManager.toggle();
+                case A -> {
+                    gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
                 }
-                case D, RIGHT -> {
-                    ignorerToucheSiJeuEnPause(event);
-                    deplacementManager.setEnDeplacementDroite(true);
-                }
-                case F3 -> {
-                    ignorerToucheSiJeuEnPause(event);
-                    debugManager.toggle();
-                }
+                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
             }
+
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichageInventaire();
         });
@@ -108,7 +107,6 @@ public class ClavierListener {
             case "ç" -> inventaire.setSelectedIndex(8);
         }
     }
-
 
     private void ignorerToucheSiJeuEnPause(KeyEvent event) {
         if (jeuController != null && jeuController.isEnPause()) {
