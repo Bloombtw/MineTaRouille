@@ -29,7 +29,8 @@ public class GestionnaireInventaire {
      * Met à jour l'objet tenu par le joueur en fonction de l'item sélectionné dans l'inventaire.
      */
     public void initialiserInventaire() {
-        inventaire.ajouterItem(new Item(Objet.EPEE, 1) );
+        inventaire.ajouterItem(new Item(Objet.FIL, 6) );
+        inventaire.ajouterItem(new Item(Bloc.TABLE_CRAFT, 1));
         inventaire.ajouterItem(new Item(Bloc.TRONC, 32));
         inventaire.ajouterItem(new Item(Bloc.PIERRE, 64));
         AnchorPane.setTopAnchor(vueInventaire, 10.0);

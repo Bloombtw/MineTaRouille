@@ -163,6 +163,5 @@ public class GenerateurCarte {
     private static void ajouterObjetsSpeciaux(int[] hauteurSol, Bloc[][][] terrain) {
         terrain[2][10][15] = Bloc.CORBEAU;
         terrain[2][6][59] = Bloc.LUNE;
-        terrain[1][10][hauteurSol[10]] = Bloc.TABLE_CRAFT;
     }
 }
