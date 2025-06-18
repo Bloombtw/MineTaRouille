@@ -6,7 +6,8 @@ public enum Objet {
     PIOCHE(103, "Pioche", 1, "Une pioche pour miner les blocs.", Type.OUTIL, Rarete.COMMUN),
     PELLE(104, "Pelle", 1, "Une pelle pour creuser la terre et le sable.", Type.OUTIL, Rarete.COMMUN),
     MOUTON_CUIT(105, "Mouton cuit", 64, "Un délicieux mouton rôti.", Type.CONSOMMABLE, Rarete.COMMUN),
-    BATON(106, "Bâton", 64, "Un bâton utile pour fabriquer des outils.", Type.RESSOURCE, Rarete.COMMUN);
+    BATON(106, "Bâton", 64, "Un bâton utile pour fabriquer des outils.", Type.RESSOURCE, Rarete.COMMUN),
+    FIL(107,"Fil", 64, "Un fil utilisé pour fabriquer un arc.", Type.RESSOURCE, Rarete.COMMUN);
     private final int id;
     private final String nom;
     private final int stackSize;

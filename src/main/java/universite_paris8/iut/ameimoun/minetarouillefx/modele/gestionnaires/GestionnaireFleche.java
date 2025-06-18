@@ -3,7 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import javafx.scene.layout.AnchorPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Fleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueFleche;
@@ -14,12 +14,12 @@ public class GestionnaireFleche {
     private final AnchorPane rootPane;
     private final List<Fleche> fleches = new ArrayList<>();
     private final Map<Fleche, VueFleche> vueFleches = new HashMap<>();
-    private final GestionnaireMob gestionnaireMob;
+    private final GestionnaireMobPassif gestionnaireMobPassif;
     private final GestionnaireMobHostile gestionnaireMobHostile;
 
-    public GestionnaireFleche(AnchorPane rootPane, GestionnaireMob gestionnaireMob, GestionnaireMobHostile gestionnaireMobHostile) {
+    public GestionnaireFleche(AnchorPane rootPane, GestionnaireMobPassif gestionnaireMobPassif, GestionnaireMobHostile gestionnaireMobHostile) {
         this.rootPane = rootPane;
-        this.gestionnaireMob = gestionnaireMob;
+        this.gestionnaireMobPassif = gestionnaireMobPassif;
         this.gestionnaireMobHostile = gestionnaireMobHostile;
     }
 
@@ -41,12 +41,11 @@ public class GestionnaireFleche {
 
             // Collision avec mobs passifs
             Mob mobTouche = null;
-            for (Mob mob : gestionnaireMob.getMobs()) {
+            for (Mob mob : gestionnaireMobPassif.getMobs()) {
                 double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
                 if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
                     mobTouche = mob;
-                    gestionnaireMob.supprimerMobEtGetLoot(mobTouche);
-                    System.out.println("mob passif tuer");
+                    gestionnaireMobPassif.supprimerMobEtGetLoot(mobTouche);
                     break;
                 }
             }

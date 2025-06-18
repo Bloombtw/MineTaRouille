@@ -36,7 +36,26 @@ public enum RecettesCraft {
             },
             new Item(Bloc.COFFRE),
             1
+    ),
+    EPEE(
+            new Item[][] {
+                    {null, new Item(Bloc.PIERRE), null},
+                    {null, new Item(Bloc.PIERRE), null},
+                    {null, new Item(Objet.BATON), null}
+            },
+            new Item(Objet.EPEE),
+            1
+    ),
+    ARC(
+            new Item[][]{
+                    {new Item(Objet.FIL), null, new Item(Objet.BATON)},
+                    {new Item(Objet.FIL), new Item(Objet.BATON), null},
+                    {new Item(Objet.FIL), null, new Item(Objet.BATON)}
+            },
+            new Item(Objet.ARC),
+            1
     );
+
 
     private final Item[][] pattern;
     private final Item resultat;

@@ -215,4 +215,4 @@ Gère :
 - Ajout de logs dans la méthode `tuerMobSiProximite()` :
     -le même principe que pour `GestionnaireMob`, mais pour les mobs hostiles.
     - Permet de vérifier si la méthode est correctement appelée et si les mobs hostiles sont supprimés.
-    - Différence avec gestionnaireMob : spauwn de loot.
+    - Différence avec gestionnaireMobPassif : spauwn de loot.

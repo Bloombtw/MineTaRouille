@@ -1,10 +1,9 @@
-package universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue;
+    package universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
@@ -18,9 +17,9 @@ public class AnimationMob {
     private long lastFrameTime = 0;
     private final AnimationTimer animationTimer;
 
-    public AnimationMob(ImageView mobImage) {
+    public AnimationMob(ImageView mobImage, String cheminIdle, String cheminMarche, int taille, int nbFramesIdle, int nbFramesMarche) {
         this.mobImage = mobImage;
-        initialiserAnimations();
+        initialiserAnimations(cheminIdle, cheminMarche, taille, nbFramesIdle, nbFramesMarche);
 
         animationTimer = new AnimationTimer() {
             @Override
@@ -37,22 +36,20 @@ public class AnimationMob {
         animationTimer.start();
     }
 
-    private void initialiserAnimations() {
-        // Adapte les chemins si besoin
+    private void initialiserAnimations(String cheminIdle, String cheminMarche, int taille, int nbFramesIdle, int nbFramesMarche) {
         framesIdle = GestionnaireAnimation.decouperSpriteSheet(
-                Loader.loadImage(Chemin.ANIMATION_MOB_IDLE), 128, 128, 8
+                Loader.loadImage(cheminIdle), taille, taille, nbFramesIdle
         );
         frameIdleDuration = 200; // ms
 
         framesMarche = GestionnaireAnimation.decouperSpriteSheet(
-                Loader.loadImage(Chemin.ANIMATION_MOB_SAUT), 128, 128, 13
+                Loader.loadImage(cheminMarche), taille, taille, nbFramesMarche
         );
         frameMarcheDuration = 120; // ms
 
         setAnimation(framesIdle, frameIdleDuration);
     }
 
-    /** À appeler à chaque frame ou lors d’un changement d’état */
     public void mettreAJourAnimation(Mob mob) {
         if (mob.getVitesseX() != 0) {
             setAnimation(framesMarche, frameMarcheDuration);
@@ -71,5 +68,4 @@ public class AnimationMob {
                 mobImage.setImage(frames[0]);
         }
     }
-
 }

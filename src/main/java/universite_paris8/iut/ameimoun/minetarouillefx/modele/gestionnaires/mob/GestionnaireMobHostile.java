@@ -4,13 +4,12 @@ import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.MobHostile;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobA;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestionnaireMobHostile extends GestionnaireMobA {
+public class GestionnaireMobHostile extends GestionnaireMob {
     private final List<MobHostile> mobsHostiles = new ArrayList<>();
     private final List<VueMobHostile> vuesMobsHostiles = new ArrayList<>();
     private static final double MAP_WIDTH = 1920.0;

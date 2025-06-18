@@ -11,10 +11,9 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireBloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -34,14 +33,14 @@ public class SourisListener {
     private final VueInventaire vueInventaire;
     private GestionnaireItem gestionnaireItem;
     private GestionnaireMobHostile gestionnaireMobHostile;
-    private GestionnaireMob gestionnaireMobPassif;
+    private GestionnaireMobPassif gestionnaireMobPassif;
     private GestionnaireFleche gestionnaireFleche;
     private VueCarte vueCarte;
     private VueCraft vueCraft;
     private VueJoueur vueJoueur;
     private CraftController craftController;
 
-    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMob gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche, VueInventaire vueInventaire)   {
+    public SourisListener(Joueur joueur, Inventaire inventaire, VueCarte vueCarte, GestionnaireItem gestionnaireItem, GestionnaireMobHostile gestionnaireMobHostile, GestionnaireMobPassif gestionnaireMobPassif, GestionnaireFleche gestionnaireFleche, VueInventaire vueInventaire)   {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueCarte = vueCarte;

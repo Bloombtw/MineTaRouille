@@ -1,86 +1,41 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMob;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-import java.util.ArrayList;
-import java.util.List;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 
-public class GestionnaireMob extends GestionnaireMobA {
-    private final List<Mob> mobSimple = new ArrayList<>();
-    private final List<VueMob> vuesMob = new ArrayList<>();
-    private static final double MAP_WIDTH = 1920.0;
-    private GestionnaireItem gestionnaireItem;
+import java.util.Random;
+
+/**
+ * Classe abstraite GestionnaireMobA qui définit les méthodes de base pour gérer les entités de type Mob.
+ * Elle fournit des fonctionnalités communes telles que l'ajout, la mise à jour et la suppression des Mobs.
+ */
+public abstract class GestionnaireMob {
 
     /**
-     * Constructeur de la classe GestionnaireMob.
-     *
-     * @param gestionnaireItem Le gestionnaire d'items utilisé pour gérer les loots.
+     * Générateur de nombres aléatoires utilisé pour positionner les Mobs.
      */
-    public GestionnaireMob(GestionnaireItem gestionnaireItem) {
-        this.gestionnaireItem = gestionnaireItem;
-    }
-
-    @Override
-    public Mob ajouterMob(Joueur mob, double y, Pane rootPane) {
-        if (this.rootPane == null) {
-            this.rootPane = rootPane;
-        }
-        Mob nouveauMob = new Mob();
-        double randomX = random.nextDouble() * MAP_WIDTH;
-        nouveauMob.setX(randomX);
-        nouveauMob.setY(y);
-        mobSimple.add(nouveauMob);
-
-        VueMob vue = new VueMob(nouveauMob);
-        vuesMob.add(vue);
-        rootPane.getChildren().add(vue.getNode());
-        return nouveauMob;
-    }
-
-    @Override
-    public void mettreAJour() {
-        for (Mob m : mobSimple) {
-            m.mettreAJour();
-        }
-    }
+    protected final Random random = new Random();
 
     /**
-     * Calcule le centre d'un Mob.
-     *
-     * @param mob Le Mob dont le centre doit être calculé.
-     * @return Un tableau contenant les coordonnées X et Y du centre du Mob.
+     * Conteneur graphique racine où les Mobs sont affichés.
      */
-    private double[] calculerCentreMob(Mob mob) {
-        double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
-        double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
-        return new double[]{mobCenterX, mobCenterY};
-    }
+    protected Pane rootPane;
 
     /**
-     * Supprime un Mob et génère son loot.
+     * Ajoute un nouveau Mob au jeu.
      *
-     * @param mob Le Mob à supprimer.
+     * @param cible    Le joueur ou entité associée au Mob.
+     * @param y        La position verticale du Mob.
+     * @param rootPane Le conteneur graphique où le Mob sera affiché.
+     * @return Le Mob nouvellement ajouté.
      */
-    public void supprimerMobEtGetLoot(Mob mob) {
-        int index = mobSimple.indexOf(mob);
-        if (index != -1) {
-            if (rootPane != null && index < vuesMob.size()) {
-                rootPane.getChildren().remove(vuesMob.get(index).getNode());
-                vuesMob.remove(index);
-            }
-            mobSimple.remove(index);
+    public abstract Mob ajouterMob(Joueur cible, double y, Pane rootPane);
 
-            if (gestionnaireItem != null) {
-                Item loot = new Item(Objet.MOUTON_CUIT, 1);
-                int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
-                int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
-                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-            }
-        }
-    }
+    /**
+     * Met à jour les Mobs gérés par le gestionnaire.
+     */
+    public abstract void mettreAJour();
 
     /**
      * Tue les Mobs proches d'un joueur en fonction d'une distance maximale.
@@ -89,23 +44,20 @@ public class GestionnaireMob extends GestionnaireMobA {
      * @param playerCenterY La position Y du centre du joueur.
      * @param distanceMax   La distance maximale pour tuer les Mobs.
      */
-    @Override
-    public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
-        for (int i = mobSimple.size() - 1; i >= 0; i--) {
-            Mob mob = mobSimple.get(i);
-            double[] mobCenter = calculerCentreMob(mob);
-            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
-            if (distanceTotale <= distanceMax) {
-                supprimerMobEtGetLoot(mob);
-            }
-        }
-    }
+    public abstract void tuerMob(double playerCenterX, double playerCenterY, double distanceMax);
 
-    public List<Mob> getMobs() {
-        return mobSimple;
-    }
-
-    public Pane getRootPane() {
-        return rootPane;
+    /**
+     * Calcule la distance entre deux points.
+     *
+     * @param x1 La coordonnée X du premier point.
+     * @param y1 La coordonnée Y du premier point.
+     * @param x2 La coordonnée X du second point.
+     * @param y2 La coordonnée Y du second point.
+     * @return La distance entre les deux points.
+     */
+    protected double calculerDistance(double x1, double y1, double x2, double y2) {
+        double dx = x1 - x2;
+        double dy = y1 - y2;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }

@@ -53,6 +53,7 @@ public class Chemin {
         public static final String ITEM_PELLE = "/img/items/pelle.png";
         public static final String ITEM_PIOCHE = "/img/items/pioche.png";
         public static final String ITEM_BATON = "/img/items/baton.png";
+        public static final String ITEM_FIL = "/img/items/fil.png";
 
 
         // Défaut
@@ -101,8 +102,11 @@ public class Chemin {
         public static final String ANIMATION_JOUEUR_DROITE = "/img/animations/joueur/droite.png";
         public static final String ANIMATION_JOUEUR_SAUT   = "/img/animations/joueur/saut.png";
 
-        public static final String ANIMATION_MOB_IDLE = "/img/animations/Mob/idle.png";
-        public static final String ANIMATION_MOB_SAUT = "/img/animations/Mob/saut.png";
+        public static final String ANIMATION_MOB_HOSTILE_IDLE = "/img/animations/Mob_Hostile/idle.png";
+        public static final String ANIMATION_MOB_HOSTILE_SAUT = "/img/animations/Mob_Hostile/saut.png";
+
+        public static final String ANIMATION_MOB_PASSIF_IDLE  = "/img/animations/Mob_Passif/idle.png";
+        public static final String ANIMATION_MOB_PASSIF_SAUT  = "/img/animations/Mob_Passif/saut.png";
 
         public static final String ANIMATION_CORBEAU_VOLE = "/img/animations/Corbeau_/Vole.png";
 

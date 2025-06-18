@@ -4,10 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
@@ -36,7 +35,7 @@ public class JeuController implements Initializable {
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
     private GestionnaireMobHostile gestionnaireMobHostile;
-    private GestionnaireMob gestionnaireMob;
+    private GestionnaireMobPassif gestionnaireMobPassif;
     private GestionnaireVie gestionnaireVie;
     private GestionnaireMort gestionnaireMort;
     private GestionnaireSon gestionnaireSon;
@@ -137,7 +136,7 @@ public class JeuController implements Initializable {
                 vueCarte,
                 gestionnaireItem,
                 gestionnaireMobHostile,
-                gestionnaireMob,
+                gestionnaireMobPassif,
                 gestionnaireFleche,
                 vueInventaire
                 // Passe le gestionnaire de mobs hostiles
@@ -161,9 +160,9 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserMob() {
-        gestionnaireMob = new GestionnaireMob(gestionnaireItem);
-        Mob mob1 = gestionnaireMob.ajouterMob(null, 200, rootPane);
-        Mob mob2 = gestionnaireMob.ajouterMob(null, 400, rootPane);
+        gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
+        Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, rootPane);
+        Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, rootPane);
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
     }
@@ -200,7 +199,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserGestionnaireFleche() {
-        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMob, gestionnaireMobHostile);
+        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMobPassif, gestionnaireMobHostile);
     }
 
     /*
@@ -230,8 +229,8 @@ public class JeuController implements Initializable {
         gestionnaireVie.mettreAJour(gameLoop);
 
         // Mise à jour des mobs passifs
-        if (gestionnaireMob != null) {
-            gestionnaireMob.mettreAJour();
+        if (gestionnaireMobPassif != null) {
+            gestionnaireMobPassif.mettreAJour();
         }
 
         // Mise à jour des mobs hostiles

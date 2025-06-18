@@ -121,9 +121,6 @@ public class GestionnaireItem {
         int xTuileSpawn = centerTileX + direction;
         int yTuileSpawn = playerTileY - 1;
 
-        System.out.println("[DEBUG] centreTile = (" + centerTileX + "," + playerTileY + "), "
-                + "spawnTile = (" + xTuileSpawn + "," + yTuileSpawn + ")");
-
         spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
     }
 
