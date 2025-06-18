@@ -62,6 +62,8 @@ public class GestionnaireImage {
         itemToImage.put("PIOCHE",              Chemin.ITEM_PIOCHE);
         itemToImage.put("BATON",               Chemin.ITEM_BATON);
         itemToImage.put("FIL",                 Chemin.ITEM_FIL);
+        itemToImage.put("FLECHE",              Chemin.ITEM_FLECHE);
+        itemToImage.put("PLUME",               Chemin.ITEM_PLUME);
     }
 
     /**

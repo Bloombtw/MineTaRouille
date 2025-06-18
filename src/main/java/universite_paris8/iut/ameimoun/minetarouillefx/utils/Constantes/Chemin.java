@@ -58,6 +58,8 @@ public class Chemin {
         public static final String ITEM_PIOCHE = "/img/items/pioche.png";
         public static final String ITEM_BATON = "/img/items/baton.png";
         public static final String ITEM_FIL = "/img/items/fil.png";
+        public static final String ITEM_FLECHE = "/img/items/fleche.png";
+        public static final String ITEM_PLUME = "/img/items/plume.png";
         // Défaut
         public static final String IMAGE_DEFAULT = "/img/default.jpg";
         public static final String SON_DEFAULT = "/mp3/error.mp3";

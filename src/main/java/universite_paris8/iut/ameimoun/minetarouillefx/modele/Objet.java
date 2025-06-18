@@ -7,7 +7,9 @@ public enum Objet {
     PELLE(104, "Pelle", 1, "Une pelle pour creuser la terre et le sable.", Type.OUTIL, Rarete.COMMUN),
     MOUTON_CUIT(105, "Mouton cuit", 64, "Un délicieux mouton rôti.", Type.CONSOMMABLE, Rarete.COMMUN),
     BATON(106, "Bâton", 64, "Un bâton utile pour fabriquer des outils.", Type.RESSOURCE, Rarete.COMMUN),
-    FIL(107, "Fil", 64, "Fil servant à fabriquer un arc.", Type.RESSOURCE, Rarete.EPIQUE);
+    FIL(107, "Fil", 64, "Fil servant à fabriquer un arc.", Type.RESSOURCE, Rarete.EPIQUE),
+    FLECHE(108,"Fleche",64, "Fleches servant à tirer avec l'arc.", Type.CONSOMMABLE, Rarete.COMMUN),
+    PLUME(109, "Plume", 64, "Plumes pour créer des fleches.", Type.RESSOURCE, Rarete.COMMUN);
     private final int id;
     private final String nom;
     private final int stackSize;
