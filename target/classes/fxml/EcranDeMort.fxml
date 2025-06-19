@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="universite_paris8.iut.ameimoun.minetarouillefx.controller.EcranDeMortController"
+            prefHeight="1080.0" prefWidth="1920.0"
+            style="-fx-background-color: rgba(0, 0, 0, 0.6);">
+
+    <VBox alignment="CENTER" spacing="40.0"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          style="-fx-padding: 40;">
+
+        <ImageView fx:id="messageMortImage"
+                   fitWidth="1600" fitHeight="260"
+                   preserveRatio="true"
+                   pickOnBounds="true"
+        />
+
+        <ImageView fx:id="rejouerImage"
+                   onMouseClicked="#handleRejouer"
+                   fitWidth="560" fitHeight="168"
+                   preserveRatio="true"
+                   pickOnBounds="true"
+        />
+
+        <ImageView fx:id="quitterImage"
+                   onMouseClicked="#handleQuitter"
+                   fitWidth="560" fitHeight="168"
+                   preserveRatio="true"
+                   pickOnBounds="true"
+        />
+    </VBox>
+
+</AnchorPane>
