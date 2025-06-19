@@ -11,6 +11,16 @@ public class Carte {
     }
 
 
+    /**
+     * Casse un bloc à la position (x, y) dans la couche spécifiée.
+     * Si le bloc est solide, il est remplacé par Bloc.CIEL_VIOLET -> Le bloc de fond par défaut.
+     * Si le bloc est un décor nécessitant un support, il est supprimé si plus de support.
+     *
+     * @param couche La couche du bloc à casser (0, 1 ou 2).
+     * @param x     La coordonnée x du bloc.
+     * @param y     La coordonnée y du bloc.
+     * @return Le bloc cassé ou null si le bloc n'est pas solide ou hors de la carte.
+     */
     public Bloc casserBloc(int couche, int x, int y) {
         if (!estDansLaMap(x, y)) return null;
         Bloc bloc = terrain[couche][y][x];
@@ -38,6 +48,12 @@ public class Carte {
         return x >= 0 && y >= 0 && y < getHauteur() && x < getLargeur();
     }
 
+    /**
+     * Retourne l'instance unique de la carte.
+     * Si l'instance n'existe pas, elle est générée.
+     *
+     * @return L'instance de la carte.
+     */
     public static Carte getInstance() {
         if (instance == null) {
             instance = GenerateurCarte.genererCarte();
@@ -45,29 +61,14 @@ public class Carte {
         return instance;
     }
 
-    public Bloc getBloc(int x, int y, int couche) {
-        if (!estDansLaMap(x, y) || couche < 0 || couche >= getNbCouches()) {
-            return null;
-        }
-        return terrain[couche][y][x];
-    }
-
-    public Bloc[][][] getTerrain() {
-        return terrain;
-    }
-
-    public int getLargeur() {
-        return terrain[0][0].length;
-    }
-
-    public int getHauteur() {
-        return terrain[0].length;
-    }
-
-    public int getNbCouches() {
-        return Constantes.NB_COUCHES;
-    }
-
+    /**
+     * Vérifie si un bloc à la position (x, y) est solide.
+     * Parcourt toutes les couches pour vérifier si un bloc solide existe.
+     *
+     * @param x La coordonnée x du bloc.
+     * @param y La coordonnée y du bloc.
+     * @return true si le bloc est solide, false sinon.
+     */
     public boolean estBlocSolide(int x, int y) {
         if (!estDansLaMap(x, y)) return true;
 
@@ -80,4 +81,24 @@ public class Carte {
         return false;
     }
 
+    public Bloc getBloc(int x, int y, int couche) {
+        if (!estDansLaMap(x, y) || couche < 0 || couche >= getNbCouches()) {
+            return null;
+        }
+        return terrain[couche][y][x];
+    }
+
+    public Bloc[][][] getTerrain() {
+        return terrain;
+    }
+    public int getLargeur() {
+        return terrain[0][0].length;
+    }
+    public int getHauteur() {
+        return terrain[0].length;
+    }
+    public int getNbCouches() {
+        return Constantes.NB_COUCHES;
+    }
 }
+

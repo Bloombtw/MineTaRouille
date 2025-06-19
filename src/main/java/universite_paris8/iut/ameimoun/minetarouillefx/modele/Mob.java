@@ -42,14 +42,6 @@ public class Mob extends Personnage {
         return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 
-    public void setMouvementDirection(Direction mouvementDirection) {
-        this.mouvementDirection = mouvementDirection;
-    }
-
-    public Direction getMouvementDirection() {
-        return mouvementDirection;
-    }
-
     public double getLargeur() {
         return Constantes.TAILLE_PERSO;
     }

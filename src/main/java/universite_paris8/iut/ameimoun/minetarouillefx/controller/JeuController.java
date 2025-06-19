@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
@@ -127,39 +126,27 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        // Obtenez l'inventaire et la vueInventaire du gestionnaire d'inventaire
-        Inventaire inventaire = gestionnaireInventaire.getInventaire();
-        VueInventaire vueInventaire = gestionnaireInventaire.getVueInventaire();
-
-        SourisListener sourisListener = new SourisListener(
-                joueurModele,
-                inventaire,
-                vueCarte,
-                gestionnaireItem,
-                gestionnaireMobHostile,
-                gestionnaireMob,
-                gestionnaireFleche,
-                vueInventaire
-                // Passe le gestionnaire de mobs hostiles
-        );
-        // Initialiser GestionnaireControles avec le SourisListener créé
         gestionnaireControles = new GestionnaireControles(
                 joueurModele,
                 vueCarte,
                 gestionnaireInventaire,
                 debugManager,
                 gestionnaireItem,
-                sourisListener // Passe le SourisListener créé
+                new SourisListener(
+                        joueurModele,
+                        gestionnaireInventaire.getInventaire(),
+                        vueCarte,
+                        gestionnaireItem,
+                        gestionnaireMobHostile,
+                        gestionnaireMob,
+                        gestionnaireFleche,
+                        gestionnaireInventaire.getVueInventaire()
+                )
         );
-        // La ligne suivante n'est plus nécessaire car JeuController n'est plus directement lié
-        // gestionnaireControles.getSourisListener().setJeuController(this);
 
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte,gestionnaireInventaire,debugManager, gestionnaireItem,sourisListener);
         gestionnaireControles.getClavierListener().setJeuController(this);
         gestionnaireControles.getClavierListener().lier(tileMap);
-        gestionnaireControles.initialiserControles();
     }
-
     private void initialiserMob() {
         gestionnaireMob = new GestionnaireMob(gestionnaireItem);
         Mob mob1 = gestionnaireMob.ajouterMob(null, 200, rootPane);
@@ -170,8 +157,10 @@ public class JeuController implements Initializable {
 
     private void initialiserMobHostile() {
         gestionnaireMobHostile = new GestionnaireMobHostile();
-        gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
-        gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
+        MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
+        MobHostile mob2 =  gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
+        mobManager.ajouterMob(mob1);
+        mobManager.ajouterMob(mob2);
     }
 
     private void initialiserMusique() {
@@ -238,7 +227,7 @@ public class JeuController implements Initializable {
         gestionnaireMobHostile.mettreAJour();
 
         // Mise à jour des items au sol
-        gestionnaireItem.update(
+        gestionnaireItem.miseAJourItemAuSol(
                 joueurModele,
                 gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()

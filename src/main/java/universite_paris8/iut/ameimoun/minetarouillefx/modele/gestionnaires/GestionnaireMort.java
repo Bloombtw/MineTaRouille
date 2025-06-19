@@ -1,5 +1,4 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
-
 import javafx.scene.Parent;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.GestionnaireControles;
@@ -31,7 +30,7 @@ public class GestionnaireMort {
     }
 
 
-    // Vérifie si le joueur est mort, arrête la musique et affiche l'écran de mort.
+    /**Vérifie si le joueur est mort, arrête la musique et affiche l'écran de mort.*/
     public void gererMort(AnimationTimer gameLoop) {
         TilePane tileMap = vueCarte.getTileMap();
         if (joueurModele.getVie().estMort() && vie.estMort()) {
@@ -46,7 +45,7 @@ public class GestionnaireMort {
         }
     }
 
-    // Affiche l'écran de mort en chargeant le FXML.
+    /**Affiche l'écran de mort en chargeant le FXML.*/
     private void afficherEcranDeMort() {
         Parent overlayDeMort = Loader.load(Chemin.FXML_ECRAN_MORT);
         if (overlayDeMort != null) {

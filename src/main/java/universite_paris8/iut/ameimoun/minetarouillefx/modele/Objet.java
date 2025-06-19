@@ -1,5 +1,9 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+/**
+ * L'énumération Objet représente les différents objets disponibles dans le jeu.
+ * Chaque objet possède un identifiant unique, un nom, une taille de pile maximale, une description, un type, et une rareté.
+ */
 public enum Objet {
  EPEE(101, "Épée", 1, "Une épée pour combattre les monstres.", Type.ARME, Rarete.COMMUN),
     ARC(102, "Arc", 1, "Un arc pour tirer des flèches à distance.", Type.ARME, Rarete.COMMUN),

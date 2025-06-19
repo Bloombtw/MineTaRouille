@@ -44,6 +44,11 @@ public class VueJoueur {
         animationJoueur.mettreAJourAnimation(joueur); // Mettre à jour l'animation initiale du joueur
     }
 
+    /**
+     * Crée un rectangle semi-transparent pour afficher les dégâts subis par le joueur.
+     *
+     * @return Un rectangle représentant l'overlay des dégâts.
+     */
     private Rectangle creerOverlayDegats() {
         Rectangle rect = new Rectangle(Constantes.TAILLE_PERSO, Constantes.TAILLE_PERSO);
         rect.setFill(Color.RED);
@@ -52,20 +57,34 @@ public class VueJoueur {
         return rect;
     }
 
+
+    /**
+     * Lie la position du conteneur graphique à la position du joueur dans le modèle.
+     */
     private void lierPositionContainer() {
         container.translateXProperty().bind(joueur.xProperty());
         container.translateYProperty().bind(joueur.yProperty());
     }
-
+    /**
+     * Ajoute des écouteurs pour mettre à jour l'animation du joueur lorsque sa position change.
+     */
     private void lierListeners() {
         joueur.xProperty().addListener((obs, oldX, newX) -> animationJoueur.mettreAJourAnimation(joueur));
         joueur.yProperty().addListener((obs, oldY, newY) -> animationJoueur.mettreAJourAnimation(joueur));
     }
 
+    /**
+     * Retourne le noeud graphique principal représentant le joueur.
+     *
+     * @return Le noeud graphique principal.
+     */
     public Group getNode() {
         return container;
     }
 
+    /**
+     * Affiche visuellement les dégâts subis par le joueur pendant une courte durée.
+     */
     public void afficherDegats() {
         Platform.runLater(() -> {
             if (overlayDegats != null) {
@@ -84,6 +103,12 @@ public class VueJoueur {
             }
         });
     }
+
+    /**
+     * Met à jour l'affichage de l'objet tenu par le joueur.
+     *
+     * @param item L'objet tenu par le joueur, ou null si aucun objet n'est tenu.
+     */
 
     public void mettreAJourObjetTenu(Item item) {
         if (item == null) {

@@ -15,7 +15,6 @@ public class DebugManager {
 
     private final AnchorPane rootPane;
     private final Joueur joueur;
-
     private Canvas debugCanvas;
     private Canvas hitboxCanvas;
     private boolean debugVisible = false;
@@ -76,5 +75,4 @@ public class DebugManager {
         return debugVisible;
     }
 }
-
 

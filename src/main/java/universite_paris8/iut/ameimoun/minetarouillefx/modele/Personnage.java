@@ -4,6 +4,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * La classe Personnage représente un personnage dans le jeu.
+ * Elle gère les propriétés de position, de vie, de mouvement, et de collision.
+ */
 public class Personnage {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
@@ -26,6 +30,10 @@ public class Personnage {
         this.carte = Carte.getInstance();
     }
 
+    /**
+     * Fait sauter le personnage si celui-ci est autorisé à sauter.
+     * Applique une force de saut verticale.
+     */
     public void sauter() {
         if (peutSauter) {
             vitesseY = Constantes.FORCE_SAUT;
@@ -53,6 +61,10 @@ public class Personnage {
         vitesseX = 0;
     }
 
+    /**
+     * Applique la gravité au personnage.
+     * Met à jour la position verticale et vérifie les collisions avec le sol.
+     */
     public void gravite() {
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
@@ -69,6 +81,13 @@ public class Personnage {
         return vitesseX;
     }
 
+    /**
+     * Vérifie si le personnage entre en collision avec un bloc à une position donnée.
+     *
+     * @param x La position x à vérifier.
+     * @param y La position y à vérifier.
+     * @return true si une collision est détectée, false sinon.
+     */
     public boolean collision(double x, double y) {
         int left = (int) (x / Constantes.TAILLE_PERSO);
         int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);

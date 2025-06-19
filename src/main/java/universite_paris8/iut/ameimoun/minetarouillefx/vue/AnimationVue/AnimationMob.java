@@ -7,6 +7,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * La classe AnimationMob gère les animations graphiques des mobs.
+ * Elle permet de changer l'animation en fonction de l'état du mob (idle, marche).
+ */
 public class AnimationMob {
     private final ImageView mobImage;
     private Image[] framesIdle, framesMarche;
@@ -16,6 +20,20 @@ public class AnimationMob {
     private int frameIndex = 0;
     private long lastFrameTime = 0;
     private final AnimationTimer animationTimer;
+
+    private void initialiserAnimations(String cheminIdle, String cheminMarche, int taille, int nbFramesIdle, int nbFramesMarche) {
+        framesIdle = GestionnaireAnimation.decouperSpriteSheet(
+                Loader.loadImage(cheminIdle), taille, taille, nbFramesIdle
+        );
+        frameIdleDuration = 150; // ms
+
+        framesMarche = GestionnaireAnimation.decouperSpriteSheet(
+                Loader.loadImage(cheminMarche), taille, taille, nbFramesMarche
+        );
+        frameMarcheDuration = 120; // ms
+
+        setAnimation(framesIdle, frameIdleDuration);
+    }
 
     public AnimationMob(ImageView mobImage, String cheminIdle, String cheminMarche, int taille, int nbFramesIdle, int nbFramesMarche) {
         this.mobImage = mobImage;
@@ -36,20 +54,11 @@ public class AnimationMob {
         animationTimer.start();
     }
 
-    private void initialiserAnimations(String cheminIdle, String cheminMarche, int taille, int nbFramesIdle, int nbFramesMarche) {
-        framesIdle = GestionnaireAnimation.decouperSpriteSheet(
-                Loader.loadImage(cheminIdle), taille, taille, nbFramesIdle
-        );
-        frameIdleDuration = 200; // ms
-
-        framesMarche = GestionnaireAnimation.decouperSpriteSheet(
-                Loader.loadImage(cheminMarche), taille, taille, nbFramesMarche
-        );
-        frameMarcheDuration = 120; // ms
-
-        setAnimation(framesIdle, frameIdleDuration);
-    }
-
+    /**
+     * Met à jour l'animation du mob en fonction de son état actuel.
+     *
+     * @param mob Le mob dont l'état est utilisé pour déterminer l'animation.
+     */
     public void mettreAJourAnimation(Mob mob) {
         if (mob.getVitesseX() != 0) {
             setAnimation(framesMarche, frameMarcheDuration);
@@ -58,6 +67,12 @@ public class AnimationMob {
         }
     }
 
+    /**
+     * Met à jour les frames et la durée de l'animation courante.
+     *
+     * @param frames Les frames de l'animation à afficher.
+     * @param frameDuration La durée de chaque frame en millisecondes.
+     */
     private void setAnimation(Image[] frames, int frameDuration) {
         if (this.framesActuelles != frames) {
             this.framesActuelles = frames;

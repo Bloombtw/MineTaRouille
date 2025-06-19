@@ -1,11 +1,12 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
 public class Chemin {
+        /**
+         * La classe Chemin contient les constantes représentant les chemins des ressources utilisées dans le jeu.
+         * Ces ressources incluent les images, sons, animations, fichiers FXML, et styles CSS.
+         */
 
-    /*
-    IMAGES
-     */
-
+    //IMAGES :
         // Traversables
         public static final String IMAGE_CIEL_CLAIR = "/img/blocs/traversable/ciel_clair.png";
         public static final String IMAGE_TRANSPARENT = "/img/blocs/traversable/transparent.png";

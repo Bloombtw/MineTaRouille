@@ -4,7 +4,6 @@ import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.MobHostile;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobA;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class GestionnaireMobHostile extends GestionnaireMobA {
     private static final double MAP_WIDTH = 1920.0;
 
     @Override
-    public Mob ajouterMob(Joueur cible, double y, Pane rootPane) {
+    public MobHostile ajouterMob(Joueur cible, double y, Pane rootPane) {
         if (this.rootPane == null) {
             this.rootPane = rootPane;
         }

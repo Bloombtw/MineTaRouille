@@ -1,5 +1,9 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
+/**
+ * La classe Constantes contient les constantes globales utilisées dans le jeu.
+ * Ces constantes incluent les dimensions de la fenêtre, les paramètres de la carte, les propriétés des personnages, et les éléments de l'interface utilisateur.
+ */
 public class Constantes {
 
     // Dimensions de la fenêtre

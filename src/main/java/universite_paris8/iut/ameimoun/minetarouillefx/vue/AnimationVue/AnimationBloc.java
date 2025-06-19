@@ -40,16 +40,6 @@ public class AnimationBloc {
         }
     }
 
-    public void changerAnimation(String spriteSheetPath, int frameWidth, int frameHeight, int nbFrames, int frameDurationMs) {
-        this.frames = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(spriteSheetPath), frameWidth, frameHeight, nbFrames);
-        this.frameDuration = frameDurationMs;
-        this.frameIndex = 0;
-        this.lastFrameTime = 0;
-        if (frames.length > 0) {
-            imageView.setImage(frames[0]);
-        }
-    }
-
     public void stop() {
         timer.stop();
     }

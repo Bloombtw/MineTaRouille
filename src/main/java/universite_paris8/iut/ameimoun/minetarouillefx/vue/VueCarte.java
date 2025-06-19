@@ -37,7 +37,7 @@ public class VueCarte {
                     corbeauView.setFitWidth(TAILLE_TUILE);
                     corbeauView.setFitHeight(TAILLE_TUILE);
                     cellule.getChildren().add(corbeauView);
-                    new AnimationBloc(corbeauView, Chemin.ANIMATION_CORBEAU_VOLE, 32, 32, 6, 120);
+                    new AnimationBloc(corbeauView, Chemin.ANIMATION_CORBEAU_VOLE, 32, 32, 6, 100);
                     break;
                 }
                 default -> {

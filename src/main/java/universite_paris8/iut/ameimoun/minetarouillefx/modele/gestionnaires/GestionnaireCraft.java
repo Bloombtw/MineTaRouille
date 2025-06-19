@@ -20,9 +20,7 @@ public class GestionnaireCraft {
         return fenetreCraftOuverte;
     }
 
-    /**
-=     * Met à jour la propriété fenetreCraftOuverte pour indiquer que la fenêtre est ouverte.
-     */
+    /**Met à jour la propriété fenetreCraftOuverte pour indiquer que la fenêtre est ouverte.*/
     public void ouvrirFenetreCraft() {
         fenetreCraftOuverte.set(true);
     }

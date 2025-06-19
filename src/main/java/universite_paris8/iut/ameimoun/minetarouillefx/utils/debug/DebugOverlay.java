@@ -18,7 +18,7 @@ public class DebugOverlay {
         Canvas overlay = new Canvas(largeur * taille, hauteur * taille);
         GraphicsContext gc = overlay.getGraphicsContext2D();
 
-        // Grille
+        // Draw grid lines
         gc.setStroke(Color.GRAY);
         gc.setLineWidth(0.5);
         for (int x = 0; x <= largeur; x++) {
@@ -28,6 +28,7 @@ public class DebugOverlay {
             gc.strokeLine(0, y * taille, largeur * taille, y * taille);
         }
 
+        // Highlight solid blocks
         gc.setFill(Color.color(1, 0, 0, 0.3));
         for (int x = 0; x < largeur; x++) {
             for (int y = 0; y < hauteur; y++) {
@@ -41,6 +42,7 @@ public class DebugOverlay {
             }
         }
 
+        System.out.println("[DEBUG] Grid generated for debug overlay");
         return overlay;
     }
 }

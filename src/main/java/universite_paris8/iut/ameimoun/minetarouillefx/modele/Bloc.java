@@ -61,19 +61,8 @@ public enum Bloc {
         return estSolide;
     }
 
-    public boolean estAnime() {
-        return estAnime;
-    }
-
     public boolean necessiteSupport() {
         return necessiteSupport;
-    }
-
-    public static Bloc depuisId(int id) {
-        for (Bloc bloc : values()) {
-            if (bloc.id == id) return bloc;
-        }
-        return CIEL;
     }
 
     public String getNom() {

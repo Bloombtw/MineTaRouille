@@ -9,6 +9,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * Classe qui gère l'animation du joueur en fonction de son état (idle, gauche, droite, saut).
+ * Utilise un AnimationTimer pour mettre à jour l'image du joueur à chaque frame.
+ */
 public class AnimationJoueur {
     private Image[] framesIdle, framesGauche, framesDroite, framesSaut;
     private int frameIdleDuration, frameGaucheDuration, frameDroiteDuration, frameSautDuration;
@@ -20,7 +24,21 @@ public class AnimationJoueur {
     private final ImageView perso;
     private AnimationTimer animationTimer;
 
+    private void initialiserAnimations() {
+        framesIdle = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_IDLE), 32, 32, 4);
+        frameIdleDuration = 150;
+        framesGauche = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_GAUCHE), 32, 32, 6);
+        frameGaucheDuration = 120;
+        framesDroite = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_DROITE), 32, 32, 6);
+        frameDroiteDuration = 120;
+        framesSaut = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_SAUT), 32, 32, 8);
+        frameSautDuration = 180;
+        setAnimation(framesIdle, frameIdleDuration);
+    }
 
+    /**
+     * Initialise les différentes animations du joueur (idle, gauche, droite, saut).
+     */
     public AnimationJoueur(ImageView perso) {
         this.perso = perso;
         initialiserAnimations();
@@ -40,21 +58,11 @@ public class AnimationJoueur {
         animationTimer.start();
     }
 
-
-    private void initialiserAnimations() {
-        framesIdle = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_IDLE), 32, 32, 4);
-        frameIdleDuration = 150;
-        framesGauche = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_GAUCHE), 32, 32, 6);
-        frameGaucheDuration = 100;
-        framesDroite = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_DROITE), 32, 32, 6);
-        frameDroiteDuration = 100;
-        framesSaut = GestionnaireAnimation.decouperSpriteSheet(Loader.loadImage(Chemin.ANIMATION_JOUEUR_SAUT), 32, 32, 8);
-        frameSautDuration = 120;
-
-        // On démarre en idle
-        setAnimation(framesIdle, frameIdleDuration);
-    }
-
+    /**
+     * Met à jour l'animation du joueur en fonction de son état actuel.
+     *
+     * @param joueur Le joueur dont l'état est utilisé pour déterminer l'animation.
+     */
     public void mettreAJourAnimation(Joueur joueur) {
         boolean enSaut = joueur.getVitesseY() != 0;
 
@@ -69,7 +77,12 @@ public class AnimationJoueur {
         }
     }
 
-    /** Met à jour les frames à utiliser pour l’animation courante */
+    /**
+     * Met à jour les frames et la durée de l'animation courante.
+     *
+     * @param frames Les frames de l'animation à afficher.
+     * @param frameDuration La durée de chaque frame en millisecondes.
+     */
     private void setAnimation(Image[] frames, int frameDuration) {
         if (this.framesActuelles != frames) {
             this.framesActuelles = frames;

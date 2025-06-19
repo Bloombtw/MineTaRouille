@@ -10,6 +10,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueFleche;
 
 import java.util.*;
 
+/**
+ * La classe GestionnaireFleche gère les flèches tirées par le joueur.
+ * Elle met à jour leur position, vérifie les collisions avec les mobs, et les supprime si nécessaire.
+ */
 public class GestionnaireFleche {
     private final AnchorPane rootPane;
     private final List<Fleche> fleches = new ArrayList<>();
@@ -23,6 +27,14 @@ public class GestionnaireFleche {
         this.gestionnaireMobHostile = gestionnaireMobHostile;
     }
 
+    /**
+     * Tire une flèche à partir des coordonnées spécifiées avec une direction donnée.
+     *
+     * @param x La position x de départ de la flèche.
+     * @param y La position y de départ de la flèche.
+     * @param dx La direction x de la flèche.
+     * @param dy La direction y de la flèche.
+     */
     public void tirerFleche(double x, double y, double dx, double dy) {
         Fleche fleche = new Fleche(x, y, dx, dy, Constantes.DISTANCE_ATTAQUE_ARC);
         fleches.add(fleche);
@@ -31,55 +43,75 @@ public class GestionnaireFleche {
         rootPane.getChildren().add(vueFleche.getNode());
     }
 
+    /**
+     * Met à jour la position de la flèche et vérifie si elle dépasse sa distance maximale ou sort du jeu.
+     *
+     * @param fleche La flèche à mettre à jour.
+     * @param it L'itérateur pour supprimer la flèche si nécessaire.
+     */
+    private void mettreAJourPositionEtDistance(Fleche fleche, Iterator<Fleche> it) {
+        boolean depassee = fleche.mettreAJourEtVerifierDistance();
+        if (depassee || fleche.estHorsJeu()) {
+            supprimerFleche(fleche, it);
+        }
+    }
+
+    /**
+     * Gère les collisions entre une flèche et les mobs passifs.
+     * Supprime le mob et la flèche en cas de collision.
+     *
+     * @param fleche La flèche à vérifier.
+     * @param it L'itérateur pour supprimer la flèche si nécessaire.
+     */
+    private void gererCollisionAvecMobsPassifs(Fleche fleche, Iterator<Fleche> it) {
+        for (Mob mob : gestionnaireMob.getMobs()) {
+            double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
+            if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
+                gestionnaireMob.supprimerMobEtGetLoot(mob);
+                System.out.println("mob passif tuer");
+                supprimerFleche(fleche, it);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Gère les collisions entre une flèche et les mobs hostiles.
+     * Supprime le mob et la flèche en cas de collision.
+     *
+     * @param fleche La flèche à vérifier.
+     * @param it L'itérateur pour supprimer la flèche si nécessaire.
+     */
+    private void gererCollisionAvecMobsHostiles(Fleche fleche, Iterator<Fleche> it) {
+        if (gestionnaireMobHostile != null) {
+            for (Mob mob : gestionnaireMobHostile.getMobsHostiles()) {
+                double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
+                if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
+                    gestionnaireMobHostile.supprimerMob(mob);
+                    supprimerFleche(fleche, it);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void supprimerFleche(Fleche fleche, Iterator<Fleche> it) {
+        VueFleche vue = vueFleches.get(fleche);
+        if (vue != null) {
+            rootPane.getChildren().remove(vue.getNode());
+        }
+        it.remove();
+        vueFleches.remove(fleche);
+    }
 
     public void mettreAJour() {
         Iterator<Fleche> it = fleches.iterator();
         while (it.hasNext()) {
             Fleche fleche = it.next();
 
-            boolean depassee = fleche.mettreAJourEtVerifierDistance();
-
-            // Collision avec mobs passifs
-            Mob mobTouche = null;
-            for (Mob mob : gestionnaireMob.getMobs()) {
-                double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
-                if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
-                    mobTouche = mob;
-                    gestionnaireMob.supprimerMobEtGetLoot(mobTouche);
-                    System.out.println("mob passif tuer");
-                    break;
-                }
-            }
-            // Collision avec mobs hostiles
-            if (mobTouche == null && gestionnaireMobHostile != null) {
-                for (Mob mob : gestionnaireMobHostile.getMobsHostiles()) {
-                    double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
-                    if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
-                        mobTouche = mob;
-                        gestionnaireMobHostile.supprimerMob(mobTouche);
-                        break;
-                    }
-                }
-            }
-
-            if (mobTouche != null) {
-                VueFleche vue = vueFleches.get(fleche);
-                if (vue != null) {
-                    rootPane.getChildren().remove(vue.getNode());
-                }
-                it.remove();
-                vueFleches.remove(fleche);
-                continue;
-            }
-
-            if (depassee || fleche.estHorsJeu()) {
-                VueFleche vue = vueFleches.get(fleche);
-                if (vue != null) {
-                    rootPane.getChildren().remove(vue.getNode());
-                }
-                it.remove();
-                vueFleches.remove(fleche);
-            }
+            mettreAJourPositionEtDistance(fleche, it);
+            gererCollisionAvecMobsPassifs(fleche, it);
+            gererCollisionAvecMobsHostiles(fleche, it);
         }
     }
 }

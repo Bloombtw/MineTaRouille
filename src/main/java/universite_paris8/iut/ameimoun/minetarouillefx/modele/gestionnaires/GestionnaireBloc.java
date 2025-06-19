@@ -3,9 +3,13 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * La classe GestionnaireBloc gère les interactions avec les blocs dans le jeu.
+ * Elle permet de casser des blocs, de placer des blocs, et de vérifier les conditions nécessaires pour ces actions.
+ */
 public class GestionnaireBloc {
 
-    // Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)
+    /** Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)*/
     public static Item casserBlocEtDonnerItem(int couche, int x, int y, Joueur joueur) {
         if (!estADistanceAutorisee(joueur, x, y)) return null;
         Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
@@ -16,8 +20,15 @@ public class GestionnaireBloc {
         return null;
     }
 
+    /**
+     * Vérifie si un joueur est à une distance autorisée pour interagir avec un bloc.
+     *
+     * @param joueur Le joueur effectuant l'action.
+     * @param x La position x du bloc.
+     * @param y La position y du bloc.
+     * @return true si le joueur est à une distance autorisée, false sinon.
+     */
     public static boolean estADistanceAutorisee(Joueur joueur, int x, int y) {
-        // Distance euclidienne entre le joueur et le bloc
         int joueurX = (int) ((joueur.getX() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
         int joueurY = (int) ((joueur.getY() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
         double distance = Math.sqrt(Math.pow(joueurX - x, 2) + Math.pow(joueurY - y, 2));
@@ -25,7 +36,7 @@ public class GestionnaireBloc {
     }
 
 
-    // Place un bloc à la position (x, y) dans la couche spécifiée
+    /**Place un bloc à la position spécifiée dans la couche donnée, si les conditions sont remplies.*/
     public static boolean placerBloc(
             Carte carte,
             Inventaire inventaire,
@@ -48,6 +59,27 @@ public class GestionnaireBloc {
         return true;
     }
 
+    /**Valide les conditions liées à la position et à la carte pour placer un bloc.*/
+    private static boolean validerPositionEtCarte(Carte carte, Joueur joueur, int couche, int x, int y) {
+        if (!carte.estDansLaMap(x, y)) return false;
+        Bloc blocExistant = carte.getTerrain()[couche][y][x];
+        if (blocExistant != null && blocExistant.estSolide()) return false;
+        if (hitboxSurBloc(joueur, x, y)) return false;
+        if (!estADistanceAutorisee(joueur, x, y)) return false;
+        return true;
+    }
+
+    /**Valide les conditions liées à l'item pour placer un bloc.*/
+    private static boolean validerItem(Inventaire inventaire, int indexItem) {
+        Item itemSelectionne = inventaire.getItem(indexItem);
+        if (itemSelectionne == null) return false;
+        if (itemSelectionne.getTypeItem() != Item.TypeItem.BLOC) return false;
+        if (itemSelectionne.getQuantite() <= 0) return false;
+        if (itemSelectionne.getBloc() == null) return false;
+        return true;
+    }
+
+    /**Vérifie si un bloc peut être placé à la position spécifiée dans la couche donnée.*/
     private static boolean peutPlacerBloc(
             Carte carte,
             Inventaire inventaire,
@@ -57,20 +89,10 @@ public class GestionnaireBloc {
             int y,
             Joueur joueur
     ) {
-        if (!carte.estDansLaMap(x, y)) return false;
-        Bloc blocExistant = carte.getTerrain()[couche][y][x];
-        if (blocExistant != null && blocExistant.estSolide()) return false;
-        if (hitboxSurBloc(joueur, x, y)) return false;
-        if (!estADistanceAutorisee(joueur, x, y)) return false;
-
-        Item itemSelectionne = inventaire.getItem(indexItem);
-        if (itemSelectionne == null) return false;
-        if (itemSelectionne.getTypeItem() != Item.TypeItem.BLOC) return false;
-        if (itemSelectionne.getQuantite() <= 0) return false;
-        if (itemSelectionne.getBloc() == null) return false;
-        return true;
+        return validerPositionEtCarte(carte, joueur, couche, x, y) && validerItem(inventaire, indexItem);
     }
 
+    /**Vérifie si la hitbox du joueur chevauche un bloc à la position spécifiée.*/
     public static boolean hitboxSurBloc(Joueur joueur, int x, int y) {
         double px = joueur.getX();
         double py = joueur.getY();

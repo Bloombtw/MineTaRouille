@@ -14,6 +14,11 @@ public class GestionnaireDeplacement {
         initialiserBoucleDeplacement();
     }
 
+
+    /** Initialise la boucle d'animation pour gérer le déplacement du joueur.
+     * La boucle vérifie en continu si le joueur doit se déplacer à gauche ou à droite
+     * et appelle les méthodes appropriées sur l'objet Joueur.
+     */
     private void initialiserBoucleDeplacement() {
         boucleDeplacement = new AnimationTimer() {
             @Override

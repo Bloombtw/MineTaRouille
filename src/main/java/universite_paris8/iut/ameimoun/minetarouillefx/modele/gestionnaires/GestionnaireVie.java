@@ -1,5 +1,4 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
-
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
@@ -18,7 +17,7 @@ public class GestionnaireVie {
         this.vie = vie;
     }
 
-    // Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.
+    /**Gère la vie du joueur, vérifie les dégâts, joue les alertes de vie basse et gère la mort.*/
     public void mettreAJour(AnimationTimer gameLoop) {
         vie.verifierDegats(joueurModele, Carte.getInstance());
         gestionnaireSon.gererAlerteVieBasse();

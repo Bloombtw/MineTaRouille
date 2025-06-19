@@ -1,5 +1,4 @@
 package universite_paris8.iut.ameimoun.minetarouillefx;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
