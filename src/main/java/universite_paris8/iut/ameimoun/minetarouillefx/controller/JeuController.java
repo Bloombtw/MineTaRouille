@@ -1,36 +1,40 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
+
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.*;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 
 public class JeuController implements Initializable {
-    @FXML
+    @FXML private AnchorPane rootPane;
+
     private TilePane tileMap;
-    @FXML
-    private AnchorPane rootPane;
-    private Vie vie;
+    private Pane cameraPane;
+    private Group worldGroup;
+    private VueCarte vueCarte;
     private Joueur joueurModele;
     private VueJoueur joueurVue;
+    private Vie vie;
     private AnimationTimer gameLoop;
-    private VueCarte vueCarte;
     private DebugManager debugManager;
     private MobManager mobManager;
     private MusiqueManager musiqueManager;
-    private VueMob vueMob;
-    private Mob mob;
     private GestionnaireItem gestionnaireItem;
     private GestionnaireInventaire gestionnaireInventaire;
     private GestionnaireControles gestionnaireControles;
@@ -42,14 +46,12 @@ public class JeuController implements Initializable {
     private GestionnaireFleche gestionnaireFleche;
     private boolean jeuEstEnPause = false;
 
-
-    // Dans l'ordre : Initialise la carte, le joueur, la barre de vie, l'inventaire, les contrôles.
-    // Démarre la boucle de jeu et initialise la musique de fond.
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initialiserCarte();
         initialiserGestionnaireItem();
         initialiserJoueur();
+        initialiserCamera();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
         //initialiserMusique();
@@ -64,15 +66,81 @@ public class JeuController implements Initializable {
         demarrerBoucleDeJeu();
     }
 
-    /*
-        INITIALISATIONS
-    */
-
-
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
-        tileMap.getChildren().add(vueCarte.getTileMap());
+        tileMap = vueCarte.getTileMap();
+
+        tileMap.setPrefWidth(Constantes.NB_COLONNES * Constantes.TAILLE_TUILE);
+        tileMap.setPrefHeight(Constantes.NB_LIGNES * Constantes.TAILLE_TUILE);
+        tileMap.setMinSize(tileMap.getPrefWidth(), tileMap.getPrefHeight());
+        tileMap.setMaxSize(tileMap.getPrefWidth(), tileMap.getPrefHeight());
+
     }
+
+    private void initialiserJoueur() {
+        joueurModele = new Joueur();
+        // Positionnement dynamique juste au-dessus du sol
+        int colonneDepart = Constantes.NB_COLONNES / 2;
+        int ligneSol = trouverHauteurSol(colonneDepart);
+        int ligneDepart = ligneSol - 2; // 2 cases au-dessus pour être sûr
+
+        joueurModele.setX(colonneDepart * Constantes.TAILLE_TUILE);
+        joueurModele.setY(ligneDepart * Constantes.TAILLE_TUILE);
+        joueurVue = new VueJoueur(joueurModele);
+        joueurVue.mettreAJourObjetTenu(null);
+    }
+
+    private int trouverHauteurSol(int x) {
+        for (int y = 0; y < Constantes.NB_LIGNES; y++) {
+            if (Carte.getInstance().getBloc(1, x, y) != null && Carte.getInstance().getBloc(1, x, y).estSolide()) {
+                return y;
+            }
+        }
+        return Constantes.BASE_SOL;
+    }
+
+    private void initialiserCamera() {
+        worldGroup = new Group(tileMap, joueurVue.getNode());
+        cameraPane = new Pane(worldGroup);
+        //cameraPane.setPrefSize(Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
+        cameraPane.prefWidthProperty().bind(rootPane.widthProperty());
+        cameraPane.prefHeightProperty().bind(rootPane.heightProperty());
+
+        rootPane.getChildren().add(cameraPane);
+    }
+
+    private void mettreAJourCamera() {
+        double tailleTuiles = Constantes.TAILLE_TUILE;
+        double largeurCarte = Constantes.NB_COLONNES * tailleTuiles;
+        double hauteurCarte = Constantes.NB_LIGNES * tailleTuiles;
+
+        double largeurEcran = cameraPane.getWidth(); // ou Constantes.LARGEUR_FENETRE;
+        double hauteurEcran = cameraPane.getHeight(); // ou Constantes.HAUTEUR_FENETRE;
+
+        double cibleX = joueurModele.getX();
+        double cibleY = joueurModele.getY();
+
+        // Centrage de base
+        double offsetX = largeurEcran / 2 - cibleX;
+        double offsetY = hauteurEcran / 2 - cibleY;
+
+        // Limites calculées proprement
+        double minOffsetX = - (largeurCarte - largeurEcran); // max à gauche (ex: -1320 si carte > écran)
+        double maxOffsetX = 0;                               // max à droite (aucun décalage)
+
+        double minOffsetY = - (hauteurCarte - hauteurEcran); // max en bas
+        double maxOffsetY = 0;                               // max en haut
+
+        // Clamp
+        offsetX = Math.max(minOffsetX, Math.min(maxOffsetX, offsetX));
+        offsetY = Math.max(minOffsetY, Math.min(maxOffsetY, offsetY));
+
+        worldGroup.setTranslateX(offsetX);
+        worldGroup.setTranslateY(offsetY);
+    }
+
+
+
 
     private void initialiserVueCraft() {
         GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
@@ -91,16 +159,6 @@ public class JeuController implements Initializable {
         }
 
         craftController.initialiserListeners();
-    }
-
-
-    private void initialiserJoueur() {
-        joueurModele = new Joueur();
-        mobManager= new MobManager();
-        debugManager = new DebugManager(rootPane, joueurModele, mobManager.getMobs());
-        joueurVue = new VueJoueur(joueurModele);
-        rootPane.getChildren().add(joueurVue.getNode());
-        joueurVue.mettreAJourObjetTenu(null);
     }
 
     private void initialiserBarreDeVie() {
@@ -124,34 +182,20 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserControles() {
-        // Obtenez l'inventaire et la vueInventaire du gestionnaire d'inventaire
         Inventaire inventaire = gestionnaireInventaire.getInventaire();
         VueInventaire vueInventaire = gestionnaireInventaire.getVueInventaire();
 
         SourisListener sourisListener = new SourisListener(
-                joueurModele,
-                inventaire,
-                vueCarte,
-                gestionnaireItem,
-                gestionnaireMobHostile,
-                gestionnaireMobPassif,
-                gestionnaireFleche,
-                vueInventaire
-                // Passe le gestionnaire de mobs hostiles
+                joueurModele, inventaire, vueCarte, gestionnaireItem,
+                gestionnaireMobHostile, gestionnaireMobPassif,
+                gestionnaireFleche, vueInventaire
         );
-        // Initialiser GestionnaireControles avec le SourisListener créé
-        gestionnaireControles = new GestionnaireControles(
-                joueurModele,
-                vueCarte,
-                gestionnaireInventaire,
-                debugManager,
-                gestionnaireItem,
-                sourisListener // Passe le SourisListener créé
-        );
-        // La ligne suivante n'est plus nécessaire car JeuController n'est plus directement lié
-        // gestionnaireControles.getSourisListener().setJeuController(this);
 
-        gestionnaireControles = new GestionnaireControles(joueurModele, vueCarte,gestionnaireInventaire,debugManager, gestionnaireItem,sourisListener);
+        gestionnaireControles = new GestionnaireControles(
+                joueurModele, vueCarte, gestionnaireInventaire,
+                debugManager, gestionnaireItem, sourisListener
+        );
+
         gestionnaireControles.getClavierListener().setJeuController(this);
         gestionnaireControles.getClavierListener().lier(tileMap);
         gestionnaireControles.initialiserControles();
@@ -161,8 +205,10 @@ public class JeuController implements Initializable {
         gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
         Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, rootPane);
         Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, rootPane);
+        mobManager = new MobManager();
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
+        debugManager = new DebugManager(rootPane, joueurModele, mobManager.getMobs());
     }
 
     private void initialiserMobHostile() {
@@ -178,33 +224,24 @@ public class JeuController implements Initializable {
 
     private void initialiserGestionnaireMort() {
         gestionnaireMort = new GestionnaireMort(
-                joueurModele,
-                vie,
-                musiqueManager,
-                rootPane,
-                gestionnaireControles,
-                vueCarte
+                joueurModele, vie, musiqueManager,
+                rootPane, gestionnaireControles, vueCarte
         );
     }
 
-    private void  initialiserGestionnaireVie() {
+    private void initialiserGestionnaireVie() {
         gestionnaireVie = new GestionnaireVie(
-                joueurModele,
-                gestionnaireSon,
-                gestionnaireMort,
-                vie
+                joueurModele, gestionnaireSon,
+                gestionnaireMort, vie
         );
     }
 
     private void initialiserGestionnaireFleche() {
-        gestionnaireFleche = new GestionnaireFleche(rootPane, gestionnaireMobPassif, gestionnaireMobHostile);
+        gestionnaireFleche = new GestionnaireFleche(
+                rootPane, gestionnaireMobPassif, gestionnaireMobHostile
+        );
     }
 
-    /*
-       BOUCLES DE JEU
-     */
-
-    // Démarre la boucle de jeu qui met à jour l'état du jeu à chaque frame.
     private void demarrerBoucleDeJeu() {
         gameLoop = new AnimationTimer() {
             @Override
@@ -216,41 +253,34 @@ public class JeuController implements Initializable {
     }
 
     private void mettreAJourJeu() {
-        if (jeuEstEnPause) {
-            return; // Si le jeu est en pause, on ne met pas à jour l'état du jeu.
-        }
+        if (jeuEstEnPause) return;
 
-        // Mise à jour de la gravité et des collisions pour le joueur
         joueurModele.gravite();
-
-        // Mise à jour de la vie du joueur
         gestionnaireVie.mettreAJour(gameLoop);
 
-        // Mise à jour des mobs passifs
         if (gestionnaireMobPassif != null) {
             gestionnaireMobPassif.mettreAJour();
         }
 
-        // Mise à jour des mobs hostiles
         gestionnaireMobHostile.mettreAJour();
 
-        // Mise à jour des items au sol
         gestionnaireItem.update(
                 joueurModele,
                 gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()
         );
 
-        // Mise à jour des flèches
         if (gestionnaireFleche != null) {
             gestionnaireFleche.mettreAJour();
         }
 
-        // Mise à jour du mode debug
         if (debugManager.isDebugVisible()) {
             debugManager.update();
         }
+
+        mettreAJourCamera();
     }
+
     public void mettreEnPauseJeu() {
         jeuEstEnPause = true;
     }

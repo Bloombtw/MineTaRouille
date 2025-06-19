@@ -7,6 +7,7 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
+import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
@@ -15,36 +16,35 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.Animation
 public class VueCarte {
     private final TilePane tileMap;
     private final Carte carte;
-    private static final int TAILLE_TUILE = 30;
 
     public VueCarte(Carte carte) {
         this.carte = carte;
         tileMap = new TilePane();
-        tileMap.setPrefColumns(carte.getLargeur());//pour bien adapter la map à la fenêtre
+        tileMap.setPrefColumns(carte.getLargeur());
         tileMap.setPrefRows(carte.getHauteur());
+        tileMap.setPrefTileWidth(Constantes.TAILLE_TUILE);
+        tileMap.setPrefTileHeight(Constantes.TAILLE_TUILE);
+        tileMap.setHgap(0);
+        tileMap.setVgap(0);
         initialiserCarte();
     }
 
     private void ajouterBloc(Bloc bloc, Pane cellule) {
         if (bloc != null) {
             switch (bloc) {
-                case FEU -> {
-                    GestionnaireAnimation.ajouterAnimation(cellule, Chemin.ANIMATION_DECOUPEE_EXPLOSION_FEU, 6, 60);
-                    break;
-                }
+                case FEU -> GestionnaireAnimation.ajouterAnimation(cellule, Chemin.ANIMATION_DECOUPEE_EXPLOSION_FEU, 6, 60);
                 case CORBEAU -> {
                     ImageView corbeauView = new ImageView();
-                    corbeauView.setFitWidth(TAILLE_TUILE);
-                    corbeauView.setFitHeight(TAILLE_TUILE);
+                    corbeauView.setFitWidth(Constantes.TAILLE_TUILE);
+                    corbeauView.setFitHeight(Constantes.TAILLE_TUILE);
                     cellule.getChildren().add(corbeauView);
                     new AnimationBloc(corbeauView, Chemin.ANIMATION_CORBEAU_VOLE, 32, 32, 6, 120);
-                    break;
                 }
                 default -> {
                     Image image = getImageAssociee(bloc);
                     ImageView img = new ImageView(image);
-                    img.setFitWidth(TAILLE_TUILE);
-                    img.setFitHeight(TAILLE_TUILE);
+                    img.setFitWidth(Constantes.TAILLE_TUILE);
+                    img.setFitHeight(Constantes.TAILLE_TUILE);
                     cellule.getChildren().add(img);
                 }
             }
@@ -58,6 +58,7 @@ public class VueCarte {
         for (int y = 0; y < terrain[0].length; y++) {
             for (int x = 0; x < terrain[0][0].length; x++) {
                 Pane cellule = new Pane();
+                cellule.setPrefSize(Constantes.TAILLE_TUILE, Constantes.TAILLE_TUILE);
                 for (int layer = 0; layer < nbCouches; layer++) {
                     ajouterBloc(terrain[layer][y][x], cellule);
                 }
@@ -72,14 +73,11 @@ public class VueCarte {
         cellule.getChildren().clear();
         for (int couche = 0; couche < carte.getNbCouches(); couche++) {
             Bloc bloc = carte.getTerrain()[couche][y][x];
-            if (bloc != null ) {
+            if (bloc != null) {
                 ajouterBloc(bloc, cellule);
             }
         }
     }
-
-
-
 
     public TilePane getTileMap() {
         return tileMap;
