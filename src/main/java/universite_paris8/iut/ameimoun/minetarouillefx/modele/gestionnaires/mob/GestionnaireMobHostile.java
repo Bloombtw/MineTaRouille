@@ -15,7 +15,7 @@ public class GestionnaireMobHostile extends GestionnaireMob {
     private static final double MAP_WIDTH = 1920.0;
 
     @Override
-    public Mob ajouterMob(Joueur cible, double y, Pane rootPane) {
+    public MobHostile ajouterMob(Joueur cible, double y, Pane rootPane) {
         if (this.rootPane == null) {
             this.rootPane = rootPane;
         }
