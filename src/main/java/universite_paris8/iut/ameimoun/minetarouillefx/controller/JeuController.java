@@ -59,11 +59,16 @@ public class JeuController implements Initializable {
         initialiserMob();
         initialiserMobHostile();
         initialiserGestionnaireFleche();
+        initialiserDebug();
         initialiserControles();
         initialiserVueCraft();
         initialiserGestionnaireMort();
         initialiserGestionnaireVie();
         demarrerBoucleDeJeu();
+    }
+
+    private void initialiserDebug() {
+        debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
     }
 
     private void initialiserCarte() {
@@ -207,17 +212,24 @@ public class JeuController implements Initializable {
         mobManager = new MobManager();
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
-        debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
 
+        // Ajoute les vues déjà créées par le gestionnaire
+        for (VueMob vueMob : gestionnaireMobPassif.getVuesMob()) {
+            worldGroup.getChildren().add(vueMob.getNode());
+        }
     }
 
     private void initialiserMobHostile() {
         gestionnaireMobHostile = new GestionnaireMobHostile();
-       MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
-       MobHostile mob2 = gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
-       mobManager.ajouterMob(mob1);
-       mobManager.ajouterMob(mob2);
-         debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
+        MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
+        MobHostile mob2 = gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
+        mobManager.ajouterMob(mob1);
+        mobManager.ajouterMob(mob2);
+
+        // Ajoute les vues déjà créées par le gestionnaire
+        for (VueMobHostile vueMob : gestionnaireMobHostile.getVuesMobsHostiles()) {
+            worldGroup.getChildren().add(vueMob.getNode());
+        }
     }
 
     private void initialiserMusique() {

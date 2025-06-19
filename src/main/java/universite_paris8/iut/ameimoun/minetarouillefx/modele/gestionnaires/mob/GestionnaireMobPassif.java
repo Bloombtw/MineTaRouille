@@ -101,6 +101,10 @@ public class GestionnaireMobPassif extends GestionnaireMob {
         }
     }
 
+    public List<VueMob> getVuesMob() {
+        return vuesMob;
+    }
+
     public List<Mob> getMobs() {
         return mobSimple;
     }

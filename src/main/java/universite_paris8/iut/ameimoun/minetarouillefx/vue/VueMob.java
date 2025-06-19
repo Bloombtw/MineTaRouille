@@ -17,8 +17,8 @@ public class VueMob {
         this.mob = mob;
 
         mobImage = new ImageView();
-        mobImage.setFitWidth(Constantes.TAILLE_TUILE);
-        mobImage.setFitHeight(Constantes.TAILLE_TUILE);
+        mobImage.setFitWidth(Constantes.TAILLE_PERSO);
+        mobImage.setFitHeight(Constantes.TAILLE_PERSO);
 
         container = new Group(mobImage);
         lierPositionContainer();
