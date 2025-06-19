@@ -74,7 +74,7 @@ public class GestionnaireFleche {
             for (MobHostile mob : mobs) {
                 double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
                 if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
-                    gestionnaireMobHostile.supprimerMob(mob);
+                    gestionnaireMobHostile.supprimerMobEtLoot(mob);
                     supprimerFleche(fleche, it);
                     return true;
                 }

@@ -204,29 +204,20 @@ public class JeuController implements Initializable {
 
     private void initialiserMob() {
         gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
-        Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, rootPane);
-        Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, rootPane);
+        Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, worldGroup);
+        Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, worldGroup);
         mobManager = new MobManager();
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
-
-        // Ajoute les vues déjà créées par le gestionnaire
-        for (VueMob vueMob : gestionnaireMobPassif.getVuesMob()) {
-            worldGroup.getChildren().add(vueMob.getNode());
-        }
+// Ne pas ajouter les vues ici, elles sont déjà ajoutées dans ajouterMob
     }
 
     private void initialiserMobHostile() {
-        gestionnaireMobHostile = new GestionnaireMobHostile();
-        MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
-        MobHostile mob2 = gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
+        gestionnaireMobHostile = new GestionnaireMobHostile(gestionnaireItem);
+        MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, worldGroup);
+        MobHostile mob2 = gestionnaireMobHostile.ajouterMob(joueurModele, 400, worldGroup);
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
-
-        // Ajoute les vues déjà créées par le gestionnaire
-        for (VueMobHostile vueMob : gestionnaireMobHostile.getVuesMobsHostiles()) {
-            worldGroup.getChildren().add(vueMob.getNode());
-        }
     }
 
     private void initialiserMusique() {

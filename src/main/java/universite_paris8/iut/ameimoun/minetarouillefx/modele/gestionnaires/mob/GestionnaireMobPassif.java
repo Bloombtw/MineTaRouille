@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
@@ -24,9 +25,9 @@ public class GestionnaireMobPassif extends GestionnaireMob {
     }
 
     @Override
-    public Mob ajouterMob(Joueur mob, double y, Pane rootPane) {
+    public Mob ajouterMob(Joueur mob, double y, Group worldGroup) {
         if (this.rootPane == null) {
-            this.rootPane = rootPane;
+            this.rootPane = worldGroup;
         }
         Mob nouveauMob = new Mob();
         double randomX = random.nextDouble() * MAP_WIDTH;
@@ -36,14 +37,31 @@ public class GestionnaireMobPassif extends GestionnaireMob {
 
         VueMob vue = new VueMob(nouveauMob);
         vuesMob.add(vue);
-        rootPane.getChildren().add(vue.getNode());
+        worldGroup.getChildren().add(vue.getNode());
         return nouveauMob;
     }
 
     @Override
     public void mettreAJour() {
-        for (Mob m : mobSimple) {
-            m.mettreAJour();
+        for (int i = mobSimple.size() - 1; i >= 0; i--) {
+            Mob mob = mobSimple.get(i);
+            mob.mettreAJour();
+            if (mob.estMort()) {
+                if (rootPane != null && i < vuesMob.size()) {
+                    javafx.scene.Node node = vuesMob.get(i).getNode();
+                    if (rootPane.getChildren().contains(node)) {
+                        rootPane.getChildren().remove(node);
+                    }
+                    vuesMob.remove(i);
+                }
+                mobSimple.remove(i);
+                if (gestionnaireItem != null) {
+                    Item loot = new Item(Objet.FIL, 3);
+                    int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
+                    int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
+                    gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
+                }
+            }
         }
     }
 
@@ -74,7 +92,7 @@ public class GestionnaireMobPassif extends GestionnaireMob {
             mobSimple.remove(index);
 
             if (gestionnaireItem != null) {
-                Item loot = new Item(Objet.FIL, 3);
+                Item loot = new Item(Objet.MOUTON_CUIT, 3);
                 int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
                 int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
                 gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
@@ -109,7 +127,7 @@ public class GestionnaireMobPassif extends GestionnaireMob {
         return mobSimple;
     }
 
-    public Pane getRootPane() {
-        return rootPane;
+    public Group getRootPane() {
+        return this.rootPane;
     }
 }

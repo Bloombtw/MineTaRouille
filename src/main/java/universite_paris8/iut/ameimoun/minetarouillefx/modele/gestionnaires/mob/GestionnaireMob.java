@@ -1,5 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
@@ -20,17 +21,15 @@ public abstract class GestionnaireMob {
     /**
      * Conteneur graphique racine où les Mobs sont affichés.
      */
-    protected Pane rootPane;
+    Group rootPane;
 
     /**
      * Ajoute un nouveau Mob au jeu.
      *
-     * @param cible    Le joueur ou entité associée au Mob.
-     * @param y        La position verticale du Mob.
-     * @param rootPane Le conteneur graphique où le Mob sera affiché.
-     * @return Le Mob nouvellement ajouté.
+
      */
-    public abstract Mob ajouterMob(Joueur cible, double y, Pane rootPane);
+
+    public abstract Mob ajouterMob(Joueur mob, double y, Group worldGroup);
 
     /**
      * Met à jour les Mobs gérés par le gestionnaire.
