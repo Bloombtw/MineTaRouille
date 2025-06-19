@@ -102,12 +102,11 @@ public class JeuController implements Initializable {
     private void initialiserCamera() {
         worldGroup = new Group(tileMap, joueurVue.getNode());
         cameraPane = new Pane(worldGroup);
-        //cameraPane.setPrefSize(Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
         cameraPane.prefWidthProperty().bind(rootPane.widthProperty());
         cameraPane.prefHeightProperty().bind(rootPane.heightProperty());
-
         rootPane.getChildren().add(cameraPane);
     }
+
 
     private void mettreAJourCamera() {
         double tailleTuiles = Constantes.TAILLE_TUILE;
@@ -208,7 +207,8 @@ public class JeuController implements Initializable {
         mobManager = new MobManager();
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
-        debugManager = new DebugManager(rootPane, joueurModele, mobManager.getMobs());
+        debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
+
     }
 
     private void initialiserMobHostile() {

@@ -2,7 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.utils.debug;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
@@ -13,39 +13,40 @@ import java.util.List;
 
 public class DebugManager {
 
-    private final AnchorPane rootPane;
+    private final Group worldGroup;
     private final Joueur joueur;
-
-    private Canvas debugCanvas;
-    private Canvas hitboxCanvas;
-    private boolean debugVisible = false;
     private final List<Mob> mobs;
 
-    public DebugManager(AnchorPane rootPane,Joueur joueur,List<Mob> mobs) {
-        this.rootPane = rootPane;
+    private Canvas grilleCanvas;
+    private Canvas hitboxCanvas;
+    private boolean debugVisible = false;
+
+    public DebugManager(Group worldGroup, Joueur joueur, List<Mob> mobs) {
+        this.worldGroup = worldGroup;
         this.joueur = joueur;
         this.mobs = mobs;
+        this.grilleCanvas = DebugOverlay.genererGrille(Carte.getInstance());
+
+        this.hitboxCanvas = new Canvas(
+                Constantes.NB_COLONNES * Constantes.TAILLE_TUILE,
+                Constantes.NB_LIGNES * Constantes.TAILLE_TUILE
+        );
+
+        // Initialisation mais pas encore visible
+        grilleCanvas.setVisible(false);
+        hitboxCanvas.setVisible(false);
+
+        worldGroup.getChildren().addAll(grilleCanvas, hitboxCanvas);
     }
 
     public void toggle() {
-        if (debugCanvas == null) {
-            debugCanvas = DebugOverlay.genererGrille(Carte.getInstance());
-            rootPane.getChildren().add(debugCanvas);
-
-            hitboxCanvas = new Canvas(
-                    Constantes.NB_COLONNES * Constantes.TAILLE_TUILE,
-                    Constantes.NB_LIGNES * Constantes.TAILLE_TUILE
-            );
-            rootPane.getChildren().add(hitboxCanvas);
-        }
-
         debugVisible = !debugVisible;
-        debugCanvas.setVisible(debugVisible);
+        grilleCanvas.setVisible(debugVisible);
         hitboxCanvas.setVisible(debugVisible);
     }
 
     public void update() {
-        if (!debugVisible || hitboxCanvas == null) return;
+        if (!debugVisible) return;
 
         GraphicsContext gc = hitboxCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, hitboxCanvas.getWidth(), hitboxCanvas.getHeight());
@@ -76,5 +77,3 @@ public class DebugManager {
         return debugVisible;
     }
 }
-
-

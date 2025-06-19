@@ -77,9 +77,12 @@ public class GestionnaireItem {
     }
 
     // fait spawn un item au sol à la position (x, y)
-    public void spawnItemAuSol(Item item, int x, int y) {
-        item.setX(x * Constantes.TAILLE_TUILE);
-        item.setY(y * Constantes.TAILLE_TUILE);
+    public void spawnItemAuSol(Item item, int tuileX, int tuileY) {
+        double x = tuileX * Constantes.TAILLE_TUILE + (Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM) / 2.0;
+        double y = (tuileY + 1) * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM; // aligné en bas
+
+        item.setX(x);
+        item.setY(y);
 
         VueItem vue = new VueItem(item);
         vue.updatePosition(item);
@@ -106,20 +109,18 @@ public class GestionnaireItem {
             dropItem = new Item(item.getObjet());
         }
 
-        // 4) Calculer la tuile **centrée** sous les pieds du joueur
-        //    - On prend la position X du joueur + moitié de sa largeur (pour le centrer),
-        //      puis on divise par TAILLE_TUILE
+        // Position du centre du joueur
         double joueurCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         int centerTileX = (int) (joueurCenterX / Constantes.TAILLE_TUILE);
 
-        //    - Pour l'axe Y, on prend le pixel juste sous les pieds :
+        // Tuile au niveau des pieds
         double yPixelPieds = joueur.getY() + Constantes.TAILLE_PERSO - 1;
         int playerTileY = (int) (yPixelPieds / Constantes.TAILLE_TUILE);
 
-        // 5) Calculer la tuile **devant** le joueur sur l'axe X selon la direction
+        // Tuile devant le joueur
         int direction = joueur.estRegardADroite() ? +1 : -1;
         int xTuileSpawn = centerTileX + direction;
-        int yTuileSpawn = playerTileY - 1;
+        int yTuileSpawn = playerTileY; // on le pose au sol
 
         spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
     }
