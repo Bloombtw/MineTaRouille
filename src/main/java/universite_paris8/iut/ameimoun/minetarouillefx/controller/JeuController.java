@@ -52,13 +52,11 @@ public class JeuController implements Initializable {
         initialiserJoueur();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
-        initialiserMusique();
+        //initialiserMusique();
         initialiserInventaire();
         initialiserMob();
         initialiserMobHostile();
         initialiserGestionnaireFleche();
-        initialiserControles();
-        //initialiserMusique();
         initialiserControles();
         initialiserVueCraft();
         initialiserGestionnaireMort();
