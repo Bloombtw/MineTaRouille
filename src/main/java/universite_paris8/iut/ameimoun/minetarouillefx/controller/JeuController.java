@@ -69,33 +69,78 @@ public class JeuController implements Initializable {
     private void initialiserCarte() {
         vueCarte = new VueCarte(Carte.getInstance());
         tileMap = vueCarte.getTileMap();
+
+        tileMap.setPrefWidth(Constantes.NB_COLONNES * Constantes.TAILLE_TUILE);
+        tileMap.setPrefHeight(Constantes.NB_LIGNES * Constantes.TAILLE_TUILE);
+        tileMap.setMinSize(tileMap.getPrefWidth(), tileMap.getPrefHeight());
+        tileMap.setMaxSize(tileMap.getPrefWidth(), tileMap.getPrefHeight());
+
     }
 
     private void initialiserJoueur() {
         joueurModele = new Joueur();
-        joueurModele.setX(Constantes.NB_COLONNES / 2 * 30);
-        joueurModele.setY(20 * 30);
+        // Positionnement dynamique juste au-dessus du sol
+        int colonneDepart = Constantes.NB_COLONNES / 2;
+        int ligneSol = trouverHauteurSol(colonneDepart);
+        int ligneDepart = ligneSol - 2; // 2 cases au-dessus pour être sûr
+
+        joueurModele.setX(colonneDepart * Constantes.TAILLE_TUILE);
+        joueurModele.setY(ligneDepart * Constantes.TAILLE_TUILE);
         joueurVue = new VueJoueur(joueurModele);
         joueurVue.mettreAJourObjetTenu(null);
+    }
+
+    private int trouverHauteurSol(int x) {
+        for (int y = 0; y < Constantes.NB_LIGNES; y++) {
+            if (Carte.getInstance().getBloc(1, x, y) != null && Carte.getInstance().getBloc(1, x, y).estSolide()) {
+                return y;
+            }
+        }
+        return Constantes.BASE_SOL;
     }
 
     private void initialiserCamera() {
         worldGroup = new Group(tileMap, joueurVue.getNode());
         cameraPane = new Pane(worldGroup);
-        cameraPane.setPrefSize(1280, 720);
+        //cameraPane.setPrefSize(Constantes.LARGEUR_FENETRE, Constantes.HAUTEUR_FENETRE);
+        cameraPane.prefWidthProperty().bind(rootPane.widthProperty());
+        cameraPane.prefHeightProperty().bind(rootPane.heightProperty());
+
         rootPane.getChildren().add(cameraPane);
     }
 
     private void mettreAJourCamera() {
-        double centreEcranX = cameraPane.getPrefWidth() / 2;
-        double centreEcranY = cameraPane.getPrefHeight() / 2;
+        double tailleTuiles = Constantes.TAILLE_TUILE;
+        double largeurCarte = Constantes.NB_COLONNES * tailleTuiles;
+        double hauteurCarte = Constantes.NB_LIGNES * tailleTuiles;
+
+        double largeurEcran = cameraPane.getWidth(); // ou Constantes.LARGEUR_FENETRE;
+        double hauteurEcran = cameraPane.getHeight(); // ou Constantes.HAUTEUR_FENETRE;
 
         double cibleX = joueurModele.getX();
         double cibleY = joueurModele.getY();
 
-        worldGroup.setTranslateX(centreEcranX - cibleX);
-        worldGroup.setTranslateY(centreEcranY - cibleY);
+        // Centrage de base
+        double offsetX = largeurEcran / 2 - cibleX;
+        double offsetY = hauteurEcran / 2 - cibleY;
+
+        // Limites calculées proprement
+        double minOffsetX = - (largeurCarte - largeurEcran); // max à gauche (ex: -1320 si carte > écran)
+        double maxOffsetX = 0;                               // max à droite (aucun décalage)
+
+        double minOffsetY = - (hauteurCarte - hauteurEcran); // max en bas
+        double maxOffsetY = 0;                               // max en haut
+
+        // Clamp
+        offsetX = Math.max(minOffsetX, Math.min(maxOffsetX, offsetX));
+        offsetY = Math.max(minOffsetY, Math.min(maxOffsetY, offsetY));
+
+        worldGroup.setTranslateX(offsetX);
+        worldGroup.setTranslateY(offsetY);
     }
+
+
+
 
     private void initialiserVueCraft() {
         GestionnaireCraft gestionnaireCraft = new GestionnaireCraft(gestionnaireInventaire.getInventaire());
