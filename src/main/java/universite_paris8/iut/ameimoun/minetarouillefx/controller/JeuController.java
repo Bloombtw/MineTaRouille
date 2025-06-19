@@ -49,9 +49,9 @@ public class JeuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initialiserCarte();
+        initialiserJoueur();         // <-- Doit être AVANT
+        initialiserCamera();         // <-- Doit être APRÈS
         initialiserGestionnaireItem();
-        initialiserJoueur();
-        initialiserCamera();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
         //initialiserMusique();
@@ -175,7 +175,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserGestionnaireItem() {
-        gestionnaireItem = new GestionnaireItem(rootPane);
+        gestionnaireItem = new GestionnaireItem(worldGroup);
     }
 
     private void initialiserGestionnaireSon() {

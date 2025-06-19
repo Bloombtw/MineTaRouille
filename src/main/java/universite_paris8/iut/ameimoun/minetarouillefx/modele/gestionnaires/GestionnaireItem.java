@@ -1,6 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.Group;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
@@ -13,14 +13,13 @@ import java.util.List;
 public class GestionnaireItem {
     private final List<Item> itemsAuSol = new ArrayList<>();
     private final List<VueItem> vuesItemsAuSol = new ArrayList<>();
-    private final AnchorPane rootPane;
+    private final Group worldGroup;
 
-    public GestionnaireItem(AnchorPane rootPane) {
-        this.rootPane = rootPane;
+    public GestionnaireItem(Group worldGroup) {
+        this.worldGroup = worldGroup;
     }
 
     // Met à jour la position des items au sol, applique la gravité et gère les collisions.
-    // Utilise les méthodes appliquerGravite, gererCollisionSol et detecterRamassage.
     public void update(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
         Iterator<Item> itemIterator = itemsAuSol.iterator();
         Iterator<VueItem> vueIterator = vuesItemsAuSol.iterator();
@@ -31,13 +30,12 @@ public class GestionnaireItem {
 
             appliquerGravite(item);
             gererCollisionSol(item);
-            vue.updatePosition(item);
 
             if (detecterRamassage(item, joueur)) {
                 inventaire.ajouterItem(item);
                 vueInventaire.mettreAJourAffichageInventaire();
 
-                rootPane.getChildren().remove(vue.getImageView());
+                worldGroup.getChildren().remove(vue.getImageView());
                 itemIterator.remove();
                 vueIterator.remove();
             }
@@ -76,51 +74,42 @@ public class GestionnaireItem {
         item.setY(item.getY() + Constantes.GRAVITE * 5);
     }
 
-    // fait spawn un item au sol à la position (x, y)
     public void spawnItemAuSol(Item item, int tuileX, int tuileY) {
         double x = tuileX * Constantes.TAILLE_TUILE + (Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM) / 2.0;
-        double y = (tuileY + 1) * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM; // aligné en bas
+        double y = (tuileY + 1) * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM - Constantes.TAILLE_TUILE / 2.0;
 
         item.setX(x);
         item.setY(y);
 
         VueItem vue = new VueItem(item);
-        vue.updatePosition(item);
 
         itemsAuSol.add(item);
         vuesItemsAuSol.add(vue);
-        rootPane.getChildren().add(vue.getImageView());
+        worldGroup.getChildren().add(vue.getImageView());
     }
 
     public void jeterItemSelectionne(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
         int idx = inventaire.getSelectedIndex();
         Item item = inventaire.getItem(idx);
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         inventaire.retirerItem(idx);
         vueInventaire.mettreAJourAffichageInventaire();
 
-        Item dropItem;
-        if (item.getTypeItem() == Item.TypeItem.BLOC) {
-            dropItem = new Item(item.getBloc());
-        } else {
-            dropItem = new Item(item.getObjet());
-        }
+        Item dropItem = (item.getTypeItem() == Item.TypeItem.BLOC)
+                ? new Item(item.getBloc())
+                : new Item(item.getObjet());
 
         // Position du centre du joueur
         double joueurCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
-        int centerTileX = (int) (joueurCenterX / Constantes.TAILLE_TUILE);
+        double joueurBasY = joueur.getY() + Constantes.TAILLE_PERSO;
 
-        // Tuile au niveau des pieds
-        double yPixelPieds = joueur.getY() + Constantes.TAILLE_PERSO - 1;
-        int playerTileY = (int) (yPixelPieds / Constantes.TAILLE_TUILE);
+        // Direction : +1 à droite, -1 à gauche
+        int direction = joueur.estRegardADroite() ? 1 : -1;
 
-        // Tuile devant le joueur
-        int direction = joueur.estRegardADroite() ? +1 : -1;
-        int xTuileSpawn = centerTileX + direction;
-        int yTuileSpawn = playerTileY; // on le pose au sol
+        // Calcul de la tuile devant le joueur
+        int xTuileSpawn = (int) ((joueurCenterX + direction * Constantes.TAILLE_TUILE) / Constantes.TAILLE_TUILE);
+        int yTuileSpawn = (int) (joueurBasY / Constantes.TAILLE_TUILE) - 1;
 
         spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
     }
@@ -137,7 +126,7 @@ public class GestionnaireItem {
         }
 
         double vieActuelle = joueur.getVie().vieActuelleProperty().get();
-        double vieMax       = joueur.getVie().getVieMax();
+        double vieMax = joueur.getVie().getVieMax();
 
         if (vieActuelle >= vieMax) {
             return;
@@ -147,5 +136,4 @@ public class GestionnaireItem {
         inventaire.retirerItem(idx);
         vueInventaire.mettreAJourAffichageInventaire();
     }
-
 }
