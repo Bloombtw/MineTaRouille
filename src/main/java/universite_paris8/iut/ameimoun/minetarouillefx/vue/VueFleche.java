@@ -14,9 +14,9 @@ public class VueFleche {
         imageView.setFitWidth(Constantes.TAILLE_ITEM);
         imageView.setFitHeight(Constantes.TAILLE_ITEM);
 
-        // Lier les propriétés x et y de la flèche à l'ImageView
-        imageView.xProperty().bind(fleche.xProperty());
-        imageView.yProperty().bind(fleche.yProperty());
+        // Centrer l'image de la flèche sur sa position logique
+        imageView.xProperty().bind(fleche.xProperty().subtract(Constantes.TAILLE_ITEM / 2.0));
+        imageView.yProperty().bind(fleche.yProperty().subtract(Constantes.TAILLE_ITEM / 2.0));
     }
 
     public ImageView getNode() {

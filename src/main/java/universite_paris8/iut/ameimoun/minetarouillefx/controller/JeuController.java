@@ -112,7 +112,6 @@ public class JeuController implements Initializable {
         rootPane.getChildren().add(cameraPane);
     }
 
-
     private void mettreAJourCamera() {
         double tailleTuiles = Constantes.TAILLE_TUILE;
         double largeurCarte = Constantes.NB_COLONNES * tailleTuiles;
@@ -142,8 +141,6 @@ public class JeuController implements Initializable {
         worldGroup.setTranslateX(offsetX);
         worldGroup.setTranslateY(offsetY);
     }
-
-
 
 
     private void initialiserVueCraft() {
@@ -252,9 +249,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserGestionnaireFleche() {
-        gestionnaireFleche = new GestionnaireFleche(
-                rootPane, gestionnaireMobPassif, gestionnaireMobHostile
-        );
+        gestionnaireFleche = new GestionnaireFleche(worldGroup, gestionnaireMobPassif, gestionnaireMobHostile);
     }
 
     private void demarrerBoucleDeJeu() {
