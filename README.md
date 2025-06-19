@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MineTaRouille
 
 MineTaRouille est un jeu JavaFX structuré autour d’une architecture MVC claire et modulaire.  
@@ -66,3 +67,6 @@ Le projet utilise Maven.
 ## Contribution
 
 Clonez le dépôt, modifiez les fichiers source et soumettez des pull requests pour contribuer.
+=======
+# MineTaRouille
+>>>>>>> main
