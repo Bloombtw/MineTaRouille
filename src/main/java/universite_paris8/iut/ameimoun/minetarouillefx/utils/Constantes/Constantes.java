@@ -10,6 +10,10 @@ public class Constantes {
     public static final int TAILLE_FENETRE_CRAFT = 300;
     public static final int TAILLE_GRILLE_CRAFT = 3; // 3x3
 
+    // Dimensions fenêtre livre
+    public static final int HAUTEUR_LIVRE = 1536;
+    public static final int LARGEUR_LIVRE = 1024;
+
     // Dimensions bouton craft
     public static final int HAUTEUR_BOUTON_CRAFT = 10;
     public static final int LARGEUR_BOUTON_CRAFT = 100;
@@ -47,4 +51,8 @@ public class Constantes {
     public static final int TAILLE_BOUTON = 200;
     public static final int TAILLE_SLOT = 50;
     public static final int TAILLE_IMAGE_INVENTAIRE = 40;
+
+
+    // Livre
+    public static final String[] LIVRE_INTRO = { Chemin.LIVRE_DIDAC_PAGE_1, Chemin.LIVRE_DIDAC_PAGE_2, Chemin.LIVRE_DIDAC_PAGE_3, Chemin.LIVRE_DIDAC_PAGE_4 };
 }

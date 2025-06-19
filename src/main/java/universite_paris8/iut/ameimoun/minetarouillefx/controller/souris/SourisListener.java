@@ -14,10 +14,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobPassif;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCraft;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 
 /**
  /**
@@ -56,8 +53,12 @@ public class SourisListener {
     }
 
     public void lier(TilePane tilePane) {
-        tilePane.setOnMousePressed(this::gererClicSouris);
-        tilePane.setOnMouseClicked(this::gererPlacementBloc);
+        tilePane.setOnMousePressed(this::gererClicGauche);
+        tilePane.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                gererClicDroit(event);
+            }
+        });
     }
 
     public void desactiver(TilePane tilePane) {
@@ -83,13 +84,23 @@ public class SourisListener {
         });
     }
 
+    private void gererClicDroit(MouseEvent event) {
+        gererPlacementBloc(event);
+        gererOuvertureLivre();
+    }
+
     private void gererPlacementBloc(MouseEvent event) {
-        if (event.getButton() == MouseButton.SECONDARY) {
             int x = (int) event.getX() / Constantes.TAILLE_TUILE;
             int y = (int) event.getY() / Constantes.TAILLE_TUILE;
             int couche = 1;
             if (gererInteractionBlocSpecial(couche, x, y)) return;
             placerBloc(couche, x, y);
+    }
+
+    private void gererOuvertureLivre() {
+        Item itemSelectionne = inventaire.getItem(inventaire.getSelectedIndex());
+        if (Objet.LIVRE.estUnLivre(itemSelectionne)) {
+            VueLivre.getInstance().ouvrir();
         }
     }
 
@@ -230,11 +241,11 @@ public class SourisListener {
 
 
     /**
-     * Gère les clics de la souris pour casser des blocs et attaquer des mobs.
+     * Gère les clics gauches de la souris pour casser des blocs et attaquer des mobs.
      *
      * @param event L'événement de clic de la souris.
      */
-    private void gererClicSouris(MouseEvent event) {
+    private void gererClicGauche(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY) {
             return;
         }

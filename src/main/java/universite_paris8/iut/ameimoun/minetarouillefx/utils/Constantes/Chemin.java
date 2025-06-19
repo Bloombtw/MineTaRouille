@@ -54,6 +54,7 @@ public class Chemin {
         public static final String ITEM_PIOCHE = "/img/items/pioche.png";
         public static final String ITEM_BATON = "/img/items/baton.png";
         public static final String ITEM_FIL = "/img/items/fil.png";
+        public static final String ITEM_LIVRE = "/img/items/livre.png";
 
 
         // Défaut
@@ -63,6 +64,12 @@ public class Chemin {
         // UI
         public static final String SLOT = "/img/ui/slot.png";
         public static final String CRAFT_BACKGROUND = "/img/ui/crafting_menu.png";
+
+        //Livre
+        public static final String LIVRE_DIDAC_PAGE_1 = "/img/livre/page1.png";
+        public static final String LIVRE_DIDAC_PAGE_2 = "/img/livre/page2.png";
+        public static final String LIVRE_DIDAC_PAGE_3 = "/img/livre/page3.png";
+        public static final String LIVRE_DIDAC_PAGE_4 = "/img/livre/page4.png";
 
         // Fond
         public static final String FOND = "/img/fond/fond.png";
@@ -87,6 +94,9 @@ public class Chemin {
 
         // CSS
         public static final String CSS_BUTTON_CRAFT = "/css/styleButtonCraft.css";
+
+        // Texte
+        public static final String DIDACTICIEL = "/texte/didacticiel.txt";
     /*
     ANIMATIONS
      */
