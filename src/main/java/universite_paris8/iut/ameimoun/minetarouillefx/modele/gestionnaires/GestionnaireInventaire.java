@@ -28,10 +28,7 @@ public class GestionnaireInventaire {
         inventaire.ajouterItem(new Item(Objet.ARC));
         inventaire.ajouterItem(new Item(Objet.PIOCHE));
         inventaire.ajouterItem(new Item(Bloc.PIERRE, 32));
-
-        inventaire.ajouterItem(new Item(Objet.EPEE, 1) );
         inventaire.ajouterItem(new Item(Bloc.TRONC, 32));
-        inventaire.ajouterItem(new Item(Bloc.PIERRE, 64));
 
         AnchorPane.setTopAnchor(vueInventaire, 10.0);
         AnchorPane.setRightAnchor(vueInventaire, 10.0);

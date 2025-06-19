@@ -3,6 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import javafx.scene.layout.AnchorPane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Fleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.MobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMob;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.GestionnaireMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
@@ -84,10 +85,10 @@ public class GestionnaireFleche {
      */
     private void gererCollisionAvecMobsHostiles(Fleche fleche, Iterator<Fleche> it) {
         if (gestionnaireMobHostile != null) {
-            for (Mob mob : gestionnaireMobHostile.getMobsHostiles()) {
+            for (MobHostile mob : gestionnaireMobHostile.getMobsHostiles()) {
                 double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
                 if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
-                    gestionnaireMobHostile.supprimerMob(mob);
+                    gestionnaireMobHostile.supprimerMobEtLoot(mob);
                     supprimerFleche(fleche, it);
                     return;
                 }

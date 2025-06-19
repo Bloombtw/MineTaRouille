@@ -52,13 +52,13 @@ public class JeuController implements Initializable {
         initialiserJoueur();
         initialiserBarreDeVie();
         initialiserGestionnaireSon();
-        initialiserMusique();
+        //initialiserMusique();
         initialiserInventaire();
         initialiserMob();
         initialiserMobHostile();
         initialiserGestionnaireFleche();
         initialiserControles();
-        initialiserMusique();
+        //initialiserMusique();
         initialiserControles();
         initialiserVueCraft();
         initialiserGestionnaireMort();
@@ -156,7 +156,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserMobHostile() {
-        gestionnaireMobHostile = new GestionnaireMobHostile();
+        gestionnaireMobHostile = new GestionnaireMobHostile(gestionnaireItem);
         MobHostile mob1 = gestionnaireMobHostile.ajouterMob(joueurModele, 200, rootPane);
         MobHostile mob2 =  gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
         mobManager.ajouterMob(mob1);
