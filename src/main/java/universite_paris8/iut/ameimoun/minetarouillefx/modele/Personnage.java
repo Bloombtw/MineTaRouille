@@ -80,6 +80,10 @@ public class Personnage {
         return false;
     }
 
+    public boolean estMort() {
+        return vie.vieActuelleProperty().get() <= 0;
+    }
+
     public Vie getVie() {
         return vie;
     }

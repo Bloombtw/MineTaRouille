@@ -33,8 +33,17 @@ public class GestionnaireMobHostile extends GestionnaireMob {
 
     @Override
     public void mettreAJour() {
-        for (MobHostile mobHostile : mobsHostiles) {
+        for (int i = mobsHostiles.size() - 1; i >= 0; i--) {
+            MobHostile mobHostile = mobsHostiles.get(i);
             mobHostile.mettreAJour();
+            if (mobHostile.estMort()) {
+                if (rootPane != null && i < vuesMobsHostiles.size()) {
+                    rootPane.getChildren().remove(vuesMobsHostiles.get(i).getNode());
+                    vuesMobsHostiles.remove(i);
+                }
+                mobsHostiles.remove(i);
+                // Ajoute ici le loot si besoin
+            }
         }
     }
 

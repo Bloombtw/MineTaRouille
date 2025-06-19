@@ -27,6 +27,7 @@ public class GestionnaireInventaire {
 
 
         inventaire.ajouterItem(new Item(Objet.LIVRE, 1));
+        inventaire.ajouterItem(new Item(Objet.PIOCHE));
         inventaire.ajouterItem(new Item(Objet.EPEE, 1) );
         inventaire.ajouterItem(new Item(Bloc.TRONC, 32));
         inventaire.ajouterItem(new Item(Objet.ARC, 1));
