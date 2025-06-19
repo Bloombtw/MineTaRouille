@@ -6,7 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.stream.Collectors;
 
 
 public class Loader {
@@ -27,6 +31,18 @@ public class Loader {
         } else {
             System.err.println("Image non trouvée : " + path + " → Image par défaut utilisée.");
             return new Image(Loader.class.getResource(Chemin.IMAGE_DEFAULT).toExternalForm());
+        }
+    }
+
+    public static String[] loadPages(String path) {
+        try (InputStream is = Loader.class.getResourceAsStream(path);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) { // Lire ligne par ligne
+            String contenu = reader.lines().collect(Collectors.joining("\n")); // Concaténer
+            // coupe les lignes dès que voit : --
+            return contenu.split("(?m)^--$");
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement des pages : " + e.getMessage());
+            return new String[] { "Erreur de chargement du livre." };
         }
     }
 
