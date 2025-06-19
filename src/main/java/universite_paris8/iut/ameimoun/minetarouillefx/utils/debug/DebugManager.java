@@ -62,7 +62,7 @@ public class DebugManager {
         );
 
         // Hitbox des mobs
-        gc.setStroke(Color.RED);
+        gc.setStroke(Color.GREEN);
         for (Mob mob : mobs) {
             gc.strokeRect(
                     mob.getX(),

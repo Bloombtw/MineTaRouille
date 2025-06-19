@@ -42,10 +42,6 @@ public class VueMob {
         return mobImage;
     }
 
-    public void mettreAJourPosition() {
-        mobImage.setTranslateX(mob.getX());
-        mobImage.setTranslateY(mob.getY());
-    }
 
     public Group getNode() {
         return container;

@@ -217,6 +217,7 @@ public class JeuController implements Initializable {
        MobHostile mob2 = gestionnaireMobHostile.ajouterMob(joueurModele, 400, rootPane);
        mobManager.ajouterMob(mob1);
        mobManager.ajouterMob(mob2);
+         debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
     }
 
     private void initialiserMusique() {
