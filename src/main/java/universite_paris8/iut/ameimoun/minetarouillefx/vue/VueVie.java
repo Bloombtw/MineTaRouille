@@ -12,7 +12,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Vie;
 /**
  * Affiche la barre de vie du joueur.
  * Change de couleur selon le niveau de vie et gère un overlay
- * rouge flash en cas de dégâts subis.
+ * rouge flash en cas de dégâts subis
  */
 public class VueVie {
 
