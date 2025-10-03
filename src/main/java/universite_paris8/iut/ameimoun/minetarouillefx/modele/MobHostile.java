@@ -2,6 +2,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente un mob hostile qui attaque le joueur.
+ * Se déplace vers le joueur, saute par-dessus les obstacles
+ * et inflige des dégâts lorsque le joueur est à portée.
+ */
 public class MobHostile extends Mob {
     private final Personnage joueur; // Référence au joueur
 

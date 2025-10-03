@@ -11,6 +11,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 
 import java.util.List;
 
+/**
+ * Gestionnaire du mode debug du jeu.
+ * Affiche une grille et les hitbox du joueur et des mobs pour faciliter le débogage.
+ */
 public class DebugManager {
 
     private final Group worldGroup;

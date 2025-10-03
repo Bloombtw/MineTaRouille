@@ -4,6 +4,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente une flèche tirée par le joueur.
+ * Gère sa position, sa vitesse et la distance maximale parcourue.
+ * Permet de mettre à jour la position et de vérifier si la flèche sort de l'aire de jeu.
+ */
 public class Fleche {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();

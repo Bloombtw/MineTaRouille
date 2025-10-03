@@ -2,6 +2,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 import javafx.beans.binding.BooleanBinding;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Livre;
 
+/**
+ * Contrôle la navigation dans un livre, fournit l'accès aux pages
+ * et aux états de navigation.
+ */
 public class LivreController {
     private final Livre model;
 

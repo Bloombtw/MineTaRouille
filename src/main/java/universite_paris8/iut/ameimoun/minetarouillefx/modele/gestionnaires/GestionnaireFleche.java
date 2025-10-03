@@ -11,6 +11,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueFleche;
 
 import java.util.*;
 
+/**
+ * Gère les flèches tirées par le joueur, leur déplacement et leur durée de vie.
+ * Vérifie les collisions avec les mobs passifs et hostiles, et supprime les flèches
+ * lorsqu'elles dépassent la distance maximale ou touchent un mob.
+ */
 public class GestionnaireFleche {
     private final Group worldGroup;
     private final List<Fleche> fleches = new ArrayList<>();

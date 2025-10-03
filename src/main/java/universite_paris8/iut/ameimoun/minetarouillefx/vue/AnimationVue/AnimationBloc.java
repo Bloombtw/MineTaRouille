@@ -6,6 +6,11 @@ import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * Gère l'animation d'un bloc ou d'un élément graphique.
+ * Découpe un sprite sheet en frames et les joue automatiquement.
+ * Permet de changer l'animation du bloc à la volée et de stopper l'animation.
+ */
 public class AnimationBloc {
     private final ImageView imageView;
     private Image[] frames;

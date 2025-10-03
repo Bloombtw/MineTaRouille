@@ -16,6 +16,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Contrôle l'écran d'accueil, gère le lancement d'une nouvelle partie
+ * et quitter l'application.
+ */
 public class EcranAccueilController implements Initializable {
 
     @FXML

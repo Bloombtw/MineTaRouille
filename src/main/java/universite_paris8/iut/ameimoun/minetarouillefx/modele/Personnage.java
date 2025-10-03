@@ -4,6 +4,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente un personnage du jeu (joueur ou mob).
+ * Gère les déplacements horizontaux, la gravité, les sauts,
+ * la collision avec le terrain et la vie du personnage.
+ */
 public class Personnage {
 
     private final DoubleProperty x = new SimpleDoubleProperty();

@@ -9,6 +9,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Objet;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
+/**
+ * Gère l'inventaire du joueur et sa vue graphique.
+ * Initialise les items de départ, synchronise la sélection d'objet avec la vue du joueur,
+ * et met à jour l'affichage de l'inventaire lors de modifications.
+ */
 public class GestionnaireInventaire {
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 
+/**
+ * Gère les mobs hostiles dans le jeu, leur création, mise à jour et suppression.
+ * S'occupe également de générer le loot via le GestionnaireItem lorsqu'un mob meurt.
+ * Maintient la liste des mobs hostiles et de leurs vues pour l'affichage.
+ */
 public class GestionnaireMobHostile extends GestionnaireMob {
 
     private final List<MobHostile> mobsHostiles = new ArrayList<>();

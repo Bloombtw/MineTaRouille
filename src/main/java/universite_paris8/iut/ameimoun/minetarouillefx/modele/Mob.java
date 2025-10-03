@@ -2,6 +2,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente un mob générique du jeu.
+ * Gère son déplacement, sa gravité et ses collisions avec la carte.
+ * Fournit des méthodes pour obtenir sa vitesse et sa taille.
+ */
 public class Mob extends Personnage {
     private Direction mouvementDirection = Direction.DROITE;
 

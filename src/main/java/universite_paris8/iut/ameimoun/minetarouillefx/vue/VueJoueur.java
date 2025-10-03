@@ -13,6 +13,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Gestion
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationJoueur;
 
+/**
+ * Affiche le joueur avec son sprite, un overlay de dégâts
+ * et l'objet tenu. Lie la position aux propriétés du modèle Joueur
+ * et met à jour l'animation via AnimationJoueur.
+ */
 public class VueJoueur {
     private final Joueur joueur;
     private final ImageView perso;

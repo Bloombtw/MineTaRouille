@@ -1,5 +1,13 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
+/**
+ * Classe regroupant les chemins constants vers toutes les ressources du jeu :
+ * - Images (blocs, items, décors, UI, animations)
+ * - Sons et musiques
+ * - FXML
+ * - CSS
+ * - Texte
+ */
 public class Chemin {
 
     /*

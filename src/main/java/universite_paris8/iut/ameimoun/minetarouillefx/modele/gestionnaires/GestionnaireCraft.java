@@ -9,6 +9,12 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.RecettesCraft;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
+/**
+ * Gère la grille de craft du joueur et l'inventaire associé.
+ * Permet d'ajouter ou retirer des items dans la grille, de tenter un craft
+ * selon les recettes disponibles, et de gérer le résultat et la quantité du craft.
+ * Met à jour les propriétés observables pour l'interface utilisateur.
+ */
 public class GestionnaireCraft {
 
     private final Inventaire inventaire;

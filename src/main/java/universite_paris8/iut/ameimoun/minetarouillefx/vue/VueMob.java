@@ -7,6 +7,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationMob;
 
+/**
+ * Affiche un mob dans le jeu avec son sprite et son animation.
+ * Lie la position aux propriétés du modèle Mob et met à jour
+ * les frames selon l'état (idle/marche).
+ */
 public class VueMob {
     private final Mob mob;
     private final ImageView mobImage;

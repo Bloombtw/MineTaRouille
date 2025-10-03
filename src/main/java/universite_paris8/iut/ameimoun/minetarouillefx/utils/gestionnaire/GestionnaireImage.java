@@ -6,6 +6,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Gestionnaire des images du jeu.
+ * Associe les noms de blocs et d’objets aux chemins d’images correspondants.
+ * Permet de récupérer le chemin d’image à partir d’un Bloc ou d’un Item.
+ */
 public class GestionnaireImage {
 
     private static final Map<String, String> itemToImage = new HashMap<>();

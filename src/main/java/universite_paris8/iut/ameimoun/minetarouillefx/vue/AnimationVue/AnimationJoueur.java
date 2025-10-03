@@ -9,6 +9,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * Gère toutes les animations d'un joueur.
+ * Sélectionne automatiquement l'animation selon l'état du joueur
+ * (idle, gauche, droite, saut) et met à jour le sprite à chaque frame.
+ */
 public class AnimationJoueur {
     private Image[] framesIdle, framesGauche, framesDroite, framesSaut;
     private int frameIdleDuration, frameGaucheDuration, frameDroiteDuration, frameSautDuration;

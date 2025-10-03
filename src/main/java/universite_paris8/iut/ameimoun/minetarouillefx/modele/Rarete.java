@@ -2,6 +2,10 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Enumération des niveaux de rareté des objets.
+ * Chaque rareté possède un nom lisible et une couleur associée pour l'affichage.
+ */
 public enum Rarete {
     COMMUN("Commun", Color.GREEN),
     RARE("Rare", Color.BLUE),

@@ -4,6 +4,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+/**
+ * Représente un item du jeu, qui peut être un bloc ou un objet.
+ * Stocke la quantité, la position au sol et fournit des méthodes pour
+ * manipuler, comparer et obtenir des informations sur l'item.
+ */
 public class Item {
     public enum TypeItem { BLOC, OBJET }
     private final TypeItem typeItem;

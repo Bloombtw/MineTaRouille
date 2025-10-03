@@ -1,5 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+/**
+ * Enumération des recettes de craft disponibles.
+ * Chaque recette possède un pattern (grille 3x3), un résultat et la quantité produite.
+ * Permet de vérifier si une grille donnée correspond à une recette connue.
+ */
 public enum RecettesCraft {
     PLANCHE(
             new Item[][]{

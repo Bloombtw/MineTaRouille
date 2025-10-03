@@ -2,6 +2,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente la carte du jeu, composée de plusieurs couches de blocs.
+ * Permet de casser des blocs, vérifier les collisions et obtenir des informations
+ * sur la structure du terrain. Fournit également une instance singleton de la carte.
+ */
 public class Carte {
     private final Bloc[][][] terrain;
 

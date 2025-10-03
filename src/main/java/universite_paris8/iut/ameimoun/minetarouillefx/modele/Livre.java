@@ -4,6 +4,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Représente un livre avec plusieurs pages.
+ * Permet de naviguer entre les pages et fournit des propriétés
+ * pour savoir si on peut aller à la page suivante ou précédente.
+ */
 public class Livre {
     private final String[] pages;
     private final IntegerProperty pageCourante = new SimpleIntegerProperty(0);

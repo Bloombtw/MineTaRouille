@@ -7,6 +7,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
 import java.nio.charset.CharsetEncoder;
 
+/**
+ * Gestionnaire singleton pour la musique du jeu.
+ * Permet de jouer des musiques en boucle ou en nombre limité de répétitions,
+ * de gérer le volume, de mettre en pause et de reprendre la musique.
+ */
 public class MusiqueManager {
 
 

@@ -1,5 +1,9 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+/**
+ * Enumération des types d'objets dans le jeu.
+ * Détermine si un type permet l'utilisation de la rareté.
+ */
 public enum Type {
     ARME("Arme", true),
     OUTIL("Outil", true),
