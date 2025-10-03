@@ -39,12 +39,7 @@ public class ClavierListener {
         tilePane.setOnKeyPressed(event -> {
 
             switch (event.getCode()) {
-                case Z, SPACE, UP -> {
-                    ignorerToucheSiJeuEnPause(event);
-                    joueur.sauter();
-                    MusiqueManager.getInstance();
-
-                }
+                case Z, SPACE, UP -> deplacementManager.sauter();
                 case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
                 case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
                 case F3 -> debugManager.toggle();
