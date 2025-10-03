@@ -8,6 +8,9 @@ public class Personnage {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
+    protected boolean enDeplacementGauche = false;
+    protected boolean enDeplacementDroite = false;
+    private boolean doitSauter = false;
 
     private Vie vie;
 
@@ -98,5 +101,31 @@ public class Personnage {
     public void setY(double val) { y.set(val); }
 
     public double getVitesseY() { return vitesseY; }
+
+
+    public void setEnDeplacementGauche(boolean actif) {
+        this.enDeplacementGauche = actif;
+        if (!actif && !enDeplacementDroite) arreterMouvementX();
+    }
+
+    public void setEnDeplacementDroite(boolean actif) {
+        this.enDeplacementDroite = actif;
+        if (!actif && !enDeplacementGauche) arreterMouvementX();
+    }
+
+    public void sauterUneFois() {
+        if (getVitesseY() == 0) {
+            doitSauter = true;
+        }
+    }
+
+    public void mettreAJourDeplacement() {
+        if (enDeplacementGauche) deplacerGauche();
+        if (enDeplacementDroite) deplacerDroite();
+        if (doitSauter) {
+            sauter();
+            doitSauter = false;
+        }
+    }
 
 }

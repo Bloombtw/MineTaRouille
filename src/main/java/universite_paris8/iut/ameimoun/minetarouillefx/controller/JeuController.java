@@ -256,8 +256,8 @@ public class JeuController implements Initializable {
     private void mettreAJourJeu() {
         if (jeuEstEnPause) return;
 
+        joueurModele.mettreAJourDeplacement();
         joueurModele.gravite();
-        gestionnaireVie.mettreAJour(gameLoop);
 
         if (gestionnaireMobPassif != null) {
             gestionnaireMobPassif.mettreAJour();
