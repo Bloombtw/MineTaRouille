@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
+/**
+ * Gère les items présents au sol dans le monde.
+ * S'occupe de la gravité, des collisions avec le sol, du ramassage par le joueur,
+ * et de l'affichage des items via VueItem.
+ */
 public class GestionnaireItem {
     private final List<Item> itemsAuSol = new ArrayList<>();
     private final List<VueItem> vuesItemsAuSol = new ArrayList<>();

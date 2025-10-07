@@ -1,5 +1,11 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
+/**
+ * Représente les différents types de blocs du jeu.
+ * Chaque bloc possède un identifiant unique, un nom, des propriétés de solidité,
+ * de nécessité de support, sa capacité de stack, et des informations sur son animation ou action.
+ * Utilisé pour construire le terrain, gérer les collisions et les interactions.
+ */
 public enum Bloc {
     //Ajouter le bloc dans GestionnaireImage pour l'affichage des blocs.
     DEFAULT(-1, "Default", true, false, 64, false, false),

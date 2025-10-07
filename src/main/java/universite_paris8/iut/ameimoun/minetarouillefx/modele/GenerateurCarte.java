@@ -4,6 +4,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 
 import java.util.Random;
 
+/**
+ * Génère la carte initiale du jeu avec différentes couches de blocs.
+ * S'occupe de créer le sol, la profondeur, les nuages, les arbres, les étoiles
+ * et les objets spéciaux.
+ */
 public class GenerateurCarte {
 
     public static Carte genererCarte() {

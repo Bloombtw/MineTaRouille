@@ -18,7 +18,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-
+/**
+ * Contrôle l'écran de mort, permet de rejouer ou quitter le jeu
+ * et afficher les médias associés.
+ */
 public class EcranDeMortController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

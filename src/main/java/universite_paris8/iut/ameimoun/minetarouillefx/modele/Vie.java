@@ -9,6 +9,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Représente la vie d'un personnage.
+ * Gère les points de vie actuels et maximum, les dégâts subis,
+ * les soins, et fournit des callbacks pour réagir aux changements de vie.
+ */
 public class Vie {
     private final BooleanProperty estEnVieProperty;
     private final double vieMax;// en double

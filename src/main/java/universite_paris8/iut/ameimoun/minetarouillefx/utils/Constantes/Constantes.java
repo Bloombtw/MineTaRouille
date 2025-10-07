@@ -1,5 +1,13 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes;
 
+/**
+ * Classe regroupant les constantes globales du jeu.
+ * Contient notamment :
+ * - Dimensions des fenêtres, tuiles, boutons et inventaire
+ * - Paramètres du joueur et des mobs
+ * - Probabilités de génération de la carte
+ * - Références aux pages du livre
+ */
 public class Constantes {
 
     // Dimensions de la fenêtre

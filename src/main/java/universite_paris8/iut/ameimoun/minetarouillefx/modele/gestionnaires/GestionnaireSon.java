@@ -3,6 +3,11 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.AudioManager;
 
+
+/**
+ * Gère les sons liés au joueur, comme l'alerte de vie basse.
+ * Évite de jouer plusieurs fois le même son lorsqu'il n'est pas nécessaire.
+ */
 public class GestionnaireSon {
     private final Joueur joueurModele;
     private boolean sonDegatJoue = false;

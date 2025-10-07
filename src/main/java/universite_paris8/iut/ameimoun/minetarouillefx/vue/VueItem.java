@@ -1,5 +1,3 @@
-
-
 package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.scene.image.Image;
@@ -9,6 +7,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireImage;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * Affiche un item dans le jeu.
+ * Lie la position de l'image aux coordonnées du modèle Item
+ * et ajuste la taille de l'image.
+ */
 public class VueItem {
     private final ImageView imageView;
 

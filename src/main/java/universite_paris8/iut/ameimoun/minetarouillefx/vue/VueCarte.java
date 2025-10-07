@@ -13,6 +13,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Gestion
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationBloc;
 
+/**
+ * Crée et affiche la carte du jeu sous forme de TilePane.
+ * Gère plusieurs couches de blocs, les animations de blocs
+ * et permet de mettre à jour dynamiquement chaque cellule.
+ */
 public class VueCarte {
     private final TilePane tileMap;
     private final Carte carte;

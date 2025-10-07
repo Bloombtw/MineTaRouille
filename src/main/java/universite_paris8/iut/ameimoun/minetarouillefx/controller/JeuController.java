@@ -21,6 +21,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Contrôleur principal du jeu, initialise carte, joueur, caméra,
+ * mobs, inventaire, sons, craft et boucle de jeu.
+ */
 public class JeuController implements Initializable {
     @FXML private AnchorPane rootPane;
 
@@ -256,8 +260,8 @@ public class JeuController implements Initializable {
     private void mettreAJourJeu() {
         if (jeuEstEnPause) return;
 
+        joueurModele.mettreAJourDeplacement();
         joueurModele.gravite();
-        gestionnaireVie.mettreAJour(gameLoop);
 
         if (gestionnaireMobPassif != null) {
             gestionnaireMobPassif.mettreAJour();

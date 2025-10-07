@@ -9,6 +9,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gère les mobs passifs dans le jeu, leur création, mise à jour et suppression.
+ * S'occupe de générer le loot via le GestionnaireItem lorsqu'un mob meurt.
+ * Maintient la liste des mobs passifs et de leurs vues pour l'affichage.
+ */
 public class GestionnaireMobPassif extends GestionnaireMob {
     private final List<Mob> mobSimple = new ArrayList<>();
     private final List<VueMob> vuesMob = new ArrayList<>();

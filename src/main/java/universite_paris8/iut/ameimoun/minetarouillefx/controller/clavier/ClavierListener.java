@@ -6,14 +6,12 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireDeplacement;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
-    private final GestionnaireDeplacement deplacementManager;
     private final Joueur joueur;
     private final Inventaire inventaire;
     private final VueInventaire vueInventaire;
@@ -26,7 +24,6 @@ public class ClavierListener {
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
-        this.deplacementManager = new GestionnaireDeplacement(joueur);
         this.gestionnaireItem = gestionnaireItem;
     }
 
@@ -38,30 +35,25 @@ public class ClavierListener {
      */
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
-
             switch (event.getCode()) {
-                case Z, SPACE, UP -> {
-                    ignorerToucheSiJeuEnPause(event);
-                    joueur.sauter();
-                    MusiqueManager.getInstance();
-
-                }
-                case Q, LEFT -> deplacementManager.setEnDeplacementGauche(true);
-                case D, RIGHT -> deplacementManager.setEnDeplacementDroite(true);
+                case Z, SPACE, UP -> joueur.sauterUneFois();
+                case Q, LEFT -> joueur.setEnDeplacementGauche(true);
+                case D, RIGHT -> joueur.setEnDeplacementDroite(true);
                 case F3 -> debugManager.toggle();
-                case A -> {
-                    gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
-                }
+                case A -> gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
                 case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
             }
-
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichageInventaire();
         });
 
-        tilePane.setOnKeyReleased(event -> arreterMouvement(event.getCode()));
+        tilePane.setOnKeyReleased(event -> {
+            switch (event.getCode()) {
+                case Q, LEFT -> joueur.setEnDeplacementGauche(false);
+                case D, RIGHT -> joueur.setEnDeplacementDroite(false);
+            }
+        });
     }
-
     /**
      * Désactive les actions du clavier.
      *
@@ -70,24 +62,6 @@ public class ClavierListener {
     public void desactiver(TilePane tilePane) {
         tilePane.setOnKeyPressed(null);
         tilePane.setOnKeyReleased(null);
-        deplacementManager.stop();
-    }
-
-    /**
-     * Arrête le mouvement du joueur en fonction de la touche relâchée.
-     *
-     * @param code La touche relâchée.
-     */
-    private void arreterMouvement(KeyCode code) {
-        switch (code) {
-            case Q, LEFT -> {
-                deplacementManager.setEnDeplacementGauche(false);
-            }
-            case D, RIGHT -> {
-                deplacementManager.setEnDeplacementDroite(false);
-            }
-            case Z, SPACE, UP -> {} // RIEN
-        }
     }
 
     /**

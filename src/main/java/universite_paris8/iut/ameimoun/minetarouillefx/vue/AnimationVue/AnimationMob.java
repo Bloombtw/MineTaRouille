@@ -7,6 +7,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.GestionnaireAnimation;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+     * Gère les animations des mobs (passifs ou hostiles).
+     * Change les frames automatiquement selon l'état du mob
+     * (idle ou marche) et permet d'afficher des mouvements fluides.
+     */
 public class AnimationMob {
     private final ImageView mobImage;
     private Image[] framesIdle, framesMarche;

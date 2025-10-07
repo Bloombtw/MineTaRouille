@@ -12,7 +12,17 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.stream.Collectors;
 
-
+/**
+ * Classe utilitaire pour charger des ressources du jeu :
+ * - Images
+ * - Musiques (MP3 et MP4)
+ * - FXML
+ * - CSS
+ * - Animations
+ * - Pages de livres
+ *
+ * Fournit des méthodes robustes avec fallback si les fichiers sont manquants.
+ */
 public class Loader {
     public static final Image SLOT_IMAGE = loadImage(Chemin.SLOT);
 

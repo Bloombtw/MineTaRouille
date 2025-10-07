@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Gestionnaire singleton pour la lecture des sons du jeu.
+ * Permet de jouer des effets sonores simples ou en boucle, de gérer le volume,
+ * et de stopper tous les sons en cours.
+ */
 public class AudioManager {
 
     private static AudioManager instance;

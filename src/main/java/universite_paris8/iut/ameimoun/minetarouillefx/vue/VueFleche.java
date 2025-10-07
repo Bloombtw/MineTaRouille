@@ -5,6 +5,11 @@ import javafx.scene.image.ImageView;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Fleche;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Affiche une flèche dans le jeu.
+ * Lie sa position aux coordonnées du modèle Fleche et ajuste
+ * la taille et le centrage automatiquement.
+ */
 public class VueFleche {
     private final ImageView imageView;
 

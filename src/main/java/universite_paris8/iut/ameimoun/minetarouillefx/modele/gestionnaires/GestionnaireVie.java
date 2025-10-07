@@ -5,6 +5,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Vie;
 
+/**
+ * Supervise la vie du joueur, vérifie les dégâts et déclenche les alertes.
+ * Appelle le GestionnaireMort pour gérer la mort du joueur.
+ */
 public class GestionnaireVie {
     private final Joueur joueurModele;
     private final GestionnaireSon gestionnaireSon;

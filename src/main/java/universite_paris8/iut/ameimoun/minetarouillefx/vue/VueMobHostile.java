@@ -4,6 +4,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.MobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.AnimationVue.AnimationMob;
 
+/**
+ * Extension pour les mobs hostiles.
+ * Utilise des animations spécifiques aux mobs hostiles.
+ */
 public class VueMobHostile extends VueMob {
     private final AnimationMob animationMobHostile;
 

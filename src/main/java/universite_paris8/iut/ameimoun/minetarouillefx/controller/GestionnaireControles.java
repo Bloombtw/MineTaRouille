@@ -10,6 +10,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.Gesti
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 
+/**
+ * Initialise et relie les contrôleurs clavier et souris
+ * aux actions du joueur et de l'inventaire.
+ */
 public class GestionnaireControles {
     private ClavierListener clavierListener;
     private SourisListener sourisListener; // Now received via constructor

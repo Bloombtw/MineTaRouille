@@ -7,6 +7,10 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Carte;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Classe utilitaire pour générer le Canvas de la grille de debug.
+ * Affiche la grille ainsi que les blocs solides en surimpression.
+ */
 public class DebugOverlay {
 
 

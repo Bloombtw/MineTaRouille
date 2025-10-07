@@ -3,6 +3,12 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
+/**
+ * Fournit des méthodes pour casser et placer des blocs dans la carte.
+ * Vérifie les distances autorisées pour les actions du joueur et les collisions
+ * avec la hitbox du joueur. Permet de récupérer les blocs ou de placer des items
+ * au sol.
+ */
 public class GestionnaireBloc {
 
     // Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)

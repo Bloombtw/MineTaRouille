@@ -16,6 +16,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Livre;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
+/**
+ * Gère l'affichage du livre d'instructions du jeu.
+ * Singleton qui permet de naviguer entre les pages
+ * avec des boutons et de centrer la fenêtre à l'écran.
+ */
 public class VueLivre {
     private static VueLivre instance;
     private Stage stage;

@@ -13,6 +13,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.AnchorPane;
 
+
+/**
+ * Gère la mort du joueur : arrêt du jeu, désactivation des contrôles,
+ * arrêt de la musique et affichage de l'écran de mort.
+ */
 public class GestionnaireMort {
     private final Joueur joueurModele;
     private final Vie vie;

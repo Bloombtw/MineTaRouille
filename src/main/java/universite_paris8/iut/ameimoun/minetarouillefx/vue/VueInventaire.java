@@ -17,6 +17,11 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Affiche l'inventaire du joueur sous forme de slots.
+ * Gère l'affichage des items, de leur quantité et de la sélection,
+ * et met à jour automatiquement quand l'inventaire change.
+ */
 public class VueInventaire extends HBox {
 
     private final Inventaire inventaire;

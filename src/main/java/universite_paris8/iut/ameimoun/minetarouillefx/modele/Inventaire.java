@@ -4,6 +4,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Représente l'inventaire du joueur.
+ * Gère l'ajout, le retrait et le stockage des items dans des slots.
+ * Permet de vérifier la quantité d'un item et de gérer la sélection active.
+ */
 public class Inventaire {
     private final ObservableList<Item> slots = FXCollections.observableArrayList();
     private final IntegerProperty selectedIndex = new SimpleIntegerProperty(0);
