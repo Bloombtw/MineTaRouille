@@ -4,7 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
-public class Fleche {
+public class Fleche { //TODO avec un héritage à Personnage car les coordonnées des flèches sont pareilles
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
     private double distanceParcourue = 0;

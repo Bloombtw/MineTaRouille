@@ -80,4 +80,17 @@ public class Carte {
         return false;
     }
 
+    public boolean collision(double x, double y) { //TODO à déplacer dans la classe Carte (et la simplifiée)
+        int gauche = (int) (x / Constantes.TAILLE_PERSO);
+        int haut = (int) (y / Constantes.TAILLE_PERSO);
+        int bas = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+
+        for (int ligne= gauche; ligne <= ligne; ligne++) {
+            for (int colonne = haut; colonne <= bas; colonne++) {
+                if (estBlocSolide(ligne, colonne)) return true;
+            }
+        }
+        return false;
+    }
+
 }

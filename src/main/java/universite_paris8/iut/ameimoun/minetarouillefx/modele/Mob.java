@@ -3,7 +3,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 public class Mob extends Personnage {
-    private Direction mouvementDirection = Direction.DROITE;
+    private Direction mouvementDirection = Direction.DROITE;//TODO à supprimer (déjà défini au dessus=)
 
     public Mob() {
         super(200, 10, 5, "MOB");
