@@ -43,7 +43,7 @@ public class Personnage {
 
     public void deplacerGauche() {
         double futurX = getX() - Constantes.VITESSE_DEPLACEMENT;
-        if (!Carte.collision(futurX, getY())) {
+        if (!Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.GAUCHE;
@@ -51,7 +51,7 @@ public class Personnage {
 
     public void deplacerDroite() {
         double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
-        if (!Carte.collision(futurX, getY())) {
+        if (!!Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.DROITE;
@@ -65,15 +65,13 @@ public class Personnage {
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
 
-        if (!Carte.collision(getX(), futurY)) {
+        if (!Carte.getInstance().collision(getX(), futurY)) {
             setY(futurY);
         } else {
             vitesseY = 0;
             peutSauter = true;
         }
     }
-
-
 
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;
