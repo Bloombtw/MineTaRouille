@@ -9,10 +9,8 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
  * Gère les déplacements horizontaux, la gravité, les sauts,
  * la collision avec le terrain et la vie du personnage.
  */
-public class Personnage {
+public class Personnage extends EntitePosition{
 
-    private final DoubleProperty x = new SimpleDoubleProperty();
-    private final DoubleProperty y = new SimpleDoubleProperty();
     protected boolean enDeplacementGauche = false;
     protected boolean enDeplacementDroite = false;
     private boolean doitSauter = false;
@@ -27,8 +25,7 @@ public class Personnage {
     private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVie, String nom) {
-        this.x.set(x);
-        this.y.set(y);
+        super(x, y);
         this.vie = new Vie(pointsDeVie);
         this.nom = nom;
         this.direction = Direction.DROITE;
