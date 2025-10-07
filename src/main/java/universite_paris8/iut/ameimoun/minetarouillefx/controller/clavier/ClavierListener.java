@@ -27,7 +27,6 @@ public class ClavierListener {
         this.gestionnaireItem = gestionnaireItem;
     }
 
-    //TODO revoir la classe dans son entièreté, il y a des incohérecnce
     /**
      * Associe les touches du clavier aux actions du jeu.
      *
@@ -94,4 +93,3 @@ public class ClavierListener {
     }
 
 }
-

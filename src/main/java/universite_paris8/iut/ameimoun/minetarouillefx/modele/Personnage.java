@@ -3,27 +3,28 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
-/*
 
+/**
+ * Représente un personnage du jeu (joueur ou mob).
+ * Gère les déplacements horizontaux, la gravité, les sauts,
+ * la collision avec le terrain et la vie du personnage.
  */
 public class Personnage {
 
-    private Carte carte;
-
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
-
-    public Direction direction;
-    private double vitesseX = 0;
-    private double vitesseY = 0;
-    private boolean peutSauter = true;
+    protected boolean enDeplacementGauche = false;
+    protected boolean enDeplacementDroite = false;
+    private boolean doitSauter = false;
 
     private Vie vie;
 
     private final String nom;
-
-    //TODO MAJ deplacement commune
-
+    public Direction direction;
+    private double vitesseX = 0;
+    private double vitesseY = 0;
+    private boolean peutSauter = true;
+    private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVie, String nom) {
         this.x.set(x);
@@ -33,7 +34,7 @@ public class Personnage {
         this.direction = Direction.DROITE;
         this.carte = Carte.getInstance();
     }
-//TODO avoir une méthode majDeplacement qui peut être abstract pour éviter d'avoir la classe GestinonnaireDeplacmeent
+
     public void sauter() {
         if (peutSauter) {
             vitesseY = Constantes.FORCE_SAUT;
@@ -51,7 +52,7 @@ public class Personnage {
 
     public void deplacerDroite() {
         double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
-        if (!!Carte.getInstance().collision(futurX, getY())) {
+        if (!Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.DROITE;
@@ -91,5 +92,31 @@ public class Personnage {
     public void setY(double val) { y.set(val); }
 
     public double getVitesseY() { return vitesseY; }
+
+
+    public void setEnDeplacementGauche(boolean actif) {
+        this.enDeplacementGauche = actif;
+        if (!actif && !enDeplacementDroite) arreterMouvementX();
+    }
+
+    public void setEnDeplacementDroite(boolean actif) {
+        this.enDeplacementDroite = actif;
+        if (!actif && !enDeplacementGauche) arreterMouvementX();
+    }
+
+    public void sauterUneFois() {
+        if (getVitesseY() == 0) {
+            doitSauter = true;
+        }
+    }
+
+    public void mettreAJourDeplacement() {
+        if (enDeplacementGauche) deplacerGauche();
+        if (enDeplacementDroite) deplacerDroite();
+        if (doitSauter) {
+            sauter();
+            doitSauter = false;
+        }
+    }
 
 }

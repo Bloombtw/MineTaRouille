@@ -8,7 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
  * Fournit des méthodes pour obtenir sa vitesse et sa taille.
  */
 public class Mob extends Personnage {
-    private Direction mouvementDirection = Direction.DROITE;//TODO à supprimer (déjà défini au dessus=)
+    private Direction mouvementDirection = Direction.DROITE;
 
     public Mob() {
         super(200, 10, 5, "MOB");
@@ -19,9 +19,9 @@ public class Mob extends Personnage {
         double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
         double prochaineY = getY() +getVitesseY();
 
-        boolean collisionVerticale = collision(prochaineX,prochaineY-Constantes.FORCE_SAUT);
-        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
-        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+        boolean collisionVerticale = Carte.getInstance().collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
+        boolean collisionDroite = Carte.getInstance().collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+        boolean collisionGauche = Carte.getInstance().collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
 
         if(collisionDroite && collisionGauche){
             sauter();
