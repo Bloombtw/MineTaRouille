@@ -17,14 +17,13 @@ public class Personnage {
     protected boolean enDeplacementDroite = false;
     private boolean doitSauter = false;
 
-    private Vie vie;
-
+    private final Vie vie;
     private final String nom;
     public Direction direction;
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
-    private Carte carte;
+    private final Carte carte;
 
     public Personnage(double x, double y, double pointsDeVie, String nom) {
         this.x.set(x);
@@ -74,15 +73,23 @@ public class Personnage {
         }
     }
 
-    boolean collision(double x, double y) {
-        int left = (int) (x / Constantes.TAILLE_PERSO);
-        int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
-        int top = (int) (y / Constantes.TAILLE_PERSO);
-        int bottom = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+    /**
+     * Détection de collision pixelisée avec marge pour éviter les effets de bord.
+     */
+    protected boolean collision(double px, double py) {
+        double largeur = Constantes.TAILLE_PERSO;
+        double hauteur = Constantes.TAILLE_PERSO;
+        double marge = 1.0;
 
-        for (int tx = left; tx <= right; tx++) {
-            for (int ty = top; ty <= bottom; ty++) {
-                if (carte.estBlocSolide(tx, ty)) return true;
+        double[] pointsX = { px + marge, px + largeur - marge };
+        double[] pointsY = { py + marge, py + hauteur - marge };
+
+        for (double xPoint : pointsX) {
+            for (double yPoint : pointsY) {
+                int tuileX = (int)(xPoint / Constantes.TAILLE_TUILE);
+                int tuileY = (int)(yPoint / Constantes.TAILLE_TUILE);
+                if (!carte.estDansLaMap(tuileX, tuileY)) continue;
+                if (carte.estBlocSolide(tuileX, tuileY)) return true;
             }
         }
         return false;
@@ -106,7 +113,6 @@ public class Personnage {
     public void setY(double val) { y.set(val); }
 
     public double getVitesseY() { return vitesseY; }
-
 
     public void setEnDeplacementGauche(boolean actif) {
         this.enDeplacementGauche = actif;
@@ -132,5 +138,4 @@ public class Personnage {
             doitSauter = false;
         }
     }
-
 }

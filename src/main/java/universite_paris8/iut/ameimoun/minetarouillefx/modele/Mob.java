@@ -16,35 +16,36 @@ public class Mob extends Personnage {
 
     public void mettreAJour() {
         gravite();
-        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
-        double prochaineY = getY() +getVitesseY();
 
-        boolean collisionVerticale = collision(prochaineX,prochaineY-Constantes.FORCE_SAUT);
-        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
-        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+        double prochaineX = getX() + getVitesseX();
+        double prochaineY = getY() + getVitesseY();
 
-        if(collisionDroite && collisionGauche){
+        boolean collisionVerticale = collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
+        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB, getY());
+        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB, getY());
+
+        if (collisionDroite && collisionGauche) {
             sauter();
-        }
-        else if (collisionDroite || collisionGauche){
-            if(collisionVerticale){
+        } else if (collisionDroite || collisionGauche) {
+            if (collisionVerticale) {
                 sauter();
-                mouvementDirection=(mouvementDirection==Direction.DROITE)? Direction.GAUCHE : Direction.DROITE;
-            }
-            else{
+                mouvementDirection = (mouvementDirection == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
+            } else {
                 sauter();
             }
         }
-        if(mouvementDirection==Direction.DROITE){
+
+        if (mouvementDirection == Direction.DROITE) {
             deplacerDroite();
-        }
-        else{
+        } else {
             deplacerGauche();
         }
     }
 
     public double getVitesseX() {
-        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
+        return (mouvementDirection == Direction.DROITE)
+                ? Constantes.VITESSE_DEPLACEMENT_MOB
+                : -Constantes.VITESSE_DEPLACEMENT_MOB;
     }
 
     public double getLargeur() {

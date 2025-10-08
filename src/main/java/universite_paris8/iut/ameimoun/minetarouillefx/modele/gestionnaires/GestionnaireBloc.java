@@ -3,45 +3,39 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
-/**
- * Fournit des méthodes pour casser et placer des blocs dans la carte.
- * Vérifie les distances autorisées pour les actions du joueur et les collisions
- * avec la hitbox du joueur. Permet de récupérer les blocs ou de placer des items
- * au sol.
- */
 public class GestionnaireBloc {
 
-    // Renvoie un Item (Bloc) correspondant au bloc cassé (ou null si rien à casser)
-    public static Item casserBlocEtDonnerItem(int couche, int x, int y, Joueur joueur) {
-        if (!estADistanceAutorisee(joueur, x, y)) return null;
+    public static Item casserBlocEtDonnerItem(int couche, int px, int py, Joueur joueur) {
+        if (!estADistanceAutorisee(joueur, px, py)) return null;
+        int x = px / Constantes.TAILLE_TUILE;
+        int y = py / Constantes.TAILLE_TUILE;
         Bloc blocCasse = Carte.getInstance().casserBloc(couche, x, y);
         if (blocCasse != null && blocCasse.estSolide()) {
-            // On crée un Item de type Bloc, quantité 1 (un bloc tombé au sol)
             return new Item(blocCasse, 1);
         }
         return null;
     }
 
-    public static boolean estADistanceAutorisee(Joueur joueur, int x, int y) {
-        // Distance euclidienne entre le joueur et le bloc
-        int joueurX = (int) ((joueur.getX() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
-        int joueurY = (int) ((joueur.getY() + Constantes.TAILLE_PERSO / 2) / Constantes.TAILLE_TUILE);
-        double distance = Math.sqrt(Math.pow(joueurX - x, 2) + Math.pow(joueurY - y, 2));
-        return distance <= Constantes.DISTANCE_MAX_CASSAGE_BLOC;
+    public static boolean estADistanceAutorisee(Joueur joueur, int px, int py) {
+        double joueurCentreX = joueur.getX() + Constantes.TAILLE_PERSO / 2.0;
+        double joueurCentreY = joueur.getY() + Constantes.TAILLE_PERSO / 2.0;
+        double distance = Math.sqrt(Math.pow(joueurCentreX - px, 2) + Math.pow(joueurCentreY - py, 2));
+        return distance <= Constantes.DISTANCE_MAX_CASSAGE_BLOC * Constantes.TAILLE_TUILE;
     }
 
-
-    // Place un bloc à la position (x, y) dans la couche spécifiée
     public static boolean placerBloc(
             Carte carte,
             Inventaire inventaire,
             int indexItem,
             int couche,
-            int x,
-            int y,
+            int px,
+            int py,
             Joueur joueur
     ) {
-        if (!peutPlacerBloc(carte, inventaire, indexItem, couche, x, y, joueur)) return false;
+        if (!peutPlacerBloc(carte, inventaire, indexItem, couche, px, py, joueur)) return false;
+
+        int x = px / Constantes.TAILLE_TUILE;
+        int y = py / Constantes.TAILLE_TUILE;
 
         Item itemSelectionne = inventaire.getItem(indexItem);
         Bloc bloc = itemSelectionne.getBloc();
@@ -59,15 +53,18 @@ public class GestionnaireBloc {
             Inventaire inventaire,
             int indexItem,
             int couche,
-            int x,
-            int y,
+            int px,
+            int py,
             Joueur joueur
     ) {
+        int x = px / Constantes.TAILLE_TUILE;
+        int y = py / Constantes.TAILLE_TUILE;
+
         if (!carte.estDansLaMap(x, y)) return false;
         Bloc blocExistant = carte.getTerrain()[couche][y][x];
         if (blocExistant != null && blocExistant.estSolide()) return false;
-        if (hitboxSurBloc(joueur, x, y)) return false;
-        if (!estADistanceAutorisee(joueur, x, y)) return false;
+        if (hitboxSurBloc(joueur, px, py)) return false;
+        if (!estADistanceAutorisee(joueur, px, py)) return false;
 
         Item itemSelectionne = inventaire.getItem(indexItem);
         if (itemSelectionne == null) return false;
@@ -77,17 +74,17 @@ public class GestionnaireBloc {
         return true;
     }
 
-    public static boolean hitboxSurBloc(Joueur joueur, int x, int y) {
-        double px = joueur.getX();
-        double py = joueur.getY();
+    public static boolean hitboxSurBloc(Joueur joueur, int pxBloc, int pyBloc) {
+        double pxJoueur = joueur.getX();
+        double pyJoueur = joueur.getY();
         double taille = Constantes.TAILLE_PERSO;
-        double blocX = x * Constantes.TAILLE_TUILE;
-        double blocY = y * Constantes.TAILLE_TUILE;
-        return px + taille > blocX && px < blocX + Constantes.TAILLE_TUILE
-                && py + taille > blocY && py < blocY + Constantes.TAILLE_TUILE;
+        return pxJoueur + taille > pxBloc && pxJoueur < pxBloc + Constantes.TAILLE_TUILE
+                && pyJoueur + taille > pyBloc && pyJoueur < pyBloc + Constantes.TAILLE_TUILE;
     }
 
-    public static Bloc getBloc(int couche, int x, int y) {
+    public static Bloc getBloc(int couche, int px, int py) {
+        int x = px / Constantes.TAILLE_TUILE;
+        int y = py / Constantes.TAILLE_TUILE;
         return Carte.getInstance().getTerrain()[couche][y][x];
     }
 }
