@@ -41,7 +41,7 @@ public class Personnage extends EntitePosition{
 
     public void deplacerGauche() {
         double futurX = getX() - Constantes.VITESSE_DEPLACEMENT;
-        if (!collision(futurX, getY())) {
+        if (!Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.GAUCHE;
@@ -49,7 +49,7 @@ public class Personnage extends EntitePosition{
 
     public void deplacerDroite() {
         double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
-        if (!collision(futurX, getY())) {
+        if (Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.DROITE;
@@ -63,7 +63,7 @@ public class Personnage extends EntitePosition{
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
 
-        if (!collision(getX(), futurY)) {
+        if (!Carte.getInstance().collision(getX(), futurY)) {
             setY(futurY);
         } else {
             vitesseY = 0;
@@ -71,19 +71,7 @@ public class Personnage extends EntitePosition{
         }
     }
 
-    boolean collision(double x, double y) {
-        int left = (int) (x / Constantes.TAILLE_PERSO);
-        int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
-        int top = (int) (y / Constantes.TAILLE_PERSO);
-        int bottom = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
 
-        for (int tx = left; tx <= right; tx++) {
-            for (int ty = top; ty <= bottom; ty++) {
-                if (carte.estBlocSolide(tx, ty)) return true;
-            }
-        }
-        return false;
-    }
 
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;

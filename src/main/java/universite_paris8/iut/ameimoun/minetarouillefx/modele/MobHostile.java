@@ -47,7 +47,7 @@ public class MobHostile extends Mob {
 
     private void sauterSiObstacle() {
         double prochaineX = getX() + (getVitesseX());
-        if (collision(prochaineX, getY())) {
+        if (Carte.getInstance().collision(prochaineX, getY())) {
             sauter();
         }
     }
