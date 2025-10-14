@@ -97,7 +97,26 @@ public class Environnement {
     public Joueur getJoueur() { return joueur; }
     public Group getWorldGroup() { return worldGroup; }
     public GestionnaireInventaire getGestionnaireInventaire() { return gestionnaireInventaire; }
+
+    public GestionnaireItem getGestionnaireItem() {
+        return gestionnaireItem;
+    }
+
+    public GestionnaireMobHostile getGestionnaireMobHostile() {
+        return gestionnaireMobHostile;
+    }
+
+    public GestionnaireMobPassif getGestionnaireMobPassif() {
+        return gestionnaireMobPassif;
+    }
+
+    public GestionnaireFleche getGestionnaireFleche() {
+        return gestionnaireFleche;
+    }
+
     public VueCarte getVueCarte() { return vueCarte; }
     public DebugManager getDebugManager() { return debugManager; }
     public Environnement getEnvironnement() { return this;}
+
+
 }

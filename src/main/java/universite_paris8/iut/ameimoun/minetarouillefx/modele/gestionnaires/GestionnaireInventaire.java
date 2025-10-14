@@ -56,4 +56,6 @@ public class GestionnaireInventaire {
     public VueInventaire getVueInventaire() {
         return vueInventaire;
     }
+
+
 }

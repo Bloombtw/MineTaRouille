@@ -6,6 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.ClavierListener;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.environnement.Environnement;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
@@ -19,6 +22,7 @@ import java.util.ResourceBundle;
 
     public class JeuController implements Initializable {
         @FXML private AnchorPane rootPane;
+        @FXML private TilePane tileMap;
 
         private Pane cameraPane;
         private Environnement environnement;
@@ -34,8 +38,10 @@ import java.util.ResourceBundle;
             rootPane.getChildren().add(cameraPane);
 
             environnement = new Environnement(worldGroup);
-
+            initialiserClavier();
+            initialiserSouris();
             demarrerBoucleDeJeu();
+
         }
 
         private void demarrerBoucleDeJeu() {
@@ -51,7 +57,52 @@ import java.util.ResourceBundle;
             gameLoop.start();
         }
 
-        private void mettreAJourCamera() {
+    private void initialiserClavier() {
+        ClavierListener clavierListener = new ClavierListener(
+                environnement.getJoueur(),
+                environnement.getGestionnaireInventaire().getInventaire(),
+                environnement.getGestionnaireInventaire().getVueInventaire(),
+                environnement.getDebugManager(),
+                environnement.getGestionnaireItem()
+        );
+
+        clavierListener.setJeuController(this);
+        clavierListener.lier(tileMap); // ou cameraPane, selon ce qui reçoit les événements
+
+        // Important : focus
+        tileMap.setFocusTraversable(true);
+        tileMap.requestFocus();
+
+        tileMap.setOnMouseClicked(e -> rootPane.requestFocus());
+    }
+
+    private void initialiserSouris() {
+        SourisListener sourisListener = new SourisListener(
+                environnement.getJoueur(),
+                environnement.getGestionnaireInventaire().getInventaire(),
+                environnement.getVueCarte(),
+                environnement.getGestionnaireItem(),
+                environnement.getGestionnaireMobHostile(),
+                environnement.getGestionnaireMobPassif(),
+                environnement.getGestionnaireFleche(),
+                environnement.getGestionnaireInventaire().getVueInventaire()
+        );
+
+        // Si tu as un CraftController à lier
+        //sourisListener.setCraftController(craftController);
+
+        // Lie la souris au TilePane comme pour le clavier
+        sourisListener.lier(tileMap);
+        tileMap.setFocusTraversable(true);
+        tileMap.requestFocus();
+
+        tileMap.setOnMouseClicked(e -> rootPane.requestFocus());
+        // (Optionnel) Désactiver si tu veux
+        // sourisListener.desactiver(tilePane);
+    }
+
+
+    private void mettreAJourCamera() {
             Joueur joueur = environnement.getJoueur();
             Group worldGroup = environnement.getWorldGroup();
             double largeurEcran = cameraPane.getWidth();
@@ -85,5 +136,4 @@ import java.util.ResourceBundle;
     public boolean isEnPause() {
         return jeuEstEnPause;
     }
-
     }

@@ -142,4 +142,8 @@ public class GestionnaireItem {
         inventaire.retirerItem(idx);
         vueInventaire.mettreAJourAffichageInventaire();
     }
+
+    public List<Item> getItemsAuSol() {
+        return itemsAuSol;
+    }
 }

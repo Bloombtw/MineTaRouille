@@ -8,7 +8,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.gestionnaire.Loader;
 
-public class MainApp extends Application {
+public class  MainApp extends Application {
     public static Stage primaryStageGlobal;
     @Override
     public void start(Stage primaryStage) {
