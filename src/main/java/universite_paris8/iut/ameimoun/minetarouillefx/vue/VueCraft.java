@@ -41,6 +41,7 @@ public class VueCraft {
     /** Grille graphique de la fenêtre de craft. */
     private GridPane grillePane;
 
+
     /**
      * Construit la vue de la fenêtre de craft.
      * @param gestionnaireCraft le gestionnaire de craft associé
@@ -102,6 +103,7 @@ public class VueCraft {
             tilePane.requestFocus();
         }
     }
+
 
     /**
      * Crée et affiche la fenêtre de craft avec ses composants.

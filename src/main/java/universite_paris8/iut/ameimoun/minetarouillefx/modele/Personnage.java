@@ -49,7 +49,7 @@ public class Personnage extends EntitePosition{
 
     public void deplacerDroite() {
         double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
-        if (Carte.getInstance().collision(futurX, getY())) {
+        if (!Carte.getInstance().collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.DROITE;
