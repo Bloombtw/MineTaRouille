@@ -96,6 +96,8 @@ public class Environnement {
     // --- Getters utiles ---
     public Joueur getJoueur() { return joueur; }
     public Group getWorldGroup() { return worldGroup; }
+    public GestionnaireInventaire getGestionnaireInventaire() { return gestionnaireInventaire; }
     public VueCarte getVueCarte() { return vueCarte; }
     public DebugManager getDebugManager() { return debugManager; }
+    public Environnement getEnvironnement() { return this;}
 }

@@ -71,4 +71,19 @@ import java.util.ResourceBundle;
             worldGroup.setTranslateX(offsetX);
             worldGroup.setTranslateY(offsetY);
         }
-}
+
+        public void reprendreJeu() {
+            jeuEstEnPause = false;
+        }
+
+        public void mettreEnPauseJeu() {
+            jeuEstEnPause = true;
+        }
+
+    public Environnement getEnvironnement() {return environnement;}
+
+    public boolean isEnPause() {
+        return jeuEstEnPause;
+    }
+
+    }

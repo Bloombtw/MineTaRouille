@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.JeuController;
+import universite_paris8.iut.ameimoun.minetarouillefx.environnement.Environnement;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireCraft;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Chemin;
@@ -27,6 +28,7 @@ public class VueCraft {
     private final GestionnaireCraft gestionnaireCraft;
     private final JeuController jeuController;
     private CraftController craftController;
+    private Environnement env;
 
     /** Pane contenant la grille d'inventaire du jeu. */
     private final TilePane tilePane;
@@ -54,6 +56,7 @@ public class VueCraft {
         this.rootPane = rootPane;
         this.jeuController = jeuController;
         this.tilePane = tilePane;
+        env=jeuController.getEnvironnement();
 
         // Écoute les changements de la grille pour mettre à jour l'affichage
         gestionnaireCraft.getGrille().addListener((ListChangeListener<ObservableList<Item>>) change -> {
@@ -264,7 +267,7 @@ public class VueCraft {
                 mettreAJourCellule(i, j);
             }
         }
-        jeuController.getGestionnaireInventaire().getVueInventaire().mettreAJourAffichageInventaire();
+        env.getGestionnaireInventaire().getVueInventaire().mettreAJourAffichageInventaire();
     }
 
     /**
