@@ -71,6 +71,34 @@ public class JeuController implements Initializable {
         demarrerBoucleDeJeu();
     }
 
+    private void mettreAJourJeu() {
+        if (jeuEstEnPause) return;
+
+        joueurModele.mettreAJour();
+
+        if (gestionnaireMobPassif != null) {
+            gestionnaireMobPassif.mettreAJour();
+        }
+
+        gestionnaireMobHostile.mettreAJour();
+
+        gestionnaireItem.update(
+                joueurModele,
+                gestionnaireInventaire.getInventaire(),
+                gestionnaireInventaire.getVueInventaire()
+        );
+
+        if (gestionnaireFleche != null) {
+            gestionnaireFleche.mettreAJour();
+        }
+
+        if (debugManager.isDebugVisible()) {
+            debugManager.update();
+        }
+
+        mettreAJourCamera();
+    }
+
     private void initialiserDebug() {
         debugManager = new DebugManager(worldGroup, joueurModele, mobManager.getMobs());
     }
@@ -257,34 +285,7 @@ public class JeuController implements Initializable {
         gameLoop.start();
     }
 
-    private void mettreAJourJeu() {
-        if (jeuEstEnPause) return;
 
-        joueurModele.mettreAJourDeplacement();
-        joueurModele.gravite();
-
-        if (gestionnaireMobPassif != null) {
-            gestionnaireMobPassif.mettreAJour();
-        }
-
-        gestionnaireMobHostile.mettreAJour();
-
-        gestionnaireItem.update(
-                joueurModele,
-                gestionnaireInventaire.getInventaire(),
-                gestionnaireInventaire.getVueInventaire()
-        );
-
-        if (gestionnaireFleche != null) {
-            gestionnaireFleche.mettreAJour();
-        }
-
-        if (debugManager.isDebugVisible()) {
-            debugManager.update();
-        }
-
-        mettreAJourCamera();
-    }
 
     public void mettreEnPauseJeu() {
         jeuEstEnPause = true;

@@ -14,8 +14,12 @@ public class Mob extends Personnage {
         super(200, 10, 5, "MOB");
     }
 
-    public void mettreAJour() {
-        gravite();
+    @Override
+    public void agir() {
+        deplacer();
+    }
+
+    public void deplacer() {
         double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
         double prochaineY = getY() +getVitesseY();
 
@@ -47,11 +51,4 @@ public class Mob extends Personnage {
         return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 
-    public double getLargeur() {
-        return Constantes.TAILLE_PERSO;
-    }
-
-    public double getHauteur() {
-        return Constantes.TAILLE_PERSO;
-    }
 }

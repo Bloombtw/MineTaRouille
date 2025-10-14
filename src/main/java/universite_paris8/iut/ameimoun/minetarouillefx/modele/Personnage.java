@@ -9,7 +9,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
  * Gère les déplacements horizontaux, la gravité, les sauts,
  * la collision avec le terrain et la vie du personnage.
  */
-public class Personnage {
+public abstract class Personnage {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
@@ -33,6 +33,12 @@ public class Personnage {
         this.nom = nom;
         this.direction = Direction.DROITE;
         this.carte = Carte.getInstance();
+    }
+
+    public abstract void agir(); // Methode importante
+    public void mettreAJour() {
+        gravite();
+        agir();
     }
 
     public void sauter() {
@@ -132,5 +138,6 @@ public class Personnage {
             doitSauter = false;
         }
     }
+
 
 }

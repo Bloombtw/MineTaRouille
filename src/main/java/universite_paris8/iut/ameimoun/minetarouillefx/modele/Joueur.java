@@ -9,6 +9,11 @@ public class Joueur extends Personnage {
     public Joueur() {
         super(30, 50, 100, "Joueur");
     }
+
+    @Override
+    public void agir() {
+        mettreAJourDeplacement();
+    }
     private boolean regardADroite = true;
     
     public boolean estRegardADroite() {

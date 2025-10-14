@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.BlocFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.RecettesCraft;
@@ -146,7 +147,7 @@ public class GestionnaireCraft {
             if (item == null) return;
 
             if (item.getBloc() != null) {
-                inventaire.retirer(new Item(item.getBloc()), 1);
+                inventaire.retirer(new Item(BlocFactory.creerBloc(item.getBloc().getId())), 1);
                 grille.get(row).set(col, new Item(item.getBloc(), 1));
             } else if (item.getObjet() != null) {
                 inventaire.retirer(new Item(item.getObjet()), 1);

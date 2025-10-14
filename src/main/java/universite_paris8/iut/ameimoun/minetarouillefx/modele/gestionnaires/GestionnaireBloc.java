@@ -44,7 +44,7 @@ public class GestionnaireBloc {
         if (!peutPlacerBloc(carte, inventaire, indexItem, couche, x, y, joueur)) return false;
 
         Item itemSelectionne = inventaire.getItem(indexItem);
-        Bloc bloc = itemSelectionne.getBloc();
+        Bloc bloc = BlocFactory.creerBloc(itemSelectionne.getBloc().getId());
 
         carte.getTerrain()[couche][y][x] = bloc;
         itemSelectionne.ajouterQuantite(-1);

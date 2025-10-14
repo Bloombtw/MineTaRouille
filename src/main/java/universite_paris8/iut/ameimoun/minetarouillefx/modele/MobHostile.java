@@ -16,8 +16,7 @@ public class MobHostile extends Mob {
     }
 
     @Override
-    public void mettreAJour() {
-        gravite();
+    public void agir() {
         sauterSiObstacle();
         suivreJoueur();
         attaquerJoueur();

@@ -54,30 +54,30 @@ public class GenerateurCarte {
     }
 
     private static void placerBlocSurface(int x, int y, Random rand, Bloc[][][] terrain) {
-
         if (rand.nextDouble() < 0.7) {
-            terrain[1][y][x] = Bloc.SABLE;
+            terrain[1][y][x] = BlocFactory.creerBloc(Bloc.SABLE.getId()); // ou BlocFactory.creerBloc("Sable")
         } else {
-            terrain[1][y][x] = Bloc.SABLE_ROUGE;
+            terrain[1][y][x] = BlocFactory.creerBloc(Bloc.SABLE_ROUGE.getId());
         }
 
         // Décors superficiels
-        if (rand.nextDouble() < Constantes.PROBA_ARBUSTE && terrain[1][y][x] == Bloc.SABLE) {
+        if (rand.nextDouble() < Constantes.PROBA_ARBUSTE && terrain[1][y][x] == BlocFactory.creerBloc(Bloc.SABLE.getId())) {
             if (rand.nextDouble() < 0.3) {
-                terrain[2][y - 1][x] = Bloc.FEU;
+                terrain[2][y - 1][x] = BlocFactory.creerBloc(Bloc.FEU.getId());
             } else if (rand.nextDouble() < 0.6) {
-                terrain[2][y - 1][x] = Bloc.ARBUSTE_MORT;
+                terrain[2][y - 1][x] = BlocFactory.creerBloc(Bloc.ARBUSTE_MORT.getId());
             } else {
-                terrain[2][y - 1][x] = Bloc.POUSSE_ACACIA;
+                terrain[2][y - 1][x] = BlocFactory.creerBloc(Bloc.POUSSE_ACACIA.getId());
             }
         }
 
         // Cactus
         if (rand.nextDouble() < Constantes.PROBA_CACTUS && y - 2 >= 0) {
-            terrain[2][y - 1][x] = Bloc.CACTUS;
-            terrain[2][y - 2][x] = Bloc.CACTUS;
+            terrain[2][y - 1][x] = BlocFactory.creerBloc(Bloc.CACTUS.getId());
+            terrain[2][y - 2][x] = BlocFactory.creerBloc(Bloc.CACTUS.getId());
         }
     }
+
 
     private static void placerBlocProfondeur(int x, int y, Random rand, Bloc[][][] terrain) {
         if (rand.nextDouble() < 0.3) {
