@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -37,7 +38,10 @@ import java.util.ResourceBundle;
             cameraPane.prefHeightProperty().bind(rootPane.heightProperty());
             rootPane.getChildren().add(cameraPane);
 
-            environnement = new Environnement(worldGroup);
+            environnement = new Environnement(worldGroup, rootPane);
+            rootPane.getChildren().add(environnement.getVueVie().getNoeudBarreVie());
+            rootPane.getChildren().add(environnement.getVueVie().getOverlayDegatsGlobal());
+
             initialiserClavier();
             initialiserSouris();
             demarrerBoucleDeJeu();

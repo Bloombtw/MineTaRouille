@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.environnement;
 
 import javafx.scene.Group;
+import javafx.scene.layout.Region;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.*;
@@ -9,14 +10,17 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 
 public class Environnement {
 
     private final Carte carte;
     private final VueCarte vueCarte;
     private final Joueur joueur;
+    private final VueVie vueVie;
     private final VueJoueur vueJoueur;
     private final Group worldGroup;
+    private final Region rootPane;
 
     // Gestionnaires
     private final GestionnaireItem gestionnaireItem;
@@ -31,15 +35,16 @@ public class Environnement {
     private final MobManager mobManager;
     private final DebugManager debugManager;
 
-    public Environnement(Group worldGroup) {
+    public Environnement(Group worldGroup, Region rootPane) {
         this.worldGroup = worldGroup;
-
+        this.rootPane = rootPane;
         // --- Initialisation du monde ---
         carte = Carte.getInstance();
         vueCarte = new VueCarte(carte);
 
         // --- Joueur ---
         joueur = new Joueur();
+        vueVie = new VueVie(joueur.getVie(), rootPane);
         int colonneDepart = 50;
         int ligneSol = trouverHauteurSol(colonneDepart);
         joueur.setX(colonneDepart * Constantes.TAILLE_TUILE);
@@ -116,6 +121,7 @@ public class Environnement {
 
     public VueCarte getVueCarte() { return vueCarte; }
     public DebugManager getDebugManager() { return debugManager; }
+    public VueVie getVueVie(){return vueVie;}
     public Environnement getEnvironnement() { return this;}
 
 

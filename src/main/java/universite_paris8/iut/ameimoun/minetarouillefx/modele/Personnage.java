@@ -1,7 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.Node;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 /**
@@ -70,13 +70,12 @@ public class Personnage extends EntitePosition{
         }
     }
 
-
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;
     }
 
     public Vie getVie() {
-        return vie;
+        return vie; // logique de vie
     }
 
     public DoubleProperty xProperty() { return x; }
