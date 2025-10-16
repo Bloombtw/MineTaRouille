@@ -67,9 +67,8 @@ import java.util.ResourceBundle;
         );
 
         clavierListener.setJeuController(this);
-        clavierListener.lier(tileMap); // ou cameraPane, selon ce qui reçoit les événements
+        clavierListener.lier(tileMap);
 
-        // Important : focus
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
 
@@ -89,16 +88,12 @@ import java.util.ResourceBundle;
         );
 
         // Si tu as un CraftController à lier
-        //sourisListener.setCraftController(craftController);
-
-        // Lie la souris au TilePane comme pour le clavier
+       // sourisListener.setCraftController(craftController);
         sourisListener.lier(tileMap);
         tileMap.setFocusTraversable(true);
         tileMap.requestFocus();
 
         tileMap.setOnMouseClicked(e -> rootPane.requestFocus());
-        // (Optionnel) Désactiver si tu veux
-        // sourisListener.desactiver(tilePane);
     }
 
 
