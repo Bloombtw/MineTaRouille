@@ -9,6 +9,7 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 
@@ -117,6 +118,10 @@ public class Environnement {
 
     public GestionnaireFleche getGestionnaireFleche() {
         return gestionnaireFleche;
+    }
+
+    public VueInventaire getVueInventaire(){
+        return gestionnaireInventaire.getVueInventaire();
     }
 
     public VueCarte getVueCarte() { return vueCarte; }

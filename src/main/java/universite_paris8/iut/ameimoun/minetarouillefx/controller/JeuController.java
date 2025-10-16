@@ -41,6 +41,7 @@ import java.util.ResourceBundle;
             environnement = new Environnement(worldGroup, rootPane);
             rootPane.getChildren().add(environnement.getVueVie().getNoeudBarreVie());
             rootPane.getChildren().add(environnement.getVueVie().getOverlayDegatsGlobal());
+            rootPane.getChildren().add(environnement.getVueInventaire());
 
             initialiserClavier();
             initialiserSouris();

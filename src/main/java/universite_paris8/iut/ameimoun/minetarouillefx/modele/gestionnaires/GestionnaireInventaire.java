@@ -28,9 +28,6 @@ public class GestionnaireInventaire {
     }
 
     public void initialiserInventaire() {
-
-
-
         inventaire.ajouterItem(new Item(Objet.LIVRE, 1));
         inventaire.ajouterItem(new Item(Objet.PIOCHE));
         inventaire.ajouterItem(new Item(Objet.EPEE, 1) );
@@ -39,8 +36,7 @@ public class GestionnaireInventaire {
         inventaire.ajouterItem(new Item(Bloc.PIERRE, 64));
 
         AnchorPane.setTopAnchor(vueInventaire, 10.0);
-        AnchorPane.setRightAnchor(vueInventaire, 10.0);
-        rootPane.getChildren().add(vueInventaire);
+        AnchorPane.setRightAnchor(vueInventaire, 100.0);
         joueurVue.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
         inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             joueurVue.mettreAJourObjetTenu(inventaire.getItem(newVal.intValue()));
