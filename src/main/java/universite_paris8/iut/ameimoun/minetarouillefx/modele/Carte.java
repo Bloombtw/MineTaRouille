@@ -57,15 +57,20 @@ public class Carte {
         return terrain[couche][y][x];
     }
 
-    boolean collision(double x, double y) {
-        int gauche = (int) (x / Constantes.TAILLE_PERSO);
-        int droite = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
-        int haut = (int) (y / Constantes.TAILLE_PERSO);
-        int bas = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+     boolean collision(double px, double py) {
+        double largeur = Constantes.TAILLE_PERSO;
+        double hauteur = Constantes.TAILLE_PERSO;
+        double marge = 1.0;
 
-        for (int ligne = gauche; ligne <= droite; ligne++) {
-            for (int colonne = haut; colonne <= bas; colonne++) {
-                if (estBlocSolide(ligne, colonne)) return true;
+        double[] pointsX = { px + marge, px + largeur - marge };
+        double[] pointsY = { py + marge, py + hauteur - marge };
+
+        for (double xPoint : pointsX) {
+            for (double yPoint : pointsY) {
+                int tuileX = (int)(xPoint / Constantes.TAILLE_TUILE);
+                int tuileY = (int)(yPoint / Constantes.TAILLE_TUILE);
+                if (!estDansLaMap(tuileX, tuileY)) continue;
+                if (estBlocSolide(tuileX, tuileY)) return true;
             }
         }
         return false;

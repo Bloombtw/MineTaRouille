@@ -35,9 +35,8 @@ public class MobHostile extends Mob {
     }
 
     private void attaquerJoueur() {
-        double distanceX = Math.abs(this.getX() - joueur.getX());
-
-        double distanceY = Math.abs(this.getY() - joueur.getY());
+        double distanceX = Math.abs(getX() - joueur.getX());
+        double distanceY = Math.abs(getY() - joueur.getY());
         double distanceTotale = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         if (distanceTotale <= Constantes.DISTANCE_ATTAQUE) {
@@ -46,8 +45,8 @@ public class MobHostile extends Mob {
     }
 
     private void sauterSiObstacle() {
-        double prochaineX = getX() + (getVitesseX());
-        if (Carte.getInstance().collision(prochaineX, getY())) {
+        double prochaineX = getX() + getVitesseX();
+            if (Carte.getInstance().collision(prochaineX, getY())) {
             sauter();
         }
     }

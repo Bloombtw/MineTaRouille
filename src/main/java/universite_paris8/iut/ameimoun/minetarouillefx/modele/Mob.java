@@ -16,35 +16,36 @@ public class Mob extends Personnage {
 
     public void mettreAJour() {
         gravite();
-        double prochaineX = getX() + (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
-        double prochaineY = getY() +getVitesseY();
 
+        double prochaineX = getX() + getVitesseX();
+        double prochaineY = getY() + getVitesseY();
         boolean collisionVerticale = Carte.getInstance().collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
         boolean collisionDroite = Carte.getInstance().collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
         boolean collisionGauche = Carte.getInstance().collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
 
-        if(collisionDroite && collisionGauche){
+
+        if (collisionDroite && collisionGauche) {
             sauter();
-        }
-        else if (collisionDroite || collisionGauche){
-            if(collisionVerticale){
+        } else if (collisionDroite || collisionGauche) {
+            if (collisionVerticale) {
                 sauter();
-                mouvementDirection=(mouvementDirection==Direction.DROITE)? Direction.GAUCHE : Direction.DROITE;
-            }
-            else{
+                mouvementDirection = (mouvementDirection == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
+            } else {
                 sauter();
             }
         }
-        if(mouvementDirection==Direction.DROITE){
+
+        if (mouvementDirection == Direction.DROITE) {
             deplacerDroite();
-        }
-        else{
+        } else {
             deplacerGauche();
         }
     }
 
     public double getVitesseX() {
-        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
+        return (mouvementDirection == Direction.DROITE)
+                ? Constantes.VITESSE_DEPLACEMENT_MOB
+                : -Constantes.VITESSE_DEPLACEMENT_MOB;
     }
 
     public double getLargeur() {

@@ -15,14 +15,13 @@ public class Personnage extends EntitePosition{
     protected boolean enDeplacementDroite = false;
     private boolean doitSauter = false;
 
-    private Vie vie;
-
+    private final Vie vie;
     private final String nom;
     public Direction direction;
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
-    private Carte carte;
+    private final Carte carte;
 
     public Personnage(double x, double y, double pointsDeVie, String nom) {
         super(x, y);
@@ -72,7 +71,6 @@ public class Personnage extends EntitePosition{
     }
 
 
-
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;
     }
@@ -91,7 +89,6 @@ public class Personnage extends EntitePosition{
     public void setY(double val) { y.set(val); }
 
     public double getVitesseY() { return vitesseY; }
-
 
     public void setEnDeplacementGauche(boolean actif) {
         this.enDeplacementGauche = actif;
@@ -117,5 +114,4 @@ public class Personnage extends EntitePosition{
             doitSauter = false;
         }
     }
-
 }
