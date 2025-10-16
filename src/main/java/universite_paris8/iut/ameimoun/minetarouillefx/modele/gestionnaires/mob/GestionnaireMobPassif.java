@@ -50,7 +50,7 @@ public class GestionnaireMobPassif extends GestionnaireMob {
     public void mettreAJour() {
         for (int i = mobSimple.size() - 1; i >= 0; i--) {
             Mob mob = mobSimple.get(i);
-            mob.mettreAJour();
+            mob.mettreAJour(new Joueur());
             if (mob.estMort()) {
                 if (rootPane != null && i < vuesMob.size()) {
                     javafx.scene.Node node = vuesMob.get(i).getNode();

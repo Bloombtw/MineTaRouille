@@ -8,30 +8,17 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
  * et inflige des dégâts lorsque le joueur est à portée.
  */
 public class MobHostile extends Mob {
-    private final Personnage joueur; // Référence au joueur
+    private final Joueur joueur; // Référence au joueur
 
-    public MobHostile(Personnage joueur) {
+    public MobHostile(Joueur joueur) {
         super();
         this.joueur = joueur;
     }
 
-    @Override
     public void mettreAJour() {
-        gravite();
+        super.mettreAJour(joueur); // gravité + stratégie de déplacement
         sauterSiObstacle();
-        suivreJoueur();
         attaquerJoueur();
-    }
-
-    private void suivreJoueur() {
-        double joueurX = joueur.getX();
-        double mobX = getX();
-
-        if (joueurX < mobX) {
-            deplacerGauche();
-        } else if (joueurX > mobX) {
-            deplacerDroite();
-        }
     }
 
     private void attaquerJoueur() {
