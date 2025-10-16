@@ -72,7 +72,7 @@ public abstract class Personnage {
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
 
-        if (!collision(getX(), futurY)) {
+        if (!carte.estCollision(getX(), futurY, Constantes.TAILLE_PERSO)) {
             setY(futurY);
         } else {
             vitesseY = 0;

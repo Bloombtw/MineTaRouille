@@ -22,13 +22,19 @@ public class Carte {
         if (bloc == null || !bloc.estSolide()) return null;
 
         terrain[couche][y][x] = Bloc.CIEL_VIOLET;
-
-
-        if (couche == 1 && y - 1 >= 0) {
-            casserDecorSiPlusDeSupport(x, y);
-        }
+        mettreAJourSupportDecor(couche, x, y);
 
         return bloc;
+    }
+
+
+    private void mettreAJourSupportDecor(int couche, int x, int y) {
+        if (couche == 1 && y - 1 >= 0) {
+            Bloc decor = terrain[2][y - 1][x];
+            if (decor != null && decor.necessiteSupport() && decor != Bloc.CACTUS) {
+                terrain[2][y - 1][x] = null;
+            }
+        }
     }
 
 
@@ -61,6 +67,7 @@ public class Carte {
         return terrain;
     }
 
+
     public int getLargeur() {
         return terrain[0][0].length;
     }
@@ -84,5 +91,20 @@ public class Carte {
         }
         return false;
     }
+
+    public boolean estCollision(double x, double y, double taille) {
+        int left = (int) (x / taille);
+        int right = (int) ((x + taille - 1) / taille);
+        int top = (int) (y / taille);
+        int bottom = (int) ((y + taille - 1) / taille);
+
+        for (int tx = left; tx <= right; tx++) {
+            for (int ty = top; ty <= bottom; ty++) {
+                if (estBlocSolide(tx, ty)) return true;
+            }
+        }
+        return false;
+    }
+
 
 }

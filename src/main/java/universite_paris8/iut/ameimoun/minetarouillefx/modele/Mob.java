@@ -51,4 +51,6 @@ public class Mob extends Personnage {
         return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 
+
+
 }

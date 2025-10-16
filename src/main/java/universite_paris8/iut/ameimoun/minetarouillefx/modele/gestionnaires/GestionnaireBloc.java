@@ -54,30 +54,31 @@ public class GestionnaireBloc {
         return true;
     }
 
-    private static boolean peutPlacerBloc(
-            Carte carte,
-            Inventaire inventaire,
-            int indexItem,
-            int couche,
-            int x,
-            int y,
-            Joueur joueur
-    ) {
+    private static boolean estBlocPlacable(Carte carte, int couche, int x, int y) {
         if (!carte.estDansLaMap(x, y)) return false;
         Bloc blocExistant = carte.getTerrain()[couche][y][x];
-        if (blocExistant != null && blocExistant.estSolide()) return false;
+        return blocExistant == null || !blocExistant.estSolide();
+    }
+
+    private static boolean estItemValidePourPlacement(Item item) {
+        return item != null
+                && item.getTypeItem() == Item.TypeItem.BLOC
+                && item.getQuantite() > 0
+                && item.getBloc() != null;
+    }
+
+    private static boolean peutPlacerBloc(Carte carte, Inventaire inventaire, int indexItem, int couche, int x, int y, Joueur joueur) {
+        if (!estBlocPlacable(carte, couche, x, y)) return false;
         if (hitboxSurBloc(joueur, x, y)) return false;
         if (!estADistanceAutorisee(joueur, x, y)) return false;
 
-        Item itemSelectionne = inventaire.getItem(indexItem);
-        if (itemSelectionne == null) return false;
-        if (itemSelectionne.getTypeItem() != Item.TypeItem.BLOC) return false;
-        if (itemSelectionne.getQuantite() <= 0) return false;
-        if (itemSelectionne.getBloc() == null) return false;
-        return true;
+        Item item = inventaire.getItem(indexItem);
+        return estItemValidePourPlacement(item);
     }
 
+
     public static boolean hitboxSurBloc(Joueur joueur, int x, int y) {
+        int tailleTuile = Constantes.TAILLE_TUILE;
         double px = joueur.getX();
         double py = joueur.getY();
         double taille = Constantes.TAILLE_PERSO;
