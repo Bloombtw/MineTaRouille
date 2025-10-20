@@ -37,16 +37,19 @@ public class GestionnaireMort {
 
 
     // Vérifie si le joueur est mort, arrête la musique et affiche l'écran de mort.
-    public void gererMort(AnimationTimer gameLoop) {
+    public void gererMort() {
         TilePane tileMap = vueCarte.getTileMap();
         if (joueurModele.getVie().estMort() && vie.estMort()) {
             joueurModele.getVie().setEstEnVie(false);
             musiqueManager.arreterMusique();
             AudioManager.getInstance().arreterTousLesSons();
             AudioManager.getInstance().jouerAlerteMort();
-            gameLoop.stop();
-            gestionnaireControles.getSourisListener().desactiver(tileMap);
-            gestionnaireControles.getClavierListener().desactiver(tileMap);
+
+            if (gestionnaireControles != null) {
+                gestionnaireControles.getSourisListener().desactiver(tileMap);
+                gestionnaireControles.getClavierListener().desactiver(tileMap);
+            }
+
             afficherEcranDeMort();
         }
     }

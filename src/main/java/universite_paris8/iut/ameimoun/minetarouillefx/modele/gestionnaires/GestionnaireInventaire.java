@@ -35,8 +35,15 @@ public class GestionnaireInventaire {
         inventaire.ajouterItem(new Item(Objet.ARC, 1));
         inventaire.ajouterItem(new Item(Bloc.PIERRE, 64));
 
+        // positionnement via AnchorPane constraints
         AnchorPane.setTopAnchor(vueInventaire, 10.0);
         AnchorPane.setRightAnchor(vueInventaire, 10.0);
+
+        // ajouter la vue au rootPane si disponible
+        if (rootPane != null) {
+            rootPane.getChildren().add(vueInventaire);
+        }
+
         joueurVue.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
         inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             joueurVue.mettreAJourObjetTenu(inventaire.getItem(newVal.intValue()));

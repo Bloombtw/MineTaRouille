@@ -2,6 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.vue;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -123,6 +124,10 @@ public class VueVie {
             overlayDegatsGlobal.setVisible(true);
             fadeTransition.playFromStart();
         });
+    }
+
+    public Node getNode() {
+        return barre;
     }
 
     public StackPane getNoeudBarreVie() {
