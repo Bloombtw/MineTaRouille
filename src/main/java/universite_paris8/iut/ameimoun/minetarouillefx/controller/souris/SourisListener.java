@@ -3,7 +3,6 @@ package universite_paris8.iut.ameimoun.minetarouillefx.controller.souris;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -76,7 +75,7 @@ public class SourisListener {
         tilePane.setOnMouseMoved(null);
     }
 
-    public void lierScrollInventaire(Scene scene) {
+    public void lierScrollInventaire(TilePane scene) {
         if (scene == null) {
             return;
         }
@@ -91,7 +90,7 @@ public class SourisListener {
             inventaire.setSelectedIndex(index);
             event.consume();
         });
-    }
+    }//TODO à régler
 
     private Point2D toWorld(MouseEvent event) {
         // conversion robuste écran -> coordonnées locales du worldGroup (inclut translation/scale)
