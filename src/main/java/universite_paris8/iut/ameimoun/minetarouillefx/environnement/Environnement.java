@@ -138,6 +138,4 @@ public class Environnement {
     public DebugManager getDebugManager() { return debugManager; }
     public VueVie getVueVie(){return vueVie;}
     public Environnement getEnvironnement() { return this;}
-
-
 }

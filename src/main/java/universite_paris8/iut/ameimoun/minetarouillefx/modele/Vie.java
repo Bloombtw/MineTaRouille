@@ -94,7 +94,6 @@ public class Vie {
         this.vieActuelle.set(nouvelleVie);
     }
 
-
     public void setEstEnVie(boolean estEnVie) {
         this.estEnVieProperty.set(estEnVie);
     }

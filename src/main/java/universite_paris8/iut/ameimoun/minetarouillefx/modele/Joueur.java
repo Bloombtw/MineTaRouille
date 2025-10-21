@@ -27,6 +27,8 @@ public class Joueur extends Personnage {
         return instance;
     }
 
+    //TODO ajt  la méthode ramasser un Item
+
     public boolean estRegardADroite() {
         return regardADroite;
     }

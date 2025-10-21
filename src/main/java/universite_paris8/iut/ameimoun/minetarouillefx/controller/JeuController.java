@@ -82,7 +82,6 @@ public class JeuController implements Initializable {
         cameraPane.setOnMouseClicked(e -> cameraPane.requestFocus());
     }
 
-
     private void initialiserSouris() {
         SourisListener sourisListener = new SourisListener(
                 environnement.getJoueur(),
@@ -109,8 +108,6 @@ public class JeuController implements Initializable {
         // clic sur le monde remet le focus sur cameraPane
         cameraPane.setOnMouseClicked(e -> cameraPane.requestFocus());
     }
-
-
 
     private void mettreAJourCamera() {
         Joueur joueur = environnement.getJoueur();
