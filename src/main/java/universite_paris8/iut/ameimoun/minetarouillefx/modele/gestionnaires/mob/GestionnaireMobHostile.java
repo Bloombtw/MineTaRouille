@@ -5,6 +5,9 @@ import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobHostileFactory;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootHostileStrategy;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootPassifStrategy;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootStrategy;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class GestionnaireMobHostile extends GestionnaireMob {
     private static final double MAP_WIDTH = 1920.0;
     private GestionnaireItem gestionnaireItem;
     private MobFactory mobFactory = new MobHostileFactory();
+    private LootStrategy lootStrategy = new LootHostileStrategy();
 
     // Constructeur avec injection du gestionnaire d'item
     public GestionnaireMobHostile(GestionnaireItem gestionnaireItem) {
@@ -82,7 +86,7 @@ public class GestionnaireMobHostile extends GestionnaireMob {
 
             // Gérer le loot
             if (gestionnaireItem != null) {
-                Item loot = new Item(Objet.FIL, 1);
+                Item loot = lootStrategy.genererLoot(mob);
                 int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
                 int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
                 gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
