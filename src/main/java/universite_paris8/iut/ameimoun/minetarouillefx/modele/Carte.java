@@ -31,7 +31,6 @@ public class Carte {
         return bloc;
     }
 
-
     private void casserDecorSiPlusDeSupport(int x, int y) {
         Bloc decor = terrain[2][y - 1][x];
         if (decor != null && decor.necessiteSupport() && decor != Bloc.CACTUS) {

@@ -12,7 +12,6 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
 public class Livre {
     private final String[] pages;
     private final IntegerProperty pageCourante = new SimpleIntegerProperty(0);
-
     private final BooleanBinding peutAllerSuivant;
     private final BooleanBinding peutAllerPrecedent;
 
