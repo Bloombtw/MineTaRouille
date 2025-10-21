@@ -61,13 +61,16 @@ public class SourisListener {
     }
 
     public void lier(TilePane tilePane) {
-        tilePane.setOnMousePressed(this::gererClicGauche);
-        tilePane.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
+        tilePane.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                gererClicGauche(event);
+            } else if (event.getButton() == MouseButton.SECONDARY) {
                 gererClicDroit(event);
             }
         });
+        tilePane.setOnMouseClicked(null);
     }
+
 
     public void desactiver(TilePane tilePane) {
         tilePane.setOnMousePressed(null);
