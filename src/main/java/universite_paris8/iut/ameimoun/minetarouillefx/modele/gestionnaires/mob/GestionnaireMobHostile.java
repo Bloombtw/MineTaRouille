@@ -3,6 +3,8 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobFactory;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobHostileFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class GestionnaireMobHostile extends GestionnaireMob {
     private final List<VueMobHostile> vuesMobsHostiles = new ArrayList<>();
     private static final double MAP_WIDTH = 1920.0;
     private GestionnaireItem gestionnaireItem;
+    private MobFactory mobFactory = new MobHostileFactory();
 
     // Constructeur avec injection du gestionnaire d'item
     public GestionnaireMobHostile(GestionnaireItem gestionnaireItem) {
@@ -29,9 +32,9 @@ public class GestionnaireMobHostile extends GestionnaireMob {
     @Override
     public MobHostile ajouterMob(Joueur cible, double y, Group worldGroup) {
         if (this.rootPane == null) {
-            this.rootPane = worldGroup; // Group hérite de Pane, c'est OK
+            this.rootPane = worldGroup;
         }
-        MobHostile nouveauMob = new MobHostile(cible);
+        MobHostile nouveauMob = (MobHostile) mobFactory.creerMob(cible);
         double randomX = random.nextDouble() * MAP_WIDTH;
         nouveauMob.setX(randomX);
         nouveauMob.setY(y);

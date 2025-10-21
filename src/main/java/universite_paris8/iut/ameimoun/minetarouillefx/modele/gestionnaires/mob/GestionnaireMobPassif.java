@@ -4,6 +4,8 @@ import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobFactory;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobPassifFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMob;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class GestionnaireMobPassif extends GestionnaireMob {
     private final List<VueMob> vuesMob = new ArrayList<>();
     private static final double MAP_WIDTH = 1920.0;
     private GestionnaireItem gestionnaireItem;
+    private MobFactory mobFactory = new MobPassifFactory();
 
     /**
      * Constructeur de la classe GestionnaireMob.
@@ -34,7 +37,7 @@ public class GestionnaireMobPassif extends GestionnaireMob {
         if (this.rootPane == null) {
             this.rootPane = worldGroup;
         }
-        Mob nouveauMob = new Mob();
+        Mob nouveauMob = mobFactory.creerMob(mob);
         double randomX = random.nextDouble() * MAP_WIDTH;
         nouveauMob.setX(randomX);
         nouveauMob.setY(y);
