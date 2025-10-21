@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
+/**
+ * Gère les items présents au sol dans le monde.
+ * S'occupe de la gravité, des collisions avec le sol, du ramassage par le joueur,
+ * et de l'affichage des items via VueItem.
+ */
 public class GestionnaireItem {
     private final List<Item> itemsAuSol = new ArrayList<>();
     private final List<VueItem> vuesItemsAuSol = new ArrayList<>();
@@ -19,6 +25,7 @@ public class GestionnaireItem {
         this.worldGroup = worldGroup;
     }
 
+    // Met à jour la position des items au sol, applique la gravité et gère les collisions.
     public void update(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
         Iterator<Item> itemIterator = itemsAuSol.iterator();
         Iterator<VueItem> vueIterator = vuesItemsAuSol.iterator();
@@ -41,15 +48,16 @@ public class GestionnaireItem {
         }
     }
 
+    // Gère la collision d'un item avec le sol
     private void gererCollisionSol(Item item) {
-        double futureY = item.getY() + Constantes.TAILLE_ITEM;
-        int xBloc = (int)(item.getX() / Constantes.TAILLE_TUILE);
-        int yBloc = (int)(futureY / Constantes.TAILLE_TUILE);
-        if (Carte.getInstance().estBlocSolide(xBloc, yBloc)) {
-            item.setY(yBloc * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM);
+        int x = (int)(item.getX() / Constantes.TAILLE_TUILE);
+        int y = (int)((item.getY() + Constantes.TAILLE_ITEM) / Constantes.TAILLE_TUILE);
+        if (Carte.getInstance().estBlocSolide(x, y)) {
+            item.setY((y * Constantes.TAILLE_TUILE) - (Constantes.TAILLE_ITEM / 2.0));
         }
     }
 
+    // Détecte si un item est ramassé par le joueur
     private boolean detecterRamassage(Item item, Joueur joueur) {
         double itemGauche = item.getX();
         double itemDroite = item.getX() + Constantes.TAILLE_ITEM;
@@ -67,14 +75,20 @@ public class GestionnaireItem {
         return collisionX && collisionY;
     }
 
+    // Applique la gravité à un item, le fait tomber vers le bas
     private void appliquerGravite(Item item) {
         item.setY(item.getY() + Constantes.GRAVITE * 5);
     }
 
-    public void spawnItemAuSol(Item item, double px, double py) {
-        item.setX(px);
-        item.setY(py);
+    public void spawnItemAuSol(Item item, int tuileX, int tuileY) {
+        double x = tuileX * Constantes.TAILLE_TUILE + (Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM) / 2.0;
+        double y = (tuileY + 1) * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM - Constantes.TAILLE_TUILE / 2.0;
+
+        item.setX(x);
+        item.setY(y);
+
         VueItem vue = new VueItem(item);
+
         itemsAuSol.add(item);
         vuesItemsAuSol.add(vue);
         worldGroup.getChildren().add(vue.getImageView());
@@ -92,27 +106,37 @@ public class GestionnaireItem {
                 ? new Item(item.getBloc())
                 : new Item(item.getObjet());
 
-        double joueurCenterX = joueur.getX() + Constantes.TAILLE_PERSO / 2.0;
+        // Position du centre du joueur
+        double joueurCenterX = joueur.getX() + (Constantes.TAILLE_PERSO / 2.0);
         double joueurBasY = joueur.getY() + Constantes.TAILLE_PERSO;
+
+        // Direction : +1 à droite, -1 à gauche
         int direction = joueur.estRegardADroite() ? 1 : -1;
 
-        double px = joueurCenterX + direction * Constantes.TAILLE_TUILE;
-        double py = joueurBasY - Constantes.TAILLE_ITEM;
+        // Calcul de la tuile devant le joueur
+        int xTuileSpawn = (int) ((joueurCenterX + direction * Constantes.TAILLE_TUILE) / Constantes.TAILLE_TUILE);
+        int yTuileSpawn = (int) (joueurBasY / Constantes.TAILLE_TUILE) - 1;
 
-        spawnItemAuSol(dropItem, px, py);
+        spawnItemAuSol(dropItem, xTuileSpawn, yTuileSpawn);
     }
 
     public void consommerMoutonCuitSelectionne(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire) {
         int idx = inventaire.getSelectedIndex();
         Item item = inventaire.getItem(idx);
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
 
-        if (item.getTypeItem() != Item.TypeItem.OBJET || item.getObjet() != Objet.MOUTON_CUIT) return;
+        if (item.getTypeItem() != Item.TypeItem.OBJET || item.getObjet() != Objet.MOUTON_CUIT) {
+            return;
+        }
 
         double vieActuelle = joueur.getVie().vieActuelleProperty().get();
         double vieMax = joueur.getVie().getVieMax();
 
-        if (vieActuelle >= vieMax) return;
+        if (vieActuelle >= vieMax) {
+            return;
+        }
 
         joueur.getVie().soigner(20);
         inventaire.retirerItem(idx);

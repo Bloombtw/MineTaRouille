@@ -87,7 +87,7 @@ public class JeuController implements Initializable {
     }
 
     private void initialiserJoueur() {
-        joueurModele = new Joueur();
+        joueurModele = Joueur.getInstance();;
         // Positionnement dynamique juste au-dessus du sol
         int colonneDepart = Constantes.NB_COLONNES / 2;
         int ligneSol = trouverHauteurSol(colonneDepart);
