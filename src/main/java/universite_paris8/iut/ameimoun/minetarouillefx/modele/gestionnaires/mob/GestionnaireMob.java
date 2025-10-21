@@ -1,10 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Mob;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,17 +34,42 @@ public abstract class GestionnaireMob {
     /**
      * Met à jour les Mobs gérés par le gestionnaire.
      */
-    public abstract void mettreAJour();
+    public void mettreAJour() {
+        for (int i = getListeMobs().size() - 1; i >= 0; i--) {
+            Mob mob = getListeMobs().get(i);
+            mettreAJourMob(mob);
+            if (mob.estMort()) {
+                retirerVue(i);
+                retirerMob(i);
+                genererLoot(mob);
+            }
+        }
+    }
 
     /**
-     * Tue les Mobs proches d'un joueur en fonction d'une distance maximale.
-     *
-     * @param playerCenterX La position X du centre du joueur.
-     * @param playerCenterY La position Y du centre du joueur.
-     * @param distanceMax   La distance maximale pour tuer les Mobs.
+     * Tue les mobs à une distance maximale spécifiée du joueur.
+     * @param playerCenterX
+     * @param playerCenterY
+     * @param distanceMax
      */
-    public abstract void tuerMob(double playerCenterX, double playerCenterY, double distanceMax);
+    public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
+        for (int i = getListeMobs().size() - 1; i >= 0; i--) {
+            Mob mob = getListeMobs().get(i);
+            double[] mobCenter = calculerCentreMob(mob);
+            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
+            if (distanceTotale <= distanceMax) {
+                retirerVue(i);
+                retirerMob(i);
+                genererLoot(mob);
+            }
+        }
+    }
 
+    protected abstract List<? extends Mob> getListeMobs();
+    protected abstract void mettreAJourMob(Mob mob);
+    protected abstract void retirerVue(int index);
+    protected abstract void retirerMob(int index);
+    protected abstract void genererLoot(Mob mob);
     /**
      * Calcule la distance entre deux points.
      *
@@ -58,5 +83,16 @@ public abstract class GestionnaireMob {
         double dx = x1 - x2;
         double dy = y1 - y2;
         return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Calcule le centre d'un Mob.
+     * @param mob
+     * @return
+     */
+    protected double[] calculerCentreMob(Mob mob) {
+        double mobCenterX = mob.getX() + 0.5;
+        double mobCenterY = mob.getY() + 0.5;
+        return new double[]{mobCenterX, mobCenterY};
     }
 }

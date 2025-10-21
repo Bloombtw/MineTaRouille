@@ -1,12 +1,10 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobHostileFactory;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootHostileStrategy;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootPassifStrategy;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.loot.LootStrategy;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueMobHostile;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
@@ -51,57 +49,35 @@ public class GestionnaireMobHostile extends GestionnaireMob {
     }
 
     @Override
-    public void mettreAJour() {
-        for (int i = mobsHostiles.size() - 1; i >= 0; i--) {
-            MobHostile mobHostile = mobsHostiles.get(i);
-            mobHostile.mettreAJour();
-            if (mobHostile.estMort()) {
-                if (rootPane != null && i < vuesMobsHostiles.size()) {
-                    javafx.scene.Node node = vuesMobsHostiles.get(i).getNode();
-                    if (rootPane.getChildren().contains(node)) {
-                        rootPane.getChildren().remove(node);
-                    }
-                    vuesMobsHostiles.remove(i);
-                }
-                mobsHostiles.remove(i);
-                // loot si besoin
-            }
+    public List<? extends Mob> getListeMobs() {
+        return mobsHostiles;
+    }
+
+    @Override
+    public void mettreAJourMob(Mob mob) {
+        ((MobHostile) mob).mettreAJour();
+    }
+
+    @Override
+    public void retirerVue(int index) {
+        if (index < vuesMobsHostiles.size()) {
+            rootPane.getChildren().remove(vuesMobsHostiles.get(index).getNode());
+            vuesMobsHostiles.remove(index);
         }
     }
 
-    private double[] calculerCentreMob(MobHostile mob) {
-        double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
-        double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
-        return new double[]{mobCenterX, mobCenterY};
+    @Override
+    public void retirerMob(int index) {
+        mobsHostiles.remove(index);
     }
 
-    public void supprimerMobEtLoot(MobHostile mob) {
-        int index = mobsHostiles.indexOf(mob);
-        if (index != -1) {
-            if (rootPane != null && index < vuesMobsHostiles.size()) {
-                rootPane.getChildren().remove(vuesMobsHostiles.get(index).getNode());
-                vuesMobsHostiles.remove(index);
-            }
-            mobsHostiles.remove(index);
-
-            // Gérer le loot
-            if (gestionnaireItem != null) {
-                Item loot = lootStrategy.genererLoot(mob);
-                int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
-                int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
-                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-            }
-        }
-    }
-    public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
-        for (int i = mobsHostiles.size() - 1; i >= 0; i--) {
-            MobHostile mobHostile = mobsHostiles.get(i);
-            double[] mobCenter = calculerCentreMob(mobHostile);
-            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
-            if (distanceTotale <= distanceMax) {
-                // Supprimer le mob
-                supprimerMobEtLoot(mobHostile);
-            }
+    @Override
+    public void genererLoot(Mob mob) {
+        if (gestionnaireItem != null) {
+            Item loot = lootStrategy.genererLoot(mob);
+            int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
+            int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
+            gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
         }
     }
 
@@ -113,7 +89,7 @@ public class GestionnaireMobHostile extends GestionnaireMob {
         return vuesMobsHostiles;
     }
 
-    public Group getRootPane() {
+        public Group getRootPane() {
         return rootPane;
     }
 }

@@ -1,7 +1,6 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob;
 
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.factory.MobFactory;
@@ -35,11 +34,11 @@ public class GestionnaireMobPassif extends GestionnaireMob {
     }
 
     @Override
-    public Mob ajouterMob(Joueur mob, double y, Group worldGroup) {
+    public Mob ajouterMob(Joueur joueur, double y, Group worldGroup) {
         if (this.rootPane == null) {
             this.rootPane = worldGroup;
         }
-        Mob nouveauMob = mobFactory.creerMob(mob);
+        Mob nouveauMob = mobFactory.creerMob(joueur);
         double randomX = random.nextDouble() * MAP_WIDTH;
         nouveauMob.setX(randomX);
         nouveauMob.setY(y);
@@ -51,81 +50,38 @@ public class GestionnaireMobPassif extends GestionnaireMob {
         return nouveauMob;
     }
 
+    // Implémentation des méthodes du Template Method
+
     @Override
-    public void mettreAJour() {
-        for (int i = mobSimple.size() - 1; i >= 0; i--) {
-            Mob mob = mobSimple.get(i);
-            mob.mettreAJour(new Joueur());
-            if (mob.estMort()) {
-                if (rootPane != null && i < vuesMob.size()) {
-                    javafx.scene.Node node = vuesMob.get(i).getNode();
-                    if (rootPane.getChildren().contains(node)) {
-                        rootPane.getChildren().remove(node);
-                    }
-                    vuesMob.remove(i);
-                }
-                mobSimple.remove(i);
-                if (gestionnaireItem != null) {
-                    Item loot = new Item(Objet.FIL, 3);
-                    int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
-                    int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
-                    gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-                }
-            }
+    public List<? extends Mob> getListeMobs() {
+        return mobSimple;
+    }
+
+    @Override
+    public void mettreAJourMob(Mob mob) {
+        mob.mettreAJour(new Joueur());
+    }
+
+    @Override
+    public void retirerVue(int index) {
+        if (index < vuesMob.size()) {
+            rootPane.getChildren().remove(vuesMob.get(index).getNode());
+            vuesMob.remove(index);
         }
     }
 
-    /**
-     * Calcule le centre d'un Mob.
-     *
-     * @param mob Le Mob dont le centre doit être calculé.
-     * @return Un tableau contenant les coordonnées X et Y du centre du Mob.
-     */
-    private double[] calculerCentreMob(Mob mob) {
-        double mobCenterX = mob.getX() + (Constantes.TAILLE_TUILE / 2.0);
-        double mobCenterY = mob.getY() + (Constantes.TAILLE_TUILE / 2.0);
-        return new double[]{mobCenterX, mobCenterY};
-    }
-
-    /**
-     * Supprime un Mob et génère son loot.
-     *
-     * @param mob Le Mob à supprimer.
-     */
-    public void supprimerMobEtGetLoot(Mob mob) {
-        int index = mobSimple.indexOf(mob);
-        if (index != -1) {
-            if (rootPane != null && index < vuesMob.size()) {
-                rootPane.getChildren().remove(vuesMob.get(index).getNode());
-                vuesMob.remove(index);
-            }
-            mobSimple.remove(index);
-
-            if (gestionnaireItem != null) {
-                Item loot = lootStrategy.genererLoot(mob);
-                int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
-                int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
-                gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
-            }
-        }
-    }
-
-    /**
-     * Tue les Mobs proches d'un joueur en fonction d'une distance maximale.
-     *
-     * @param playerCenterX La position X du centre du joueur.
-     * @param playerCenterY La position Y du centre du joueur.
-     * @param distanceMax   La distance maximale pour tuer les Mobs.
-     */
     @Override
-    public void tuerMob(double playerCenterX, double playerCenterY, double distanceMax) {
-        for (int i = mobSimple.size() - 1; i >= 0; i--) {
-            Mob mob = mobSimple.get(i);
-            double[] mobCenter = calculerCentreMob(mob);
-            double distanceTotale = calculerDistance(playerCenterX, playerCenterY, mobCenter[0], mobCenter[1]);
-            if (distanceTotale <= distanceMax) {
-                supprimerMobEtGetLoot(mob);
-            }
+    public void retirerMob(int index) {
+        mobSimple.remove(index);
+    }
+
+    @Override
+    public void genererLoot(Mob mob) {
+        if (gestionnaireItem != null) {
+            Item loot = lootStrategy.genererLoot(mob);
+            int tileX = (int) (mob.getX() / Constantes.TAILLE_TUILE);
+            int tileY = (int) (mob.getY() / Constantes.TAILLE_TUILE);
+            gestionnaireItem.spawnItemAuSol(loot, tileX, tileY);
         }
     }
 
@@ -136,7 +92,6 @@ public class GestionnaireMobPassif extends GestionnaireMob {
     public List<Mob> getMobs() {
         return mobSimple;
     }
-
     public Group getRootPane() {
         return this.rootPane;
     }
