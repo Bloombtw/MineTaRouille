@@ -20,36 +20,10 @@ public class Mob extends Personnage {
     }
 
     public void mettreAJour(Joueur joueur) {
-        gravite();
-
-        if (getVie().estLow()) {
-            setStrategie(new StrategieFuite());
-        } else {
-            setStrategie(new StrategieAttaque());
-        }
-
-        if (strategieCourante != null) {
-            strategieCourante.deplacer(this, joueur);
-        }
-
-        // Logique de saut en cas de blocage
-        double prochaineX = getX() + getVitesseX();
-        double prochaineY = getY() + getVitesseY();
-
-        boolean collisionVerticale = collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
-        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB, getY());
-        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB, getY());
-
-        if (collisionDroite && collisionGauche) {
-            sauter();
-        } else if (collisionDroite || collisionGauche) {
-            if (collisionVerticale) {
-                sauter();
-                direction = (direction == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
-            } else {
-                sauter();
-            }
-        }
+        appliquerGravite();
+        mettreAJourStrategie(joueur);
+        appliquerStrategieDeplacement(joueur);
+        gererBlocageEtSaut();
     }
 
     public void setStrategie(StrategieDeplacement strategie) {
@@ -66,5 +40,42 @@ public class Mob extends Personnage {
 
     public double getHauteur() {
         return Constantes.TAILLE_PERSO;
+    }
+
+
+    private void appliquerGravite() {
+        gravite();
+    }
+
+    private void mettreAJourStrategie(Joueur joueur) {
+        if (getVie().estLow()) {
+            setStrategie(new StrategieFuite());
+        } else {
+            setStrategie(new StrategieAttaque());
+        }
+    }
+
+    private void appliquerStrategieDeplacement(Joueur joueur) {
+        if (strategieCourante != null) {
+            strategieCourante.deplacer(this, joueur);
+        }
+    }
+
+    private void gererBlocageEtSaut() {
+        double prochaineX = getX() + getVitesseX();
+        double prochaineY = getY() + getVitesseY();
+
+        boolean collisionVerticale = collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
+        boolean collisionDroite = collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB, getY());
+        boolean collisionGauche = collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB, getY());
+
+        if (collisionDroite && collisionGauche) {
+            sauter();
+        } else if (collisionDroite || collisionGauche) {
+            sauter();
+            if (collisionVerticale) {
+                direction = (direction == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
+            }
+        }
     }
 }
