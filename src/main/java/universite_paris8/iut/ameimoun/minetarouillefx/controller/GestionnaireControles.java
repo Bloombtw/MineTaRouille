@@ -1,3 +1,5 @@
+// java
+// Fichier : src/main/java/universite_paris8/iut/ameimoun/minetarouillefx/controller/GestionnaireControles.java
 package universite_paris8.iut.ameimoun.minetarouillefx.controller;
 
 import javafx.application.Platform;
@@ -6,7 +8,6 @@ import universite_paris8.iut.ameimoun.minetarouillefx.controller.clavier.Clavier
 import universite_paris8.iut.ameimoun.minetarouillefx.controller.souris.SourisListener;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
 
@@ -21,10 +22,10 @@ public class GestionnaireControles {
     private final VueCarte vueCarte;
     private final GestionnaireInventaire gestionnaireInventaire;
     private final DebugManager debugManager;
-    private final GestionnaireItem gestionnaireItem;
+    private final universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem gestionnaireItem;
 
     // Modified constructor to accept SourisListener
-    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem, SourisListener sourisListener) {
+    public GestionnaireControles(Joueur joueurModele, VueCarte vueCarte, GestionnaireInventaire gestionnaireInventaire, DebugManager debugManager, universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem gestionnaireItem, SourisListener sourisListener) {
         this.joueurModele = joueurModele;
         this.vueCarte = vueCarte;
         this.gestionnaireInventaire = gestionnaireInventaire;
@@ -44,7 +45,8 @@ public class GestionnaireControles {
 
         Platform.runLater(() -> {
             tileMap.setFocusTraversable(true);
-            sourisListener.lierScrollInventaire(tileMap.getScene());
+            // Appel modifié : on passe le TilePane lui-même (lierScrollInventaire gère la scene interne)
+            sourisListener.lierScrollInventaire(tileMap);
             tileMap.requestFocus();
         });
     }

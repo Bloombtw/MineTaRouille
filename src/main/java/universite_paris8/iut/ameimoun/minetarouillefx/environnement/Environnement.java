@@ -1,6 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.environnement;
 
 import javafx.scene.Group;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
@@ -13,8 +14,12 @@ import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
 
+/**
+ * La classe Environnement gère l'ensemble des éléments du jeu,
+ * y compris la carte, le joueur, les mobs, les items et les gestionnaires associés.
+ * Elle est responsable de l'initialisation et de la mise à jour de ces éléments.
+ */
 public class Environnement {
-
     private final Carte carte;
     private final VueCarte vueCarte;
     private final Joueur joueur;
@@ -54,7 +59,10 @@ public class Environnement {
 
         // --- Gestionnaires ---
         gestionnaireItem = new GestionnaireItem(worldGroup);
-        gestionnaireInventaire = new GestionnaireInventaire(null, vueJoueur);
+        // passer le vrai rootPane (cast) au gestionnaire d'inventaire et l'initialiser
+        gestionnaireInventaire = new GestionnaireInventaire((AnchorPane) rootPane, vueJoueur);
+        gestionnaireInventaire.initialiserInventaire();
+
         gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
         gestionnaireMobHostile = new GestionnaireMobHostile(gestionnaireItem);
         gestionnaireFleche = new GestionnaireFleche(worldGroup, gestionnaireMobPassif, gestionnaireMobHostile);
@@ -75,8 +83,9 @@ public class Environnement {
         debugManager = new DebugManager(worldGroup, joueur, mobManager.getMobs());
 
         // --- Assemblage ---
-        worldGroup.getChildren().addAll(vueCarte.getTileMap(), vueJoueur.getNode());
+        worldGroup.getChildren().addAll(vueCarte.getTileMap(), vueJoueur.getNode(), vueVie.getNode());
     }
+
 
     private int trouverHauteurSol(int x) {
         for (int y = 0; y < Constantes.NB_LIGNES; y++) {
@@ -95,11 +104,12 @@ public class Environnement {
         gestionnaireMobHostile.mettreAJour();
         gestionnaireItem.update(joueur, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire());
         gestionnaireFleche.mettreAJour();
+        gestionnaireVie.mettreAJour(); // ou sans gameLoop si non utilisé
 
         if (debugManager.isDebugVisible()) debugManager.update();
     }
 
-    // --- Getters utiles ---
+    // --- Getters---
     public Joueur getJoueur() { return joueur; }
     public Group getWorldGroup() { return worldGroup; }
     public GestionnaireInventaire getGestionnaireInventaire() { return gestionnaireInventaire; }

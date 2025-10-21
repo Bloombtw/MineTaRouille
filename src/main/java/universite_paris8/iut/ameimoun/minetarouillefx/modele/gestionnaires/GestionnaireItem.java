@@ -71,6 +71,20 @@ public class GestionnaireItem {
         item.setY(item.getY() + Constantes.GRAVITE * 5);
     }
 
+    /**
+     * Ajout : surcharge acceptant des coordonnées en tuiles.
+     * Convertit en pixels puis délègue à la méthode existante.
+     */
+    public void spawnItemAuSol(Item item, int tileX, int tileY) {
+        if (item == null) return;
+        double px = tileX * Constantes.TAILLE_TUILE;
+        double py = tileY * Constantes.TAILLE_TUILE;
+        spawnItemAuSol(item, px, py);
+    }
+
+    /**
+     * Méthode existante qui prend des coordonnées en pixels.
+     */
     public void spawnItemAuSol(Item item, double px, double py) {
         item.setX(px);
         item.setY(py);
