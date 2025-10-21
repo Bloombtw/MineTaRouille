@@ -54,6 +54,7 @@ public class Mob extends Personnage {
         } else {
             deplacerGauche();
         }
+
     }
 
     public void setStrategie(StrategieDeplacement strategie) {
