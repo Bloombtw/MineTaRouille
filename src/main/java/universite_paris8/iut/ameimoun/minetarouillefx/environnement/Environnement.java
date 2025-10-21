@@ -3,16 +3,14 @@ package universite_paris8.iut.ameimoun.minetarouillefx.environnement;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import universite_paris8.iut.ameimoun.minetarouillefx.controller.CraftController;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.mob.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.MobManager;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueCarte;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
-import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueVie;
+import universite_paris8.iut.ameimoun.minetarouillefx.vue.*;
 
 /**
  * La classe Environnement gère l'ensemble des éléments du jeu,
@@ -37,7 +35,11 @@ public class Environnement {
     private final GestionnaireSon gestionnaireSon;
     private final GestionnaireVie gestionnaireVie;
     private final GestionnaireMort gestionnaireMort;
-
+    /*
+    private final GestionnaireCraft gestionnaireCraft;
+    private final VueCraft vueCraft;
+    private final CraftController craftController;
+*/
     private final MobManager mobManager;
     private final DebugManager debugManager;
 
@@ -62,6 +64,13 @@ public class Environnement {
         // passer le vrai rootPane (cast) au gestionnaire d'inventaire et l'initialiser
         gestionnaireInventaire = new GestionnaireInventaire((AnchorPane) rootPane, vueJoueur);
         gestionnaireInventaire.initialiserInventaire();
+/*
+        // Craft
+        gestionnaireCraft = new GestionnaireCraft(gestionnairineInventaire); // adapter si nécessaire
+        vueCraft = new VueCraft(); // adapter si VueCraft nécessite des paramètres
+        craftController = new CraftController(gestionnaireCraft, vueCraft);
+        craftController.initialiserListeners(); // configure focus/clavier pour la fenêtre de craft
+*/
 
         gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
         gestionnaireMobHostile = new GestionnaireMobHostile(gestionnaireItem);
