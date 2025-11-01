@@ -35,52 +35,104 @@ public class Environnement {
     private final GestionnaireSon gestionnaireSon;
     private final GestionnaireVie gestionnaireVie;
     private final GestionnaireMort gestionnaireMort;
-    /*
-    private final GestionnaireCraft gestionnaireCraft;
-    private final VueCraft vueCraft;
-    private final CraftController craftController;
-*/
+
+    // Debug / Mobs
     private final MobManager mobManager;
     private final DebugManager debugManager;
 
     public Environnement(Group worldGroup, Region rootPane) {
         this.worldGroup = worldGroup;
         this.rootPane = rootPane;
-        // --- Initialisation du monde ---
-        carte = Carte.getInstance();
-        vueCarte = new VueCarte(carte);
 
-        // --- Joueur ---
-        joueur = new Joueur();
-        vueVie = new VueVie(joueur.getVie(), rootPane);
+        // Sous-méthodes d'initialisation
+        this.carte = initialiserCarte();
+        this.vueCarte = initialiserVueCarte();
+
+        this.joueur = initialiserJoueur();
+        this.vueVie = initialiserVueVie();
+        this.vueJoueur = initialiserVueJoueur();
+
+        this.gestionnaireItem = initialiserGestionnaireItem();
+        this.gestionnaireInventaire = initialiserGestionnaireInventaire();
+        this.gestionnaireMobPassif = initialiserGestionnaireMobPassif();
+        this.gestionnaireMobHostile = initialiserGestionnaireMobHostile();
+        this.gestionnaireFleche = initialiserGestionnaireFleche();
+        this.gestionnaireSon = initialiserGestionnaireSon();
+        this.gestionnaireMort = initialiserGestionnaireMort();
+        this.gestionnaireVie = initialiserGestionnaireVie();
+
+        this.mobManager = new MobManager();
+        this.debugManager = initialiserDebugManager();
+
+        // Assemblage final
+        assemblerElements();
+    }
+
+    /* ------------------------------------------------------------------------
+     * SOUS-MÉTHODES D’INITIALISATION
+     * ------------------------------------------------------------------------ */
+
+    private Carte initialiserCarte() {
+        return Carte.getInstance();
+    }
+
+    private VueCarte initialiserVueCarte() {
+        return new VueCarte(carte);
+    }
+
+    private Joueur initialiserJoueur() {
+        Joueur joueur = new Joueur();
         int colonneDepart = 50;
         int ligneSol = trouverHauteurSol(colonneDepart);
         joueur.setX(colonneDepart * Constantes.TAILLE_TUILE);
         joueur.setY((ligneSol - 2) * Constantes.TAILLE_TUILE);
-        vueJoueur = new VueJoueur(joueur);
+        return joueur;
+    }
 
-        // --- Gestionnaires ---
-        gestionnaireItem = new GestionnaireItem(worldGroup);
-        // passer le vrai rootPane (cast) au gestionnaire d'inventaire et l'initialiser
-        gestionnaireInventaire = new GestionnaireInventaire((AnchorPane) rootPane, vueJoueur);
-        gestionnaireInventaire.initialiserInventaire();
-/*
-        // Craft
-        gestionnaireCraft = new GestionnaireCraft(gestionnairineInventaire); // adapter si nécessaire
-        vueCraft = new VueCraft(); // adapter si VueCraft nécessite des paramètres
-        craftController = new CraftController(gestionnaireCraft, vueCraft);
-        craftController.initialiserListeners(); // configure focus/clavier pour la fenêtre de craft
-*/
+    private VueVie initialiserVueVie() {
+        return new VueVie(joueur.getVie(), rootPane);
+    }
 
-        gestionnaireMobPassif = new GestionnaireMobPassif(gestionnaireItem);
-        gestionnaireMobHostile = new GestionnaireMobHostile(gestionnaireItem);
-        gestionnaireFleche = new GestionnaireFleche(worldGroup, gestionnaireMobPassif, gestionnaireMobHostile);
-        gestionnaireSon = new GestionnaireSon(joueur);
-        gestionnaireMort = new GestionnaireMort(joueur, joueur.getVie(), null, null, null, vueCarte);
-        gestionnaireVie = new GestionnaireVie(joueur, gestionnaireSon, gestionnaireMort, joueur.getVie());
+    private VueJoueur initialiserVueJoueur() {
+        return new VueJoueur(joueur);
+    }
 
-        // --- Mobs et debug ---
-        mobManager = new MobManager();
+    private GestionnaireItem initialiserGestionnaireItem() {
+        return new GestionnaireItem(worldGroup);
+    }
+
+    private GestionnaireInventaire initialiserGestionnaireInventaire() {
+        GestionnaireInventaire inv = new GestionnaireInventaire((AnchorPane) rootPane, vueJoueur);
+        inv.initialiserInventaire();
+        return inv;
+    }
+
+    private GestionnaireMobPassif initialiserGestionnaireMobPassif() {
+        return new GestionnaireMobPassif(gestionnaireItem);
+    }
+
+    private GestionnaireMobHostile initialiserGestionnaireMobHostile() {
+        return new GestionnaireMobHostile(gestionnaireItem);
+    }
+
+    private GestionnaireFleche initialiserGestionnaireFleche() {
+        return new GestionnaireFleche(worldGroup, gestionnaireMobPassif, gestionnaireMobHostile);
+    }
+
+    private GestionnaireSon initialiserGestionnaireSon() {
+        return new GestionnaireSon(joueur);
+    }
+
+    private GestionnaireMort initialiserGestionnaireMort() {
+        return new GestionnaireMort(joueur, joueur.getVie(), null, null, null, vueCarte);
+    }
+
+    private GestionnaireVie initialiserGestionnaireVie() {
+        return new GestionnaireVie(joueur, gestionnaireSon, gestionnaireMort, joueur.getVie());
+    }
+
+    private DebugManager initialiserDebugManager() {
+        // Création de quelques mobs de test
         Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, worldGroup);
         Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, worldGroup);
         mobManager.ajouterMob(mob1);
@@ -89,12 +141,20 @@ public class Environnement {
         MobHostile mobH1 = gestionnaireMobHostile.ajouterMob(joueur, 600, worldGroup);
         mobManager.ajouterMob(mobH1);
 
-        debugManager = new DebugManager(worldGroup, joueur, mobManager.getMobs());
-
-        // --- Assemblage ---
-        worldGroup.getChildren().addAll(vueCarte.getTileMap(), vueJoueur.getNode(), vueVie.getNode());
+        return new DebugManager(worldGroup, joueur, mobManager.getMobs());
     }
 
+    private void assemblerElements() {
+        worldGroup.getChildren().addAll(
+                vueCarte.getTileMap(),
+                vueJoueur.getNode(),
+                vueVie.getNode()
+        );
+    }
+
+    /* ------------------------------------------------------------------------
+     * AUTRES MÉTHODES
+     * ------------------------------------------------------------------------ */
 
     private int trouverHauteurSol(int x) {
         for (int y = 0; y < Constantes.NB_LIGNES; y++) {
@@ -104,7 +164,6 @@ public class Environnement {
         return Constantes.BASE_SOL;
     }
 
-    // --- Mise à jour globale ---
     public void update() {
         joueur.mettreAJourDeplacement();
         joueur.gravite();
@@ -113,38 +172,24 @@ public class Environnement {
         gestionnaireMobHostile.mettreAJour();
         gestionnaireItem.update(joueur, gestionnaireInventaire.getInventaire(), gestionnaireInventaire.getVueInventaire());
         gestionnaireFleche.mettreAJour();
-        gestionnaireVie.mettreAJour(); // ou sans gameLoop si non utilisé
+        gestionnaireVie.mettreAJour();
 
         if (debugManager.isDebugVisible()) debugManager.update();
     }
 
-    // --- Getters---
+    /* ------------------------------------------------------------------------
+     * GETTERS
+     * ------------------------------------------------------------------------ */
     public Joueur getJoueur() { return joueur; }
     public Group getWorldGroup() { return worldGroup; }
     public GestionnaireInventaire getGestionnaireInventaire() { return gestionnaireInventaire; }
-
-    public GestionnaireItem getGestionnaireItem() {
-        return gestionnaireItem;
-    }
-
-    public GestionnaireMobHostile getGestionnaireMobHostile() {
-        return gestionnaireMobHostile;
-    }
-
-    public GestionnaireMobPassif getGestionnaireMobPassif() {
-        return gestionnaireMobPassif;
-    }
-
-    public GestionnaireFleche getGestionnaireFleche() {
-        return gestionnaireFleche;
-    }
-
-    public VueInventaire getVueInventaire(){
-        return gestionnaireInventaire.getVueInventaire();
-    }
-
+    public GestionnaireItem getGestionnaireItem() { return gestionnaireItem; }
+    public GestionnaireMobHostile getGestionnaireMobHostile() { return gestionnaireMobHostile; }
+    public GestionnaireMobPassif getGestionnaireMobPassif() { return gestionnaireMobPassif; }
+    public GestionnaireFleche getGestionnaireFleche() { return gestionnaireFleche; }
+    public VueInventaire getVueInventaire() { return gestionnaireInventaire.getVueInventaire(); }
     public VueCarte getVueCarte() { return vueCarte; }
     public DebugManager getDebugManager() { return debugManager; }
-    public VueVie getVueVie(){return vueVie;}
-    public Environnement getEnvironnement() { return this;}
+    public VueVie getVueVie() { return vueVie; }
+    public Environnement getEnvironnement() { return this; }
 }
