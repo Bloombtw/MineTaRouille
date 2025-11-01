@@ -62,7 +62,7 @@ public class Item {
     public Objet getObjet() { return objet; }
     public TypeItem getTypeItem() { return typeItem; }
 
-    public Item getItem(int id) {
+    public Item correspondA(int id) {
         if (typeItem == TypeItem.BLOC && bloc != null && bloc.getId() == id) {
             return this;
         } else if (typeItem == TypeItem.OBJET && objet != null && objet.getId() == id) {

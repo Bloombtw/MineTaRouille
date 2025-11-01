@@ -11,6 +11,9 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClavierListener {
     private final Joueur joueur;
     private final Inventaire inventaire;
@@ -18,6 +21,7 @@ public class ClavierListener {
     private final DebugManager debugManager;
     private JeuController jeuController;
     private final GestionnaireItem gestionnaireItem;
+    private final Map<KeyCode, Runnable> actionsClavier;
 
     public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager,GestionnaireItem gestionnaireItem){
         this.joueur = joueur;
@@ -25,6 +29,24 @@ public class ClavierListener {
         this.vueInventaire = vueInventaire;
         this.debugManager = debugManager;
         this.gestionnaireItem = gestionnaireItem;
+        this.actionsClavier = new HashMap<>();
+    }
+
+    /**
+     * Initialise les actions associées aux touches du clavier.
+     * Méthode utilisée pour alléger le switch de la méthode lier.
+     */
+    private void initialiserActionsClavier() {
+        actionsClavier.put(KeyCode.Z, joueur::sauterUneFois);
+        actionsClavier.put(KeyCode.SPACE, joueur::sauterUneFois);
+        actionsClavier.put(KeyCode.UP, joueur::sauterUneFois);
+        actionsClavier.put(KeyCode.Q, () -> joueur.setEnDeplacementGauche(true));
+        actionsClavier.put(KeyCode.LEFT, () -> joueur.setEnDeplacementGauche(true));
+        actionsClavier.put(KeyCode.D, () -> joueur.setEnDeplacementDroite(true));
+        actionsClavier.put(KeyCode.RIGHT, () -> joueur.setEnDeplacementDroite(true));
+        actionsClavier.put(KeyCode.F3, debugManager::toggle);
+        actionsClavier.put(KeyCode.A, () -> gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire));
+        actionsClavier.put(KeyCode.R, () -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire));
     }
 
     /**
@@ -32,27 +54,17 @@ public class ClavierListener {
      *
      * @param tilePane Le TilePane sur lequel les événements de clavier seront écoutés.
      */
+
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case Z, SPACE, UP -> joueur.sauterUneFois();
-                case Q, LEFT -> joueur.setEnDeplacementGauche(true);
-                case D, RIGHT -> joueur.setEnDeplacementDroite(true);
-                case F3 -> debugManager.toggle();
-                case A -> gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
-                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
-            }
+            Runnable action = actionsClavier.get(event.getCode()); // Récupère l'action associée à la touche pressée
+            if (action != null) action.run();
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichageInventaire();
         });
 
-        tilePane.setOnKeyReleased(event -> {
-            switch (event.getCode()) {
-                case Q, LEFT -> joueur.setEnDeplacementGauche(false);
-                case D, RIGHT -> joueur.setEnDeplacementDroite(false);
-            }
-        });
     }
+
     /**
      * Désactive les actions du clavier.
      *

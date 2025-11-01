@@ -65,6 +65,7 @@ public class DebugManager {
                 Constantes.TAILLE_PERSO
         );
 
+        /*
         // Hitbox des mobs
         gc.setStroke(Color.GREEN);
         for (Mob mob : mobs) {
@@ -75,6 +76,7 @@ public class DebugManager {
                     mob.getHauteur()
             );
         }
+        */
     }
 
     public boolean isDebugVisible() {

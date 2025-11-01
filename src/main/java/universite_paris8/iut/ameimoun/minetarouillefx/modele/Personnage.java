@@ -1,7 +1,7 @@
 package universite_paris8.iut.ameimoun.minetarouillefx.modele;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.scene.Node;
+import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constantes;
 
 /**
@@ -9,26 +9,36 @@ import universite_paris8.iut.ameimoun.minetarouillefx.utils.Constantes.Constante
  * Gère les déplacements horizontaux, la gravité, les sauts,
  * la collision avec le terrain et la vie du personnage.
  */
-public class Personnage extends EntitePosition{
+public abstract class Personnage {
 
+    private final DoubleProperty x = new SimpleDoubleProperty();
+    private final DoubleProperty y = new SimpleDoubleProperty();
     protected boolean enDeplacementGauche = false;
     protected boolean enDeplacementDroite = false;
     private boolean doitSauter = false;
 
-    private final Vie vie;
+    private Vie vie;
+
     private final String nom;
     public Direction direction;
     private double vitesseX = 0;
     private double vitesseY = 0;
     private boolean peutSauter = true;
-    private final Carte carte;
+    private Carte carte;
 
     public Personnage(double x, double y, double pointsDeVie, String nom) {
-        super(x, y);
+        this.x.set(x);
+        this.y.set(y);
         this.vie = new Vie(pointsDeVie);
         this.nom = nom;
         this.direction = Direction.DROITE;
         this.carte = Carte.getInstance();
+    }
+
+    public abstract void agir(); // Methode importante
+    public void mettreAJour() {
+        gravite();
+        agir();
     }
 
     public void sauter() {
@@ -40,7 +50,7 @@ public class Personnage extends EntitePosition{
 
     public void deplacerGauche() {
         double futurX = getX() - Constantes.VITESSE_DEPLACEMENT;
-        if (!Carte.getInstance().collision(futurX, getY())) {
+        if (!collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.GAUCHE;
@@ -48,7 +58,7 @@ public class Personnage extends EntitePosition{
 
     public void deplacerDroite() {
         double futurX = getX() + Constantes.VITESSE_DEPLACEMENT;
-        if (!Carte.getInstance().collision(futurX, getY())) {
+        if (!collision(futurX, getY())) {
             setX(futurX);
         }
         direction = Direction.DROITE;
@@ -62,7 +72,7 @@ public class Personnage extends EntitePosition{
         vitesseY += Constantes.GRAVITE;
         double futurY = getY() + vitesseY;
 
-        if (!Carte.getInstance().collision(getX(), futurY)) {
+        if (!carte.estCollision(getX(), futurY, Constantes.TAILLE_PERSO)) {
             setY(futurY);
         } else {
             vitesseY = 0;
@@ -70,12 +80,26 @@ public class Personnage extends EntitePosition{
         }
     }
 
+    boolean collision(double x, double y) {
+        int left = (int) (x / Constantes.TAILLE_PERSO);
+        int right = (int) ((x + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+        int top = (int) (y / Constantes.TAILLE_PERSO);
+        int bottom = (int) ((y + Constantes.TAILLE_PERSO - 1) / Constantes.TAILLE_PERSO);
+
+        for (int tx = left; tx <= right; tx++) {
+            for (int ty = top; ty <= bottom; ty++) {
+                if (carte.estBlocSolide(tx, ty)) return true;
+            }
+        }
+        return false;
+    }
+
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;
     }
 
     public Vie getVie() {
-        return vie; // logique de vie
+        return vie;
     }
 
     public DoubleProperty xProperty() { return x; }
@@ -88,6 +112,7 @@ public class Personnage extends EntitePosition{
     public void setY(double val) { y.set(val); }
 
     public double getVitesseY() { return vitesseY; }
+
 
     public void setEnDeplacementGauche(boolean actif) {
         this.enDeplacementGauche = actif;
@@ -113,4 +138,6 @@ public class Personnage extends EntitePosition{
             doitSauter = false;
         }
     }
+
+
 }
