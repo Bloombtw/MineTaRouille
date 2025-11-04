@@ -2,10 +2,7 @@ package universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires;
 
 import javafx.collections.ListChangeListener;
 import javafx.scene.layout.AnchorPane;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Bloc;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Item;
-import universite_paris8.iut.ameimoun.minetarouillefx.modele.Objet;
+import universite_paris8.iut.ameimoun.minetarouillefx.modele.*;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueJoueur;
 
@@ -45,7 +42,7 @@ public class GestionnaireInventaire {
         inventaire.selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             joueurVue.mettreAJourObjetTenu(inventaire.getItem(newVal.intValue()));
         });
-        inventaire.getSlots().addListener((ListChangeListener.Change<? extends Item> change) -> {
+        inventaire.getSlots().addListener((ListChangeListener.Change<? extends Slot> change) -> {
             joueurVue.mettreAJourObjetTenu(inventaire.getItem(inventaire.getSelectedIndex()));
         });
     }
