@@ -72,8 +72,8 @@ public class Environnement {
 
         // --- Mobs et debug ---
         mobManager = new MobManager();
-        Mob mob1 = gestionnaireMobPassif.ajouterMob(null, 200, worldGroup);
-        Mob mob2 = gestionnaireMobPassif.ajouterMob(null, 400, worldGroup);
+        Mob mob1 = gestionnaireMobPassif.ajouterMob(joueur, 200, worldGroup);
+        Mob mob2 = gestionnaireMobPassif.ajouterMob(joueur, 400, worldGroup);
         mobManager.ajouterMob(mob1);
         mobManager.ajouterMob(mob2);
 

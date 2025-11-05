@@ -15,6 +15,7 @@ import java.util.List;
  * Maintient la liste des mobs passifs et de leurs vues pour l'affichage.
  */
 public class GestionnaireMobPassif extends GestionnaireMob {
+
     private final List<Mob> mobSimple = new ArrayList<>();
     private final List<VueMob> vuesMob = new ArrayList<>();
     private static final double MAP_WIDTH = 1920.0;
