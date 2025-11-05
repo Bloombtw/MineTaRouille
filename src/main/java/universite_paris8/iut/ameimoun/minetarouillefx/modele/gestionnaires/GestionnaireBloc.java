@@ -79,13 +79,20 @@ public class GestionnaireBloc {
         return distance <= Constantes.DISTANCE_MAX_CASSAGE_BLOC * Constantes.TAILLE_TUILE;
     }
 
-    public static boolean hitboxSurBloc(Joueur joueur, int pxBloc, int pyBloc) {
-        double pxJoueur = joueur.getX();
-        double pyJoueur = joueur.getY();
-        double taille = Constantes.TAILLE_PERSO;
-        return pxJoueur + taille > pxBloc && pxJoueur < pxBloc + Constantes.TAILLE_TUILE
-                && pyJoueur + taille > pyBloc && pyJoueur < pyBloc + Constantes.TAILLE_TUILE;
+    public static boolean chevauchement(double x1, double y1, double w1, double h1,
+                                        double x2, double y2, double w2, double h2) {
+        boolean chevaucheX = x1 < x2 + w2 && x1 + w1 > x2;
+        boolean chevaucheY = y1 < y2 + h2 && y1 + h1 > y2;
+        return chevaucheX && chevaucheY;
     }
+
+    public static boolean hitboxSurBloc(Joueur joueur, int pxBloc, int pyBloc) {
+        return chevauchement(
+                joueur.getX(), joueur.getY(), Constantes.TAILLE_PERSO, Constantes.TAILLE_PERSO,
+                pxBloc, pyBloc, Constantes.TAILLE_TUILE, Constantes.TAILLE_TUILE
+        );
+    }
+
 
     public static Bloc getBloc(int couche, int px, int py) {
         int x = px / Constantes.TAILLE_TUILE;
