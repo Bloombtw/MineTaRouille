@@ -271,9 +271,9 @@ public class JeuController implements Initializable {
 
         gestionnaireItem.update(
                 joueurModele,
-                gestionnaireInventaire.getInventaire(),
                 gestionnaireInventaire.getVueInventaire()
         );
+
 
         if (gestionnaireFleche != null) {
             gestionnaireFleche.mettreAJour();

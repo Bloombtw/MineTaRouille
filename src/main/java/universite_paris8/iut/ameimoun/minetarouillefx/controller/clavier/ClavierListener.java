@@ -8,7 +8,6 @@ import universite_paris8.iut.ameimoun.minetarouillefx.modele.Inventaire;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.Joueur;
 import universite_paris8.iut.ameimoun.minetarouillefx.modele.gestionnaires.GestionnaireItem;
 import universite_paris8.iut.ameimoun.minetarouillefx.utils.debug.DebugManager;
-import universite_paris8.iut.ameimoun.minetarouillefx.utils.audio.MusiqueManager;
 import universite_paris8.iut.ameimoun.minetarouillefx.vue.VueInventaire;
 
 public class ClavierListener {
@@ -19,7 +18,7 @@ public class ClavierListener {
     private JeuController jeuController;
     private final GestionnaireItem gestionnaireItem;
 
-    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager,GestionnaireItem gestionnaireItem){
+    public ClavierListener(Joueur joueur, Inventaire inventaire, VueInventaire vueInventaire, DebugManager debugManager, GestionnaireItem gestionnaireItem) {
         this.joueur = joueur;
         this.inventaire = inventaire;
         this.vueInventaire = vueInventaire;
@@ -27,11 +26,6 @@ public class ClavierListener {
         this.gestionnaireItem = gestionnaireItem;
     }
 
-    /**
-     * Associe les touches du clavier aux actions du jeu.
-     *
-     * @param tilePane Le TilePane sur lequel les événements de clavier seront écoutés.
-     */
     public void lier(TilePane tilePane) {
         tilePane.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -39,8 +33,9 @@ public class ClavierListener {
                 case Q, LEFT -> joueur.setEnDeplacementGauche(true);
                 case D, RIGHT -> joueur.setEnDeplacementDroite(true);
                 case F3 -> debugManager.toggle();
-                case A -> gestionnaireItem.jeterItemSelectionne(joueur, inventaire, vueInventaire);
-                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, inventaire, vueInventaire);
+                case A -> gestionnaireItem.jeterItemSelectionne(joueur, vueInventaire);
+                case R -> gestionnaireItem.consommerMoutonCuitSelectionne(joueur, vueInventaire);
+                case E -> joueur.ramasserItemsProches(gestionnaireItem.getItemsAuSol()); // 👈 Ramassage manuel
             }
             gererSelectionInventaire(event.getText());
             vueInventaire.mettreAJourAffichageInventaire();
@@ -53,21 +48,12 @@ public class ClavierListener {
             }
         });
     }
-    /**
-     * Désactive les actions du clavier.
-     *
-     * @param tilePane Le TilePane sur lequel les événements de clavier ne seront plus écoutés.
-     */
+
     public void desactiver(TilePane tilePane) {
         tilePane.setOnKeyPressed(null);
         tilePane.setOnKeyReleased(null);
     }
 
-    /**
-     * Gère la sélection de l'inventaire en fonction du caractère entré.
-     *
-     * @param caractere Le caractère entré par l'utilisateur.
-     */
     public void gererSelectionInventaire(String caractere) {
         switch (caractere) {
             case "&" -> inventaire.setSelectedIndex(0);
@@ -91,6 +77,4 @@ public class ClavierListener {
     public void setJeuController(JeuController jeuController) {
         this.jeuController = jeuController;
     }
-
 }
-
