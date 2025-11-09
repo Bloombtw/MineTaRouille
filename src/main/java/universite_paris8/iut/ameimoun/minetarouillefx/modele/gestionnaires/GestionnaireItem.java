@@ -27,18 +27,21 @@ public class GestionnaireItem {
             Item item = itemIterator.next();
             VueItem vue = vueIterator.next();
 
-            appliquerGravite(item);
-            gererCollisionSol(item);
+            appliquerPhysique(item);
 
-            if (detecterRamassage(item, joueur)) {
-                inventaire.ajouterItem(item);
-                vueInventaire.mettreAJourAffichageInventaire();
-
-                worldGroup.getChildren().remove(vue.getImageView());
-                itemIterator.remove();
-                vueIterator.remove();
+            if (itemEstRamasseParJoueur(item, joueur)) {
+                ramasserItem(item, vue, itemIterator, vueIterator, inventaire, vueInventaire);
             }
         }
+    }
+
+    private void appliquerPhysique(Item item) {
+        appliquerGravite(item);
+        gererCollisionSol(item);
+    }
+
+    private void appliquerGravite(Item item) {
+        item.setY(item.getY() + Constantes.GRAVITE * 5);
     }
 
     private void gererCollisionSol(Item item) {
@@ -48,27 +51,6 @@ public class GestionnaireItem {
         if (Carte.getInstance().estBlocSolide(xBloc, yBloc)) {
             item.setY(yBloc * Constantes.TAILLE_TUILE - Constantes.TAILLE_ITEM);
         }
-    }
-
-    private boolean detecterRamassage(Item item, Joueur joueur) {
-        double itemGauche = item.getX();
-        double itemDroite = item.getX() + Constantes.TAILLE_ITEM;
-        double itemHaut = item.getY();
-        double itemBas = item.getY() + Constantes.TAILLE_ITEM;
-
-        double joueurGauche = joueur.getX();
-        double joueurDroite = joueur.getX() + Constantes.TAILLE_PERSO;
-        double joueurHaut = joueur.getY();
-        double joueurBas = joueur.getY() + Constantes.TAILLE_PERSO;
-
-        boolean collisionX = itemDroite > joueurGauche && itemGauche < joueurDroite;
-        boolean collisionY = itemBas > joueurHaut && itemHaut < joueurBas;
-
-        return collisionX && collisionY;
-    }
-
-    private void appliquerGravite(Item item) {
-        item.setY(item.getY() + Constantes.GRAVITE * 5);
     }
 
     /**
@@ -132,4 +114,29 @@ public class GestionnaireItem {
         inventaire.retirerItem(idx);
         vueInventaire.mettreAJourAffichageInventaire();
     }
+
+    private boolean itemEstRamasseParJoueur(Item item, Joueur joueur) {
+        return zonesSeChevauchent(
+                item.getX(), item.getY(), Constantes.TAILLE_ITEM, Constantes.TAILLE_ITEM,
+                joueur.getX(), joueur.getY(), Constantes.TAILLE_PERSO, Constantes.TAILLE_PERSO
+        );
+    }
+
+    private boolean zonesSeChevauchent(double x1, double y1, double w1, double h1,
+                                       double x2, double y2, double w2, double h2) {
+        boolean chevaucheX = x1 < x2 + w2 && x1 + w1 > x2;
+        boolean chevaucheY = y1 < y2 + h2 && y1 + h1 > y2;
+        return chevaucheX && chevaucheY;
+    }
+
+    private void ramasserItem(Item item, VueItem vue, Iterator<Item> itemIterator,
+                              Iterator<VueItem> vueIterator,
+                              Inventaire inventaire, VueInventaire vueInventaire) {
+        inventaire.ajouterItem(item);
+        vueInventaire.mettreAJourAffichageInventaire();
+        worldGroup.getChildren().remove(vue.getImageView());
+        itemIterator.remove();
+        vueIterator.remove();
+    }
+
 }

@@ -44,27 +44,22 @@ public class GestionnaireFleche {
         Iterator<Fleche> it = fleches.iterator();
         while (it.hasNext()) {
             Fleche fleche = it.next();
-            if (mettreAJourPositionEtDistance(fleche, it)) continue;
-            if (gererCollisionAvecMobsPassifs(fleche, it)) continue;
-            if (gererCollisionAvecMobsHostiles(fleche, it)) continue;
+            if (flecheDoitEtreSupprimee(fleche, it)) continue;
+            if (collisionAvecMobPassif(fleche, it)) continue;
+            if (collisionAvecMobHostile(fleche, it)) continue;
         }
     }
 
-    private boolean mettreAJourPositionEtDistance(Fleche fleche, Iterator<Fleche> it) {
-        boolean depassee = fleche.mettreAJourEtVerifierDistance();
-        if (depassee || fleche.estHorsJeu()) {
+    private boolean flecheDoitEtreSupprimee(Fleche fleche, Iterator<Fleche> it) {
+        if (fleche.mettreAJourEtVerifierDistance() || fleche.estHorsJeu()) {
             supprimerFleche(fleche, it);
             return true;
         }
         return false;
     }
-
-    private boolean gererCollisionAvecMobsPassifs(Fleche fleche, Iterator<Fleche> it) {
-        // Copie pour éviter modification concurrente
-        List<Mob> mobs = new ArrayList<>(gestionnaireMob.getMobs());
-        for (Mob mob : mobs) {
-            double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
-            if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
+    private boolean collisionAvecMobPassif(Fleche fleche, Iterator<Fleche> it) {
+        for (Mob mob : copieDesMobsPassifs()) {
+            if (flecheEstProcheDuMob(fleche, mob)) {
                 gestionnaireMob.supprimerMobEtGetLoot(mob);
                 supprimerFleche(fleche, it);
                 return true;
@@ -73,27 +68,41 @@ public class GestionnaireFleche {
         return false;
     }
 
-    private boolean gererCollisionAvecMobsHostiles(Fleche fleche, Iterator<Fleche> it) {
-        if (gestionnaireMobHostile != null) {
-            List<MobHostile> mobs = new ArrayList<>(gestionnaireMobHostile.getMobsHostiles());
-            for (MobHostile mob : mobs) {
-                double dist = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
-                if (dist < Constantes.DISTANCE_ATTAQUE_ARC) {
-                    gestionnaireMobHostile.supprimerMobEtLoot(mob);
-                    supprimerFleche(fleche, it);
-                    return true;
-                }
+    private boolean collisionAvecMobHostile(Fleche fleche, Iterator<Fleche> it) {
+        if (gestionnaireMobHostile == null) return false;
+
+        for (MobHostile mob : copieDesMobsHostiles()) {
+            if (flecheEstProcheDuMob(fleche, mob)) {
+                gestionnaireMobHostile.supprimerMobEtLoot(mob);
+                supprimerFleche(fleche, it);
+                return true;
             }
         }
         return false;
     }
 
+    private List<MobHostile> copieDesMobsHostiles() {
+        return new ArrayList<>(gestionnaireMobHostile.getMobsHostiles());
+    }
+
+
+    private List<Mob> copieDesMobsPassifs() {
+        return new ArrayList<>(gestionnaireMob.getMobs());
+    }
+
+    private boolean flecheEstProcheDuMob(Fleche fleche, Mob mob) {
+        double distance = Math.hypot(fleche.getX() - mob.getX(), fleche.getY() - mob.getY());
+        return distance < Constantes.DISTANCE_ATTAQUE_ARC;
+    }
+
+
+
     private void supprimerFleche(Fleche fleche, Iterator<Fleche> it) {
-        VueFleche vue = vueFleches.get(fleche);
+        VueFleche vue = vueFleches.remove(fleche);
         if (vue != null) {
             worldGroup.getChildren().remove(vue.getNode());
         }
         it.remove();
-        vueFleches.remove(fleche);
     }
+
 }
