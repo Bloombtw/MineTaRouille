@@ -92,20 +92,12 @@ public class JeuController implements Initializable {
                 environnement.getGestionnaireMobPassif(),
                 environnement.getGestionnaireFleche(),
                 environnement.getGestionnaireInventaire().getVueInventaire(),
-                environnement.getWorldGroup() // <-- passage du Group pour conversion coord.
+                environnement.getWorldGroup()
         );
-
-        // Si tu as un CraftController à lier
-        // sourisListener.setCraftController(craftController);
-
-        // Lier au cameraPane pour recevoir les événements souris
         sourisListener.lier(cameraPane);
 
-        // Donner le focus au cameraPane aussi ici
         cameraPane.setFocusTraversable(true);
         cameraPane.requestFocus();
-
-        // clic sur le monde remet le focus sur cameraPane
         cameraPane.setOnMouseClicked(e -> cameraPane.requestFocus());
     }
 

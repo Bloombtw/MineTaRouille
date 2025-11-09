@@ -107,31 +107,22 @@ public class GestionnaireCraft {
      */
     public void tenterCraft() {
         for (RecettesCraft recette : RecettesCraft.values()) {
-            if (recette.correspondPattern(convertirGrille(grille))) {
-                Item resultat = recette.getResultat();
-                int quantite = recette.getQuantiteResultat();
-                Item resultatAvecQuantite = resultat.getBloc() != null
-                        ? new Item(resultat.getBloc(), quantite)
-                        : new Item(resultat.getObjet(), quantite);
+            if (!grilleCorrespondA(recette)) continue;
 
-                if (!inventaire.aDeLaPlacePour(resultatAvecQuantite)) {
-                    quantiteCraft.set(-1);
-                    resultatCraft.set(null);
-                    return;
-                }
+            Item resultat = construireItemResultat(recette);
+            if (!inventaire.aDeLaPlacePour(resultat)) {
+                signalerInventairePlein();
+                return;
+            }
 
-                if (peutCrafter(recette)) {
-                    inventaire.ajouterItem(resultatAvecQuantite);
-                    viderGrille();
-                    resultatCraft.set(resultat);
-                    quantiteCraft.set(quantite);
-                    return;
-                }
+            if (inventaireContientIngredients(recette)) {
+                effectuerCraft(recette, resultat);
+                return;
             }
         }
-        resultatCraft.set(null);
-        quantiteCraft.set(-3);
+        signalerCraftImpossible();
     }
+
 
     /**
      * Ajoute ou retire un item de la grille de craft quand on clique sur une case.
@@ -139,28 +130,15 @@ public class GestionnaireCraft {
      * @param col La colonne de la grille où l'item doit être ajouté ou retiré.
      */
     public void ajouterOuRetirerItem(int row, int col) {
-        Item currentItem = grille.get(row).get(col);
+        Item itemGrille = grille.get(row).get(col);
 
-        if (currentItem == null) {
-            Item item = inventaire.getItem(inventaire.getSelectedIndex());
-            if (item == null) return;
-
-            if (item.getBloc() != null) {
-                inventaire.retirer(new Item(item.getBloc()), 1);
-                grille.get(row).set(col, new Item(item.getBloc(), 1));
-            } else if (item.getObjet() != null) {
-                inventaire.retirer(new Item(item.getObjet()), 1);
-                grille.get(row).set(col, new Item(item.getObjet(), 1));
-            }
+        if (itemGrille == null) {
+            ajouterItemDepuisInventaire(row, col);
         } else {
-            if (currentItem.getBloc() != null) {
-                inventaire.ajouterItem(new Item(currentItem.getBloc(), 1));
-            } else if (currentItem.getObjet() != null) {
-                inventaire.ajouterItem(new Item(currentItem.getObjet(), 1));
-            }
-            grille.get(row).set(col, null);
+            retirerItemVersInventaire(row, col, itemGrille);
         }
     }
+
 
     /**
      * Vérifie si l'inventaire contient tous les items nécessaires pour crafter la recette.
@@ -204,5 +182,68 @@ public class GestionnaireCraft {
                 }
             }
         }
+    }
+
+
+    private boolean grilleCorrespondA(RecettesCraft recette) {
+        return recette.correspondPattern(convertirGrille(grille));
+    }
+
+    private Item construireItemResultat(RecettesCraft recette) {
+        Item base = recette.getResultat();
+        int quantite = recette.getQuantiteResultat();
+        return base.getBloc() != null
+                ? new Item(base.getBloc(), quantite)
+                : new Item(base.getObjet(), quantite);
+    }
+
+    private boolean inventaireContientIngredients(RecettesCraft recette) {
+        for (Item[] ligne : recette.getPattern()) {
+            for (Item item : ligne) {
+                if (item != null && inventaire.getQuantite(item) < 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //Méthode privées extraites
+    private void effectuerCraft(RecettesCraft recette, Item resultat) {
+        inventaire.ajouterItem(resultat);
+        viderGrille();
+        resultatCraft.set(recette.getResultat());
+        quantiteCraft.set(recette.getQuantiteResultat());
+    }
+
+    private void signalerInventairePlein() {
+        quantiteCraft.set(-1);
+        resultatCraft.set(null);
+    }
+
+    private void signalerCraftImpossible() {
+        quantiteCraft.set(-3);
+        resultatCraft.set(null);
+    }
+
+    private void ajouterItemDepuisInventaire(int row, int col) {
+        Item item = inventaire.getItem(inventaire.getSelectedIndex());
+        if (item == null) return;
+
+        Item itemUnitaire = item.getBloc() != null
+                ? new Item(item.getBloc(), 1)
+                : new Item(item.getObjet(), 1);
+
+        inventaire.retirer(itemUnitaire, 1);
+        grille.get(row).set(col, itemUnitaire);
+    }
+
+    private void retirerItemVersInventaire(int row, int col, Item itemGrille) {
+        Item itemUnitaire = itemGrille.getBloc() != null
+                ? new Item(itemGrille.getBloc(), 1)
+                : new Item(itemGrille.getObjet(), 1);
+
+        inventaire.ajouterItem(itemUnitaire);
+        grille.get(row).set(col, null);
     }
 }

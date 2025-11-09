@@ -70,8 +70,23 @@ public class Personnage extends EntitePosition{
         }
     }
 
+    public void sauterUneFois() {
+        if (getVitesseY() == 0) {
+            doitSauter = true;
+        }
+    }
+
     public boolean estMort() {
         return vie.vieActuelleProperty().get() <= 0;
+    }
+
+    public void mettreAJourDeplacement() {
+        if (enDeplacementGauche) deplacerGauche();
+        if (enDeplacementDroite) deplacerDroite();
+        if (doitSauter) {
+            sauter();
+            doitSauter = false;
+        }
     }
 
     public Vie getVie() {
@@ -99,18 +114,4 @@ public class Personnage extends EntitePosition{
         if (!actif && !enDeplacementGauche) arreterMouvementX();
     }
 
-    public void sauterUneFois() {
-        if (getVitesseY() == 0) {
-            doitSauter = true;
-        }
-    }
-
-    public void mettreAJourDeplacement() {
-        if (enDeplacementGauche) deplacerGauche();
-        if (enDeplacementDroite) deplacerDroite();
-        if (doitSauter) {
-            sauter();
-            doitSauter = false;
-        }
-    }
 }
