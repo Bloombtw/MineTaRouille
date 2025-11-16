@@ -25,7 +25,7 @@ public class Environnement {
     private final Joueur joueur;
     private final VueVie vueVie;
     private final VueJoueur vueJoueur;
-    private final Group worldGroup;
+    final Group worldGroup;
     private final Region rootPane;
 
     // Gestionnaires

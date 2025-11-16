@@ -84,6 +84,12 @@ public class Item {
         return 64;
     }
 
+    public Item dupliquerAvecQuantite(int quantite) {
+        return (this.getTypeItem() == TypeItem.BLOC)
+                ? new Item(this.getBloc(), quantite)
+                : new Item(this.getObjet(), quantite);
+    }
+
     @Override
     public boolean equals(Object autreObjet) {
         if (this == autreObjet) return true;

@@ -20,41 +20,10 @@ public class Mob extends Personnage {
     }
 
     public void mettreAJour(Joueur joueur) {
-        gravite();
-
-        double prochaineX = getX() + getVitesseX();
-        double prochaineY = getY() + getVitesseY();
-        boolean collisionVerticale = Carte.getInstance().collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
-        boolean collisionDroite = Carte.getInstance().collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
-        boolean collisionGauche = Carte.getInstance().collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
-
-        if (getVie().estLow()) {
-            setStrategie(new StrategieFuite());
-        } else {
-            setStrategie(new StrategieAttaque());
-        }
-
-        if (strategieCourante != null) {
-            strategieCourante.deplacer(this, joueur);
-        }
-        if (collisionDroite && collisionGauche) {
-            sauter();
-        } else if (collisionDroite || collisionGauche) {
-            if (collisionVerticale) {
-                sauter();
-
-                mouvementDirection = (mouvementDirection == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
-                direction = (direction == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
-            } else {
-                sauter();
-            }
-        }
-        if (mouvementDirection == Direction.DROITE) {
-            deplacerDroite();
-        } else {
-            deplacerGauche();
-        }
-
+        appliquerGravite();
+        mettreAJourStrategie(joueur);
+        appliquerStrategieDeplacement(joueur);
+        gererBlocageEtSaut();
     }
 
     public void setStrategie(StrategieDeplacement strategie) {
@@ -62,9 +31,7 @@ public class Mob extends Personnage {
     }
 
     public double getVitesseX() {
-        return (mouvementDirection == Direction.DROITE)
-                ? Constantes.VITESSE_DEPLACEMENT_MOB
-                : -Constantes.VITESSE_DEPLACEMENT_MOB;
+        return (mouvementDirection == Direction.DROITE ? Constantes.VITESSE_DEPLACEMENT_MOB : -Constantes.VITESSE_DEPLACEMENT_MOB);
     }
 
     public double getLargeur() {
@@ -73,5 +40,41 @@ public class Mob extends Personnage {
 
     public double getHauteur() {
         return Constantes.TAILLE_PERSO;
+    }
+
+
+    private void appliquerGravite() {
+        gravite();
+    }
+
+    private void mettreAJourStrategie(Joueur joueur) {
+        if (getVie().estLow()) {
+            setStrategie(new StrategieFuite());
+        } else {
+            setStrategie(new StrategieAttaque());
+        }
+    }
+
+    private void appliquerStrategieDeplacement(Joueur joueur) {
+        if (strategieCourante != null) {
+            strategieCourante.deplacer(this, joueur);
+        }
+    }
+
+    private void gererBlocageEtSaut() {
+        double prochaineX = getX() + getVitesseX();
+        double prochaineY = getY() + getVitesseY();
+        boolean collisionVerticale = Carte.getInstance().collision(prochaineX, prochaineY - Constantes.FORCE_SAUT);
+        boolean collisionDroite = Carte.getInstance().collision(prochaineX + Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+        boolean collisionGauche = Carte.getInstance().collision(prochaineX - Constantes.VITESSE_DEPLACEMENT_MOB,getY());
+
+        if (collisionDroite && collisionGauche) {
+            sauter();
+        } else if (collisionDroite || collisionGauche) {
+            sauter();
+            if (collisionVerticale) {
+                direction = (direction == Direction.DROITE) ? Direction.GAUCHE : Direction.DROITE;
+            }
+        }
     }
 }

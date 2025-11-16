@@ -50,6 +50,7 @@ public enum Objet {
     }
 
     public boolean estUnLivre(Item itemAComparer) {
-        return itemAComparer.getId() == 108;
+        if (itemAComparer == null) return false;
+        return itemAComparer.getId() == Objet.LIVRE.getId();
     }
 }
