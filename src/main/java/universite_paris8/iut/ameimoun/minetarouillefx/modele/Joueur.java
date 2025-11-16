@@ -41,7 +41,7 @@ public class Joueur extends Personnage {
     public Inventaire getInventaire() {
         return inventaire;
     }
-
+    //fefefefef
     public boolean ramasserItem(Item item) {
         if (item == null) return false;
         if (inventaire.aDeLaPlacePour(item)) {
